@@ -1,6 +1,6 @@
 EARTH_CIRCUMFERENCE = 40075
 
-class star_fix :
+class starFix :
     def __init__ (self, \
                   object_name, \
                   date, \
@@ -70,8 +70,15 @@ class star_fix :
     def getGP (self):
         pass
         
+class starFixPair:
+    def __init__ (self, sf1, sf2):
+        self.sf1 = sf1
+        self.sf2 = sf2
+
+    def getIntersections (self):
+        pass
         
-a = star_fix (date                 = "2024-05-05", \
+a = starFix (date                 = "2024-05-05", \
               object_name          = "Sun", \
               time_hour            = 15, \
               time_minute          = 55, \
@@ -91,7 +98,7 @@ a = star_fix (date                 = "2024-05-05", \
               
 print (a.getRadius())
 
-b = star_fix (date                 = "2024-05-05", \
+b = starFix (date                 = "2024-05-05", \
               object_name          = "Sun", \
               time_hour            = 23, \
               time_minute          = 1, \
@@ -110,4 +117,8 @@ b = star_fix (date                 = "2024-05-05", \
               )
 
 print (b.getRadius())
+
+starFixPair = starFixPair (a, b)
+intersections = starFixPair.getIntersections ()
+
 
