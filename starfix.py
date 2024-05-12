@@ -1,17 +1,83 @@
+from math import pi, sin, cos, acos, sqrt, atan2
+
 EARTH_CIRCUMFERENCE = 40075
 
 # Utility routines
 
+def addVecs (vec1, vec2):
+    assert (type (vec1) == type (vec2) == list)
+    assert (len (vec1) == len (vec2))
+    retVal = []
+    for i in range (len(vec1)):
+        retVal.append (vec1[i] + vec2[i])
+    return retVal
+
+def multScalarVect (scalar, vec):
+    assert (type (scalar) == int or type(scalar) == float)
+    assert (type (vec) == list)
+    retVal = []
+    for i in range (len(vec)):
+        retVal.append (scalar*vec[i])
+    return retVal 
+
+def lengthOfVect (vec):
+    assert (type (vec) == list)
+    s = 0
+    for i in range (len(vec)):
+        s += (vec[i]*vec[i])
+    return sqrt (s)
+
+def normalizeVect (vec):
+    return multScalarVect (1/lengthOfVect(vec), vec)
+    
+
 def crossProduct (vec1, vec2) :
-    print (type(vec1))
-    print (type(vec2))
-    assert (type (vec1) == list and type(vec2) == list) 
-    assert (len (vec1) == 3 and len (vec2) == 3)
+    assert (type (vec1) == type(vec2) == list) 
+    assert (len (vec1) == len (vec2) == 3)
     retVal = [0, 0, 0]
     retVal [0] = vec1 [1]*vec2[2] - vec1[2]*vec2[1]
     retVal [1] = vec1 [2]*vec2[0] - vec1[0]*vec2[2]
     retVal [2] = vec1 [0]*vec2[1] - vec1[1]*vec2[0]
-    return retVal    
+    return retVal
+
+def dotProduct (vec1, vec2):
+    assert (type (vec1) == list and type(vec2) == list) 
+    assert (len (vec1) == len (vec2) == 3)
+    s = 0
+    for i in range (len(vec1)):
+        s += vec1[i]*vec2[i]
+    return s
+
+def degToRad (deg):
+    assert (type(deg) == int or type (deg) == float)
+    return deg/(180.0/pi)
+
+def radToDeg (rad):
+    assert (type(rad) == int or type (rad) == float)    
+    return rad*(180.0/pi)
+
+def toLonLat (vec):
+    assert (type (vec) == list) 
+    assert (len (vec) == 3)
+    vec = normalizeVect (vec)
+    
+    theta = atan2 (vec[1],vec[0])
+    print ("BLALA = " + str(vec[2]))
+    phi = acos (vec[2])
+    LON = radToDeg (theta)
+    LAT = radToDeg (pi/4-phi) 
+    return LON, LAT
+
+def toRectangular (LON, LAT):
+    assert (type (LAT) == int or type (LAT) == float)
+    assert (type (LON) == int or type (LON) == float)
+    aVec = []
+    aVec.append (cos (degToRad (LON)) * sin (degToRad (LAT)-pi/4))
+    aVec.append (sin (degToRad (LON)) * sin (degToRad (LAT)-pi/4))
+    aVec.append (cos (degToRad (LAT)))
+    print ("TJOSAN = " + str(aVec))
+    aVec = normalizeVect (aVec)
+    return aVec
 
 # Object representing a star fix
 
@@ -55,7 +121,7 @@ class starFix :
         assert (self.object_name != "Sun" or (self.sha_diff_degrees == 0 and self.sha_diff_minutes == 0))
         
         self.GP_lon, self.GP_lat = self.__calculateGP ()
-        #print (str(self.GP_lon), "", str(self.GP_lat))
+        print (str(self.GP_lon), "", str(self.GP_lat))
     
     def __calculateGP (self):
         # -((B12+B10)+((B14+B10)-(B12+B10))*C9+((B13+B11)/60)+(((B15+B11)-(B13+B11))/60)*C9)
@@ -75,13 +141,16 @@ class starFix :
         self.decl_time_0_minutes/60 + ((self.decl_time_1_minutes - self.decl_time_0_minutes)/60)*minSecContribution
         
         return resultLON, resultLAT
-        
-    def getRadius (self):
+
+    def getAngle (self):
         measured_alt_decimal = self.measured_alt_degrees + \
                                self.measured_alt_minutes/60 + \
                                self.measured_alt_seconds/3600
-        return ((90-measured_alt_decimal)/360)*EARTH_CIRCUMFERENCE
-        
+        return (90-measured_alt_decimal)
+    
+    def getRadius (self):
+        return (self.getAngle()/360)*EARTH_CIRCUMFERENCE
+    
     def getGP (self):
         pass
         
@@ -91,6 +160,42 @@ class starFixPair:
         self.sf2 = sf2
 
     def getIntersections (self):
+
+        print ("FOO1 = " + str(self.sf1.GP_lon)+ "; FOO2 = " + str(self.sf1.GP_lat))               
+        # X coord
+        aVec = toRectangular (self.sf1.GP_lon, self.sf1.GP_lat)
+        print ("AVEC = " + str(aVec))
+
+        LON1, LAT1 = toLonLat (aVec)
+        print ("LON1 = " + str(LON1)+ "; LAT1 = " + str(LAT1))       
+        
+        bVec = toRectangular (self.sf2.GP_lon, self.sf2.GP_lat)
+        abCross = crossProduct (aVec, bVec)
+        abCross = normalizeVect (abCross)
+
+        p1 = multScalarVect (cos(degToRad(self.sf2.getAngle())), aVec)
+        p2 = multScalarVect (-cos(degToRad(self.sf1.getAngle())), bVec)
+        p3 = addVecs (p1, p2)
+        p3 = normalizeVect (p3)
+        p4 = crossProduct (abCross, p3)
+        q = normalizeVect (p4)
+
+        qLon, qLat = toLonLat (q)
+        print ("LON = " + str(qLon)+ "; LAT = " + str(qLat))
+
+        rho = radToDeg(acos (cos (degToRad(self.sf1.getAngle())) / (dotProduct (aVec, q))))
+        print (q)
+        print (lengthOfVect(q))
+        print (rho)
+        
+        #print (X,Y,Z)
+        #print (abCross)
+
+        #foo = [1,2,3]
+        #bar = [3,4,5]
+        #foobar = foo+bar
+        # print (foobar)
+         
         pass
         
 class starFixCollection:
@@ -118,7 +223,7 @@ a = starFix (date                 = "2024-05-05", \
               measured_alt_seconds = 1.8, \
               )
               
-print (a.getRadius())
+#print (a.getRadius())
 
 b = starFix (date                 = "2024-05-05", \
               object_name          = "Sun", \
@@ -138,7 +243,7 @@ b = starFix (date                 = "2024-05-05", \
               measured_alt_seconds = 18, \
               )
 
-print (b.getRadius())
+#print (b.getRadius())
 
 starFixPair = starFixPair (a, b)
 intersections = starFixPair.getIntersections ()
@@ -146,7 +251,7 @@ intersections = starFixPair.getIntersections ()
 vec1 = [1, 0, 0]
 vec2 = [0, 1, 0]
 
-print (crossProduct (vec1, vec2))
+#print (crossProduct (vec1, vec2))
 
 
 
