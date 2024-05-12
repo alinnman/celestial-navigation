@@ -1,5 +1,20 @@
 EARTH_CIRCUMFERENCE = 40075
 
+# Utility routines
+
+def crossProduct (vec1, vec2) :
+    print (type(vec1))
+    print (type(vec2))
+    assert (type (vec1) == list and type(vec2) == list) 
+    assert (len (vec1) == 3 and len (vec2) == 3)
+    retVal = [0, 0, 0]
+    retVal [0] = vec1 [1]*vec2[2] - vec1[2]*vec2[1]
+    retVal [1] = vec1 [2]*vec2[0] - vec1[0]*vec2[2]
+    retVal [2] = vec1 [0]*vec2[1] - vec1[1]*vec2[0]
+    return retVal    
+
+# Object representing a star fix
+
 class starFix :
     def __init__ (self, \
                   object_name, \
@@ -78,6 +93,13 @@ class starFixPair:
     def getIntersections (self):
         pass
         
+class starFixCollection:
+    def __init__ (self, sfList):
+        self.sfList = sfList
+
+    def getIntersections (self):
+        pass        
+        
 a = starFix (date                 = "2024-05-05", \
               object_name          = "Sun", \
               time_hour            = 15, \
@@ -120,5 +142,11 @@ print (b.getRadius())
 
 starFixPair = starFixPair (a, b)
 intersections = starFixPair.getIntersections ()
+
+vec1 = [1, 0, 0]
+vec2 = [0, 1, 0]
+
+print (crossProduct (vec1, vec2))
+
 
 
