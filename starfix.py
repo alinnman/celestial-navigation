@@ -80,6 +80,16 @@ def toRectangular (LON, LAT):
     #print ("TJOSAN = " + str(aVec))
     aVec = normalizeVect (aVec)
     return aVec
+    
+def rotateVector (vec, rotVec, angle):
+    assert (type(vec) == type(rotVec) == list)
+    assert (len(vec) == len(rotVec) == 3)
+    assert (type(angle) == float or type(angle) == int) 
+    v1 = multScalarVect (cos(angle), vec)
+    v2 = multScalarVect (sin(angle), crossProduct(rotVec, vec))
+    v3 = multScalarVect (dotProduct(rotVec,vec)*(1-cos(angle)), rotVec)
+    result = addVecs (v1, addVecs(v2, v3))
+    return result
 
 # Object representing a star fix
 
@@ -123,7 +133,7 @@ class starFix :
         assert (self.object_name != "Sun" or (self.sha_diff_degrees == 0 and self.sha_diff_minutes == 0))
         
         self.GP_lon, self.GP_lat = self.__calculateGP ()
-        print (str(self.GP_lon), "", str(self.GP_lat))
+        #print (str(self.GP_lon), "", str(self.GP_lat))
     
     def __calculateGP (self):
         # -((B12+B10)+((B14+B10)-(B12+B10))*C9+((B13+B11)/60)+(((B15+B11)-(B13+B11))/60)*C9)
@@ -163,17 +173,17 @@ class starFixPair:
 
     def getIntersections (self):
 
-        print ("FOO1-LON = " + str(self.sf1.GP_lon)+ "; FOO1-LAT = " + str(self.sf1.GP_lat))               
+        #print ("FOO1-LON = " + str(self.sf1.GP_lon)+ "; FOO1-LAT = " + str(self.sf1.GP_lat))               
         aVec = toRectangular (self.sf1.GP_lon, self.sf1.GP_lat)
-        print ("AVEC = " + str(aVec))
+        #print ("AVEC = " + str(aVec))
         LON1, LAT1 = toLonLat (aVec)
-        print ("AVEC: LON1 = " + str(LON1)+ "; LAT1 = " + str(LAT1))       
+        #print ("AVEC: LON1 = " + str(LON1)+ "; LAT1 = " + str(LAT1))       
         
-        print ("FOO2-LON = " + str(self.sf2.GP_lon)+ "; FOO2-LAT = " + str(self.sf2.GP_lat)) 
+        #print ("FOO2-LON = " + str(self.sf2.GP_lon)+ "; FOO2-LAT = " + str(self.sf2.GP_lat)) 
         bVec = toRectangular (self.sf2.GP_lon, self.sf2.GP_lat)
-        print ("BVEC = " + str(bVec))        
+        #print ("BVEC = " + str(bVec))        
         LON1, LAT1 = toLonLat (bVec)
-        print ("BVEC: LON1 = " + str(LON1)+ "; LAT1 = " + str(LAT1))               
+        #print ("BVEC: LON1 = " + str(LON1)+ "; LAT1 = " + str(LAT1))               
         
         
         abCross = crossProduct (aVec, bVec)
@@ -187,12 +197,20 @@ class starFixPair:
         q = normalizeVect (p4)
 
         qLon, qLat = toLonLat (q)
-        print ("LON = " + str(qLon)+ "; LAT = " + str(qLat))
+        #print ("LON = " + str(qLon)+ "; LAT = " + str(qLat))
+        # LON = -91.44736977201018; LAT = 24.808471771121802
+        # 24.808471771121802,-91.44736977201018
 
-        rho = radToDeg(acos (cos (degToRad(self.sf1.getAngle())) / (dotProduct (aVec, q))))
-        print (q)
-        print (lengthOfVect(q))
-        print (rho)
+        rho = acos (cos (degToRad(self.sf1.getAngle())) / (dotProduct (aVec, q)))
+        rotAxis = normalizeVect(crossProduct (crossProduct (aVec, bVec), q))
+        #print ("ROTAXIS = " + str(rotAxis))
+        #print (q)
+        #print (lengthOfVect(q))
+        #print ("RHO = " + str(radToDeg(rho)))
+        
+        int1 = normalizeVect(rotateVector (q, rotAxis, rho))
+        int2 = normalizeVect(rotateVector (q, rotAxis, -rho))
+        return toLonLat(int1), toLonLat(int2)
         
         #print (X,Y,Z)
         #print (abCross)
@@ -252,12 +270,11 @@ b = starFix (date                 = "2024-05-05", \
 #print (b.getRadius())
 
 starFixPair = starFixPair (a, b)
-intersections = starFixPair.getIntersections ()
+intersection1, intersection2 = starFixPair.getIntersections ()
+print (intersection1)
+print (intersection2)
+# 41.764874280342816, -87.71719349718802
 
-vec1 = [1, 0, 0]
-vec2 = [0, 1, 0]
-
-#print (crossProduct (vec1, vec2))
 
 
 
