@@ -90,6 +90,19 @@ def rotateVector (vec, rotVec, angle):
     v3 = multScalarVect (dotProduct(rotVec,vec)*(1-cos(angle)), rotVec)
     result = addVecs (v1, addVecs(v2, v3))
     return result
+    
+def distanceBetweenPoints (lonLat1, lonLat2):
+    assert (type(lonLat1) == type(lonLat2) == tuple)
+    lon1 = lonLat1[0]
+    lat1 = lonLat1[1]
+    normVec1 = toRectangular (lon1, lat1)
+    lon2 = lonLat2[0]
+    lat2 = lonLat2[1]
+    normVec2 = toRectangular (lon2, lat2)
+    dp = dotProduct (normVec1, normVec2)
+    angle = acos (dp)
+    distance = (EARTH_CIRCUMFERENCE/(2*pi)) * angle
+    return distance
 
 # Object representing a star fix
 
@@ -273,6 +286,8 @@ starFixPair = starFixPair (a, b)
 intersection1, intersection2 = starFixPair.getIntersections ()
 print (intersection1)
 print (intersection2)
+dist = distanceBetweenPoints (intersection1, intersection2)
+print (dist)
 # 41.764874280342816, -87.71719349718802
 
 
