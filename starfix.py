@@ -225,22 +225,67 @@ class starFixPair:
         int2 = normalizeVect(rotateVector (q, rotAxis, -rho))
         return toLonLat(int1), toLonLat(int2)
         
-        #print (X,Y,Z)
-        #print (abCross)
-
-        #foo = [1,2,3]
-        #bar = [3,4,5]
-        #foobar = foo+bar
-        # print (foobar)
-         
-        pass
-        
 class starFixCollection:
     def __init__ (self, sfList):
+        assert (len (sfList) >= 2)
         self.sfList = sfList
 
-    def getIntersections (self):
-        pass        
+    def getIntersections (self, limit=100):
+        if (len(self.sfList) == 2):
+            intersections = starFixPair (self.sfList[0],self.sfList[1]).getIntersections()
+            return intersections
+        else:
+            nrOfFixes = len (self.sfList)
+            #print ("nrOfFixes = " + str(nrOfFixes))
+            coords = []
+            for i in range (nrOfFixes):
+                for j in range (i, nrOfFixes):
+                    if i != j:
+                        #print ("i = " + str(i) + "; j = " + str(j))
+                        p = starFixPair (self.sfList [i], self.sfList [j])
+                        pInt = p.getIntersections ()
+                        #print (pInt)
+                        coords.append (pInt[0])
+                        coords.append (pInt[1])                        
+            #print (len(coords))
+            #print (coords)
+            nrOfCoords = len (coords)
+            dists = dict ()
+            for i in range (nrOfCoords):
+                for j in range (i, nrOfCoords):
+                    if i != j:
+                        dist = distanceBetweenPoints (coords[i], coords[j])
+                        #print (dist)
+                        dists [i,j] = dist
+            #print (dists)
+            sortedDists = dict(sorted(dists.items(), key=lambda item: item[1]))
+            #print (sortedDists)
+            nrOfSortedDists = len (sortedDists)
+            chosenPoints = set ()
+            for sd in sortedDists:
+                #print (sd) 
+                theDistance = sortedDists [sd]
+                #print (theDistance)
+                if (theDistance < limit): 
+                    chosenPoints.add (sd[0])
+                    chosenPoints.add (sd[1])
+            #print (chosenPoints) 
+            nrOfChosenPoints = len (chosenPoints)
+            summationVec = [0,0,0]
+            for cp in chosenPoints: 
+                #print (cp) 
+                selectedCoord = coords [cp]
+                #print (selectedCoord) 
+                rectVec = toRectangular (selectedCoord[0], selectedCoord[1])
+                #print (rectVec) 
+                summationVec = addVecs (summationVec, multScalarVect (1/nrOfChosenPoints, rectVec))
+            summationVec = normalizeVect (summationVec)
+            retLON, retLAT = toLonLat (summationVec)
+            return retLON, retLAT
+            
+            #nrOfDists = len (sortedDists)
+            
+        
         
 a = starFix (date                 = "2024-05-05", \
               object_name          = "Sun", \
@@ -257,7 +302,7 @@ a = starFix (date                 = "2024-05-05", \
               decl_time_1_minutes  = 31.3, \
               measured_alt_degrees = 55, \
               measured_alt_minutes = 8, \
-              measured_alt_seconds = 1.8, \
+              measured_alt_seconds = 1.8 \
               )
               
 #print (a.getRadius())
@@ -277,19 +322,46 @@ b = starFix (date                 = "2024-05-05", \
               decl_time_1_minutes  = 36.9, \
               measured_alt_degrees = 19, \
               measured_alt_minutes = 28, \
-              measured_alt_seconds = 18, \
+              measured_alt_seconds = 18 \
+              )
+
+c = starFix (date                 = "2024-05-06", \
+              object_name          = "Vega", \
+              time_hour            = 4, \
+              time_minute          = 4, \
+              time_second          = 13, \
+              gha_time_0_degrees   = 284, \
+              gha_time_0_minutes   = 30.4, \
+              gha_time_1_degrees   = 299, \
+              gha_time_1_minutes   = 32.9, \
+              decl_time_0_degrees  = 38, \
+              decl_time_0_minutes  = 48.1, \
+              decl_time_1_degrees  = 38, \
+              decl_time_1_minutes  = 48.1, \
+              measured_alt_degrees = 30, \
+              measured_alt_minutes = 16, \
+              measured_alt_seconds = 24.6, \
+              sha_diff_degrees     = 80, \
+              sha_diff_minutes     = 33.4 \
               )
 
 #print (b.getRadius())
 
-starFixPair = starFixPair (a, b)
-intersection1, intersection2 = starFixPair.getIntersections ()
-print (intersection1)
-print (intersection2)
-dist = distanceBetweenPoints (intersection1, intersection2)
-print (dist)
+#starFixPair = starFixPair (a, b)
+#intersection1, intersection2 = starFixPair.getIntersections ()
+#print (intersection1)
+#print (intersection2)
+#dist = distanceBetweenPoints ((0,0), (0,90))
+#print (dist)
 # 41.764874280342816, -87.71719349718802
 
+collection = starFixCollection ([a, b])
+intersections = collection.getIntersections ()
+print (intersections)
 
+collection = starFixCollection ([a, b, c])
+intersections = collection.getIntersections ()
+print (intersections)
+# 41.874156346243865, -87.67180300975592
 
 
