@@ -169,9 +169,6 @@ class starFix :
     
     def getRadius (self):
         return (self.getAngle()/360)*EARTH_CIRCUMFERENCE
-    
-    def getGP (self):
-        pass
         
 class starFixPair:
     def __init__ (self, sf1, sf2):
@@ -247,6 +244,8 @@ class starFixCollection:
             summationVec = normalizeVect (summationVec)
             retLON, retLAT = toLonLat (summationVec)
             return retLON, retLAT
+
+# Our starfix data
         
 a = starFix (date                 = "2024-05-05", \
               object_name          = "Sun", \
@@ -265,8 +264,6 @@ a = starFix (date                 = "2024-05-05", \
               measured_alt_minutes = 8, \
               measured_alt_seconds = 1.8 \
               )
-              
-# Our starfix data
 
 b = starFix (date                 = "2024-05-05", \
               object_name          = "Sun", \
