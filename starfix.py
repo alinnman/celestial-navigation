@@ -1,4 +1,4 @@
-from math import pi, sin, cos, acos, sqrt, atan2
+from math import pi, sin, cos, asin, acos, sqrt, atan2
 
 EARTH_CIRCUMFERENCE = 40075
 
@@ -62,20 +62,22 @@ def toLonLat (vec):
     vec = normalizeVect (vec)
     
     theta = atan2 (vec[1],vec[0])
-    print ("BLALA = " + str(vec[2]))
+    #print ("BLALA = " + str(vec[2]))
     phi = acos (vec[2])
     LON = radToDeg (theta)
-    LAT = radToDeg (pi/4-phi) 
+    LAT = 90-radToDeg (phi) 
     return LON, LAT
 
 def toRectangular (LON, LAT):
     assert (type (LAT) == int or type (LAT) == float)
     assert (type (LON) == int or type (LON) == float)
+    phi = degToRad (90 - LAT)
+    theta = degToRad (LON)
     aVec = []
-    aVec.append (cos (degToRad (LON)) * sin (degToRad (LAT)-pi/4))
-    aVec.append (sin (degToRad (LON)) * sin (degToRad (LAT)-pi/4))
-    aVec.append (cos (degToRad (LAT)))
-    print ("TJOSAN = " + str(aVec))
+    aVec.append (cos (theta) * sin (phi))
+    aVec.append (sin (theta) * sin (phi))
+    aVec.append (cos (phi))
+    #print ("TJOSAN = " + str(aVec))
     aVec = normalizeVect (aVec)
     return aVec
 
@@ -161,15 +163,19 @@ class starFixPair:
 
     def getIntersections (self):
 
-        print ("FOO1 = " + str(self.sf1.GP_lon)+ "; FOO2 = " + str(self.sf1.GP_lat))               
-        # X coord
+        print ("FOO1-LON = " + str(self.sf1.GP_lon)+ "; FOO1-LAT = " + str(self.sf1.GP_lat))               
         aVec = toRectangular (self.sf1.GP_lon, self.sf1.GP_lat)
         print ("AVEC = " + str(aVec))
-
         LON1, LAT1 = toLonLat (aVec)
-        print ("LON1 = " + str(LON1)+ "; LAT1 = " + str(LAT1))       
+        print ("AVEC: LON1 = " + str(LON1)+ "; LAT1 = " + str(LAT1))       
         
+        print ("FOO2-LON = " + str(self.sf2.GP_lon)+ "; FOO2-LAT = " + str(self.sf2.GP_lat)) 
         bVec = toRectangular (self.sf2.GP_lon, self.sf2.GP_lat)
+        print ("BVEC = " + str(bVec))        
+        LON1, LAT1 = toLonLat (bVec)
+        print ("BVEC: LON1 = " + str(LON1)+ "; LAT1 = " + str(LAT1))               
+        
+        
         abCross = crossProduct (aVec, bVec)
         abCross = normalizeVect (abCross)
 
