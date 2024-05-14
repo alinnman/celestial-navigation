@@ -57,6 +57,8 @@ The data is picked from your clock, sextant and the Nautical Almanac in the foll
 
 Using two star fixes a sight reduction can be done in the following way 
 
+    from starfix import starFix, starFixCollection
+	
     a = starfix (....Parameters....)
     b = starfix (....Parameters....)
     
@@ -73,6 +75,7 @@ The intersections are calculated using an algorithm based on [this article](http
 Using three (or more) star fixes a sight reduction can be done in the following way 
 
     from starfix import starFix, starFixCollection
+	
     a = starFix (....Parameters....)
     b = starFix (....Parameters....)
     c = starFix (....Parameters....)
