@@ -72,9 +72,10 @@ The intersections are calculated using an algorithm based on [this article](http
 
 Using three (or more) star fixes a sight reduction can be done in the following way 
 
-    a = starfix (....Parameters....)
-    b = starfix (....Parameters....)
-    c = starfix (....Parameters....)
+    from starfix import starFix, starFixCollection
+    a = starFix (....Parameters....)
+    b = starFix (....Parameters....)
+    c = starFix (....Parameters....)
     
     collection = starFixCollection ([a, b, c]) # Add more star fixes if needed
     intersections = collection.getIntersections ()
