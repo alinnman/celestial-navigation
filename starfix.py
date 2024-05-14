@@ -28,7 +28,10 @@ def lengthOfVect (vec):
     return sqrt (s)
 
 def normalizeVect (vec):
-    return multScalarVect (1/lengthOfVect(vec), vec)
+    lenV = lengthOfVect (vec)
+    if lenV == 0:
+        raise ValueError ("Cannot normalize a zero vector")
+    return multScalarVect (1/lenV, vec)
     
 
 def crossProduct (vec1, vec2) :
@@ -104,6 +107,23 @@ def distanceBetweenPoints (lonLat1, lonLat2):
     angle = acos (dp)
     distance = (EARTH_CIRCUMFERENCE/(2*pi)) * angle
     return distance
+    
+# Data formatting
+    
+def getRepresentation (ins, numDecimals):
+    if (type (ins) == float): 
+        degrees = int (ins)
+        minutes = abs((ins - degrees)*60)
+        return str(degrees) + "d," + str(round(minutes, numDecimals)) + "m"
+    elif (type (ins) == tuple or type (ins) == list):
+        length = len (ins)
+        retVal = "("
+        for i in range(length):
+            retVal = retVal + getRepresentation (ins[i], numDecimals)
+            if i < (length-1):
+                retVal = retVal + ";"
+        retVal = retVal + ")"
+        return retVal            
 
 # Object representing a star fix
 
@@ -199,7 +219,10 @@ class starFixPair:
         q = normalizeVect (p4)
 
         # Calculate a rotation angle
-        rho = acos (cos (degToRad(self.sf1.getAngle())) / (dotProduct (aVec, q)))
+        try:
+            rho = acos (cos (degToRad(self.sf1.getAngle())) / (dotProduct (aVec, q)))
+        except ValueError:
+            return None
         # Calculate a rotation vector
         rotAxis = normalizeVect(crossProduct (crossProduct (aVec, bVec), q))
         
@@ -231,8 +254,9 @@ class starFixCollection:
                     if i != j:
                         p = starFixPair (self.sfList [i], self.sfList [j])
                         pInt = p.getIntersections ()
-                        coords.append (pInt[0])
-                        coords.append (pInt[1])                        
+                        if (pInt != None):
+                            coords.append (pInt[0])
+                            coords.append (pInt[1])                        
             nrOfCoords = len (coords)
             dists = dict ()
             for i in range (nrOfCoords):
@@ -254,7 +278,10 @@ class starFixCollection:
                 selectedCoord = coords [cp]
                 rectVec = toRectangular (selectedCoord[0], selectedCoord[1])
                 summationVec = addVecs (summationVec, multScalarVect (1/nrOfChosenPoints, rectVec))
-            summationVec = normalizeVect (summationVec)
+            try:
+                summationVec = normalizeVect (summationVec)
+            except ValueError:
+                return None
             retLON, retLAT = toLonLat (summationVec)
             return retLON, retLAT
 

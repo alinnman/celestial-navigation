@@ -1,4 +1,4 @@
-from starfix import starFix, starFixCollection
+from starfix import starFix, starFixCollection, getRepresentation
 
 # Our starfix data
         
@@ -57,11 +57,16 @@ c = starFix (date                 = "2024-05-06", \
               sha_diff_degrees     = 80, \
               sha_diff_minutes     = 33.4 \
               )
+              
+
+
 
 collection = starFixCollection ([a, b])
 intersections = collection.getIntersections ()
-print (intersections)
+#print (intersections)
+print (getRepresentation(intersections,1))
 
 collection = starFixCollection ([a, b, c])
 intersections = collection.getIntersections ()
-print (intersections)
+#print (intersections)
+print (getRepresentation(intersections,1))
