@@ -250,13 +250,12 @@ class starFixCollection:
             nrOfFixes = len (self.sfList)
             coords = []
             for i in range (nrOfFixes):
-                for j in range (i, nrOfFixes):
-                    if i != j:
-                        p = starFixPair (self.sfList [i], self.sfList [j])
-                        pInt = p.getIntersections ()
-                        if (pInt != None):
-                            coords.append (pInt[0])
-                            coords.append (pInt[1])                        
+                for j in range (i+1, nrOfFixes):
+                    p = starFixPair (self.sfList [i], self.sfList [j])
+                    pInt = p.getIntersections ()
+                    if (pInt != None):
+                        coords.append (pInt[0])
+                        coords.append (pInt[1])                        
             nrOfCoords = len (coords)
             dists = dict ()
             for i in range (nrOfCoords):
@@ -272,16 +271,17 @@ class starFixCollection:
                 if (theDistance < limit): 
                     chosenPoints.add (sd[0])
                     chosenPoints.add (sd[1])
+                else:
+                    break
             nrOfChosenPoints = len (chosenPoints)
+            if nrOfChosenPoints == 0:
+                return None
             summationVec = [0,0,0]
             for cp in chosenPoints: 
                 selectedCoord = coords [cp]
                 rectVec = toRectangular (selectedCoord[0], selectedCoord[1])
                 summationVec = addVecs (summationVec, multScalarVect (1/nrOfChosenPoints, rectVec))
-            try:
-                summationVec = normalizeVect (summationVec)
-            except ValueError:
-                return None
+            summationVec = normalizeVect (summationVec)
             retLON, retLAT = toLonLat (summationVec)
             return retLON, retLAT
 
