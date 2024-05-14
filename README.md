@@ -59,8 +59,8 @@ Using two star fixes a sight reduction can be done in the following way
 
     from starfix import starFix, starFixCollection
 	
-    a = starfix (....Parameters....)
-    b = starfix (....Parameters....)
+    a = starFix (....Parameters....)
+    b = starFix (....Parameters....)
     
     collection = starFixCollection ([a, b])
     intersections = collection.getIntersections ()
