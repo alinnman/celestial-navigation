@@ -58,14 +58,14 @@ The data is picked from your clock, sextant and the Nautical Almanac in the foll
 
 Using two star fixes a sight reduction can be done in the following way 
 
-    from starfix import starFix, starFixCollection
+    from starfix import starFix, starFixCollection, getRepresentation
 	
     a = starFix (....Parameters....)
     b = starFix (....Parameters....)
     
     collection = starFixCollection ([a, b])
     intersections = collection.getIntersections ()
-    print (intersections)
+    print (getRepresentation(intersections,1))
     
 The result will be a tuple of **two** coordinates (intersections of two circles of equal altitude). 
 
@@ -75,7 +75,7 @@ The intersections are calculated using an algorithm based on [this article](http
 
 Using three (or more) star fixes a sight reduction can be done in the following way 
 
-    from starfix import starFix, starFixCollection
+    from starfix import starFix, starFixCollection, getRepresentation
 	
     a = starFix (....Parameters....)
     b = starFix (....Parameters....)
@@ -83,7 +83,7 @@ Using three (or more) star fixes a sight reduction can be done in the following 
     
     collection = starFixCollection ([a, b, c]) # Add more star fixes if needed
     intersections = collection.getIntersections ()
-    print (intersections)
+    print (getRepresentation(intersections,1))
     
 The result will be a **single** coordinate (mean value of intersections). 
 
