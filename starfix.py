@@ -80,6 +80,9 @@ def toRectangular (LON, LAT):
     return aVec
     
 def rotateVector (vec, rotVec, angle):
+    '''
+    Rotate a vector around a rotation vector. Based on Rodrigues formula. https://en.wikipedia.org/wiki/Rodrigues%27_formula 
+    '''
     assert (type(vec) == type(rotVec) == list)
     assert (len(vec) == len(rotVec) == 3)
     assert (type(angle) == float or type(angle) == int) 
@@ -176,15 +179,18 @@ class starFixPair:
         self.sf2 = sf2
 
     def getIntersections (self):
-        aVec = toRectangular (self.sf1.GP_lon, self.sf1.GP_lat)
-        LON1, LAT1 = toLonLat (aVec)
-     
+        '''
+        Get intersection of two circles on a spheric surface. Based on https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere 
+        '''
+        # Get cartesian vectors a and b (from ground points)
+        aVec = toRectangular (self.sf1.GP_lon, self.sf1.GP_lat)     
         bVec = toRectangular (self.sf2.GP_lon, self.sf2.GP_lat)       
-        LON1, LAT1 = toLonLat (bVec)
               
+        # Calculate axb
         abCross = crossProduct (aVec, bVec)
         abCross = normalizeVect (abCross)
 
+        # These steps calculate q which is located halfway between our two intersections 
         p1 = multScalarVect (cos(degToRad(self.sf2.getAngle())), aVec)
         p2 = multScalarVect (-cos(degToRad(self.sf1.getAngle())), bVec)
         p3 = addVecs (p1, p2)
@@ -192,11 +198,12 @@ class starFixPair:
         p4 = crossProduct (abCross, p3)
         q = normalizeVect (p4)
 
-        qLon, qLat = toLonLat (q)
-
+        # Calculate a rotation angle
         rho = acos (cos (degToRad(self.sf1.getAngle())) / (dotProduct (aVec, q)))
+        # Calculate a rotation vector
         rotAxis = normalizeVect(crossProduct (crossProduct (aVec, bVec), q))
         
+        # Calculate the two intersections by performing rotation of rho and -rho
         int1 = normalizeVect(rotateVector (q, rotAxis, rho))
         int2 = normalizeVect(rotateVector (q, rotAxis, -rho))
         return toLonLat(int1), toLonLat(int2)
@@ -208,9 +215,15 @@ class starFixCollection:
 
     def getIntersections (self, limit=100):
         if (len(self.sfList) == 2):
+            '''
+            For two star fixes just use the algorithm of starFixPair.getIntersections
+            '''
             intersections = starFixPair (self.sfList[0],self.sfList[1]).getIntersections()
             return intersections
         else:
+            '''
+            For >= 3 star fixes perform a sorting algorithm 
+            '''
             nrOfFixes = len (self.sfList)
             coords = []
             for i in range (nrOfFixes):
