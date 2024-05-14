@@ -49,8 +49,8 @@ The data is picked from your clock, sextant and the Nautical Almanac in the foll
 | measured_alt_degrees | Altitude of object in degrees (0-90)      |                                                                | Sextant |
 | measured_alt_minutes | Altitude of object in minutes (0-60)      | Can be zero (use decimal degrees)                              | Sextant |
 | measured_alt_seconds | Altitude of object in seconds (0-60)      | Can be zero (use decimal degrees/minutes)                      | Sextant |
-| sha_diff_degrees     | SHA of star vs Aries in degrees           | From Nautical Almanac. Only use for stars. Otherwise skip      | Nautical Almanac |
-| sha_diff_degrees     | SHA of star vs Aries in minutes           | From Nautical Almanac. Only use for stars. Otherwise skip      | Nautical Almanac |
+| *sha_diff_degrees*   | SHA of star vs Aries in degrees           | Only use for stars. Otherwise skip                             | Nautical Almanac |
+| *sha_diff_degrees*   | SHA of star vs Aries in minutes           | Only use for stars. Otherwise skip                             | Nautical Almanac |
 
 ## 2. Sight reduction
 
