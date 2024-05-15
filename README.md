@@ -7,8 +7,6 @@ The python script only uses basic libraries (no numpy or similar) and could be i
 
 ## 1. Making sights
 
-$ x = y $
-
 You create a sight with code like this
 
     c = Sight (date                 = "2024-05-06", \
