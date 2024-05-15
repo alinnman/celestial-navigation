@@ -127,7 +127,7 @@ def getRepresentation (ins, numDecimals):
 
 # Object representing a star fix
 
-class starFix :
+class Sight :
     def __init__ (self, \
                   object_name, \
                   date, \
@@ -193,9 +193,9 @@ class starFix :
     def getRadius (self):
         return (self.getAngle()/360)*EARTH_CIRCUMFERENCE
         
-class starFixPair:
+class SightPair:
     def __init__ (self, sf1, sf2):
-        assert (type (sf1) == type (sf2) == starFix)
+        assert (type (sf1) == type (sf2) == Sight)
         self.sf1 = sf1
         self.sf2 = sf2
 
@@ -232,7 +232,7 @@ class starFixPair:
         int2 = normalizeVect(rotateVector (q, rotAxis, -rho))
         return toLonLat(int1), toLonLat(int2)
         
-class starFixCollection:
+class SightCollection:
     def __init__ (self, sfList):
         assert (len (sfList) >= 2)
         self.sfList = sfList
@@ -241,9 +241,9 @@ class starFixCollection:
         nrOfFixes = len(self.sfList)
         if (nrOfFixes == 2):
             '''
-            For two star fixes just use the algorithm of starFixPair.getIntersections
+            For two star fixes just use the algorithm of SightPair.getIntersections
             '''
-            intersections = starFixPair (self.sfList[0],self.sfList[1]).getIntersections()
+            intersections = SightPair (self.sfList[0],self.sfList[1]).getIntersections()
             return intersections
         elif (nrOfFixes >= 3):
             '''
@@ -253,7 +253,7 @@ class starFixCollection:
             # Perform pairwise sight reductions
             for i in range (nrOfFixes):
                 for j in range (i+1, nrOfFixes):
-                    p = starFixPair (self.sfList [i], self.sfList [j])
+                    p = SightPair (self.sfList [i], self.sfList [j])
                     pInt = p.getIntersections ()
                     if pInt != None:
                         coords.append (pInt[0])

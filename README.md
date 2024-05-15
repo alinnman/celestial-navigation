@@ -1,15 +1,15 @@
 # celestial-navigation
-Contains a simple python script to be used for celestial navigation. <br>
-Starfixes have to be obtained using a sextant, a nautical almanac and an accurate watch. <br>
+Contains a simple python script to be used for [celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation). <br>
+Sights have to be obtained using a sextant, a nautical almanac and an accurate watch. <br>
 The python script takes care of the sight reduction. For two fixes you will get two possible coordinates. For three or more fixes you will get one coordinate (calculated as a mean value). 
 
 The python script only uses basic libraries (no numpy or similar) and could be installed in PyDroid to allow for use on a mobile phone. 
 
-## 1. Creating star fixes
+## 1. Making sights
 
-You create a star fix with code like this
+You create a sight with code like this
 
-    c = starFix (date                 = "2024-05-06", \
+    c = Sight (date                 = "2024-05-06", \
                   object_name          = "Vega", \
                   time_hour            = 4, \
                   time_minute          = 4, \
@@ -54,16 +54,16 @@ The data is picked from your clock, sextant and the Nautical Almanac in the foll
 
 ## 2. Sight reduction
 
-### 2.1. Using two star fixes
+### 2.1. Using two sights
 
 Using two star fixes a sight reduction can be done in the following way 
 
-    from starfix import starFix, starFixCollection, getRepresentation
+    from starfix import Sight, SightCollection, getRepresentation
 	
-    a = starFix (....Parameters....)
-    b = starFix (....Parameters....)
+    a = Sight (....Parameters....)
+    b = Sight (....Parameters....)
     
-    collection = starFixCollection ([a, b])
+    collection = SightCollection ([a, b])
     intersections = collection.getIntersections ()
     print (getRepresentation(intersections,1))
     
@@ -71,17 +71,17 @@ The result will be a tuple of **two** coordinates (intersections of two circles 
 
 The intersections are calculated using an algorithm based on [this article](https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere)
 
-### 2.2 Using three or more star fixes
+### 2.2 Using three or more sights
 
 Using three (or more) star fixes a sight reduction can be done in the following way 
 
-    from starfix import starFix, starFixCollection, getRepresentation
+    from starfix import Sight, SightCollection, getRepresentation
 	
-    a = starFix (....Parameters....)
-    b = starFix (....Parameters....)
-    c = starFix (....Parameters....)
+    a = Sight (....Parameters....)
+    b = Sight (....Parameters....)
+    c = Sight (....Parameters....)
     
-    collection = starFixCollection ([a, b, c]) # Add more star fixes if needed
+    collection = SightCollection ([a, b, c]) # Add more star fixes if needed
     intersections = collection.getIntersections ()
     print (getRepresentation(intersections,1))
     

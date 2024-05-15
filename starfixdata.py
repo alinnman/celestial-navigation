@@ -1,8 +1,8 @@
-from starfix import starFix, starFixCollection, getRepresentation
+from starfix import Sight, SightCollection, getRepresentation
 
 # Our starfix data
         
-a = starFix (date                 = "2024-05-05", \
+a = Sight (date                 = "2024-05-05", \
               object_name          = "Sun", \
               time_hour            = 15, \
               time_minute          = 55, \
@@ -20,7 +20,7 @@ a = starFix (date                 = "2024-05-05", \
               measured_alt_seconds = 1.8 \
               )
 
-b = starFix (date                 = "2024-05-05", \
+b = Sight (date                 = "2024-05-05", \
               object_name          = "Sun", \
               time_hour            = 23, \
               time_minute          = 1, \
@@ -38,7 +38,7 @@ b = starFix (date                 = "2024-05-05", \
               measured_alt_seconds = 18 \
               )
 
-c = starFix (date                 = "2024-05-06", \
+c = Sight (date                 = "2024-05-06", \
               object_name          = "Vega", \
               time_hour            = 4, \
               time_minute          = 4, \
@@ -61,12 +61,12 @@ c = starFix (date                 = "2024-05-06", \
 
 
 
-collection = starFixCollection ([a, b])
+collection = SightCollection ([a, b])
 intersections = collection.getIntersections ()
 #print (intersections)
 print (getRepresentation(intersections,1))
 
-collection = starFixCollection ([a, b, c])
+collection = SightCollection ([a, b, c])
 intersections = collection.getIntersections ()
 #print (intersections)
 print (getRepresentation(intersections,1))
