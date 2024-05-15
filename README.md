@@ -69,7 +69,38 @@ Using two star fixes a sight reduction can be done in the following way
     
 The result will be a tuple of **two** coordinates (intersections of two circles of equal altitude). 
 
-The intersections are calculated using an algorithm based on [this article](https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere)
+The intersections are calculated using an algorithm based on [this article](https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere) <br/>
+This is a short outline of the algorithm. Two circles $A$ and $B$ define the circles of equal altitude defined from the sighting data as described above. 
+
+$A = \{ p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land |p| = 1 \}$ <br/>
+$B = \{ p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land |p| = 1 \}$ 
+
+We aim for finding the intersections $p_1$ and $p_2$ for te circles $A$ and $B$
+
+Using the Pythagorean Theorem for a Sphere it is easy to see this: 
+
+$\cos aq \cos pq = \cos \alpha$ <br/>
+$\cos bq \cos pq = \cos \beta$ <br/>
+
+From which we derive this
+
+$q \cdot (a \cos \beta - b \cos \alpha) = 0$
+
+Applying two cross-products we can get the value for $p$
+
+$q = \mathrm{normalize}((a \times b) \times (a \cos \beta - b \cos \alpha))$
+
+Now we can find the intersection points by rotating $q$ for an angle of $\rho$ along a rotation axis $r$. <br/>
+$\rho$ and $r$ are calculated this way:
+
+$r = (a \times b) \times q$ <br/>
+$\rho = \arccos(p \cdot q) = \arccos\left(\frac{\cos \alpha}{a \cdot q}\right)$
+
+The final rotation is accomplished using [Rodrigues/Gauss rotation formula](https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula).
+
+$p_{\mathrm{rot}} = q \cos \rho + \( r \times q \) \sin \rho + r \(r \cdot q \)\(1 - \cos \rho \)$ 
+
+Apply the formula above for $\rho$ and $-\rho$ and you will get the two intersection points. 
 
 ### 2.2 Using three or more sights
 
@@ -86,4 +117,6 @@ Using three (or more) star fixes a sight reduction can be done in the following 
     print (getRepresentation(intersections,1))
     
 The result will be a **single** coordinate (mean value of intersections). 
+
+
 
