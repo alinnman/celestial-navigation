@@ -35,7 +35,7 @@ The data is picked from your clock, sextant and the Nautical Almanac in the foll
 | :-------------       | :-------------                            | :-------------                                                 | :------------- |
 | date                 | Current day                               | Not used in calculations.                                      | N/A |
 | object               | Name of celestial object                  | Not used in calculations.                                      | N/A |
-| time_hour            | Observation time - Hours (0-23)           | In UTC.                                                        | Clock |
+| time_hour            | Observation time - Hours (0-23)           | In UTC. (Not used in calculations)                             | Clock |
 | time_minute          | Observation time - Minutes (0-59)         | In UTC.                                                        | Clock |
 | time_second          | Observation time - Seconds (0-59)         | In UTC.                                                        | Clock | 
 | gha_time_0_degrees   | GHA degrees reading for this hour         | For stars use GHA of Aries.                                    | Nautical Almanac |
