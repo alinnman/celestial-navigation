@@ -195,6 +195,7 @@ class starFix :
         
 class starFixPair:
     def __init__ (self, sf1, sf2):
+        assert (type (sf1) == type (sf2) == starFix)
         self.sf1 = sf1
         self.sf2 = sf2
 
@@ -237,46 +238,56 @@ class starFixCollection:
         self.sfList = sfList
 
     def getIntersections (self, limit=100):
-        if (len(self.sfList) == 2):
+        nrOfFixes = len(self.sfList)
+        if (nrOfFixes == 2):
             '''
             For two star fixes just use the algorithm of starFixPair.getIntersections
             '''
             intersections = starFixPair (self.sfList[0],self.sfList[1]).getIntersections()
             return intersections
-        else:
+        elif (nrOfFixes >= 3):
             '''
-            For >= 3 star fixes perform a sorting algorithm 
+            For >= 3 star fixes perform pairwise calculation on every pair of fixes and then run a sorting algorithm 
             '''
-            nrOfFixes = len (self.sfList)
             coords = []
+            # Perform pairwise sight reductions
             for i in range (nrOfFixes):
                 for j in range (i+1, nrOfFixes):
                     p = starFixPair (self.sfList [i], self.sfList [j])
                     pInt = p.getIntersections ()
-                    if (pInt != None):
+                    if pInt != None:
                         coords.append (pInt[0])
                         coords.append (pInt[1])                        
             nrOfCoords = len (coords)
             dists = dict ()
+            # Collect all distance values between intersections
             for i in range (nrOfCoords):
                 for j in range (i, nrOfCoords):
                     if i != j:
                         dist = distanceBetweenPoints (coords[i], coords[j])
                         dists [i,j] = dist
+            # Sort the distances, with lower distances first
             sortedDists = dict(sorted(dists.items(), key=lambda item: item[1]))
             nrOfSortedDists = len (sortedDists)
             chosenPoints = set ()
+            cpLimit = int((nrOfFixes**2 - nrOfFixes) / 2)
+            # Find the points which are located close to other points
             for sd in sortedDists:
                 theDistance = sortedDists [sd]
-                if (theDistance < limit): 
+                if theDistance < limit: 
                     chosenPoints.add (sd[0])
                     chosenPoints.add (sd[1])
                 else:
                     break
+                if len (chosenPoints) > cpLimit:
+                    break
+                
             nrOfChosenPoints = len (chosenPoints)
             if nrOfChosenPoints == 0:
+                # No points found. Bad star fixes. Return nothing. 
                 return None
             summationVec = [0,0,0]
+            # Make a mean value on the best intersections. 
             for cp in chosenPoints: 
                 selectedCoord = coords [cp]
                 rectVec = toRectangular (selectedCoord[0], selectedCoord[1])
@@ -284,6 +295,8 @@ class starFixCollection:
             summationVec = normalizeVect (summationVec)
             retLON, retLAT = toLonLat (summationVec)
             return retLON, retLAT
+        else:
+            return None
 
 
 
