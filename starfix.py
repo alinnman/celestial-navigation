@@ -111,6 +111,7 @@ def distanceBetweenPoints (lonLat1, lonLat2):
 # Data formatting
     
 def getRepresentation (ins, numDecimals):
+    assert (type (numDecimals) == int and numDecimals >= 0) 
     if (type (ins) == float): 
         degrees = int (ins)
         minutes = abs((ins - degrees)*60)
@@ -125,7 +126,7 @@ def getRepresentation (ins, numDecimals):
         retVal = retVal + ")"
         return retVal            
 
-# Object representing a star fix
+# Object representing a sight (star fix)
 
 class Sight :
     def __init__ (self, \
