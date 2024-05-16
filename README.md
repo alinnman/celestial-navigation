@@ -72,8 +72,8 @@ The result will be a tuple of **two** coordinates (intersections of two circles 
 The intersections are calculated using an algorithm based on [this article](https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere) <br/>
 This is a short outline of the algorithm. Two circles $A$ and $B$ define the circles of equal altitude defined from the sighting data as described above. The circles relate to a *sight pair* $S_{p_{1,2}} = \{s_1, s_2\}$ which we will come back to later. 
 
-$A = \{ p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land |p| = 1 \}$ <br/>
-$B = \{ p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land |p| = 1 \}$ 
+$A = \left{ p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land |p| = 1 \right}$ <br/>
+$B = \left{ p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land |p| = 1 \right}$ 
 
 We aim for finding the intersections $p_1$ and $p_2$ for te circles $A$ and $B$
 
