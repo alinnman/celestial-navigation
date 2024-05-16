@@ -286,6 +286,18 @@ class SightCollection:
             if nrOfChosenPoints == 0:
                 # No points found. Bad star fixes. Return nothing. 
                 return None
+                
+            # Make sure the chosen points are nearby each other
+            print (len(chosenPoints))
+            for cp1 in chosenPoints:
+                for cp2 in chosenPoints:
+                    if cp1 != cp2:
+                        dist = distanceBetweenPoints (coords[cp1], coords[cp2])
+                        if dist > limit:
+                            # Probably multiple possible observation points. 
+                            # Best option is to perform sight reduction on 2 sights and select the correct point manually.
+                            return None
+                
             summationVec = [0,0,0]
             # Make a mean value on the best intersections. 
             for cp in chosenPoints: 
