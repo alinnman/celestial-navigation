@@ -72,8 +72,8 @@ The result will be a tuple of **two** coordinates (intersections of two circles 
 The intersections are calculated using an algorithm based on [this article](https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere) <br/>
 This is a short outline of the algorithm. Two circles $A$ and $B$ define the circles of equal altitude defined from the sighting data as described above. The circles relate to a *sight pair* $S_{p_{1,2}} = \{s_1, s_2\}$ which we will come back to later. 
 
-$A = \left{ p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land |p| = 1 \right}$ <br/>
-$B = \left{ p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land |p| = 1 \right}$ 
+$A = \lbrace p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land |p| = 1 \rbrace$ <br/>
+$B = \lbrace p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land |p| = 1 \rbrace$ 
 
 We aim for finding the intersections $p_1$ and $p_2$ for te circles $A$ and $B$
 
@@ -121,11 +121,11 @@ A *sight* is defined as a collection of data as described in the section 1 above
 
 A collection contains of a set of sights (star fixes) $S$
 
-$S_{\mathrm{sights}} = \{s_1, s_2, \dots s_n  \} $
+$S_{\mathrm{sights}} = \lbrace s_1, s_2, \dots s_n  \rbrace $
 
 Now set up a set of sight pairs
 
-$S_p = \{{S_p}_{i,j} | i<=n \land j<=n \land j>i+1 \}$
+$S_p = \lbrace {S_p}_{i,j} | i<=n \land j<=n \land j>i+1 \rbrace$
 
 It is easy to see that the number of sight pairs (the cardinality) can be calculated like this
 
@@ -133,11 +133,11 @@ $|S_p| = \frac{n^2 + n}{2} $
 
 For each sight pair we now collect the two corresponding intersection points ($L$ = left, $R$ = right) using the algorithm described in 2.1 above.
 
-${S_p}_{i,j} \to \{ I_{p,i,j,L},I_{p,i,j,R} \}$
+$S_{p,i,j} \to \lbrace I_{p,i,j,L},I_{p,i,j,R} \rbrace$
 
 This will result in a set of intersection points
 
-$I_p = \{I_{p,i,j,O} | O \in \{L,R \} \land i<=n \land j<=n \land j>i+1 \}$
+$I_p = \lbrace I_{p,i,j,O} | O \in \{L,R \} \land i<=n \land j<=n \land j>i+1 \rbrace$
 
 The cardinality can easily be shown as
 
@@ -149,7 +149,7 @@ $d\left(x,y\right) = \cos xy $
 
 This will give us the following set
 
-$D = \{ d\left(I_k,I_l\right) | k < |I| \land l < |I| \land k <> l\}$
+$D = \lbrace d\left(I_k,I_l\right) | k < |I| \land l < |I| \land k <> l \rbrace$
 
 The cardinality of $D$ can be calculated
 
