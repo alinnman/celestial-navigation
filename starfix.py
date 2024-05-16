@@ -288,7 +288,6 @@ class SightCollection:
                 return None
                 
             # Make sure the chosen points are nearby each other
-            print (len(chosenPoints))
             for cp1 in chosenPoints:
                 for cp2 in chosenPoints:
                     if cp1 != cp2:
