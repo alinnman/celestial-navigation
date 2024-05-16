@@ -100,7 +100,7 @@ The final rotation is accomplished using [Rodrigues/Gauss rotation formula](http
 
 $p_{\mathrm{rot}} = q \cos \rho + \( r \times q \) \sin \rho + r \(r \cdot q \)\(1 - \cos \rho \)$ 
 
-Apply the formula above for $\rho$ and $-\rho$ and you will get the two intersection points. 
+Apply the formula above for $\rho$ and $-\rho$ and you will get the two intersection points $p_1$ and $p_2$. 
 
 ### 2.2 Using three or more sights
 
