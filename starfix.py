@@ -1,4 +1,4 @@
-from math import pi, sin, cos, asin, acos, sqrt, atan2
+from math import pi, sin, cos, acos, sqrt, atan2
 
 EARTH_CIRCUMFERENCE = 40075
 
