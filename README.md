@@ -145,7 +145,7 @@ $|I_p| = n^2 + n $
 
 For each pair of intersection points we calculate the distance. The distance is easily calculated using this formula. 
 
-$d\left(x,y\right) = \cos xy $
+$d\left(x,y\right) = \sin xy $
 
 This will give us the following set
 
