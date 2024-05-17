@@ -75,7 +75,7 @@ This is a short outline of the algorithm. Two circles $A$ and $B$ define the cir
 $A = \lbrace p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land |p| = 1 \rbrace$ <br/>
 $B = \lbrace p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land |p| = 1 \rbrace$ 
 
-We aim for finding the intersections $p_1$ and $p_2$ for te circles $A$ and $B$
+We aim for finding the intersections $p_1$ and $p_2$ for the circles $A$ and $B$
 
 Using the Pythagorean Theorem for a Sphere it is easy to see this: 
 
