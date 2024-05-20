@@ -1,10 +1,10 @@
-from math import pi, sin, cos, acos, sqrt, atan2
+from math import pi, sin, cos, acos, sqrt, tan, atan2
 
 EARTH_CIRCUMFERENCE_EQUATORIAL = 40075.017
 EARTH_CIRCUMFERENCE_MERIDIONAL = 40007.86
 EARTH_CIRCUMFERENCE = (EARTH_CIRCUMFERENCE_EQUATORIAL + EARTH_CIRCUMFERENCE_MERIDIONAL) / 2
 
-# Utility routines
+# Utility routines (algrebraic, spheric geometry) 
 
 def addVecs (vec1, vec2):
     assert (type (vec1) == type (vec2) == list)
@@ -110,6 +110,16 @@ def distanceBetweenPoints (lonLat1, lonLat2):
     distance = (EARTH_CIRCUMFERENCE/(2*pi)) * angle
     return distance
     
+# Atmospheric refraction
+
+def getRefraction (apparentAngle):
+    '''
+    Bennett's formula
+    '''
+    assert (type(apparentAngle) == float or type (apparentAngle) == int)    
+    h = apparentAngle*(pi/180)
+    return (1 / tan( h + 7.31 / (h + 4.4) ))
+
 # Data formatting
     
 def getRepresentation (ins, numDecimals):
@@ -127,6 +137,12 @@ def getRepresentation (ins, numDecimals):
                 retVal = retVal + ";"
         retVal = retVal + ")"
         return retVal            
+        
+def getDMS (angle):
+    degrees = int (angle)
+    minutes = int ((angle-degrees)*60)
+    seconds = (angle-degrees-minutes/60)*3600
+    return degrees, minutes, seconds
 
 # Object representing a sight (star fix)
 
@@ -168,8 +184,18 @@ class Sight :
         self.sha_diff_degrees     = sha_diff_degrees    
         self.sha_diff_minutes     = sha_diff_minutes    
         assert (self.object_name != "Sun" or (self.sha_diff_degrees == 0 and self.sha_diff_minutes == 0))
-        
+                
+        self.correctForRefraction ()
         self.GP_lon, self.GP_lat = self.__calculateGP ()
+        
+    def correctForRefraction (self):
+        madDecimal = 90-self.getAngle ()
+        refraction = getRefraction (90-madDecimal)/60
+        newMad = madDecimal + refraction
+        d, m, s = getDMS (newMad)
+        self.measured_alt_degrees = d
+        self.measured_alt_minutes = m
+        self.measured_alt_seconds = s
     
     def __calculateGP (self):
         

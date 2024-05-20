@@ -52,6 +52,14 @@ The data is picked from your clock, sextant and the Nautical Almanac in the foll
 | *sha_diff_degrees*   | SHA of star vs Aries in degrees           | Only use for stars. Otherwise skip                             | Nautical Almanac |
 | *sha_diff_minutes*   | SHA of star vs Aries in minutes           | Only use for stars. Otherwise skip                             | Nautical Almanac |
 
+### Atmospheric refraction
+
+The measured altitude values (attributes measured_alt_degrees, measured_alt_minutes and measure_alt_seconds) are corrected for atmospheric refraction using Bennett's empirical formula:
+
+$ R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right) $
+
+Where $R$ is the refraction in arc minutes and $h_a$ is the measured angle from zenith
+
 ## 2. Sight reduction
 
 ### 2.1. Using two sights
