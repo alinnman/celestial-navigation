@@ -1,4 +1,4 @@
-from math import pi, sin, cos, asin, acos, sqrt, atan2
+from math import pi, sin, cos, acos, sqrt, atan2
 
 EARTH_CIRCUMFERENCE_EQUATORIAL = 40075.017
 EARTH_CIRCUMFERENCE_MERIDIONAL = 40007.86
