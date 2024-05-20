@@ -5,6 +5,8 @@ The python script takes care of the sight reduction. For two fixes you will get 
 
 The python script only uses basic libraries (no numpy or similar) and could be installed in [PyDroid](https://play.google.com/store/apps/details?id=ru.iiec.pydroid3) to allow for use on a mobile phone. 
 
+A [digital version of the Nautical Almanac](NAtrad(A4)_2024.pdf) is bundled in this project. 
+
 ## 1. Making sights
 
 You create a sight with code like this
