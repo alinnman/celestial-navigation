@@ -1,6 +1,8 @@
 from math import pi, sin, cos, asin, acos, sqrt, atan2
 
-EARTH_CIRCUMFERENCE = 40075
+EARTH_CIRCUMFERENCE_EQUATORIAL = 40075.017
+EARTH_CIRCUMFERENCE_MERIDIONAL = 40007.86
+EARTH_CIRCUMFERENCE = (EARTH_CIRCUMFERENCE_EQUATORIAL + EARTH_CIRCUMFERENCE_MERIDIONAL) / 2
 
 # Utility routines
 
@@ -289,15 +291,18 @@ class SightCollection:
                 return None
                 
             # Make sure the chosen points are nearby each other
+            print ("BEST COORDINATES")
             for cp1 in chosenPoints:
+                print (getRepresentation (coords[cp1],1))  
                 for cp2 in chosenPoints:
                     if cp1 != cp2:
                         dist = distanceBetweenPoints (coords[cp1], coords[cp2])
                         if dist > limit:
                             # Probably multiple possible observation points. 
                             # Best option is to perform sight reduction on 2 sights and select the correct point manually.
+                            print ("Seems to be multiple possible coordinates. Please perform two point sight reduction instead. Returning Null")
                             return None
-                
+            print ("MEAN VALUE COORDINATE")              
             summationVec = [0,0,0]
             # Make a mean value on the best intersections. 
             for cp in chosenPoints: 
