@@ -122,21 +122,36 @@ def getRefraction (apparentAngle):
 
 # Data formatting
     
-def getRepresentation (ins, numDecimals):
+def getRepresentation (ins, numDecimals, lat=False):
     assert (type (numDecimals) == int and numDecimals >= 0) 
-    if (type (ins) == float): 
+    if type (ins) == float or type (ins) == int: 
         degrees = int (ins)
-        minutes = abs((ins - degrees)*60)
-        return str(degrees) + "d," + str(round(minutes, numDecimals)) + "m"
-    elif (type (ins) == tuple or type (ins) == list):
+        if lat:
+            if ins < 0:
+                prefix = "S"
+            else:
+                prefix = "N"
+        else:
+            if ins < 0:
+                prefix = "W"
+            else:
+                prefix = "E"        
+        minutes = float (abs((ins - degrees)*60))
+        aDegrees = abs (degrees)
+        return prefix + " " + str(aDegrees) + "°," + str(round(minutes, numDecimals)) + "′"
+    elif type (ins) == tuple or type (ins) == list:
+        pair = (type(ins) == tuple)
         length = len (ins)
         retVal = "("
-        for i in range(length):
-            retVal = retVal + getRepresentation (ins[i], numDecimals)
-            if i < (length-1):
+        for i in range (length-1, -1, -1):
+            lat = False
+            if pair and i == length-1:
+                lat = True
+            retVal = retVal + getRepresentation (ins[i], numDecimals, lat)
+            if i > 0:
                 retVal = retVal + ";"
         retVal = retVal + ")"
-        return retVal            
+        return retVal                 
         
 def getDMS (angle):
     degrees = int (angle)
