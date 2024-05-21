@@ -83,7 +83,8 @@ Using two star fixes a sight reduction can be done in the following way
     intersections = collection.getIntersections ()
     print (getRepresentation(intersections,1))
     
-The result will be a tuple of **two** coordinates (intersections of two circles of equal altitude). 
+The result will be a tuple of **two** coordinates (intersections of two circles of equal altitude). These intersections can be located far away from each other.
+You will have to decide which one of them is the correct observation point, based on previous knowledge of your location. 
 
 The intersections are calculated using an algorithm based on [this article](https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere) <br/>
 This is a short outline of the algorithm. Two circles $A$ and $B$ define the circles of equal altitude defined from the sighting data as described above. The circles relate to a *sight pair* $S_{p_{1,2}} = \{s_1, s_2\}$ which we will come back to later. 
