@@ -252,6 +252,7 @@ class SightPair:
         try:
             rho = acos (cos (degToRad(self.sf1.getAngle())) / (dotProduct (aVec, q)))
         except ValueError:
+            print ("Bad sight data.")
             return None
         # Calculate a rotation vector
         rotAxis = normalizeVect(crossProduct (crossProduct (aVec, bVec), q))
@@ -314,6 +315,7 @@ class SightCollection:
             nrOfChosenPoints = len (chosenPoints)
             if nrOfChosenPoints == 0:
                 # No points found. Bad star fixes. Return nothing. 
+                print ("Bad sight data.")
                 return None
                 
             # Make sure the chosen points are nearby each other
@@ -326,9 +328,9 @@ class SightCollection:
                         if dist > limit:
                             # Probably multiple possible observation points. 
                             # Best option is to perform sight reduction on 2 sights and select the correct point manually.
-                            print ("Seems to be multiple possible coordinates. Please perform two point sight reduction instead. Returning Null")
+                            print ("Seems to be multiple possible coordinates. Please perform two point sight reduction instead.")
                             return None
-            print ("MEAN VALUE COORDINATE")              
+            print ("MEAN VALUE COORDINATE from multi-point sight data.")              
             summationVec = [0,0,0]
             # Make a mean value on the best intersections. 
             for cp in chosenPoints: 
@@ -339,6 +341,7 @@ class SightCollection:
             retLON, retLAT = toLonLat (summationVec)
             return retLON, retLAT
         else:
+            print ("Invalid input.")
             return None
 
 
