@@ -11,7 +11,7 @@ A more detailed description of celestial navigation can be found [here](https://
 
 ## 1. Making sights
 
-You create a sight with code like this
+You create a sight with code like this. (You can also see a complete example in the python module [starfixdata.py](starfixdata.py) and also [a corresponding excel file](chicago.ods) ) 
 
     c = Sight (date                 = "2024-05-06", \
                   object_name          = "Vega", \
