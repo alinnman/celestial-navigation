@@ -66,7 +66,7 @@ The measured altitude values (attributes measured_alt_degrees, measured_alt_minu
 
 $R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right)$
 
-Where $R$ is the refraction in arc minutes and $h_a$ is the measured angle from zenith
+Where $R$ is the refraction in arc minutes and $h_a$ is the measured angle from zenith in degrees.
 
 ## 2. Sight reduction
 
