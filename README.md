@@ -11,8 +11,8 @@ A more detailed description of celestial navigation can be found [here](https://
 
 ## 1. Making sights
 
-You create a sight with code like this. (You can also see a complete example in the python module [starfixdata.py](starfixdata.py) and also [a corresponding excel file](chicago.ods). 
-This sample is taken using a star atlas (Stellarium) from a point in central Chicago on May 5th 2024.) 
+You create a sight with code like this. (You can also see a complete example in the python script [starfixdata.py](starfixdata.py) and also [a corresponding excel file](chicago.ods). 
+This sample is taken using a star atlas ([Stellarium](https://en.wikipedia.org/wiki/Stellarium_(software))) from a point in central Chicago on May 5th 2024.) 
 
     c = Sight (date                 = "2024-05-06", \
                   object_name          = "Vega", \
@@ -38,9 +38,9 @@ The data is picked from your clock, sextant and the Nautical Almanac in the foll
 
 | Argument             | Description                               | Remark                                                         | Collected From | 
 | :-------------       | :-------------                            | :-------------                                                 | :------------- |
-| date                 | Current day                               | Not used in calculations.                                      | N/A |
-| object               | Name of celestial object                  | Not used in calculations.                                      | N/A |
-| time_hour            | Observation time - Hours (0-23)           | In UTC. (Not used in calculations)                             | Clock |
+| date                 | Current day                               | Not used in calculations. Only mnemonic.                       | N/A |
+| object               | Name of celestial object                  | Not used in calculations. Only mnemonic.                       | N/A |
+| time_hour            | Observation time - Hours (0-23)           | In UTC. Not used in calculations. Only mnemonic.               | Clock |
 | time_minute          | Observation time - Minutes (0-59)         | In UTC.                                                        | Clock |
 | time_second          | Observation time - Seconds (0-59)         | In UTC.                                                        | Clock | 
 | gha_time_0_degrees   | GHA degrees reading for this hour         | For stars use GHA of Aries.                                    | Nautical Almanac |
