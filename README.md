@@ -1,6 +1,6 @@
 # celestial-navigation
 
-![US Navy training in celestial navigation](us-navy.jpg "Training")
+![US Navy training in celestial navigation](us-navy.jpg "US Navy Training in Celestial Navigation")
 
 Contains a simple python script to be used for [celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation). <br>
 Sights have to be obtained using a sextant, a nautical almanac and an accurate clock. <br>
