@@ -111,15 +111,18 @@ def distanceBetweenPoints (lonLat1, lonLat2):
     return distance
     
 # Atmospheric refraction
-
+    
 def getRefraction (apparentAngle):
     '''
     Bennett's formula
     See: https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction 
     '''
     assert (type(apparentAngle) == float or type (apparentAngle) == int)    
-    h = apparentAngle*(pi/180)
-    return (1 / tan( h + 7.31 / (h + 4.4) ))
+    q = pi/180
+    h = apparentAngle
+    d = h + 7.31 / (h + 4.4)
+    d2 = d*q
+    return 1 / tan (d2)
 
 # Data formatting
     
@@ -206,8 +209,8 @@ class Sight :
         
     def correctForRefraction (self):
         madDecimal = 90-self.getAngle ()
-        refraction = getRefraction (90-madDecimal)/60
-        newMad = madDecimal + refraction
+        refraction = getRefraction (madDecimal)/60
+        newMad = madDecimal - refraction
         d, m, s = getDMS (newMad)
         self.measured_alt_degrees = d
         self.measured_alt_minutes = m
