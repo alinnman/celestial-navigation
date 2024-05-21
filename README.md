@@ -125,7 +125,7 @@ Using three (or more) star fixes a sight reduction can be done in the following 
     b = Sight (....Parameters....)
     c = Sight (....Parameters....)
     
-    collection = SightCollection ([a, b, c]) # Add more star fixes if needed
+    collection = SightCollection ([a, b, c]) # Add more sights if needed
     intersections = collection.getIntersections ()
     print (getRepresentation(intersections,1))
 
