@@ -62,7 +62,7 @@ The data is picked from your clock, sextant and the Nautical Almanac in the foll
 
 ### Atmospheric refraction
 
-The measured altitude values (attributes measured_alt_degrees, measured_alt_minutes and measure_alt_seconds) are corrected for atmospheric refraction using [Bennett's empirical formula](https://github.com/alinnman/celestial-navigation/assets/48103392/482c59d3-dcda-4079-ad99-67d5185426fc)
+The measured altitude values (attributes measured_alt_degrees, measured_alt_minutes and measure_alt_seconds) are corrected for atmospheric refraction using [Bennett's empirical formula](https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction)
 
 $R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right)$
 
