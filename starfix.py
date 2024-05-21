@@ -115,6 +115,7 @@ def distanceBetweenPoints (lonLat1, lonLat2):
 def getRefraction (apparentAngle):
     '''
     Bennett's formula
+    See: https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction 
     '''
     assert (type(apparentAngle) == float or type (apparentAngle) == int)    
     h = apparentAngle*(pi/180)
