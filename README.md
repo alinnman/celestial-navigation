@@ -4,7 +4,7 @@
 
 Contains a simple python script to be used for [celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation). <br>
 Sights have to be obtained using a sextant, a nautical almanac and an accurate clock. <br>
-The python script takes care of the sight reduction. For two fixes you will get two possible coordinates. For three or more fixes you will get one coordinate (calculated as a mean value). 
+The python script takes care of the sight reduction. For two sights you will get two possible coordinates. For three or more sights you will get one coordinate (calculated as a mean value). 
 
 The python script only uses basic libraries (no numpy or similar) and could be installed in [PyDroid](https://play.google.com/store/apps/details?id=ru.iiec.pydroid3) to allow for use on a mobile phone. 
 
@@ -121,7 +121,7 @@ Apply the formula above for $\rho$ and $-\rho$ and you will get the two intersec
 
 ### 2.2 Using three or more sights
 
-Using three (or more) star fixes a sight reduction can be done in the following way 
+Using three (or more) sights a sight reduction can be done in the following way 
 
     from starfix import Sight, SightCollection, getRepresentation
 	
