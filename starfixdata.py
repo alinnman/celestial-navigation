@@ -63,10 +63,8 @@ c = Sight (date                 = "2024-05-06", \
 
 collection = SightCollection ([a, b])
 intersections = collection.getIntersections ()
-#print (intersections)
 print (getRepresentation(intersections,1))
 
 collection = SightCollection ([a, b, c])
 intersections = collection.getIntersections ()
-#print (intersections)
 print (getRepresentation(intersections,1))
