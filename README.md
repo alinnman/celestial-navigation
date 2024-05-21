@@ -7,6 +7,8 @@ The python script only uses basic libraries (no numpy or similar) and could be i
 
 A [digital version of the Nautical Almanac](NAtrad(A4)_2024.pdf) is bundled in this project. 
 
+A more detailed description of celestial navigation can be found [here](https://www.waypointamsterdam.com/Handy_stuf/Short_Guide_To_Astro_navigation.pdf).
+
 ## 1. Making sights
 
 You create a sight with code like this
