@@ -328,7 +328,7 @@ class SightCollection:
                         if dist > limit:
                             # Probably multiple possible observation points. 
                             # Best option is to perform sight reduction on 2 sights and select the correct point manually.
-                            print ("Seems to be multiple possible coordinates. Please perform two point sight reduction instead.")
+                            print ("Seems to be multiple possible coordinates. Please perform two-point sight reduction instead.")
                             return None
             print ("MEAN VALUE COORDINATE from multi-point sight data.")              
             summationVec = [0,0,0]
