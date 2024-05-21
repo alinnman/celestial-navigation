@@ -1,4 +1,7 @@
 # celestial-navigation
+
+![US Navy training in celestial navigation]("us-navy.jpg" "Training")
+
 Contains a simple python script to be used for [celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation). <br>
 Sights have to be obtained using a sextant, a nautical almanac and an accurate clock. <br>
 The python script takes care of the sight reduction. For two fixes you will get two possible coordinates. For three or more fixes you will get one coordinate (calculated as a mean value). 
