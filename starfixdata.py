@@ -55,13 +55,9 @@ c = Sight (date                 = "2024-05-06", \
               measured_alt_minutes = 16, \
               measured_alt_seconds = 24.6, \
               sha_diff_degrees     = 80, \
-              sha_diff_minutes     = 33.4, \
-              observer_height      = 0  \
+              sha_diff_minutes     = 33.4 \
               )
               
-
-
-
 collection = SightCollection ([a, b])
 intersections = collection.getIntersections ()
 print (getRepresentation(intersections,1))
