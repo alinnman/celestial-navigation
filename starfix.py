@@ -110,6 +110,14 @@ def distanceBetweenPoints (lonLat1, lonLat2):
     distance = (EARTH_CIRCUMFERENCE/(2*pi)) * angle
     return distance
     
+# Horizon
+
+def getDipOfHorizon (hM):
+    h = hM / 1000
+    r = EARTH_CIRCUMFERENCE / (2*pi)
+    d = sqrt (h*(2*r + h))
+    return (atan2 (d, r))*(180/pi)*60
+
 # Atmospheric refraction
     
 def getRefraction (apparentAngle):
@@ -184,7 +192,8 @@ class Sight :
                   measured_alt_minutes, \
                   measured_alt_seconds, \
                   sha_diff_degrees = 0, \
-                  sha_diff_minutes = 0):
+                  sha_diff_minutes = 0, \
+                  observer_height = 0):
         self.object_name          = object_name
         self.time_hour            = time_hour            
         self.time_minute          = time_minute          
@@ -201,12 +210,25 @@ class Sight :
         self.measured_alt_minutes = measured_alt_minutes
         self.measured_alt_seconds = measured_alt_seconds
         self.sha_diff_degrees     = sha_diff_degrees    
-        self.sha_diff_minutes     = sha_diff_minutes    
+        self.sha_diff_minutes     = sha_diff_minutes
+        self.observer_height      = observer_height
         assert (self.object_name != "Sun" or (self.sha_diff_degrees == 0 and self.sha_diff_minutes == 0))
                 
+        self.correctDipOfHorizon ()
         self.correctForRefraction ()
         self.GP_lon, self.GP_lat = self.__calculateGP ()
         
+    def correctDipOfHorizon (self):
+        if self.observer_height == 0:
+            return
+        madDecimal = 90-self.getAngle()
+        dip = getDipOfHorizon (self.observer_height)/60
+        newMad = madDecimal + dip
+        d, m, s = getDMS (newMad)
+        self.measured_alt_degrees = d
+        self.measured_alt_minutes = m
+        self.measured_alt_seconds = s       
+    
     def correctForRefraction (self):
         madDecimal = 90-self.getAngle ()
         refraction = getRefraction (madDecimal)/60

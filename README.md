@@ -40,26 +40,27 @@ This sample is taken using a star atlas ([Stellarium](https://en.wikipedia.org/w
                   
 The data is picked from your clock, sextant and the Nautical Almanac in the following way
 
-| Argument             | Description                               | Remark                                                         | Collected From | 
-| :-------------       | :-------------                            | :-------------                                                 | :------------- |
-| date                 | Current day                               | Not used in calculations. Only mnemonic.                       | N/A |
-| object               | Name of celestial object                  | Not used in calculations. Only mnemonic.                       | N/A |
-| time_hour            | Observation time - Hours (0-23)           | In UTC. Not used in calculations. Only mnemonic.               | Clock |
-| time_minute          | Observation time - Minutes (0-59)         | In UTC.                                                        | Clock |
-| time_second          | Observation time - Seconds (0-59)         | In UTC.                                                        | Clock | 
-| gha_time_0_degrees   | GHA degrees reading for this hour         | For stars use GHA of Aries.                                    | Nautical Almanac |
-| gha_time_0_minutes   | GHA minutes reading for this hour         | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
-| gha_time_1_degrees   | GHA degrees reading for next hour         | For stars use GHA of Aries.                                    | Nautical Almanac |
-| gha_time_1_minutes   | GHA minutes reading for next hour         | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
-| decl_time_0_degrees  | Declination degrees reading for this hour |                                                                | Nautical Almanac |
-| decl_time_0_minutes  | Declination minutes reading for this hour | Can be zero (use decimal degrees)                              | Nautical Almanac |  
-| decl_time_1_degrees  | Declination degrees reading for next hour |                                                                | Nautical Almanac |
-| decl_time_1_minutes  | Declination minutes reading for next hour | Can be zero (use decimal degrees)                              | Nautical Almanac |
-| measured_alt_degrees | Altitude of object in degrees (0-90)      |                                                                | Sextant |
-| measured_alt_minutes | Altitude of object in minutes (0-60)      | Can be zero (use decimal degrees)                              | Sextant |
-| measured_alt_seconds | Altitude of object in seconds (0-60)      | Can be zero (use decimal degrees/minutes)                      | Sextant |
-| *sha_diff_degrees*   | SHA of star vs Aries in degrees           | Only use for stars. Otherwise skip                             | Nautical Almanac |
-| *sha_diff_minutes*   | SHA of star vs Aries in minutes           | Only use for stars. Otherwise skip                             | Nautical Almanac |
+| Argument             | Description                                  | Remark                                                         | Collected From | 
+| :-------------       | :-------------                               | :-------------                                                 | :------------- |
+| date                 | Current day                                  | Not used in calculations. Only mnemonic.                       | N/A |
+| object               | Name of celestial object                     | Not used in calculations. Only mnemonic.                       | N/A |
+| time_hour            | Observation time - Hours (0-23)              | In UTC. Not used in calculations. Only mnemonic.               | Clock |
+| time_minute          | Observation time - Minutes (0-59)            | In UTC.                                                        | Clock |
+| time_second          | Observation time - Seconds (0-59)            | In UTC.                                                        | Clock | 
+| gha_time_0_degrees   | GHA degrees reading for this hour            | For stars use GHA of Aries.                                    | Nautical Almanac |
+| gha_time_0_minutes   | GHA minutes reading for this hour            | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
+| gha_time_1_degrees   | GHA degrees reading for next hour            | For stars use GHA of Aries.                                    | Nautical Almanac |
+| gha_time_1_minutes   | GHA minutes reading for next hour            | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
+| decl_time_0_degrees  | Declination degrees reading for this hour    |                                                                | Nautical Almanac |
+| decl_time_0_minutes  | Declination minutes reading for this hour    | Can be zero (use decimal degrees)                              | Nautical Almanac |  
+| decl_time_1_degrees  | Declination degrees reading for next hour    |                                                                | Nautical Almanac |
+| decl_time_1_minutes  | Declination minutes reading for next hour    | Can be zero (use decimal degrees)                              | Nautical Almanac |
+| measured_alt_degrees | Altitude of object in degrees (0-90)         |                                                                | Sextant |
+| measured_alt_minutes | Altitude of object in minutes (0-60)         | Can be zero (use decimal degrees)                              | Sextant |
+| measured_alt_seconds | Altitude of object in seconds (0-60)         | Can be zero (use decimal degrees/minutes)                      | Sextant |
+| *sha_diff_degrees*   | SHA of star vs Aries in degrees              | Only use for stars. Otherwise skip                             | Nautical Almanac |
+| *sha_diff_minutes*   | SHA of star vs Aries in minutes              | Only use for stars. Otherwise skip                             | Nautical Almanac |
+| *observer_height*    | Height of observer above sea level in meters | Only relevant for observations using natural horizon           | Height Measurement |
 
 ### Atmospheric refraction
 
@@ -68,6 +69,18 @@ The measured altitude values (attributes measured_alt_degrees, measured_alt_minu
 $R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right)$
 
 Where $R$ is the refraction in arc minutes and $h_a$ is the measured angle from zenith in degrees.
+
+### Dip of horizon
+
+If you specify the *observer_height* parameter you will correct for the dip of the horizon. This is useful for observations from a ship deck at sea, or from a hill/mountain with flat surroundings. 
+The dip is calculated using this formula
+
+$a_{\text{diff}}= \arctan{ \frac{d}{r}}$
+
+where $a_{\text{diff}}$ is the calculated dip (in radians) <br/>
+$d = \sqrt{h \left( 2r + h \right)}$. <br/>
+$h$ is the height of the observer (in meters). <br/>
+$r$ is the radius of the Earth (in meters). 
 
 ## 2. Sight reduction
 
