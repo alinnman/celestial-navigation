@@ -4,7 +4,7 @@
 
 Contains a simple python script to be used for [celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation). <br>
 Sights have to be obtained using a sextant, a nautical almanac and an accurate clock. <br>
-The python script takes care of the sight reduction. For two sights you will get two possible coordinates. For three or more sights you will get one coordinate (calculated as a mean value). 
+The python script takes care of the **sight reduction**. For two sights you will get two possible coordinates. For three or more sights you will get one coordinate (calculated as a mean value). 
 
 The script supports **stationary** observations, i.e. when observations are made from a single position, typically using multiple sights. There is also support for simple **dead reckoning** observations, typically at sea in daytime where you only have access to the Sun. See section 3 below for more information. 
 
@@ -41,7 +41,7 @@ You create a sight with code like this.
                   
 You can also see a complete example in the python script [starfixdata.py](starfixdata.py) and also [a corresponding excel file](chicago.ods). 
 This sample is built using altitudes taken from a star atlas ([Stellarium](https://en.wikipedia.org/wiki/Stellarium_(software))) from a point in central Chicago on May 5th 2024. 
-In other words: No sextant readings were made. 
+In other words: No phisextant readings were made and the accuracy is very good. 
 (Running this sample will give you an accuracy of just some 100 meters). 
 
 The data is picked from your clock, sextant and the Nautical Almanac in the following way
