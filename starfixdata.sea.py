@@ -57,7 +57,12 @@ s2 = Sight (date                 = "2024-06-20", \
 cCourse = 173 # Well. Nobody is perfect. 
 timeInHours = 1
 speed = 19
-st = SightTrip (s2, s1LonLat[1], s1LonLat[0], cCourse, speed, timeInHours)
+st = SightTrip (sightEnd = s2,\
+                estimatedStartingPointLAT = s1LonLat[1],\
+                estimatedStartPointLON    = s1LonLat[0],\
+                courseDegrees             = cCourse,\
+                speedKnots                = speed,\
+                timeHours                 = timeInHours)
 intersections = st.getIntersections ()
 print (getRepresentation(intersections,1))
 
@@ -78,7 +83,12 @@ speed = distanceInNM
 
 # Now calculate the trip
 timeInHours = 1
-st = SightTrip (s2, s1LonLat[1], s1LonLat[0], cCourse, speed, timeInHours) # REAL DATA
+st = SightTrip (sightEnd = s2,\
+                estimatedStartingPointLAT = s1LonLat[1],\
+                estimatedStartPointLON    = s1LonLat[0],\
+                courseDegrees             = cCourse,\
+                speedKnots                = speed,\
+                timeHours                 = timeInHours)
 intersections = st.getIntersections ()
 print (getRepresentation(intersections,1))
 
