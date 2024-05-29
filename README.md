@@ -41,7 +41,7 @@ You create a sight with code like this.
                   
 You can also see a complete example in the python script [starfixdata.py](starfixdata.py) and also [a corresponding excel file](chicago.ods). 
 This sample is built using altitudes taken from a star atlas ([Stellarium](https://en.wikipedia.org/wiki/Stellarium_(software))) from a point in central Chicago on May 5th 2024. 
-In other words: No phisextant readings were made and the accuracy is very good. 
+In other words: No sextant readings were made and the accuracy is very good. 
 (Running this sample will give you an accuracy of just some 100 meters). 
 
 The data is picked from your clock, sextant and the Nautical Almanac in the following way
