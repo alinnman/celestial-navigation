@@ -52,6 +52,12 @@ def dotProduct (vec1, vec2):
     for i in range (len(vec1)):
         s += vec1[i]*vec2[i]
     return s
+    
+def modLON (lon): 
+    x = lon + 180
+    x = x % 360
+    x = x - 180
+    return x    
 
 def degToRad (deg):
     assert (type(deg) == int or type (deg) == float)
@@ -70,7 +76,8 @@ def toLonLat (vec):
     phi = acos (vec[2])
     LON = radToDeg (theta)
     LAT = 90-radToDeg (phi) 
-    return LON, LAT
+    
+    return modLON(LON), LAT
 
 def toRectangular (LON, LAT):
     assert (type (LAT) == int or type (LAT) == float)
@@ -91,11 +98,34 @@ def rotateVector (vec, rotVec, angle):
     assert (type(vec) == type(rotVec) == list)
     assert (len(vec) == len(rotVec) == 3)
     assert (type(angle) == float or type(angle) == int) 
+    #rotVec = normalizeVect (rotVec) # TODO Review
+    #vec = normalizeVect (vec) # TODO Review
+    
     v1 = multScalarVect (cos(angle), vec)
     v2 = multScalarVect (sin(angle), crossProduct(rotVec, vec))
     v3 = multScalarVect (dotProduct(rotVec,vec)*(1-cos(angle)), rotVec)
     result = addVecs (v1, addVecs(v2, v3))
     return result
+    
+# Course management
+
+def modCourse (lon): 
+    x = lon % 360
+    return x    
+
+def compassCourse (lat1, lon1, lat2, lon2):
+    averageLat = (lat1 + lat2) / 2
+    stretch = cos (degToRad (averageLat))
+    course = atan2 ((lon2-lon1)*stretch, (lat2-lat1)) 
+    return modCourse(radToDeg(course))
+    
+def takeoutCourse (lat1, lon1, course, speedKnots, timeHours):
+    distance = speedKnots * timeHours
+    distanceDegrees = distance / 60
+    stretchAtStart = cos (degToRad (lat1))
+    diffLat = (cos (degToRad(course))*distanceDegrees)
+    diffLon = (sin (degToRad(course))*distanceDegrees/stretchAtStart)
+    return lon1+diffLon, lat1+diffLat    
     
 def distanceBetweenPoints (lonLat1, lonLat2):
     assert (type(lonLat1) == type(lonLat2) == tuple)
@@ -109,6 +139,12 @@ def distanceBetweenPoints (lonLat1, lonLat2):
     angle = acos (dp)
     distance = (EARTH_CIRCUMFERENCE/(2*pi)) * angle
     return distance
+
+def KMtoNM (km): 
+    return (km / EARTH_CIRCUMFERENCE)*360*60
+    
+def NMtoKM (nm):
+    return (nm/(360*60))*EARTH_CIRCUMFERENCE
     
 # Horizon
 
@@ -117,6 +153,48 @@ def getDipOfHorizon (hM):
     r = EARTH_CIRCUMFERENCE / (2*pi)
     d = sqrt (h*(2*r + h))
     return (atan2 (d, r))*(180/pi)*60
+    
+def getIntersections (Lon1, Lat1, Lon2, Lat2, Angle1, Angle2):
+    '''
+    Get intersection of two circles on a spheric surface. At least one of the circles must be a small circle. 
+    Based on https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere 
+    '''
+    #assert (Angle1 >= 0 and Angle1 != 90 and Angle2 >= 0 and Angle2 != 90)
+    assert (Angle1 >= 0 and Angle2 >= 0)
+    assert (Angle1 < 90 or Angle2 < 90) 
+    # Get cartesian vectors a and b (from ground points)
+    aVec = toRectangular (Lon1, Lat1)     
+    bVec = toRectangular (Lon2, Lat2)           
+          
+    # Calculate axb
+    abCross = crossProduct (aVec, bVec)
+    abCross = normalizeVect (abCross)
+
+    # These steps calculate q which is located halfway between our two intersections 
+    p1 = multScalarVect (cos(degToRad(Angle2)), aVec)
+    p2 = multScalarVect (-cos(degToRad(Angle1)), bVec)
+    p3 = addVecs (p1, p2)
+    p3 = normalizeVect (p3)
+    p4 = crossProduct (abCross, p3)
+    q = normalizeVect (p4)
+
+    # Calculate a rotation angle
+    try:
+        if Angle1 < Angle2: 
+            rho = acos (cos (degToRad(Angle1)) / (dotProduct (aVec, q)))
+        else: 
+            rho = acos (cos (degToRad(Angle2)) / (dotProduct (bVec, q)))
+    except ValueError:
+        print ("Bad sight data.")
+        return None, None
+
+    # Calculate a rotation vector
+    rotAxis = normalizeVect(crossProduct (crossProduct (aVec, bVec), q))
+    
+    # Calculate the two intersections by performing rotation of rho and -rho
+    int1 = normalizeVect(rotateVector (q, rotAxis, rho))
+    int2 = normalizeVect(rotateVector (q, rotAxis, -rho))
+    return toLonLat(int1), toLonLat(int2)    
 
 # Atmospheric refraction
     
@@ -242,11 +320,11 @@ class Sight :
         
         minSecContribution = self.time_minute/60 + self.time_second/3600
         
-        resultLON = - \
+        resultLON = modLON (- \
         ((self.gha_time_0_degrees + self.sha_diff_degrees) + \
         ((self.gha_time_1_degrees - self.gha_time_0_degrees))*minSecContribution + \
         ((self.gha_time_0_minutes + self.sha_diff_minutes)/60) + \
-        (((self.gha_time_1_minutes - self.gha_time_0_minutes)/60))*minSecContribution)
+        (((self.gha_time_1_minutes - self.gha_time_0_minutes)/60))*minSecContribution))
  
         resultLAT = \
         self.decl_time_0_degrees + (self.decl_time_1_degrees - self.decl_time_0_degrees)*minSecContribution + \
@@ -268,41 +346,10 @@ class SightPair:
         assert (type (sf1) == type (sf2) == Sight)
         self.sf1 = sf1
         self.sf2 = sf2
-
-    def getIntersections (self):
-        '''
-        Get intersection of two circles on a spheric surface. Based on https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere 
-        '''
-        # Get cartesian vectors a and b (from ground points)
-        aVec = toRectangular (self.sf1.GP_lon, self.sf1.GP_lat)     
-        bVec = toRectangular (self.sf2.GP_lon, self.sf2.GP_lat)       
-              
-        # Calculate axb
-        abCross = crossProduct (aVec, bVec)
-        abCross = normalizeVect (abCross)
-
-        # These steps calculate q which is located halfway between our two intersections 
-        p1 = multScalarVect (cos(degToRad(self.sf2.getAngle())), aVec)
-        p2 = multScalarVect (-cos(degToRad(self.sf1.getAngle())), bVec)
-        p3 = addVecs (p1, p2)
-        p3 = normalizeVect (p3)
-        p4 = crossProduct (abCross, p3)
-        q = normalizeVect (p4)
-
-        # Calculate a rotation angle
-        try:
-            rho = acos (cos (degToRad(self.sf1.getAngle())) / (dotProduct (aVec, q)))
-        except ValueError:
-            print ("Bad sight data.")
-            return None
-        # Calculate a rotation vector
-        rotAxis = normalizeVect(crossProduct (crossProduct (aVec, bVec), q))
         
-        # Calculate the two intersections by performing rotation of rho and -rho
-        int1 = normalizeVect(rotateVector (q, rotAxis, rho))
-        int2 = normalizeVect(rotateVector (q, rotAxis, -rho))
-        return toLonLat(int1), toLonLat(int2)
-        
+    def getIntersections (self): 
+        return getIntersections (self.sf1.GP_lon, self.sf1.GP_lat, self.sf2.GP_lon, self.sf2.GP_lat, self.sf1.getAngle(), self.sf2.getAngle())
+ 
 class SightCollection:
     def __init__ (self, sfList):
         assert (len (sfList) >= 2)
@@ -385,5 +432,31 @@ class SightCollection:
             print ("Invalid input.")
             return None
 
+# Object used for dead-reckoning in daytime (with only Sun sights)   
+  
+class SightTrip:
+    def __init__ (self, sightEnd, estimatedStartingPointLAT, estimatedStartPointLON, courseDegrees, speedKnots, timeHours, timeMinutes=0):
+        self.sightEnd                  = sightEnd
+        self.estimatedStartingPointLAT = estimatedStartingPointLAT
+        self.estimatedStartingPointLON = estimatedStartPointLON
+        self.courseDegrees             = courseDegrees
+        self.speedKnots                = speedKnots
+        self.timeHours                 = timeHours
+        self.timeHours                += timeMinutes/60
+        
+    def getIntersections (self):
+        bVec = toRectangular (self.sightEnd.GP_lon,  self.sightEnd.GP_lat)       
+        startRect = toRectangular (self.estimatedStartingPointLON, self.estimatedStartingPointLAT)
+        
+        calculateTripLON, calculateTripLAT = takeoutCourse (self.estimatedStartingPointLAT, self.estimatedStartingPointLON, self.courseDegrees, self.speedKnots, self.timeHours)  
+        
+        endRect  = toRectangular  (calculateTripLON, calculateTripLAT)        
+        
+        rotationVec = normalizeVect (crossProduct (startRect, endRect))
+        gcLON, gcLAT = toLonLat (rotationVec)       
+        intersection1, intersection2 = getIntersections (gcLON, gcLAT, self.sightEnd.GP_lon, self.sightEnd.GP_lat, 90, self.sightEnd.getAngle())
+ 
+        return intersection1, intersection2
+        
 
 

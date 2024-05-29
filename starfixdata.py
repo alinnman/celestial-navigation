@@ -1,4 +1,5 @@
-from starfix import Sight, SightCollection, getRepresentation
+from starfix import Sight, SightCollection, SightTrip, getRepresentation, compassCourse, distanceBetweenPoints, EARTH_CIRCUMFERENCE
+
 
 # Our starfix data
         
@@ -58,6 +59,7 @@ c = Sight (date                 = "2024-05-06", \
               sha_diff_minutes     = 33.4 \
               )
               
+
 collection = SightCollection ([a, b])
 intersections = collection.getIntersections ()
 print (getRepresentation(intersections,1))
