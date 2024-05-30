@@ -1,4 +1,5 @@
 from math import pi, sin, cos, acos, sqrt, tan, atan2
+from datetime import datetime, timezone
 
 EARTH_CIRCUMFERENCE_EQUATORIAL = 40075.017
 EARTH_CIRCUMFERENCE_MERIDIONAL = 40007.86
@@ -252,7 +253,9 @@ def getDMS (angle):
 class Sight :
     def __init__ (self, \
                   object_name, \
-                  date, \
+                  time_year, \
+                  time_month, \
+                  time_day, \
                   time_hour, \
                   time_minute, \
                   time_second, \
@@ -271,6 +274,9 @@ class Sight :
                   sha_diff_minutes = 0, \
                   observer_height = 0):
         self.object_name          = object_name
+        self.time_year            = time_year
+        self.time_month           = time_month
+        self.time_day             = time_day
         self.time_hour            = time_hour            
         self.time_minute          = time_minute          
         self.time_second          = time_second          
@@ -434,15 +440,37 @@ class SightCollection:
   
         
 class SightTrip:
-    def __init__ (self, sightStart, sightEnd, estimatedStartingPointLAT, estimatedStartPointLON, courseDegrees, speedKnots, timeHours, timeMinutes=0):
+    def __init__ (self, sightStart, sightEnd, estimatedStartingPointLAT, estimatedStartPointLON, courseDegrees, speedKnots):
         self.sightStart                = sightStart
         self.sightEnd                  = sightEnd
         self.estimatedStartingPointLAT = estimatedStartingPointLAT
         self.estimatedStartingPointLON = estimatedStartPointLON        
         self.courseDegrees             = courseDegrees
         self.speedKnots                = speedKnots
-        self.timeHours                 = timeHours
-        self.timeHours                += timeMinutes/60 
+        self.__calculateTimeHours ()
+        
+        
+    def __calculateTimeHours (self):
+        dt1 = datetime(self.sightStart.time_year,\
+                       self.sightStart.time_month,\
+                       self.sightStart.time_day,\
+                       self.sightStart.time_hour,\
+                       self.sightStart.time_minute,\
+                       self.sightStart.time_second,\
+                       tzinfo=timezone.utc)
+        it1 = int(dt1.timestamp())
+        print ("IT1 = " + str(it1))
+        dt2 = datetime(self.sightEnd.time_year,\
+                       self.sightEnd.time_month,\
+                       self.sightEnd.time_day,\
+                       self.sightEnd.time_hour,\
+                       self.sightEnd.time_minute,\
+                       self.sightEnd.time_second,\
+                       tzinfo=timezone.utc)
+        it2 = int(dt2.timestamp())
+        print ("IT2 = " + str(it2))   
+        print (it2 - it1)        
+        self.timeHours = (it2 - it1) / 3600
         
     def __calculateDistanceToTarget (self, angle, aVec, bVec):
         rotationAngle = degToRad (angle)

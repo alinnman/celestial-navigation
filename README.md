@@ -19,8 +19,10 @@ A more detailed description of celestial navigation can be found [here](https://
 
 You create a sight with code like this. 
 
-    c = Sight (date                 = "2024-05-06", \
-                  object_name          = "Vega", \
+    c = Sight (   object_name          = "Vega", \
+                  time_year            = 2024,\
+                  time_month           = 5,\
+                  time_day             = 6,\
                   time_hour            = 4, \
                   time_minute          = 4, \
                   time_second          = 13, \
@@ -48,9 +50,11 @@ The data is picked from your clock, sextant and the Nautical Almanac in the foll
 
 | Argument             | Description                                  | Remark                                                         | Collected From | 
 | :-------------       | :-------------                               | :-------------                                                 | :------------- |
-| date                 | Current day                                  | Not used in calculations. Only mnemonic.                       | N/A |
-| object               | Name of celestial object                     | Not used in calculations. Only mnemonic.                       | N/A |
-| time_hour            | Observation time - Hours (0-23)              | In UTC. Not used in calculations. Only mnemonic.               | Clock |
+| object               | Name of celestial object                     | Only mnemonic                                                  | N/A |
+| time_year            | Current year                                 | In UTC                                                         | Clock |
+| time_month           | Current month                                | In UTC                                                         | Clock |
+| time_day             | Current day of month                         | In UTC                                                         | Clock |
+| time_hour            | Observation time - Hours (0-23)              | In UTC.                                                        | Clock |
 | time_minute          | Observation time - Minutes (0-59)            | In UTC.                                                        | Clock |
 | time_second          | Observation time - Seconds (0-59)            | In UTC.                                                        | Clock | 
 | gha_time_0_degrees   | GHA degrees reading for this hour            | For stars use GHA of Aries.                                    | Nautical Almanac |
@@ -216,16 +220,14 @@ When navigating in daytime with only the Sun available you can use this techniqu
     s1 = Sight (......) # This is your sight at the start of this trip segment. 
     s2 = Sight (......) # This is your sight at the end of this trip segment.
     # See above for how to create a sight object
-    # We reach s2 by applying about 175 degrees for 1 hour with a speed of 20 knots. 
+    # We reach s2 by applying about 175 degrees for 1 hour (time between taking of sights) with a speed of 20 knots. 
     cCourse = 175
-    timeInHours = 1
     speed = 20    
     st = SightTrip (sightStart = s1, sightEnd = s2,\
                 estimatedStartingPointLAT = s1LonLat[1],\
                 estimatedStartPointLON    = s1LonLat[0],\
                 courseDegrees             = cCourse,\
-                speedKnots                = speed,\
-                timeHours                 = timeInHours)
+                speedKnots                = speed)
 
 Now you can calculate the coordinates for this trip.
 

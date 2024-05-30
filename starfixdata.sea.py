@@ -8,8 +8,10 @@ s1LonLat = (18, 59)
 
 #This is the star fix for s1, the starting point
 
-s1 = Sight (date                 = "2024-06-20", \
-              object_name          = "Sun", \
+s1 = Sight (  object_name          = "Sun", \
+              time_year            = 2024, \
+              time_month           = 6, \
+              time_day             = 20, \
               time_hour            = 6, \
               time_minute          = 14, \
               time_second          = 38, \
@@ -31,8 +33,10 @@ s1 = Sight (date                 = "2024-06-20", \
 
 # We take a sight here and get this. 
           
-s2 = Sight (date                 = "2024-06-20", \
-              object_name          = "Sun", \
+s2 = Sight (  object_name          = "Sun", \
+              time_year            = 2024, \
+              time_month           = 6, \
+              time_day             = 20, \
               time_hour            = 7, \
               time_minute          = 14, \
               time_second          = 38, \
@@ -58,8 +62,7 @@ st = SightTrip (sightStart = s1,\
                  estimatedStartingPointLAT = s1LonLat[1],\
                  estimatedStartPointLON    = s1LonLat[0],\
                  courseDegrees             = cCourse,\
-                 speedKnots                = speed,\
-                 timeHours                 = timeInHours)
+                 speedKnots                = speed)
 intersections = st.getIntersections ()
 print ("Starting point = " + str(getRepresentation(intersections[1],1)))
 print ("End point = " + str(getRepresentation(intersections[0],1)))

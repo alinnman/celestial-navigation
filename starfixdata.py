@@ -3,8 +3,10 @@ from starfix import Sight, SightCollection, SightTrip, getRepresentation, compas
 
 # Our starfix data
         
-a = Sight (date                 = "2024-05-05", \
-              object_name          = "Sun", \
+a = Sight (   object_name          = "Sun", \
+              time_year            = 2024,\
+              time_month           = 5,\
+              time_day             = 5,\
               time_hour            = 15, \
               time_minute          = 55, \
               time_second          = 18, \
@@ -21,8 +23,10 @@ a = Sight (date                 = "2024-05-05", \
               measured_alt_seconds = 1.8 \
               )
 
-b = Sight (date                 = "2024-05-05", \
-              object_name          = "Sun", \
+b = Sight (   object_name          = "Sun", \
+              time_year            = 2024,\
+              time_month           = 5,\
+              time_day             = 5,\
               time_hour            = 23, \
               time_minute          = 1, \
               time_second          = 19, \
@@ -39,8 +43,11 @@ b = Sight (date                 = "2024-05-05", \
               measured_alt_seconds = 18 \
               )
 
-c = Sight (date                 = "2024-05-06", \
-              object_name          = "Vega", \
+c = Sight (   object_name          = "Vega", \
+              time_year            = 2024,\
+              time_month           = 5,\
+              time_day             = 6,\
+
               time_hour            = 4, \
               time_minute          = 4, \
               time_second          = 13, \
