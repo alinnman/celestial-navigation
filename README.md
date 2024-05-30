@@ -215,7 +215,11 @@ When navigating in daytime with only the Sun available you can use this techniqu
     # We define two star fixes  
     s1 = Sight (......) # This is your sight at the start of this trip segment. 
     s2 = Sight (......) # This is your sight at the end of this trip segment.
-    # See above for how to create a sight object  
+    # See above for how to create a sight object
+    # We reach s2 by applying about 175 degrees for 1 hour with a speed of 20 knots. 
+    cCourse = 175
+    timeInHours = 1
+    speed = 20    
     st = SightTrip (sightStart = s1, sightEnd = s2,\
                 estimatedStartingPointLAT = s1LonLat[1],\
                 estimatedStartPointLON    = s1LonLat[0],\
