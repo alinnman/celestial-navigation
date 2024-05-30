@@ -459,7 +459,6 @@ class SightTrip:
                        self.sightStart.time_second,\
                        tzinfo=timezone.utc)
         it1 = int(dt1.timestamp())
-        print ("IT1 = " + str(it1))
         dt2 = datetime(self.sightEnd.time_year,\
                        self.sightEnd.time_month,\
                        self.sightEnd.time_day,\
@@ -467,9 +466,7 @@ class SightTrip:
                        self.sightEnd.time_minute,\
                        self.sightEnd.time_second,\
                        tzinfo=timezone.utc)
-        it2 = int(dt2.timestamp())
-        print ("IT2 = " + str(it2))   
-        print (it2 - it1)        
+        it2 = int(dt2.timestamp())      
         self.timeHours = (it2 - it1) / 3600
         
     def __calculateDistanceToTarget (self, angle, aVec, bVec):
