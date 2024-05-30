@@ -61,6 +61,6 @@ st = SightTrip (sightStart = s1,\
                  speedKnots                = speed,\
                  timeHours                 = timeInHours)
 intersections = st.getIntersections ()
-print ("Starting point = " + str(getRepresentation(intersections[0],1)))
-print ("End point = " + str(getRepresentation(intersections[1],1)))
+print ("Starting point = " + str(getRepresentation(intersections[1],1)))
+print ("End point = " + str(getRepresentation(intersections[0],1)))
  
