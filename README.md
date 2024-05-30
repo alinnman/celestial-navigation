@@ -6,7 +6,7 @@ Contains a simple python script to be used for [celestial navigation](https://en
 Sights have to be obtained using a sextant, a nautical almanac and an accurate clock. <br>
 The python script takes care of the **sight reduction**. For two sights you will get two possible coordinates. For three or more sights you will get one coordinate (calculated as a mean value). 
 
-The script supports **stationary** observations, i.e. when observations are made from a single position, typically using multiple sights. There is also support for simple **dead reckoning** observations, typically at sea in daytime where you only have access to the Sun. See section 3 below for more information. 
+The script supports **stationary** observations, i.e. when observations are made from a single position, typically using multiple sights. There is also support for **dead reckoning** observations, typically at sea in daytime where you only have access to the Sun. See section 3 below for more information. 
 
 The python script only uses basic libraries (no numpy or similar) and could be installed in [PyDroid](https://play.google.com/store/apps/details?id=ru.iiec.pydroid3) to allow for use on a mobile phone 
 (with no need for internet access). 
@@ -206,19 +206,27 @@ When navigating in daytime with only the Sun available you can use this techniqu
 
     from starfix import SightTrip, Sight
     
-    s1LonLat = (18.003624, 58.770335) # Define a starting point (typically got from landbased navigation, or from previous dead reckoning calculation)    
-    s2 = Sight (......) # This is your sight at the end of this trip segment. See above for how to create a sight object  
-    st = SightTrip (sightEnd = s2,\
+    # We are sailing from point s1 to point s2, in the Baltic Sea.  
+    # Point s1 is located near the coast and we get this coordinate 
+    # using approximate land-based navigation (or from a previous sight)
+    # NOTE: This can be very approximate
+    s1LonLat = (18, 59)
+
+    # We define two star fixes  
+    s1 = Sight (......) # This is your sight at the start of this trip segment. 
+    s2 = Sight (......) # This is your sight at the end of this trip segment.
+    # See above for how to create a sight object  
+    st = SightTrip (sightStart = s1, sightEnd = s2,\
                 estimatedStartingPointLAT = s1LonLat[1],\
                 estimatedStartPointLON    = s1LonLat[0],\
                 courseDegrees             = cCourse,\
                 speedKnots                = speed,\
                 timeHours                 = timeInHours)
 
-Now you can get a pair of intersections. One of these should be close to your true position. 
+Now you can calculate the coordinates for this trip.
 
     intersections = st.getIntersections ()
-    print (getRepresentation(intersections,1))
+    print ("Starting point = " + str(getRepresentation(intersections[0],1)))
+    print ("End point = " + str(getRepresentation(intersections[1],1)))
 
-The algorithm is a calculation based on the small circle defined by your sight (circle of equal altitude), and the great circle following your sailing course. 
-For more details see code for documentation. The supplied script sample [starfixdata.sea.py](starfixdata.sea.py) contains a demo for a short trip at sea (in the Baltic Sea). 
+The algorithm is a calculation based on distance calculations on segments of the small circles related to s1 and s2. Numerical method (Newton's method) is used. The supplied script sample [starfixdata.sea.py](starfixdata.sea.py) contains a demo for a short trip at sea (in the Baltic Sea). 

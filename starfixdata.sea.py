@@ -1,13 +1,12 @@
-from starfix import Sight, SightCollection, SightTrip, getRepresentation, compassCourse, distanceBetweenPoints, KMtoNM, NMtoKM, EARTH_CIRCUMFERENCE
+from starfix import Sight, SightTrip, getRepresentation
 
 
 # We are sailing from point s1 to point s2, in the Baltic Sea.  
-# Point s1 is located near the coast and we get this coordinate using land-based navigation. 
+# Point s1 is located near the coast and we get this coordinate using approximate land-based navigation (or from a previous sight)
 
-s1LonLat = (18.003624, 58.770335)
+s1LonLat = (18.004, 58.770)
 
-'''
-This is the star fix for s1 but we don't use our sexant here, it is not needed. 
+#This is the star fix for s1, the starting point
 
 s1 = Sight (date                 = "2024-06-20", \
               object_name          = "Sun", \
@@ -26,7 +25,7 @@ s1 = Sight (date                 = "2024-06-20", \
               measured_alt_minutes = 51, \
               measured_alt_seconds = 27.1 \
               )
-'''    
+   
 
 # Point s2 is located roughly 20 nautical miles out in the sea. 
 
@@ -49,50 +48,19 @@ s2 = Sight (date                 = "2024-06-20", \
               measured_alt_minutes = 34, \
               measured_alt_seconds = 21.6 \
               )
-              
-              
-# ========== FIRST WE USE REALISTIC ("sloppy") DATA, NOT KNOWING THE LOCATION OF s2    
 
 # We reach s2 by applying about 175 degrees for 1 hour with a speed of 20 knots. 
-cCourse = 173 # Well. Nobody is perfect. 
+cCourse = 175
 timeInHours = 1
-speed = 19
-st = SightTrip (sightEnd = s2,\
-                estimatedStartingPointLAT = s1LonLat[1],\
-                estimatedStartPointLON    = s1LonLat[0],\
-                courseDegrees             = cCourse,\
-                speedKnots                = speed,\
-                timeHours                 = timeInHours)
+speed = 20
+st = SightTrip (sightStart = s1,\
+                 sightEnd = s2,\
+                 estimatedStartingPointLAT = s1LonLat[1],\
+                 estimatedStartPointLON    = s1LonLat[0],\
+                 courseDegrees             = cCourse,\
+                 speedKnots                = speed,\
+                 timeHours                 = timeInHours)
 intersections = st.getIntersections ()
-print (getRepresentation(intersections,1))
-
-# ========== NOW WE REPEAT THIS WITH KNOWLEDGE OF THE EXACT COORDINATE OF s2              
-   
-s2LonLat = (18.05615, 58.43139)  # TRUE POINT
-
-# Do a final check on slightly incorrect (realistic) data
-checkDistance = distanceBetweenPoints (intersections [0], s2LonLat)
-print ("Checked distance to true point (realistic) = " + str(round(KMtoNM(checkDistance),1)) + " nautical miles. This should be an acceptable value. ") 
-   
-# We reach s2 by applying the exact distances and courses. This not realistic. 
-cCourse = compassCourse (s1LonLat[1], s1LonLat[0], s2LonLat[1], s2LonLat[0])
-
-distance = distanceBetweenPoints (s1LonLat, s2LonLat)
-distanceInNM = (distance / EARTH_CIRCUMFERENCE)*360*60
-speed = distanceInNM
-
-# Now calculate the trip
-timeInHours = 1
-st = SightTrip (sightEnd = s2,\
-                estimatedStartingPointLAT = s1LonLat[1],\
-                estimatedStartPointLON    = s1LonLat[0],\
-                courseDegrees             = cCourse,\
-                speedKnots                = speed,\
-                timeHours                 = timeInHours)
-intersections = st.getIntersections ()
-print (getRepresentation(intersections,1))
-
-# Do a final check on perfect data. 
-checkDistance = distanceBetweenPoints (intersections [0], s2LonLat)
-print ("Checked distance to true point (exact) = " + str(round(KMtoNM(checkDistance),1)) + " nautical miles. This should be a *small* value. Accuracy is limited to precision in the Nautical Almanac")
-
+print ("Starting point = " + str(getRepresentation(intersections[0],1)))
+print ("End point = " + str(getRepresentation(intersections[1],1)))
+ 

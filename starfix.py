@@ -91,19 +91,17 @@ def toRectangular (LON, LAT):
     aVec = normalizeVect (aVec)
     return aVec
     
-def rotateVector (vec, rotVec, angle):
+def rotateVector (vec, rotVec, angleRadians):
     '''
     Rotate a vector around a rotation vector. Based on Rodrigues formula. https://en.wikipedia.org/wiki/Rodrigues%27_formula 
     '''
     assert (type(vec) == type(rotVec) == list)
     assert (len(vec) == len(rotVec) == 3)
-    assert (type(angle) == float or type(angle) == int) 
-    #rotVec = normalizeVect (rotVec) # TODO Review
-    #vec = normalizeVect (vec) # TODO Review
+    assert (type(angleRadians) == float or type(angleRadians) == int) 
     
-    v1 = multScalarVect (cos(angle), vec)
-    v2 = multScalarVect (sin(angle), crossProduct(rotVec, vec))
-    v3 = multScalarVect (dotProduct(rotVec,vec)*(1-cos(angle)), rotVec)
+    v1 = multScalarVect (cos(angleRadians), vec)
+    v2 = multScalarVect (sin(angleRadians), crossProduct(rotVec, vec))
+    v3 = multScalarVect (dotProduct(rotVec,vec)*(1-cos(angleRadians)), rotVec)
     result = addVecs (v1, addVecs(v2, v3))
     return result
     
@@ -434,29 +432,69 @@ class SightCollection:
 
 # Object used for dead-reckoning in daytime (with only Sun sights)   
   
+        
 class SightTrip:
-    def __init__ (self, sightEnd, estimatedStartingPointLAT, estimatedStartPointLON, courseDegrees, speedKnots, timeHours, timeMinutes=0):
+    def __init__ (self, sightStart, sightEnd, estimatedStartingPointLAT, estimatedStartPointLON, courseDegrees, speedKnots, timeHours, timeMinutes=0):
+        self.sightStart                = sightStart
         self.sightEnd                  = sightEnd
         self.estimatedStartingPointLAT = estimatedStartingPointLAT
-        self.estimatedStartingPointLON = estimatedStartPointLON
+        self.estimatedStartingPointLON = estimatedStartPointLON        
         self.courseDegrees             = courseDegrees
         self.speedKnots                = speedKnots
         self.timeHours                 = timeHours
-        self.timeHours                += timeMinutes/60
+        self.timeHours                += timeMinutes/60 
+        
+    def __calculateDistanceToTarget (self, angle, aVec, bVec):
+        rotationAngle = degToRad (angle)
+        rotatedVec = rotateVector (bVec, aVec, rotationAngle)
+        rotatedLonLat = toLonLat (rotatedVec)
+        takenOut = takeoutCourse (rotatedLonLat[1], rotatedLonLat[0], self.courseDegrees, self.speedKnots, self.timeHours)
+         
+        dbp = distanceBetweenPoints (takenOut, (self.sightEnd.GP_lon, self.sightEnd.GP_lat)) - self.sightEnd.getRadius()
+        return dbp, takenOut, rotatedLonLat
         
     def getIntersections (self):
-        bVec = toRectangular (self.sightEnd.GP_lon,  self.sightEnd.GP_lat)       
-        startRect = toRectangular (self.estimatedStartingPointLON, self.estimatedStartingPointLAT)
+        # Calculate intersections
+        coll = SightCollection ([self.sightStart, self.sightEnd])
+        intersections = coll.getIntersections ()
         
-        calculateTripLON, calculateTripLAT = takeoutCourse (self.estimatedStartingPointLAT, self.estimatedStartingPointLON, self.courseDegrees, self.speedKnots, self.timeHours)  
+        # Check which of the intersections is closest to our estimatedCoordinates
         
-        endRect  = toRectangular  (calculateTripLON, calculateTripLAT)        
+        bestDistance = EARTH_CIRCUMFERENCE
+        bestIntersection = None
+        for ints in intersections:
+            theDistance = distanceBetweenPoints (ints, (self.estimatedStartingPointLON, self.estimatedStartingPointLAT))
+            if theDistance < bestDistance:
+                bestDistance = theDistance
+                bestIntersection = ints
+        assert (bestIntersection != None) 
         
-        rotationVec = normalizeVect (crossProduct (startRect, endRect))
-        gcLON, gcLAT = toLonLat (rotationVec)       
-        intersection1, intersection2 = getIntersections (gcLON, gcLAT, self.sightEnd.GP_lon, self.sightEnd.GP_lat, 90, self.sightEnd.getAngle())
+        # Determine angle of the intersection point on sightStart small circle 
+        
+        aVec = toRectangular (self.sightStart.GP_lon, self.sightStart.GP_lat)
+        bVec = toRectangular (bestIntersection[0], bestIntersection[1])
+        
  
-        return intersection1, intersection2
-        
+        # Apply Newtons method to find the location
+        currentRotation = 0
+        delta = 0.0001
+        limit = 0.001
+        iterLimit = 100
+        iterCount = 0
+        ready = False
+        takenOut = None
+        rotated  = None
+        while iterCount < iterLimit:
+            distanceResult, takenOut, rotated = self.__calculateDistanceToTarget (currentRotation, aVec, bVec)
+            if abs (distanceResult) < limit:
+                break
+            distanceResult2, takenOut, rotated = self.__calculateDistanceToTarget (currentRotation+delta, aVec, bVec)
+            derivative = (distanceResult2 - distanceResult) / delta
+            currentRotation = currentRotation - (distanceResult)/derivative
+            iterCount += 1
+        if iterCount >= iterLimit:
+            return None, None
+        else:
+            return takenOut, rotated
 
 
