@@ -253,6 +253,6 @@ When we move in closer we can clearly see the intersection.
 
 ![Sailing in the Baltic Sea (closeup)](maps/baltic-intersection-2.png "Sailing in the Baltic Sea (closeup)")
 
-And the course can easily be found using a paralellogram adjustment. 
+And the course can easily be found using a paralellogram adjustment where we "squeeze in" a route of 20 NM, course 175 degrees, starting at the first small circle and ending at the final circle. 
 
 ![Sailing in the Baltic Sea (closeup)](maps/baltic-intersection-2-edit.png "Sailing in the Baltic Sea (closeup)")
