@@ -1,4 +1,4 @@
-from starfix import Sight, SightTrip, getRepresentation
+from starfix import Sight, SightTrip, getRepresentation, getGoogleMapString
 
 
 # We are sailing from point s1 to point s2, in the Baltic Sea.  
@@ -65,4 +65,19 @@ st = SightTrip (sightStart = s1,\
 intersections = st.getIntersections ()
 print ("Starting point = " + str(getRepresentation(intersections[1],1)))
 print ("End point = " + str(getRepresentation(intersections[0],1)))
+
+'''
+Diagnostics for map rendering etc. 
+
+print ("S1 radius = " + str(round(s1.getRadius (),1)))
+print ("S1 GP     = " + getGoogleMapString(s1.getGP(),4))
+
+print ("S2 radius = " + str(round(s2.getRadius (),1)))
+print ("S2 GP     = " + getGoogleMapString(s2.getGP(),4))
+
+print ("Starting point GM = " + getGoogleMapString (intersections[1],4))
+print ("Ending   point GM = " + getGoogleMapString (intersections[0],4))
+'''
+
+
  

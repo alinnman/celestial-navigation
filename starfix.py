@@ -210,6 +210,9 @@ def getRefraction (apparentAngle):
     return 1 / tan (d2)
 
 # Data formatting
+
+def getGoogleMapString (lonLat, numDecimals): 
+    return str(round(lonLat[1],numDecimals)) + "," + str(round(lonLat[0],numDecimals))
     
 def getRepresentation (ins, numDecimals, lat=False):
     assert (type (numDecimals) == int and numDecimals >= 0) 
@@ -344,6 +347,9 @@ class Sight :
     
     def getRadius (self):
         return (self.getAngle()/360)*EARTH_CIRCUMFERENCE
+        
+    def getGP (self):
+        return self.GP_lon, self.GP_lat
         
 class SightPair:
     def __init__ (self, sf1, sf2):
