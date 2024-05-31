@@ -55,7 +55,6 @@ s2 = Sight (  object_name          = "Sun", \
 
 # We reach s2 by applying about 175 degrees for 1 hour with a speed of 20 knots. 
 cCourse = 175
-timeInHours = 1
 speed = 20
 st = SightTrip (sightStart = s1,\
                  sightEnd = s2,\
