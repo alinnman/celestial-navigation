@@ -8,16 +8,21 @@ EARTH_CIRCUMFERENCE = (EARTH_CIRCUMFERENCE_EQUATORIAL + EARTH_CIRCUMFERENCE_MERI
 # Data types
 
 class LatLon:
+    ''' Represents spherical coordinates on Earth '''
     def __init__ (self, lat, lon): 
+        assert (type(lat) == int or type(lat) == float)
+        assert (type(lon) == int or type(lon) == float)
         self.lat = lat
         self.lon = lon
 
-    def getTuple (self): 
+    def getTuple (self) -> tuple :
+        ''' Used to simplify some code where tuples are more practical '''
         return self.lon, self.lat
         
 # Utility routines (algrebraic, spheric geometry) 
 
-def addVecs (vec1, vec2):
+def addVecs (vec1, vec2) -> list: 
+    ''' Performs addition of twp cartesian vectors '''
     assert (type (vec1) == type (vec2) == list)
     assert (len (vec1) == len (vec2))
     retVal = []
@@ -25,7 +30,8 @@ def addVecs (vec1, vec2):
         retVal.append (vec1[i] + vec2[i])
     return retVal
 
-def multScalarVect (scalar, vec):
+def multScalarVect (scalar, vec) -> list:
+    ''' Performs multiplication of a cartesian vector with a scalar '''
     assert (type (scalar) == int or type(scalar) == float)
     assert (type (vec) == list)
     retVal = []
@@ -33,22 +39,24 @@ def multScalarVect (scalar, vec):
         retVal.append (scalar*vec[i])
     return retVal 
 
-def lengthOfVect (vec):
+def lengthOfVect (vec) -> float:
+    ''' Returns the absolute value (length) of a vector '''
     assert (type (vec) == list)
     s = 0
     for i in range (len(vec)):
         s += (vec[i]*vec[i])
     return sqrt (s)
 
-def normalizeVect (vec):
+def normalizeVect (vec) -> list:
+    ''' Computes |vec| '''
     assert (type (vec) == list)
     lenV = lengthOfVect (vec)
     if lenV == 0:
         raise ValueError ("Cannot normalize a zero vector")
     return multScalarVect (1/lenV, vec)
-    
 
-def crossProduct (vec1, vec2) :
+def crossProduct (vec1, vec2) -> list:
+    ''' Computes vec1 x vec2 (cross product) '''
     assert (type (vec1) == type(vec2) == list) 
     assert (len (vec1) == len (vec2) == 3)
     retVal = [0, 0, 0]
@@ -57,30 +65,35 @@ def crossProduct (vec1, vec2) :
     retVal [2] = vec1 [0]*vec2[1] - vec1[1]*vec2[0]
     return retVal
 
-def dotProduct (vec1, vec2):
+def dotProduct (vec1, vec2) -> float:
+    ''' Computes vec1 * vec2 (dot product '''
     assert (type (vec1) == list and type(vec2) == list) 
-    assert (len (vec1) == len (vec2) == 3)
-    s = 0
+    assert (len (vec1) == len (vec2))
+    s = 0.0
     for i in range (len(vec1)):
         s += vec1[i]*vec2[i]
     return s
     
 def modLON (lon): 
+    ''' Transforms a longitude value to the rance (-180,180) '''
     assert (type( lon) == int or type (lon) == float) 
     x = lon + 180
     x = x % 360
     x = x - 180
     return x    
 
-def degToRad (deg):
+def degToRad (deg) -> float:
+    ''' Convert degrees to radians '''
     assert (type (deg) == int or type (deg) == float)
     return deg/(180.0/pi)
 
-def radToDeg (rad):
+def radToDeg (rad) -> float:
+    ''' Convert radians to degrees '''
     assert (type (rad) == int or type (rad) == float)    
     return rad*(180.0/pi)
     
-def toLatLon (vec):
+def toLatLon (vec) -> LatLon:
+    ''' Convert cartesian coordinate to LatLon (spherical) '''
     assert (type (vec) == list) 
     assert (len (vec) == 3)
     vec = normalizeVect (vec)
@@ -92,7 +105,8 @@ def toLatLon (vec):
     
     return LatLon (LAT, modLON(LON))   
 
-def toRectangular (latlon):
+def toRectangular (latlon) -> list:
+    ''' Convert LatLon (spherical) coordinate to cartesian '''
     #assert (type (LAT) == int or type (LAT) == float)
     #assert (type (LON) == int or type (LON) == float)
     assert (type (latlon) == LatLon)
@@ -105,7 +119,7 @@ def toRectangular (latlon):
     aVec = normalizeVect (aVec)
     return aVec
     
-def rotateVector (vec, rotVec, angleRadians):
+def rotateVector (vec, rotVec, angleRadians) -> list:
     '''
     Rotate a vector around a rotation vector. Based on Rodrigues formula. https://en.wikipedia.org/wiki/Rodrigues%27_formula 
     '''
@@ -121,18 +135,12 @@ def rotateVector (vec, rotVec, angleRadians):
     
 # Course management
 
-def modCourse (lon): 
+def modCourse (lon) -> float: 
     assert (type (lon) == int or type (lon) == float)
     x = lon % 360
     return x    
-
-def compassCourse (lat1, lon1, lat2, lon2):
-    averageLat = (lat1 + lat2) / 2
-    stretch = cos (degToRad (averageLat))
-    course = atan2 ((lon2-lon1)*stretch, (lat2-lat1)) 
-    return modCourse(radToDeg(course))
-    
-def takeoutCourse (latLon, course, speedKnots, timeHours):
+   
+def takeoutCourse (latLon, course, speedKnots, timeHours) -> LatLon:
     distance = speedKnots * timeHours
     distanceDegrees = distance / 60
     stretchAtStart = cos (degToRad (latLon.lat))
@@ -140,7 +148,7 @@ def takeoutCourse (latLon, course, speedKnots, timeHours):
     diffLon = (sin (degToRad(course))*distanceDegrees/stretchAtStart)
     return LatLon (latLon.lat+diffLat, latLon.lon+diffLon)
     
-def distanceBetweenPoints (latLon1, latLon2):
+def distanceBetweenPoints (latLon1, latLon2) -> float:
     assert (type(latLon1) == type(latLon2) == LatLon)
     normVec1 = toRectangular (latLon1)
     normVec2 = toRectangular (latLon2)
@@ -149,24 +157,24 @@ def distanceBetweenPoints (latLon1, latLon2):
     distance = (EARTH_CIRCUMFERENCE/(2*pi)) * angle
     return distance    
 
-def KMtoNM (km): 
+def KMtoNM (km) -> float: 
     assert (type (km) == int or type (km) == float)
     return (km / EARTH_CIRCUMFERENCE)*360*60
     
-def NMtoKM (nm):
+def NMtoKM (nm) -> float:
     assert (type (nm) == int or type (nm) == float)
     return (nm/(360*60))*EARTH_CIRCUMFERENCE
     
 # Horizon
 
-def getDipOfHorizon (hM):
+def getDipOfHorizon (hM) -> float:
     assert (type (hM) == int or type (hM) == float)
     h = hM / 1000
     r = EARTH_CIRCUMFERENCE / (2*pi)
     d = sqrt (h*(2*r + h))
     return (atan2 (d, r))*(180/pi)*60
     
-def getIntersections (latlon1, latlon2, Angle1, Angle2):
+def getIntersections (latlon1, latlon2, Angle1, Angle2) -> tuple:
     '''
     Get intersection of two circles on a spheric surface. At least one of the circles must be a small circle. 
     Based on https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere 
@@ -211,7 +219,7 @@ def getIntersections (latlon1, latlon2, Angle1, Angle2):
 
 # Atmospheric refraction
     
-def getRefraction (apparentAngle):
+def getRefraction (apparentAngle) -> float:
     '''
     Bennett's formula
     See: https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction 
@@ -225,10 +233,10 @@ def getRefraction (apparentAngle):
 
 # Data formatting
 
-def getGoogleMapString (latLon, numDecimals): 
+def getGoogleMapString (latLon, numDecimals) -> str : 
     return str(round(latLon.lat,numDecimals)) + "," + str(round(latLon.lon,numDecimals))
 
-def getRepresentation (ins, numDecimals, lat=False):
+def getRepresentation (ins, numDecimals, lat=False) -> str:
     assert (type (numDecimals) == int and numDecimals >= 0)
     if (type (ins) == LatLon): 
         ins = ins.getTuple ()
@@ -261,7 +269,7 @@ def getRepresentation (ins, numDecimals, lat=False):
         retVal = retVal + ")"
         return retVal           
         
-def getDMS (angle):
+def getDMS (angle) -> tuple:
     degrees = int (angle)
     minutes = int ((angle-degrees)*60)
     seconds = (angle-degrees-minutes/60)*3600
@@ -340,7 +348,7 @@ class Sight :
         self.measured_alt_minutes = m
         self.measured_alt_seconds = s
     
-    def __calculateGP (self):
+    def __calculateGP (self) -> LatLon:
         
         minSecContribution = self.time_minute/60 + self.time_second/3600
         
@@ -371,10 +379,7 @@ class SightPair:
         self.sf1 = sf1
         self.sf2 = sf2
         
-    def getIntersections2 (self): 
-        return getIntersections2 (self.sf1.GP_lon, self.sf1.GP_lat, self.sf2.GP_lon, self.sf2.GP_lat, self.sf1.getAngle(), self.sf2.getAngle())
-        
-    def getIntersections (self): 
+    def getIntersections (self) -> tuple: 
         return getIntersections (self.sf1.GP,\
                                  self.sf2.GP,\
                                  self.sf1.getAngle(), self.sf2.getAngle())        
@@ -493,7 +498,7 @@ class SightTrip:
         it2 = int(dt2.timestamp())      
         self.timeHours = (it2 - it1) / 3600
         
-    def __calculateDistanceToTarget (self, angle, aVec, bVec):
+    def __calculateDistanceToTarget (self, angle, aVec, bVec) -> tuple:
         rotationAngle = degToRad (angle)
         rotatedVec = rotateVector (bVec, aVec, rotationAngle)
         rotatedLatLon = toLatLon (rotatedVec)
@@ -502,7 +507,7 @@ class SightTrip:
         dbp = distanceBetweenPoints (takenOut, self.sightEnd.GP) - self.sightEnd.getRadius()
         return dbp, takenOut, rotatedLatLon
         
-    def getIntersections (self):
+    def getIntersections (self) -> tuple:
         # Calculate intersections
         coll = SightCollection ([self.sightStart, self.sightEnd])
         intersections = coll.getIntersections ()

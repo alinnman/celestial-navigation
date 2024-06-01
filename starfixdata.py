@@ -1,4 +1,4 @@
-from starfix import Sight, SightCollection, SightTrip, getRepresentation, getGoogleMapString, compassCourse, distanceBetweenPoints, EARTH_CIRCUMFERENCE
+from starfix import Sight, SightCollection, SightTrip, getRepresentation, getGoogleMapString, distanceBetweenPoints, EARTH_CIRCUMFERENCE
 
 
 # Our starfix data
