@@ -75,8 +75,8 @@ collection = SightCollection ([a, b, c])
 intersections = collection.getIntersections ()
 print (getRepresentation(intersections,1))
 
-'''
-Diagnostics for map rendering etc. 
+
+#Diagnostics for map rendering etc. 
 
 print ("A radius = " + str(round(a.getRadius (),1)))
 print ("A GP     = " + getGoogleMapString(a.getGP(),4))
@@ -86,4 +86,3 @@ print ("B GP     = " + getGoogleMapString(b.getGP(),4))
 
 print ("C radius = " + str(round(c.getRadius (),1)))
 print ("C GP     = " + getGoogleMapString(c.getGP(),4))
-'''
