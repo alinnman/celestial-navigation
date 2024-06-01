@@ -5,6 +5,16 @@ EARTH_CIRCUMFERENCE_EQUATORIAL = 40075.017
 EARTH_CIRCUMFERENCE_MERIDIONAL = 40007.86
 EARTH_CIRCUMFERENCE = (EARTH_CIRCUMFERENCE_EQUATORIAL + EARTH_CIRCUMFERENCE_MERIDIONAL) / 2
 
+# Data types
+
+class LatLon:
+    def __init__ (self, lat, lon): 
+        self.lat = lat
+        self.lon = lon
+
+    def getTuple (self): 
+        return self.lon, self.lat
+        
 # Utility routines (algrebraic, spheric geometry) 
 
 def addVecs (vec1, vec2):
@@ -31,6 +41,7 @@ def lengthOfVect (vec):
     return sqrt (s)
 
 def normalizeVect (vec):
+    assert (type (vec) == list)
     lenV = lengthOfVect (vec)
     if lenV == 0:
         raise ValueError ("Cannot normalize a zero vector")
@@ -55,20 +66,21 @@ def dotProduct (vec1, vec2):
     return s
     
 def modLON (lon): 
+    assert (type( lon) == int or type (lon) == float) 
     x = lon + 180
     x = x % 360
     x = x - 180
     return x    
 
 def degToRad (deg):
-    assert (type(deg) == int or type (deg) == float)
+    assert (type (deg) == int or type (deg) == float)
     return deg/(180.0/pi)
 
 def radToDeg (rad):
-    assert (type(rad) == int or type (rad) == float)    
+    assert (type (rad) == int or type (rad) == float)    
     return rad*(180.0/pi)
-
-def toLonLat (vec):
+    
+def toLatLon (vec):
     assert (type (vec) == list) 
     assert (len (vec) == 3)
     vec = normalizeVect (vec)
@@ -78,13 +90,14 @@ def toLonLat (vec):
     LON = radToDeg (theta)
     LAT = 90-radToDeg (phi) 
     
-    return modLON(LON), LAT
+    return LatLon (LAT, modLON(LON))   
 
-def toRectangular (LON, LAT):
-    assert (type (LAT) == int or type (LAT) == float)
-    assert (type (LON) == int or type (LON) == float)
-    phi = degToRad (90 - LAT)
-    theta = degToRad (LON)
+def toRectangular (latlon):
+    #assert (type (LAT) == int or type (LAT) == float)
+    #assert (type (LON) == int or type (LON) == float)
+    assert (type (latlon) == LatLon)
+    phi = degToRad (90 - latlon.lat)
+    theta = degToRad (latlon.lon)
     aVec = []
     aVec.append (cos (theta) * sin (phi))
     aVec.append (sin (theta) * sin (phi))
@@ -109,6 +122,7 @@ def rotateVector (vec, rotVec, angleRadians):
 # Course management
 
 def modCourse (lon): 
+    assert (type (lon) == int or type (lon) == float)
     x = lon % 360
     return x    
 
@@ -118,52 +132,52 @@ def compassCourse (lat1, lon1, lat2, lon2):
     course = atan2 ((lon2-lon1)*stretch, (lat2-lat1)) 
     return modCourse(radToDeg(course))
     
-def takeoutCourse (lat1, lon1, course, speedKnots, timeHours):
+def takeoutCourse (latLon, course, speedKnots, timeHours):
     distance = speedKnots * timeHours
     distanceDegrees = distance / 60
-    stretchAtStart = cos (degToRad (lat1))
+    stretchAtStart = cos (degToRad (latLon.lat))
     diffLat = (cos (degToRad(course))*distanceDegrees)
     diffLon = (sin (degToRad(course))*distanceDegrees/stretchAtStart)
-    return lon1+diffLon, lat1+diffLat    
+    return LatLon (latLon.lat+diffLat, latLon.lon+diffLon)
     
-def distanceBetweenPoints (lonLat1, lonLat2):
-    assert (type(lonLat1) == type(lonLat2) == tuple)
-    lon1 = lonLat1[0]
-    lat1 = lonLat1[1]
-    normVec1 = toRectangular (lon1, lat1)
-    lon2 = lonLat2[0]
-    lat2 = lonLat2[1]
-    normVec2 = toRectangular (lon2, lat2)
+def distanceBetweenPoints (latLon1, latLon2):
+    assert (type(latLon1) == type(latLon2) == LatLon)
+    normVec1 = toRectangular (latLon1)
+    normVec2 = toRectangular (latLon2)
     dp = dotProduct (normVec1, normVec2)
     angle = acos (dp)
     distance = (EARTH_CIRCUMFERENCE/(2*pi)) * angle
-    return distance
+    return distance    
 
 def KMtoNM (km): 
+    assert (type (km) == int or type (km) == float)
     return (km / EARTH_CIRCUMFERENCE)*360*60
     
 def NMtoKM (nm):
+    assert (type (nm) == int or type (nm) == float)
     return (nm/(360*60))*EARTH_CIRCUMFERENCE
     
 # Horizon
 
 def getDipOfHorizon (hM):
+    assert (type (hM) == int or type (hM) == float)
     h = hM / 1000
     r = EARTH_CIRCUMFERENCE / (2*pi)
     d = sqrt (h*(2*r + h))
     return (atan2 (d, r))*(180/pi)*60
     
-def getIntersections (Lon1, Lat1, Lon2, Lat2, Angle1, Angle2):
+def getIntersections (latlon1, latlon2, Angle1, Angle2):
     '''
     Get intersection of two circles on a spheric surface. At least one of the circles must be a small circle. 
     Based on https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere 
     '''
     #assert (Angle1 >= 0 and Angle1 != 90 and Angle2 >= 0 and Angle2 != 90)
+    assert (type (latlon1) == type (latlon2) == LatLon) 
     assert (Angle1 >= 0 and Angle2 >= 0)
     assert (Angle1 < 90 or Angle2 < 90) 
     # Get cartesian vectors a and b (from ground points)
-    aVec = toRectangular (Lon1, Lat1)     
-    bVec = toRectangular (Lon2, Lat2)           
+    aVec = toRectangular (latlon1)     
+    bVec = toRectangular (latlon2)           
           
     # Calculate axb
     abCross = crossProduct (aVec, bVec)
@@ -193,7 +207,7 @@ def getIntersections (Lon1, Lat1, Lon2, Lat2, Angle1, Angle2):
     # Calculate the two intersections by performing rotation of rho and -rho
     int1 = normalizeVect(rotateVector (q, rotAxis, rho))
     int2 = normalizeVect(rotateVector (q, rotAxis, -rho))
-    return toLonLat(int1), toLonLat(int2)    
+    return toLatLon(int1), toLatLon(int2)    
 
 # Atmospheric refraction
     
@@ -211,11 +225,13 @@ def getRefraction (apparentAngle):
 
 # Data formatting
 
-def getGoogleMapString (lonLat, numDecimals): 
-    return str(round(lonLat[1],numDecimals)) + "," + str(round(lonLat[0],numDecimals))
-    
+def getGoogleMapString (latLon, numDecimals): 
+    return str(round(latLon.lat,numDecimals)) + "," + str(round(latLon.lon,numDecimals))
+
 def getRepresentation (ins, numDecimals, lat=False):
-    assert (type (numDecimals) == int and numDecimals >= 0) 
+    assert (type (numDecimals) == int and numDecimals >= 0)
+    if (type (ins) == LatLon): 
+        ins = ins.getTuple ()
     if type (ins) == float or type (ins) == int: 
         degrees = int (ins)
         if lat:
@@ -243,7 +259,7 @@ def getRepresentation (ins, numDecimals, lat=False):
             if i > 0:
                 retVal = retVal + ";"
         retVal = retVal + ")"
-        return retVal                 
+        return retVal           
         
 def getDMS (angle):
     degrees = int (angle)
@@ -301,7 +317,8 @@ class Sight :
                 
         self.correctDipOfHorizon ()
         self.correctForRefraction ()
-        self.GP_lon, self.GP_lat = self.__calculateGP ()
+        # self.GP_lon, self.GP_lat = self.__calculateGP ()
+        self.GP = self.__calculateGP ()
         
     def correctDipOfHorizon (self):
         if self.observer_height == 0:
@@ -337,7 +354,7 @@ class Sight :
         self.decl_time_0_degrees + (self.decl_time_1_degrees - self.decl_time_0_degrees)*minSecContribution + \
         self.decl_time_0_minutes/60 + ((self.decl_time_1_minutes - self.decl_time_0_minutes)/60)*minSecContribution
         
-        return resultLON, resultLAT
+        return LatLon (resultLAT, resultLON)
 
     def getAngle (self):
         measured_alt_decimal = self.measured_alt_degrees + \
@@ -348,20 +365,23 @@ class Sight :
     def getRadius (self):
         return (self.getAngle()/360)*EARTH_CIRCUMFERENCE
         
-    def getGP (self):
-        return self.GP_lon, self.GP_lat
-        
 class SightPair:
     def __init__ (self, sf1, sf2):
         assert (type (sf1) == type (sf2) == Sight)
         self.sf1 = sf1
         self.sf2 = sf2
         
+    def getIntersections2 (self): 
+        return getIntersections2 (self.sf1.GP_lon, self.sf1.GP_lat, self.sf2.GP_lon, self.sf2.GP_lat, self.sf1.getAngle(), self.sf2.getAngle())
+        
     def getIntersections (self): 
-        return getIntersections (self.sf1.GP_lon, self.sf1.GP_lat, self.sf2.GP_lon, self.sf2.GP_lat, self.sf1.getAngle(), self.sf2.getAngle())
+        return getIntersections (self.sf1.GP,\
+                                 self.sf2.GP,\
+                                 self.sf1.getAngle(), self.sf2.getAngle())        
  
 class SightCollection:
     def __init__ (self, sfList):
+        assert (type (sfList) == list)
         assert (len (sfList) >= 2)
         self.sfList = sfList
 
@@ -433,11 +453,10 @@ class SightCollection:
             # Make a mean value on the best intersections. 
             for cp in chosenPoints: 
                 selectedCoord = coords [cp]
-                rectVec = toRectangular (selectedCoord[0], selectedCoord[1])
+                rectVec = toRectangular (selectedCoord)
                 summationVec = addVecs (summationVec, multScalarVect (1/nrOfChosenPoints, rectVec))
             summationVec = normalizeVect (summationVec)
-            retLON, retLAT = toLonLat (summationVec)
-            return retLON, retLAT
+            return toLatLon (summationVec)
         else:
             print ("Invalid input.")
             return None
@@ -449,8 +468,7 @@ class SightTrip:
     def __init__ (self, sightStart, sightEnd, estimatedStartingPointLAT, estimatedStartPointLON, courseDegrees, speedKnots):
         self.sightStart                = sightStart
         self.sightEnd                  = sightEnd
-        self.estimatedStartingPointLAT = estimatedStartingPointLAT
-        self.estimatedStartingPointLON = estimatedStartPointLON        
+        self.estimatedStartingPoint    = LatLon (estimatedStartingPointLAT, estimatedStartPointLON)     
         self.courseDegrees             = courseDegrees
         self.speedKnots                = speedKnots
         self.__calculateTimeHours ()
@@ -478,11 +496,11 @@ class SightTrip:
     def __calculateDistanceToTarget (self, angle, aVec, bVec):
         rotationAngle = degToRad (angle)
         rotatedVec = rotateVector (bVec, aVec, rotationAngle)
-        rotatedLonLat = toLonLat (rotatedVec)
-        takenOut = takeoutCourse (rotatedLonLat[1], rotatedLonLat[0], self.courseDegrees, self.speedKnots, self.timeHours)
+        rotatedLatLon = toLatLon (rotatedVec)
+        takenOut = takeoutCourse (rotatedLatLon, self.courseDegrees, self.speedKnots, self.timeHours)
          
-        dbp = distanceBetweenPoints (takenOut, (self.sightEnd.GP_lon, self.sightEnd.GP_lat)) - self.sightEnd.getRadius()
-        return dbp, takenOut, rotatedLonLat
+        dbp = distanceBetweenPoints (takenOut, self.sightEnd.GP) - self.sightEnd.getRadius()
+        return dbp, takenOut, rotatedLatLon
         
     def getIntersections (self):
         # Calculate intersections
@@ -494,7 +512,7 @@ class SightTrip:
         bestDistance = EARTH_CIRCUMFERENCE
         bestIntersection = None
         for ints in intersections:
-            theDistance = distanceBetweenPoints (ints, (self.estimatedStartingPointLON, self.estimatedStartingPointLAT))
+            theDistance = distanceBetweenPoints (ints, self.estimatedStartingPoint)
             if theDistance < bestDistance:
                 bestDistance = theDistance
                 bestIntersection = ints
@@ -502,8 +520,8 @@ class SightTrip:
         
         # Determine angle of the intersection point on sightStart small circle 
         
-        aVec = toRectangular (self.sightStart.GP_lon, self.sightStart.GP_lat)
-        bVec = toRectangular (bestIntersection[0], bestIntersection[1])
+        aVec = toRectangular (self.sightStart.GP)
+        bVec = toRectangular (bestIntersection)
         
  
         # Apply Newtons method to find the location
