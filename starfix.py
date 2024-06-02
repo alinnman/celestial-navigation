@@ -109,8 +109,6 @@ def toLatLon (vec) -> LatLon:
 
 def toRectangular (latlon) -> list:
     ''' Convert LatLon (spherical) coordinate to cartesian '''
-    #assert (type (LAT) == int or type (LAT) == float)
-    #assert (type (LON) == int or type (LON) == float)
     assert (type (latlon) == LatLon)
     phi = degToRad (90 - latlon.lat)
     theta = degToRad (latlon.lon)
