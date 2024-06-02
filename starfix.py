@@ -163,7 +163,7 @@ def getDipOfHorizon (hM : int | float) -> float:
     d = sqrt (h*(2*r + h))
     return (atan2 (d, r))*(180/pi)*60
     
-def getIntersections (latlon1 : LatLon, latlon2 : LatLon, Angle1 : int | float, Angle2 : int | float) -> tuple:
+def getIntersections (latlon1 : LatLon, latlon2 : LatLon, Angle1 : int | float, Angle2 : int | float, estimatedPosition : LatLon = None) -> LatLon | tuple:
     '''
     Get intersection of two circles on a spheric surface. At least one of the circles must be a small circle. 
     Based on https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere 
@@ -202,7 +202,20 @@ def getIntersections (latlon1 : LatLon, latlon2 : LatLon, Angle1 : int | float, 
     # Calculate the two intersections by performing rotation of rho and -rho
     int1 = normalizeVect(rotateVector (q, rotAxis, rho))
     int2 = normalizeVect(rotateVector (q, rotAxis, -rho))
-    return toLatLon(int1), toLatLon(int2)    
+    retTuple = (toLatLon(int1), toLatLon(int2))
+    if estimatedPosition == None:
+        return retTuple
+    else: 
+        # Check which of the intersections is closest to our estimatedCoordinates        
+        bestDistance = EARTH_CIRCUMFERENCE
+        bestIntersection = None
+        for ints in retTuple:
+            theDistance = distanceBetweenPoints (ints, estimatedPosition)
+            if theDistance < bestDistance:
+                bestDistance = theDistance
+                bestIntersection = ints
+        assert (bestIntersection != None)
+        return bestIntersection
 
 # Atmospheric refraction
     
@@ -271,9 +284,8 @@ def getDMS (angle : int | float) -> tuple:
     seconds = (angle-degrees-minutes/60)*3600
     return degrees, minutes, seconds
 
-# Object representing a sight (star fix)
-
 class Sight :
+    '''  Object representing a sight (star fix '''
     def __init__ (self, \
                   object_name : str, \
                   time_year : int, \
@@ -374,10 +386,11 @@ class SightPair:
         self.sf1 = sf1
         self.sf2 = sf2
         
-    def getIntersections (self) -> tuple: 
+    def getIntersections (self, estimatedPosition = None) -> tuple: 
         return getIntersections (self.sf1.GP,\
                                  self.sf2.GP,\
-                                 self.sf1.getAngle(), self.sf2.getAngle())        
+                                 self.sf1.getAngle(), self.sf2.getAngle(),\
+                                 estimatedPosition)        
  
 class SightCollection:
     def __init__ (self, sfList : list):
@@ -459,11 +472,9 @@ class SightCollection:
         else:
             print ("Invalid input.")
             return None
-
-# Object used for dead-reckoning in daytime (with only Sun sights)   
-  
         
 class SightTrip:
+    ''' Object used for dead-reckoning in daytime (with only Sun sights)  '''
     def __init__ (self, \
                        sightStart : Sight,\
                        sightEnd : Sight,\
@@ -509,25 +520,13 @@ class SightTrip:
         
     def getIntersections (self) -> tuple:
         # Calculate intersections
-        coll = SightCollection ([self.sightStart, self.sightEnd])
-        intersections = coll.getIntersections ()
+        pair = SightPair (self.sightStart, self.sightEnd)
+        bestIntersection = pair.getIntersections (estimatedPosition = self.estimatedStartingPoint)
         
-        # Check which of the intersections is closest to our estimatedCoordinates
-        
-        bestDistance = EARTH_CIRCUMFERENCE
-        bestIntersection = None
-        for ints in intersections:
-            theDistance = distanceBetweenPoints (ints, self.estimatedStartingPoint)
-            if theDistance < bestDistance:
-                bestDistance = theDistance
-                bestIntersection = ints
-        assert (bestIntersection != None) 
-        
-        # Determine angle of the intersection point on sightStart small circle 
-        
+        # Determine angle of the intersection point on sightStart small circle         
         aVec = toRectangular (self.sightStart.GP)
         bVec = toRectangular (bestIntersection)
-        
+        assert (type(bestIntersection) == LatLon)
  
         # Apply Newtons method to find the location
         currentRotation = 0
