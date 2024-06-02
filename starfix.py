@@ -319,12 +319,12 @@ class Sight :
         self.observer_height      = observer_height
         assert (self.object_name != "Sun" or (self.sha_diff_degrees == 0 and self.sha_diff_minutes == 0))
                 
-        self.correctDipOfHorizon ()
-        self.correctForRefraction ()
+        self.__correctDipOfHorizon ()
+        self.__correctForRefraction ()
         # self.GP_lon, self.GP_lat = self.__calculateGP ()
         self.GP = self.__calculateGP ()
         
-    def correctDipOfHorizon (self):
+    def __correctDipOfHorizon (self):
         if self.observer_height == 0:
             return
         madDecimal = 90-self.getAngle()
@@ -335,7 +335,7 @@ class Sight :
         self.measured_alt_minutes = m
         self.measured_alt_seconds = s       
     
-    def correctForRefraction (self):
+    def __correctForRefraction (self):
         madDecimal = 90-self.getAngle ()
         refraction = getRefraction (madDecimal)/60
         newMad = madDecimal - refraction
