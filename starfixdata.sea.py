@@ -1,9 +1,9 @@
 from starfix import Sight, SightTrip, getRepresentation, getGoogleMapString
 
-
 # We are sailing from point s1 to point s2, in the Baltic Sea.  
-# Point s1 is located near the coast and we get this coordinate using approximate land-based navigation (or from a previous sight)
-
+# Point s1 is located near the coast and we get this coordinate 
+# using approximate land-based navigation (or from a previous sight)
+# NOTE: This can be very approximate. It is used for selecting the correct intersection point on Earth. 
 s1LonLat = (18, 59)
 
 #This is the star fix for s1, the starting point

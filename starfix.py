@@ -1,6 +1,8 @@
 from math import pi, sin, cos, acos, sqrt, tan, atan2
 from datetime import datetime, timezone
 
+# Dimension of Earth
+
 EARTH_CIRCUMFERENCE_EQUATORIAL = 40075.017
 EARTH_CIRCUMFERENCE_MERIDIONAL = 40007.86
 EARTH_CIRCUMFERENCE = (EARTH_CIRCUMFERENCE_EQUATORIAL + EARTH_CIRCUMFERENCE_MERIDIONAL) / 2
@@ -135,20 +137,28 @@ def rotateVector (vec, rotVec, angleRadians) -> list:
     
 # Course management
 
-def modCourse (lon) -> float: 
+def modCourse (lon) -> float:
+    ''' Transform a course angle into the compass range of (0,360) '''
     assert (type (lon) == int or type (lon) == float)
     x = lon % 360
     return x    
    
 def takeoutCourse (latLon, course, speedKnots, timeHours) -> LatLon:
+    ''' Calculates a trip movement. Simplified formula, not using great circles '''
+    assert (type(latLon) == LatLon)
+    assert (type(course) == int or type(course) == float)
+    assert (type(speedKnots) == int or type(speedKnots) == float) 
+    assert (type(timeHours) == int or type(timeHours) == float) 
     distance = speedKnots * timeHours
     distanceDegrees = distance / 60
+    # The "stretch" is just taking care of narrowing longitudes on higher latitudes
     stretchAtStart = cos (degToRad (latLon.lat))
     diffLat = (cos (degToRad(course))*distanceDegrees)
     diffLon = (sin (degToRad(course))*distanceDegrees/stretchAtStart)
     return LatLon (latLon.lat+diffLat, latLon.lon+diffLon)
     
 def distanceBetweenPoints (latLon1, latLon2) -> float:
+    ''' Calculate distance between to points. Using great circles '''
     assert (type(latLon1) == type(latLon2) == LatLon)
     normVec1 = toRectangular (latLon1)
     normVec2 = toRectangular (latLon2)
@@ -158,16 +168,22 @@ def distanceBetweenPoints (latLon1, latLon2) -> float:
     return distance    
 
 def KMtoNM (km) -> float: 
+    ''' Convert from kilometers to nautical miles '''
     assert (type (km) == int or type (km) == float)
     return (km / EARTH_CIRCUMFERENCE)*360*60
     
 def NMtoKM (nm) -> float:
+    ''' Convert from nautical miles to kilometers '''
     assert (type (nm) == int or type (nm) == float)
     return (nm/(360*60))*EARTH_CIRCUMFERENCE
     
 # Horizon
 
 def getDipOfHorizon (hM) -> float:
+    ''' Calculate dip of horizon in arc minutes 
+    Parameter:
+        hM : height in meters
+    '''
     assert (type (hM) == int or type (hM) == float)
     h = hM / 1000
     r = EARTH_CIRCUMFERENCE / (2*pi)
@@ -179,7 +195,6 @@ def getIntersections (latlon1, latlon2, Angle1, Angle2) -> tuple:
     Get intersection of two circles on a spheric surface. At least one of the circles must be a small circle. 
     Based on https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere 
     '''
-    #assert (Angle1 >= 0 and Angle1 != 90 and Angle2 >= 0 and Angle2 != 90)
     assert (type (latlon1) == type (latlon2) == LatLon) 
     assert (Angle1 >= 0 and Angle2 >= 0)
     assert (Angle1 < 90 or Angle2 < 90) 
@@ -221,8 +236,14 @@ def getIntersections (latlon1, latlon2, Angle1, Angle2) -> tuple:
     
 def getRefraction (apparentAngle) -> float:
     '''
+    Calculate an estimation of the effect of atmospheric refraction. 
     Bennett's formula
     See: https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction 
+    
+    Parameter:
+        apparentAngle: The apparent (measured) altitude in degrees
+    Returns:
+        The true altitude 
     '''
     assert (type(apparentAngle) == float or type (apparentAngle) == int)    
     q = pi/180
@@ -234,9 +255,11 @@ def getRefraction (apparentAngle) -> float:
 # Data formatting
 
 def getGoogleMapString (latLon, numDecimals) -> str : 
+    ''' Return a coordinate which can be used in Google Map '''
     return str(round(latLon.lat,numDecimals)) + "," + str(round(latLon.lon,numDecimals))
 
 def getRepresentation (ins, numDecimals, lat=False) -> str:
+    ''' Converts coordinate(s) to a string representation '''
     assert (type (numDecimals) == int and numDecimals >= 0)
     if (type (ins) == LatLon): 
         ins = ins.getTuple ()
@@ -268,8 +291,11 @@ def getRepresentation (ins, numDecimals, lat=False) -> str:
                 retVal = retVal + ";"
         retVal = retVal + ")"
         return retVal           
-        
+
+      
 def getDMS (angle) -> tuple:
+    ''' Convert an angle (in degrees) to a tuple of degrees, arc minutes and arc seconds '''
+    assert (type(angle) == int or type(angle) == float)
     degrees = int (angle)
     minutes = int ((angle-degrees)*60)
     seconds = (angle-degrees-minutes/60)*3600
@@ -391,6 +417,7 @@ class SightCollection:
         self.sfList = sfList
 
     def getIntersections (self, limit=100):
+        assert (type(limit) == int or type(limit) == float)
         nrOfFixes = len(self.sfList)
         if (nrOfFixes == 2):
             '''
@@ -499,6 +526,8 @@ class SightTrip:
         self.timeHours = (it2 - it1) / 3600
         
     def __calculateDistanceToTarget (self, angle, aVec, bVec) -> tuple:
+        assert (type(angle) == int or type(angle) == float)
+        assert (type(aVec) == type(bVec) == list) 
         rotationAngle = degToRad (angle)
         rotatedVec = rotateVector (bVec, aVec, rotationAngle)
         rotatedLatLon = toLatLon (rotatedVec)
