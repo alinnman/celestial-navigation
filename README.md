@@ -41,7 +41,7 @@ You create a sight with code like this.
                   sha_diff_minutes     = 33.4 \
                   )
                   
-You can also see a complete example in the python script [starfixdata.py](starfixdata.py) and also [a corresponding excel file](chicago.ods). 
+You can also see a complete example in the python script [starfixdata.chicago.py](starfixdata.chicago.py) and also [a corresponding excel file](chicago.ods). 
 This sample is built using altitudes taken from a star atlas ([Stellarium](https://en.wikipedia.org/wiki/Stellarium_(software))) from a point in central Chicago on May 5th 2024. 
 In other words: No sextant readings were made and the accuracy is very good. 
 (Running this sample will give you an accuracy of just some 100 meters). 
@@ -204,7 +204,7 @@ The final part of the algorithm sorts the set $D$ to extract a maximum of $\frac
 
 The final result will be a **single** mean value of the extracted intersection points. 
 
-This picture shows the small circles defined in the [starfixdata.py](starfixdata.py) sample
+This picture shows the small circles defined in the [starfixdata.chicago.py](starfixdata.chicago.py) sample
 ![Locating from Chicago](maps/chicago-intersection-1.png "Locating from Chicago")
 
 When we move in closer we can clearly see a precise intersection. ![Locating from Chicago (detail)](maps/chicago-intersection-2.png "Locating from Chicago (detail)")
