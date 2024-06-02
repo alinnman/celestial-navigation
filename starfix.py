@@ -275,27 +275,27 @@ def getDMS (angle : int | float) -> tuple:
 
 class Sight :
     def __init__ (self, \
-                  object_name, \
-                  time_year, \
-                  time_month, \
-                  time_day, \
-                  time_hour, \
-                  time_minute, \
-                  time_second, \
-                  gha_time_0_degrees, \
-                  gha_time_0_minutes, \
-                  gha_time_1_degrees, \
-                  gha_time_1_minutes, \
-                  decl_time_0_degrees, \
-                  decl_time_0_minutes, \
-                  decl_time_1_degrees, \
-                  decl_time_1_minutes, \
-                  measured_alt_degrees, \
-                  measured_alt_minutes, \
-                  measured_alt_seconds, \
-                  sha_diff_degrees = 0, \
-                  sha_diff_minutes = 0, \
-                  observer_height = 0):
+                  object_name : str, \
+                  time_year : int, \
+                  time_month : int, \
+                  time_day : int, \
+                  time_hour : int, \
+                  time_minute : int, \
+                  time_second : int, \
+                  gha_time_0_degrees : int, \
+                  gha_time_0_minutes : int | float, \
+                  gha_time_1_degrees : int, \
+                  gha_time_1_minutes : int | float, \
+                  decl_time_0_degrees : int, \
+                  decl_time_0_minutes : int | float, \
+                  decl_time_1_degrees : int, \
+                  decl_time_1_minutes : int | float, \
+                  measured_alt_degrees : int | float, \
+                  measured_alt_minutes : int | float, \
+                  measured_alt_seconds : int | float, \
+                  sha_diff_degrees : int | float = 0, \
+                  sha_diff_minutes : int | float = 0, \
+                  observer_height : int | float = 0):
         self.object_name          = object_name
         self.time_year            = time_year
         self.time_month           = time_month
@@ -464,7 +464,13 @@ class SightCollection:
   
         
 class SightTrip:
-    def __init__ (self, sightStart, sightEnd, estimatedStartingPointLAT, estimatedStartPointLON, courseDegrees, speedKnots):
+    def __init__ (self, \
+                       sightStart : Sight,\
+                       sightEnd : Sight,\
+                       estimatedStartingPointLAT : int | float,\
+                       estimatedStartPointLON : int | float,\
+                       courseDegrees : int | float,\
+                       speedKnots : int | float):
         self.sightStart                = sightStart
         self.sightEnd                  = sightEnd
         self.estimatedStartingPoint    = LatLon (estimatedStartingPointLAT, estimatedStartPointLON)     
