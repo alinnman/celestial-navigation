@@ -478,13 +478,12 @@ class SightTrip:
     def __init__ (self, \
                        sightStart : Sight,\
                        sightEnd : Sight,\
-                       estimatedStartingPointLAT : int | float,\
-                       estimatedStartPointLON : int | float,\
+                       estimatedStartingPoint : LatLon,\
                        courseDegrees : int | float,\
                        speedKnots : int | float):
         self.sightStart                = sightStart
         self.sightEnd                  = sightEnd
-        self.estimatedStartingPoint    = LatLon (estimatedStartingPointLAT, estimatedStartPointLON)     
+        self.estimatedStartingPoint    = estimatedStartingPoint   
         self.courseDegrees             = courseDegrees
         self.speedKnots                = speedKnots
         self.__calculateTimeHours ()

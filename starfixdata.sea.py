@@ -1,10 +1,10 @@
-from starfix import Sight, SightTrip, getRepresentation, getGoogleMapString
+from starfix import Sight, SightTrip, getRepresentation, getGoogleMapString, LatLon
 
 # We are sailing from point s1 to point s2, in the Baltic Sea.  
 # Point s1 is located near the coast and we get this coordinate 
 # using approximate land-based navigation (or from a previous sight)
 # NOTE: This can be very approximate. It is used for selecting the correct intersection point on Earth. 
-s1LonLat = (18, 59)
+s1LatLon = LatLon (59, 18)
 
 #This is the star fix for s1, the starting point
 
@@ -58,8 +58,7 @@ cCourse = 175
 speed = 20
 st = SightTrip (sightStart = s1,\
                  sightEnd = s2,\
-                 estimatedStartingPointLAT = s1LonLat[1],\
-                 estimatedStartPointLON    = s1LonLat[0],\
+                 estimatedStartingPoint    = s1LatLon,\
                  courseDegrees             = cCourse,\
                  speedKnots                = speed)
 intersections = st.getIntersections ()
