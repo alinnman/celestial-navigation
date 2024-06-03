@@ -6,7 +6,7 @@ Contains a simple python script to be used for [celestial navigation](https://en
 Sights have to be obtained using a sextant, a nautical almanac and an accurate clock. <br>
 The python script takes care of the **sight reduction**. For two sights you will get two possible coordinates. For three or more sights you will get one coordinate (calculated as a mean value). 
 
-The script supports **stationary** observations, i.e. when observations are made from a single position, typically using multiple sights. There is also support for **dead reckoning** observations, typically at sea in daytime where you only have access to the Sun. See section 3 below for more information. 
+The script supports **stationary** observations, i.e. when observations are made from a single position, typically using multiple sights. There is also support for **dead reckoning** observations, typically at sea on a moving ship. See section 3 below for more information. 
 
 The python script only uses basic libraries (no numpy or similar) and could be installed in [PyDroid](https://play.google.com/store/apps/details?id=ru.iiec.pydroid3) to allow for use on a mobile phone 
 (with no need for internet access). Python 3.11 is required.
