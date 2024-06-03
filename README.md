@@ -222,18 +222,19 @@ When navigating in daytime with only the Sun available you can use this techniqu
     # Point s1 is located near the coast and we get this coordinate 
     # using approximate land-based navigation (or from a previous sight)
     # NOTE: This can be very approximate. It is used for selecting the correct intersection point on Earth. 
-    s1LonLat = (18, 59)
+    s1LatLon = LatLon (59, 18)
 
     # We define two star fixes  
     s1 = Sight (......) # This is your sight at the start of this trip segment. 
     s2 = Sight (......) # This is your sight at the end of this trip segment.
-    # See above for how to create a sight object
+    
+See above for how to create a sight object
+    
     # We reach s2 by applying about 175 degrees for 1 hour (time between taking of sights) with a speed of 20 knots. 
     cCourse = 175
     speed = 20    
     st = SightTrip (sightStart = s1, sightEnd = s2,\
-                estimatedStartingPointLAT = s1LonLat[1],\
-                estimatedStartPointLON    = s1LonLat[0],\
+                estimatedStartingPoint    = s1LatLon,\
                 courseDegrees             = cCourse,\
                 speedKnots                = speed)
 
