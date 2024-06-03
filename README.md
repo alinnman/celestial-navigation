@@ -117,6 +117,8 @@ This is a short outline of the algorithm. Two circles $A$ and $B$ define the cir
 $A = \lbrace p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land |p| = 1 \rbrace$ <br/>
 $B = \lbrace p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land |p| = 1 \rbrace$ 
 
+(From now on we assume all coordinates/vectors are located on the unity sphere, i.e. $|p| = 1$, i.e. the Earth has "radius = 1")
+
 We aim for finding the intersections $p_1$ and $p_2$ for the circles $A$ and $B$ and the point $q$ being the midpoint between $p_1$ and $p_2$. 
 
 Using the Pythagorean Theorem for a Sphere it is easy to see this: 
@@ -189,7 +191,7 @@ $|I_p| = n^2 + n $
 
 For each pair of intersection points we calculate the distance. The distance is easily calculated using this formula. 
 
-$d\left(x,y\right) = \sin xy $
+$d\left(x,y\right) = \arccos (x \cdot y) $
 
 This will give us the following set
 
