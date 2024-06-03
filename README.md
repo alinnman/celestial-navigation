@@ -15,6 +15,8 @@ A [digital version of the Nautical Almanac](NAtrad(A4)_2024.pdf) for 2024 is inc
 
 A more detailed description of celestial navigation can be found [here](https://www.waypointamsterdam.com/Handy_stuf/Short_Guide_To_Astro_navigation.pdf).
 
+If you wonder why I wrote this in the first place, then see [this short explanation](WHY.md).
+
 ## 1. Making sights
 
 You create a sight with code like this. 
