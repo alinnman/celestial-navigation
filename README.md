@@ -216,7 +216,7 @@ When we move in closer we can clearly see a precise intersection. ![Locating fro
 
 When navigating in daytime with only the Sun available you can use this technique to support dead reckoning where sights of the Sun will give extra accuracy. You do this by defining a trip segment like this. 
 
-    from starfix import SightTrip, Sight
+    from starfix import SightTrip, Sight, LatLon
     
     # We are sailing from point s1 to point s2, in the Baltic Sea.  
     # Point s1 is located near the coast and we get this coordinate 
