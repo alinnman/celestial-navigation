@@ -247,7 +247,7 @@ Now you can calculate the coordinates for this trip.
 
 The algorithm is a calculation based on distance calculations on segments of the small circles related to $s_1$ and $s_2$. 
 
-The two small circles define a *sight pair* $S_p$ but the two sights are taken at different times. There are two intersection points $\lbrace p_1,p_2 \rbrace$. We select the intersection $p_i$ point which is closest to the estimatedStarting point $p_e$ by finding the minimum value of $\arccos (p_n \cdot p_e)$
+The two small circles define a *sight pair* $S_p$ but the two sights are taken at different times. There are two intersection points $\lbrace p_1,p_2 \rbrace$. We select the intersection $p_i$ point which is closest to the estimated starting point $p_e$ by finding the minimum value of $\arccos (p_n \cdot p_e)$
 
 We now define a function on a rotation angle $\rho$ which we will apply on the circle $s_1$
 
