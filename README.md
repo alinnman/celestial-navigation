@@ -259,7 +259,7 @@ where<br>
 * $p_{\text{GPs2}}$ is the vector of the *ground point* of sight $s_2$
 * $\alpha_{s2}$ is the altitude measured for $s_2$ (see above for calculation)
 
-The solution of this equation is computed using [Newton's method](https://en.wikipedia.org/wiki/Newton%27s_method). 
+The solution of the equation $K(\rho) = 0$ is computed using [Newton's method](https://en.wikipedia.org/wiki/Newton%27s_method). 
 
 The supplied script sample [starfixdata.sea.py](starfixdata.sea.py) contains a demo for a short trip at sea (in the Baltic Sea). 
 
