@@ -251,12 +251,12 @@ The two small circles define a *sight pair* $S_p$ but the two sights are taken a
 
 We now define a function on a rotation angle $\rho$ which we will apply on the circle $s_1$
 
-$K(\rho) = \arccos ( (r(s_1,\rho) + t(\phi,\tau))\cdot p_{\text{GP}_{s2}} ) - \arccos ( \alpha_{s2})$
+$K(\rho) = \arccos ( (r(s_1,\rho) + t(\phi,\tau))\cdot p_{\text{GPs2}} ) - \arccos ( \alpha_{s2})$
 
 where<br>
 * $r$ is a rotation function (based on Rodrigues formula, see above)
 * $t$ is a straight movement function based on approximate course $\phi$ with distance $\tau$.
-* $p_{\text{GP}_{s2}}$ is the vector of the *ground point* of sight $s_2$
+* $p_{\text{GPs2}}$ is the vector of the *ground point* of sight $s_2$
 * $\alpha_{s2}$ is the altitude measured for $s_2$ (see above for calculation)
 
 The solution of this equation is computed using [Newton's method](https://en.wikipedia.org/wiki/Newton%27s_method). 
