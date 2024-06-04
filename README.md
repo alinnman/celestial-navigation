@@ -84,7 +84,7 @@ The data is picked from your clock, sextant and the Nautical Almanac in the foll
 | *sha_diff_minutes*   | SHA of star vs Aries in minutes              | Only use for stars. Otherwise skip                             | Nautical Almanac |
 | *observer_height*    | Height of observer above sea level in meters | Only relevant for observations using natural horizon           | Height Measurement |
 
-### 2.i Atmospheric refraction<a name="atmospheric-refraction"></a>
+### 2.i. Atmospheric refraction<a name="atmospheric-refraction"></a>
 
 The measured altitude values (attributes measured_alt_degrees, measured_alt_minutes and measure_alt_seconds) are corrected for atmospheric refraction using [Bennett's empirical formula](https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction)
 
@@ -92,7 +92,7 @@ $R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right)$
 
 Where $R$ is the refraction in arc minutes and $h_a$ is the measured angle from zenith in degrees.
 
-### 2.ii Dip of horizon<a name="dip-of-horizon"></a>
+### 2.ii. Dip of horizon<a name="dip-of-horizon"></a>
 
 If you specify the *observer_height* parameter you will correct for the dip of the horizon. This is useful for observations from a ship deck at sea, or from a hill/mountain with flat surroundings. 
 The dip is calculated using this formula
@@ -107,7 +107,7 @@ where
 
 ## 3. Sight reduction<a name="sight-reduction"></a>
 
-### 3.i Using two sights<a name="using-two-sights"></a>
+### 3.i. Using two sights<a name="using-two-sights"></a>
 
 Using two star fixes a sight reduction can be done in the following way 
 
@@ -160,7 +160,7 @@ Apply the formula above for $\rho$ and $-\rho$ and you will get the two intersec
 
 Note: The algorithm will only work if at least one of the circles is a small circle. It cannot be used for calculating intersections of two great circles. 
 
-### 3.ii Using three or more sights<a name="using-three-or-more-sights"></a>
+### 3.ii. Using three or more sights<a name="using-three-or-more-sights"></a>
 
 Using three (or more) sights a sight reduction can be done in the following way 
 
