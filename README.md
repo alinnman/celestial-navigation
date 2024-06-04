@@ -19,30 +19,28 @@ If you wonder why I wrote this in the first place, then see [this short explanat
 
 ## 1. Making sights
 
-You create a sight with code like this. 
+You create a sight with code like this (for the Sun). 
 
-    c = Sight (   object_name          = "Vega", \
-                  time_year            = 2024,\
-                  time_month           = 5,\
-                  time_day             = 6,\
-                  time_hour            = 4, \
-                  time_minute          = 4, \
-                  time_second          = 13, \
-                  gha_time_0_degrees   = 284, \
-                  gha_time_0_minutes   = 30.4, \
-                  gha_time_1_degrees   = 299, \
-                  gha_time_1_minutes   = 32.9, \
-                  decl_time_0_degrees  = 38, \
-                  decl_time_0_minutes  = 48.1, \
-                  decl_time_1_degrees  = 38, \
-                  decl_time_1_minutes  = 48.1, \
-                  measured_alt_degrees = 30, \
-                  measured_alt_minutes = 16, \
-                  measured_alt_seconds = 24.6, \
-                  sha_diff_degrees     = 80, \
-                  sha_diff_minutes     = 33.4 \
-                  )
-                  
+    a = Sight (   object_name          = "Sun", \
+              time_year            = 2024,\
+              time_month           = 5,\
+              time_day             = 5,\
+              time_hour            = 15, \
+              time_minute          = 55, \
+              time_second          = 18, \
+              gha_time_0_degrees   = 45, \
+              gha_time_0_minutes   = 50.4, \
+              gha_time_1_degrees   = 60, \
+              gha_time_1_minutes   = 50.4, \
+              decl_time_0_degrees  = 16, \
+              decl_time_0_minutes  = 30.6, \
+              decl_time_1_degrees  = 16, \
+              decl_time_1_minutes  = 31.3, \
+              measured_alt_degrees = 55, \
+              measured_alt_minutes = 8, \
+              measured_alt_seconds = 0 \
+              )
+
 You can also see a complete example in the python script [starfixdata.chicago.py](starfixdata.chicago.py) and also [a corresponding excel file](chicago.ods). 
 This sample is built using altitudes taken from a star atlas ([Stellarium](https://en.wikipedia.org/wiki/Stellarium_(software))) from a point in central Chicago on May 5th 2024. 
 In other words: No sextant readings were made and the accuracy is very good. 
