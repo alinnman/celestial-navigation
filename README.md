@@ -1,6 +1,6 @@
 # celestial-navigation
 
-# Table of contents
+## Table of contents
 1. [Introduction](#introduction)
 1. [Making Sights](#making-sights)
     1. [Atmospheric Refraction](#atmospheric-refraction)
