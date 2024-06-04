@@ -135,7 +135,7 @@ def takeoutCourse (latLon : LatLon, course : int | float, speedKnots : int | flo
     return LatLon (latLon.lat+diffLat, latLon.lon+diffLon)
     
 def distanceBetweenPoints (latLon1 : LatLon, latLon2 : LatLon) -> float:
-    ''' Calculate distance between to points. Using great circles '''
+    ''' Calculate distance between two points. Using great circles '''
     normVec1 = toRectangular (latLon1)
     normVec2 = toRectangular (latLon2)
     dp = dotProduct (normVec1, normVec2)
