@@ -265,7 +265,7 @@ The two small circles define a *sight pair* $S_p$ but the two sights are taken a
 
 We now define a function on a rotation angle $\rho$ which we will apply on the circle $s_1$
 
-$K(\rho) = \arccos ( (r(s_1,\rho) + t(\phi,\tau))\cdot p_{\text{GPs2}} ) - \arccos ( \alpha_{s2})$
+$K(\rho) = \arccos ( (r(s_1,\rho) + t(\phi,\tau))\cdot p_{\text{GPs2}} ) - (\frac{\pi}{2} - \alpha_{s2})$
 
 where<br>
 * $r$ is a rotation function (based on Rodrigues formula, see above)
