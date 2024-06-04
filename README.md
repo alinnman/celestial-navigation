@@ -1,5 +1,17 @@
 # celestial-navigation
 
+# Table of contents
+1. [Introduction](#introduction)
+1. [Making Sights](#making-sights)
+    1. [Atmospheric Refraction](#atmospheric-refraction)
+    1. [Dip of Horizon](#dip-of-horizon)
+1. [Sight Reduction](#sight-reduction)
+    1. [Using two Sights](#using-two-sights)
+    1. [Using three or more sights](#using-three-or-more-sights) 
+1. [Dead Reckoning](#dead-reckoning)
+
+## 1. Introduction <a name="introduction"></a>
+
 ![US Navy training in celestial navigation](pics/us-navy.jpg "US Navy Training in Celestial Navigation")
 
 Contains a simple python script to be used for [celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation). <br>
@@ -17,7 +29,7 @@ A more detailed description of celestial navigation can be found [here](https://
 
 If you wonder why I wrote this in the first place, then see [this short explanation](WHY.md).
 
-## 1. Making sights
+## 2. Making sights <a name="making-sights"></a>
 
 You create a sight with code like this (for the Sun). 
 
@@ -72,7 +84,7 @@ The data is picked from your clock, sextant and the Nautical Almanac in the foll
 | *sha_diff_minutes*   | SHA of star vs Aries in minutes              | Only use for stars. Otherwise skip                             | Nautical Almanac |
 | *observer_height*    | Height of observer above sea level in meters | Only relevant for observations using natural horizon           | Height Measurement |
 
-### Atmospheric refraction
+### 2.A Atmospheric refraction<a name="atmospheric-refraction"></a>
 
 The measured altitude values (attributes measured_alt_degrees, measured_alt_minutes and measure_alt_seconds) are corrected for atmospheric refraction using [Bennett's empirical formula](https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction)
 
@@ -80,7 +92,7 @@ $R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right)$
 
 Where $R$ is the refraction in arc minutes and $h_a$ is the measured angle from zenith in degrees.
 
-### Dip of horizon
+### 2.B Dip of horizon<a name="dip-of-horizon"></a>
 
 If you specify the *observer_height* parameter you will correct for the dip of the horizon. This is useful for observations from a ship deck at sea, or from a hill/mountain with flat surroundings. 
 The dip is calculated using this formula
@@ -93,9 +105,9 @@ where
 * $h$ is the height of the observer (in meters). 
 * $r$ is the radius of the Earth (in meters). 
 
-## 2. Sight reduction
+## 3. Sight reduction<a name="sight-reduction"></a>
 
-### 2.1. Using two sights
+### 3.A Using two sights<a name="using-two-sights"></a>
 
 Using two star fixes a sight reduction can be done in the following way 
 
@@ -148,7 +160,7 @@ Apply the formula above for $\rho$ and $-\rho$ and you will get the two intersec
 
 Note: The algorithm will only work if at least one of the circles is a small circle. It cannot be used for calculating intersections of two great circles. 
 
-### 2.2 Using three or more sights
+### 3.B Using three or more sights<a name="using-three-or-more-sights"></a>
 
 Using three (or more) sights a sight reduction can be done in the following way 
 
@@ -215,7 +227,7 @@ When we move in closer we can clearly see a precise intersection. ![Locating fro
 *Note: The mapping software used in the images above is not precise, and the actual intersections are even "tighter" than shown above.* 
 
 
-## 3. Dead Reckoning (daytime navigation)
+## 4. Dead Reckoning<a name="dead-reckoning"></a>
 
 When navigating in daytime with only the Sun available you can use this technique to support dead reckoning where sights of the Sun will give extra accuracy. You do this by defining a trip segment like this. 
 
