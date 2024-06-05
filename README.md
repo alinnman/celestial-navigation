@@ -229,14 +229,13 @@ When we move in closer we can clearly see a precise intersection. ![Locating fro
 
 ## 4. Dead Reckoning<a name="dead-reckoning"></a>
 
-When navigating in daytime with only the Sun available you can use this technique to support dead reckoning where sights of the Sun will give extra accuracy. You do this by defining a trip segment like this. 
+When sailing (or moving on the ground) you can use this technique to support dead reckoning where repeated sights (typically of the Sun) will give extra accuracy. You do this by defining a trip segment like this. 
 
     from starfix import SightTrip, Sight, LatLon
     
     # We are sailing from point s1 to point s2, in the Baltic Sea.  
-    # Point s1 is located near the coast and we get this coordinate 
-    # using approximate land-based navigation (or from a previous sight)
-    # NOTE: This can be very approximate. It is used for selecting the correct intersection point on Earth. 
+    # We have a rough estimate of an initial position of 59N;18E to start with
+    # This estimate is used for selecting the correct intersection point on Earth. 
     s1LatLon = LatLon (59, 18)
 
     # We define two star fixes  
