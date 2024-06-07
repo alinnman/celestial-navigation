@@ -8,7 +8,9 @@
 1. [Sight Reduction](#sight-reduction)
     1. [Using two Sights](#using-two-sights)
     1. [Using three or more sights](#using-three-or-more-sights) 
+    1. [Running the chicago script](#run-chicago-script)
 1. [Dead Reckoning](#dead-reckoning)
+    1. [Running the sea script](#run-sea-script) 
 
 ## 1. Introduction <a name="introduction"></a>
 
@@ -217,6 +219,9 @@ The final part of the algorithm sorts the set $D$ to extract a maximum of $\frac
 
 The final result will be a **single** mean value of the extracted intersection points. 
 
+
+### 3.iii. Running the starfixdata.chicago script<a name="run-chicago-script"></a>
+
 This picture shows the small circles defined in the [starfixdata.chicago.py](starfixdata.chicago.py) sample
 ![Locating from Chicago](pics/chicago-intersection-1.png "Locating from Chicago")
 
@@ -224,6 +229,22 @@ When we move in closer we can clearly see a precise intersection. ![Locating fro
 
 *Note: The mapping software used in the images above is not precise, and the actual intersections are even "tighter" than shown above.* 
 
+The output of the script will be like this: 
+First we show the two intersection points from two small circles. The second one is within Chicago. 
+
+    ((N 7°,40.8′;W 94°,14.0′);(N 41°,51.2′;W 87°,38.6′))
+
+Then we add another small circle and show the best three intersections points
+
+    BEST COORDINATES
+    (N 41°,51.2′;W 87°,38.6′)
+    (N 41°,51.3′;W 87°,38.5′)
+    (N 41°,51.5′;W 87°,38.6′)
+    
+And finally we show the mean value calculation. It is easy to see our values being just 0.1-0.2 nautical miles. This accuracy cannot be expected if you use real sextant readings. 
+   
+    MEAN VALUE COORDINATE from multi-point sight data.
+    (N 41°,51.3′;W 87°,38.6′)
 
 ## 4. Dead Reckoning<a name="dead-reckoning"></a>
 
@@ -285,3 +306,25 @@ When we move in closer we can clearly see the intersection $p_i$.
 And the course (with our positions) can easily be found using a paralellogram adjustment where we "squeeze in" a route of 20 NM, course 175 degrees, starting at the first small circle and ending at the final circle. The classical method of doing this is of course using a chart and proper plotting equipment and assume linearity of the circle segments. 
 
 ![Sailing in the Baltic Sea (closeup)](pics/baltic-intersection-2-edit.png "Sailing in the Baltic Sea (closeup)")
+
+### 4.i. Running the starfixdata.sea script<a name="run-sea-script"></a>
+
+The script outputs the estimated starting and ending points for our trip segment (see the red arrow in the map above) 
+
+    Starting point = (N 58°,46.1′;E 18°,0.1′)
+    End point = (N 58°,26.2′;E 18°,3.5′)
+    
+In addition we get some diagnostic information. First the radius and GP coordinate of the small circle of the first observation. 
+    
+    S1 radius = 6581.3
+    S1 GP     = 23.4367,86.7554
+    
+And for the final observation. 
+    
+    S2 radius = 5722.4
+    S2 GP     = 23.4367,71.7571
+    
+If you want to plot the trip segment in Google Maps (GM) you have the coordinates here. 
+    
+    Starting point GM = 58.7684,18.0023
+    Ending   point GM = 58.4364,18.0583

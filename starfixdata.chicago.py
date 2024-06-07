@@ -66,18 +66,19 @@ c = Sight (   object_name          = "Vega", \
               sha_diff_minutes     = 33.4 \
               )
               
-
+print ("Two daytime observations of the sun")
 collection = SightCollection ([a, b])
 intersections = collection.getIntersections ()
 print (getRepresentation(intersections,1))
-
+print ("-----------------------------------")
+print ("We add an additional night time observation of Vega")
 collection = SightCollection ([a, b, c])
 intersections = collection.getIntersections ()
 print (getRepresentation(intersections,1))
 
 
 #Diagnostics for map rendering etc. 
-
+print ("Some useful data follows") 
 print ("A radius = " + str(round(a.getRadius (),1)))
 print ("A GP     = " + getGoogleMapString(a.GP,4))
 
