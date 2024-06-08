@@ -307,7 +307,8 @@ class Sight :
                   measured_alt_seconds : int | float, \
                   sha_diff_degrees : int | float = 0, \
                   sha_diff_minutes : int | float = 0, \
-                  observer_height : int | float = 0):
+                  observer_height : int | float = 0, \
+                  artificial_horizon : bool = False):
         self.object_name          = object_name
         self.time_year            = time_year
         self.time_month           = time_month
@@ -330,11 +331,22 @@ class Sight :
         self.sha_diff_minutes     = sha_diff_minutes
         self.observer_height      = observer_height
         assert (self.object_name != "Sun" or (self.sha_diff_degrees == 0 and self.sha_diff_minutes == 0))
-                
+        
+        if artificial_horizon:
+            self.__correctForArtficialHorizon ()
+            
         self.__correctDipOfHorizon ()
         self.__correctForRefraction ()
         # self.GP_lon, self.GP_lat = self.__calculateGP ()
         self.GP = self.__calculateGP ()
+        
+    def __correctForArtficialHorizon (self):
+        madDecimal = 90-self.getAngle()
+        newMad = madDecimal / 2
+        d, m, s = getDMS (newMad)
+        self.measured_alt_degrees = d
+        self.measured_alt_minutes = m
+        self.measured_alt_seconds = s
         
     def __correctDipOfHorizon (self):
         if self.observer_height == 0:
