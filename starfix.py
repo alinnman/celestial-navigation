@@ -276,7 +276,7 @@ def getRepresentation (ins : LatLon | tuple | list, numDecimals : int, lat=False
         return retVal           
 
       
-def getDMS (angle : int | float) -> tuple[float]:
+def getDMS (angle : int | float) -> tuple[int | float]:
     ''' Convert an angle (in degrees) to a tuple of degrees, arc minutes and arc seconds '''
     degrees = int (angle)
     minutes = int ((angle-degrees)*60)
