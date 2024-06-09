@@ -334,6 +334,7 @@ class Sight :
         self.sha_diff_minutes     = sha_diff_minutes
         self.observer_height      = observer_height
         assert (self.object_name != "Sun" or (self.sha_diff_degrees == 0 and self.sha_diff_minutes == 0))
+        assert (not (self.observer_height != 0 and artificial_horizon == True))
         if index_error_minutes != 0:
             self.__correctForIndexError (index_error_minutes)        
         if artificial_horizon:
