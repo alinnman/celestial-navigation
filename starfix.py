@@ -105,6 +105,16 @@ def toRectangular (latlon : LatLon) -> list:
     aVec = normalizeVect (aVec)
     return aVec
     
+def getDMS (angle : int | float) -> tuple[int | float]:
+    ''' Convert an angle (in degrees) to a tuple of degrees, arc minutes and arc seconds '''
+    degrees = int (angle)
+    minutes = int ((angle-degrees)*60)
+    seconds = (angle-degrees-minutes/60)*3600
+    return degrees, minutes, seconds
+
+def getDecimalDegrees (degrees : int | float, minutes : int | float, seconds : int | float) -> float:
+    return degrees + minutes/60 + seconds/3600    
+    
 def rotateVector (vec : list, rotVec : list, angleRadians : int | float) -> list:
     '''
     Rotate a vector around a rotation vector. Based on Rodrigues formula. https://en.wikipedia.org/wiki/Rodrigues%27_formula 
@@ -273,18 +283,7 @@ def getRepresentation (ins : LatLon | tuple | list, numDecimals : int, lat=False
             if i > 0:
                 retVal = retVal + ";"
         retVal = retVal + ")"
-        return retVal           
-
-      
-def getDMS (angle : int | float) -> tuple[int | float]:
-    ''' Convert an angle (in degrees) to a tuple of degrees, arc minutes and arc seconds '''
-    degrees = int (angle)
-    minutes = int ((angle-degrees)*60)
-    seconds = (angle-degrees-minutes/60)*3600
-    return degrees, minutes, seconds
-
-def getDecimalDegrees (degrees : int | float, minutes : int | float, seconds : int | float) -> float:
-    return degrees + minutes/60 + seconds/3600
+        return retVal
 
 class Sight :
     '''  Object representing a sight (star fix '''
