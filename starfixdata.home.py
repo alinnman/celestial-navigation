@@ -4,7 +4,7 @@ from starfix import Sight, SightCollection, SightTrip, LatLon,getRepresentation,
 # This is an observation from an actual sextant reading. 
 # I used a simple plastic sextant (Davis Mk III) and an artificial horizon. 
 # I also measured the index error approximately, since the sextant is hard to adjust very well. 
-# The reading is accurate to 1.5 nautical miles which is very good..
+# The reading is accurate to a couple of nautical miles which is very good..
         
 a = Sight (   object_name          = "Sun", \
               time_year            = 2024,\
@@ -25,7 +25,7 @@ a = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 51, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True, \
-              index_error_minutes  = 8
+              index_error_minutes  = 10
               )
 
 b = Sight (   object_name          = "Sun", \
@@ -47,7 +47,7 @@ b = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 9, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True,\
-              index_error_minutes  = 8
+              index_error_minutes  = 5
               )
       
 print ("Two daytime observations of the sun")

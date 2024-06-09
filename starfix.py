@@ -15,7 +15,7 @@ class LatLon:
         self.lat = lat
         self.lon = lon
 
-    def getTuple (self) -> tuple :
+    def getTuple (self) -> tuple[float | int] :
         ''' Used to simplify some code where tuples are more practical '''
         return self.lon, self.lat
         
@@ -221,14 +221,13 @@ def getIntersections (latlon1 : LatLon, latlon2 : LatLon, Angle1 : int | float, 
     
 def getRefraction (apparentAngle : int | float) -> float:
     '''
-    Calculate an estimation of the effect of atmospheric refraction. 
-    Bennett's formula
+    Calculate an estimation of the effect of atmospheric refraction using Bennett's formula
     See: https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction 
     
     Parameter:
         apparentAngle: The apparent (measured) altitude in degrees
     Returns:
-        The true altitude 
+        The refraction in arc minutes
     '''
     q = pi/180
     h = apparentAngle
@@ -239,7 +238,7 @@ def getRefraction (apparentAngle : int | float) -> float:
 # Data formatting
 
 def getGoogleMapString (latLon : LatLon, numDecimals : int) -> str : 
-    ''' Return a coordinate which can be used in Google Map '''
+    ''' Return a coordinate which can be used in Google Maps '''
     return str(round(latLon.lat,numDecimals)) + "," + str(round(latLon.lon,numDecimals))
 
 def getRepresentation (ins : LatLon | tuple | list, numDecimals : int, lat=False) -> str:
@@ -277,12 +276,15 @@ def getRepresentation (ins : LatLon | tuple | list, numDecimals : int, lat=False
         return retVal           
 
       
-def getDMS (angle : int | float) -> tuple:
+def getDMS (angle : int | float) -> tuple[float]:
     ''' Convert an angle (in degrees) to a tuple of degrees, arc minutes and arc seconds '''
     degrees = int (angle)
     minutes = int ((angle-degrees)*60)
     seconds = (angle-degrees-minutes/60)*3600
     return degrees, minutes, seconds
+
+def getDecimalDegrees (degrees : int | float, minutes : int | float, seconds : int | float) -> float:
+    return degrees + minutes/60 + seconds/3600
 
 class Sight :
     '''  Object representing a sight (star fix '''
@@ -413,7 +415,7 @@ class SightPair:
                                  self.sf2.GP,\
                                  self.sf1.getAngle(), self.sf2.getAngle(),\
                                  estimatedPosition)        
- 
+
 class SightCollection:
     def __init__ (self, sfList : list):
         assert (len (sfList) >= 2)
