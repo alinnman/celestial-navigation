@@ -338,4 +338,4 @@ You can also see a real-life measurement I recently made using a simple plastic 
 
 The sample can be found [here](starfixdata.home.py)
 The resulting position is just 1.45 nautical miles away from my real position, which I consider being an excellent result given the simple equipment and my modest level of training. 
-But there are some question marks about this accuracy, and I might need to do this experiment since I did not correctly measure the index error of the sextant. 
+But there are some question marks about this accuracy, and I might need to do this experiment again since I did not correctly measure the index error of the sextant. 
