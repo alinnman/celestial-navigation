@@ -242,7 +242,7 @@ Then we add another small circle and show the best three intersections points
     (N 41°,51.3′;W 87°,38.5′)
     (N 41°,51.5′;W 87°,38.6′)
     
-And finally we show the mean value calculation. It is easy to see our values being just 0.1-0.2 nautical miles. This accuracy cannot be expected if you use real sextant readings. 
+And finally we show the mean value calculation. It is easy to see our values being just 0.1-0.2 nautical miles apart. This accuracy cannot be expected if you use real sextant readings. 
    
     MEAN VALUE COORDINATE from multi-point sight data.
     (N 41°,51.3′;W 87°,38.6′)
