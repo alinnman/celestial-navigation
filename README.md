@@ -334,5 +334,7 @@ If you want to plot the trip segment in Google Maps (GM) you have the coordinate
 
 You can also see a real-life measurement I recently made using a simple plastic sextant (Davis Mark III), a standard watch and an artifical horizon. 
 
+![Simple celestial navigation gear](pics/celnav-gear.jpg "Simple celestial navigation gear")
+
 The sample can be found [here](starfixdata.home.py)
 The resulting position is just 1.45 nautical miles away from my real position, which I consider being an excellent result given the simple equipment and my modest level of training. 
