@@ -25,7 +25,7 @@ a = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 51, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True, \
-              index_error_minutes  = 4
+              index_error_minutes  = 8
               )
 
 b = Sight (   object_name          = "Sun", \
@@ -47,7 +47,7 @@ b = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 9, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True,\
-              index_error_minutes  = 4
+              index_error_minutes  = 8
               )
       
 print ("Two daytime observations of the sun")

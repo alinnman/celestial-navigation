@@ -332,12 +332,11 @@ class Sight :
         self.sha_diff_minutes     = sha_diff_minutes
         self.observer_height      = observer_height
         assert (self.object_name != "Sun" or (self.sha_diff_degrees == 0 and self.sha_diff_minutes == 0))
-        
+        if index_error_minutes != 0:
+            self.__correctForIndexError (index_error_minutes)        
         if artificial_horizon:
             self.__correctForArtficialHorizon ()
-        if index_error_minutes != 0:
-            self.__correctForIndexError (index_error_minutes)
-            
+
         self.__correctDipOfHorizon ()
         self.__correctForRefraction ()
         # self.GP_lon, self.GP_lat = self.__calculateGP ()
