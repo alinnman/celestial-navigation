@@ -308,7 +308,8 @@ class Sight :
                   sha_diff_degrees : int | float = 0, \
                   sha_diff_minutes : int | float = 0, \
                   observer_height : int | float = 0, \
-                  artificial_horizon : bool = False):
+                  artificial_horizon : bool = False, \
+                  index_error_minutes : int = 0 ):
         self.object_name          = object_name
         self.time_year            = time_year
         self.time_month           = time_month
@@ -334,11 +335,21 @@ class Sight :
         
         if artificial_horizon:
             self.__correctForArtficialHorizon ()
+        if index_error_minutes != 0:
+            self.__correctForIndexError (index_error_minutes)
             
         self.__correctDipOfHorizon ()
         self.__correctForRefraction ()
         # self.GP_lon, self.GP_lat = self.__calculateGP ()
         self.GP = self.__calculateGP ()
+        
+    def __correctForIndexError (self, ie):
+        madDecimal = 90-self.getAngle()
+        newMad = madDecimal - (ie/60)
+        d, m, s = getDMS (newMad)
+        self.measured_alt_degrees = d
+        self.measured_alt_minutes = m
+        self.measured_alt_seconds = s        
         
     def __correctForArtficialHorizon (self):
         madDecimal = 90-self.getAngle()
@@ -409,13 +420,13 @@ class SightCollection:
         assert (len (sfList) >= 2)
         self.sfList = sfList
 
-    def getIntersections (self, limit : int | float = 100):
+    def getIntersections (self, limit : int | float = 100, estimatedPosition = None):
         nrOfFixes = len(self.sfList)
         if (nrOfFixes == 2):
             '''
             For two star fixes just use the algorithm of SightPair.getIntersections
             '''
-            intersections = SightPair (self.sfList[0],self.sfList[1]).getIntersections()
+            intersections = SightPair (self.sfList[0],self.sfList[1]).getIntersections(estimatedPosition)
             return intersections
         elif (nrOfFixes >= 3):
             '''
@@ -426,7 +437,7 @@ class SightCollection:
             for i in range (nrOfFixes):
                 for j in range (i+1, nrOfFixes):
                     p = SightPair (self.sfList [i], self.sfList [j])
-                    pInt = p.getIntersections ()
+                    pInt = p.getIntersections (estimatedPosition)
                     if pInt != None:
                         coords.append (pInt[0])
                         coords.append (pInt[1])                        
