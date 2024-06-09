@@ -11,6 +11,7 @@
     1. [Running the chicago script](#run-chicago-script)
 1. [Dead Reckoning](#dead-reckoning)
     1. [Running the sea script](#run-sea-script) 
+1. [A real-life example](#real-life)     
 
 ## 1. Introduction <a name="introduction"></a>
 
@@ -328,3 +329,10 @@ If you want to plot the trip segment in Google Maps (GM) you have the coordinate
     
     Starting point GM = 58.7684,18.0023
     Ending   point GM = 58.4364,18.0583
+
+## 5. A real-life example<a name="real-life"></a>
+
+You can also see a real-life measurement I recently made using a simple plastic sextant (Davis Mark III), a standard watch and an artifical horizon. 
+
+The sample can be found [here](starfixdata.home.py)
+The resulting position is just 1.45 nautical miles away from my real position, which I consider being an excellent result given the simple equipment and my modest level of training. 
