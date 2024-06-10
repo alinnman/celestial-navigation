@@ -19,6 +19,7 @@
 
 This project contains a simple python script to be used for [celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation) togheter with some demos and documentation. Sights (altitude measurements) have to be obtained using a sextant, a nautical almanac and an accurate clock. 
 The python script takes care of the **sight reduction** (conversion to estimated location on Earth). For two sights you will get two possible coordinates. For three or more sights you will get one coordinate (calculated as a mean value). 
+You can use the script on a mobile phone without internet connection. If you also have access to a solar powered battery you have a tool useful while travelling in remote places or on the ocean. 
 
 The script supports **stationary** observations, i.e. when observations are made from a single position, typically using multiple sights. There is also support for **dead reckoning** observations, typically at sea on a moving ship. This also needs a working compass and a chip log or similar. See section 4 below for more information. 
 
