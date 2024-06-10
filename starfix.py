@@ -334,7 +334,6 @@ class Sight :
 
         self.__correctDipOfHorizon ()
         self.__correctForRefraction ()
-        # self.GP_lon, self.GP_lat = self.__calculateGP ()
         self.GP = self.__calculateGP ()
         
     def __correctForIndexError (self, ie):
