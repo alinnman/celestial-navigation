@@ -326,9 +326,10 @@ class Sight :
         self.decl_time_0_minutes  = decl_time_0_minutes  
         self.decl_time_1_degrees  = decl_time_1_degrees  
         self.decl_time_1_minutes  = decl_time_1_minutes 
-        self.measured_alt_degrees = measured_alt_degrees
-        self.measured_alt_minutes = measured_alt_minutes
-        self.measured_alt_seconds = measured_alt_seconds
+        #self.measured_alt_degrees = measured_alt_degrees
+        #self.measured_alt_minutes = measured_alt_minutes
+        #self.measured_alt_seconds = measured_alt_seconds
+        self.measured_alt         = getDecimalDegrees (measured_alt_degrees, measured_alt_minutes, measured_alt_seconds)
         self.sha_diff_degrees     = sha_diff_degrees    
         self.sha_diff_minutes     = sha_diff_minutes
         self.observer_height      = observer_height
@@ -347,18 +348,20 @@ class Sight :
     def __correctForIndexError (self, ie):
         madDecimal = 90-self.getAngle()
         newMad = madDecimal - (ie/60)
-        d, m, s = getDMS (newMad)
-        self.measured_alt_degrees = d
-        self.measured_alt_minutes = m
-        self.measured_alt_seconds = s        
+        #d, m, s = getDMS (newMad)
+        #self.measured_alt_degrees = d
+        #self.measured_alt_minutes = m
+        #self.measured_alt_seconds = s
+        self.measured_alt = newMad        
         
     def __correctForArtficialHorizon (self):
         madDecimal = 90-self.getAngle()
         newMad = madDecimal / 2
-        d, m, s = getDMS (newMad)
-        self.measured_alt_degrees = d
-        self.measured_alt_minutes = m
-        self.measured_alt_seconds = s
+        #d, m, s = getDMS (newMad)
+        #self.measured_alt_degrees = d
+        #self.measured_alt_minutes = m
+        #self.measured_alt_seconds = s
+        self.measured_alt = newMad
         
     def __correctDipOfHorizon (self):
         if self.observer_height == 0:
@@ -366,19 +369,21 @@ class Sight :
         madDecimal = 90-self.getAngle()
         dip = getDipOfHorizon (self.observer_height)/60
         newMad = madDecimal + dip
-        d, m, s = getDMS (newMad)
-        self.measured_alt_degrees = d
-        self.measured_alt_minutes = m
-        self.measured_alt_seconds = s       
+        #d, m, s = getDMS (newMad)
+        #self.measured_alt_degrees = d
+        #self.measured_alt_minutes = m
+        #self.measured_alt_seconds = s
+        self.measured_alt = newMad        
     
     def __correctForRefraction (self):
         madDecimal = 90-self.getAngle ()
         refraction = getRefraction (madDecimal)/60
         newMad = madDecimal - refraction
-        d, m, s = getDMS (newMad)
-        self.measured_alt_degrees = d
-        self.measured_alt_minutes = m
-        self.measured_alt_seconds = s
+        #d, m, s = getDMS (newMad)
+        #self.measured_alt_degrees = d
+        #self.measured_alt_minutes = m
+        #self.measured_alt_seconds = s
+        self.measured_alt = newMad
     
     def __calculateGP (self) -> LatLon:
         
@@ -397,10 +402,7 @@ class Sight :
         return LatLon (resultLAT, resultLON)
 
     def getAngle (self):
-        measured_alt_decimal = self.measured_alt_degrees + \
-                               self.measured_alt_minutes/60 + \
-                               self.measured_alt_seconds/3600
-        return (90-measured_alt_decimal)
+        return (90-self.measured_alt)
     
     def getRadius (self):
         return (self.getAngle()/360)*EARTH_CIRCUMFERENCE
