@@ -22,9 +22,9 @@ Sights (altitude measurements) have to be obtained using a sextant, a nautical a
 The python script takes care of the **sight reduction** (conversion to estimated location on Earth),
 a task that traditionally is performed using careful manual work using special tables (sight reduction tables), pen, dividers and specialized plotting charts. 
 Using a calculator or computer can speed up this manual task, and also possibly reduce possible (human) errors. 
+You can use the script on a mobile phone without internet connection. If you also have access to a solar powered battery you have a tool useful while traveling in remote places or on the ocean.
 
 For two sights you will get two possible coordinates. For three or more sights you will get one coordinate (calculated as a mean value). 
-You can use the script on a mobile phone without internet connection. If you also have access to a solar powered battery you have a tool useful while traveling in remote places or on the ocean. 
 
 The script supports **stationary** observations, i.e. when observations are made from a single position, typically using multiple sights. 
 There is also support for **dead reckoning** observations, typically at sea on a moving ship. This also needs a working compass and a chip log or similar.
