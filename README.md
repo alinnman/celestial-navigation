@@ -24,11 +24,10 @@ a task that traditionally is performed with careful manual work using special ta
 Using a calculator or computer can speed up this manual task, and also possibly reduce possible (human) errors. 
 You can use the script on a mobile phone without internet connection. If you also have access to a solar powered battery you have a tool useful while traveling in remote places or on the ocean.
 
-For two sights you will get two possible coordinates. For three or more sights you will get one coordinate (calculated as a mean value). 
-
-The script supports **stationary** observations, i.e. when observations are made from a single position, typically using multiple sights. 
-There is also support for **dead reckoning** observations, typically at sea on a moving ship. This also needs a working compass and a chip log or similar.
-See [section 4](#dead-reckoning) below for more information. 
+* The script supports **stationary** observations, i.e. when observations are made from a single position, typically using multiple sights.
+  For two sights you will get two possible coordinates. For three or more sights you will get one coordinate (calculated as a mean value). 
+* There is also support for **dead reckoning** observations, typically at sea on a moving ship. This also needs a working compass and a chip log or similar.
+  See [section 4](#dead-reckoning) below for more information. 
 
 For more information on installation see [here](INSTALL.md).
 
