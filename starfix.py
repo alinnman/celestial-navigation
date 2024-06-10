@@ -318,22 +318,14 @@ class Sight :
         self.time_hour            = time_hour            
         self.time_minute          = time_minute          
         self.time_second          = time_second          
-        self.gha_time_0_degrees   = gha_time_0_degrees  
-        self.gha_time_0_minutes   = gha_time_0_minutes  
-        self.gha_time_1_degrees   = gha_time_1_degrees  
-        self.gha_time_1_minutes   = gha_time_1_minutes  
-        self.decl_time_0_degrees  = decl_time_0_degrees 
-        self.decl_time_0_minutes  = decl_time_0_minutes  
-        self.decl_time_1_degrees  = decl_time_1_degrees  
-        self.decl_time_1_minutes  = decl_time_1_minutes 
-        #self.measured_alt_degrees = measured_alt_degrees
-        #self.measured_alt_minutes = measured_alt_minutes
-        #self.measured_alt_seconds = measured_alt_seconds
+        self.gha_time_0           = getDecimalDegrees (gha_time_0_degrees, gha_time_0_minutes, 0)
+        self.gha_time_1           = getDecimalDegrees (gha_time_1_degrees, gha_time_1_minutes, 0)
+        self.decl_time_0          = getDecimalDegrees (decl_time_0_degrees, decl_time_0_minutes, 0)      
+        self.decl_time_1          = getDecimalDegrees (decl_time_1_degrees, decl_time_1_minutes, 0)        
         self.measured_alt         = getDecimalDegrees (measured_alt_degrees, measured_alt_minutes, measured_alt_seconds)
-        self.sha_diff_degrees     = sha_diff_degrees    
-        self.sha_diff_minutes     = sha_diff_minutes
+        self.sha_diff             = getDecimalDegrees (sha_diff_degrees, sha_diff_minutes, 0)                
         self.observer_height      = observer_height
-        assert (self.object_name != "Sun" or (self.sha_diff_degrees == 0 and self.sha_diff_minutes == 0))
+        assert (self.object_name != "Sun" or self.sha_diff == 0)
         assert (not (self.observer_height != 0 and artificial_horizon == True))
         if index_error_minutes != 0:
             self.__correctForIndexError (index_error_minutes)        
@@ -348,19 +340,11 @@ class Sight :
     def __correctForIndexError (self, ie):
         madDecimal = 90-self.getAngle()
         newMad = madDecimal - (ie/60)
-        #d, m, s = getDMS (newMad)
-        #self.measured_alt_degrees = d
-        #self.measured_alt_minutes = m
-        #self.measured_alt_seconds = s
         self.measured_alt = newMad        
         
     def __correctForArtficialHorizon (self):
         madDecimal = 90-self.getAngle()
         newMad = madDecimal / 2
-        #d, m, s = getDMS (newMad)
-        #self.measured_alt_degrees = d
-        #self.measured_alt_minutes = m
-        #self.measured_alt_seconds = s
         self.measured_alt = newMad
         
     def __correctDipOfHorizon (self):
@@ -369,20 +353,12 @@ class Sight :
         madDecimal = 90-self.getAngle()
         dip = getDipOfHorizon (self.observer_height)/60
         newMad = madDecimal + dip
-        #d, m, s = getDMS (newMad)
-        #self.measured_alt_degrees = d
-        #self.measured_alt_minutes = m
-        #self.measured_alt_seconds = s
         self.measured_alt = newMad        
     
     def __correctForRefraction (self):
         madDecimal = 90-self.getAngle ()
         refraction = getRefraction (madDecimal)/60
         newMad = madDecimal - refraction
-        #d, m, s = getDMS (newMad)
-        #self.measured_alt_degrees = d
-        #self.measured_alt_minutes = m
-        #self.measured_alt_seconds = s
         self.measured_alt = newMad
     
     def __calculateGP (self) -> LatLon:
@@ -390,14 +366,11 @@ class Sight :
         minSecContribution = self.time_minute/60 + self.time_second/3600
         
         resultLON = modLON (- \
-        ((self.gha_time_0_degrees + self.sha_diff_degrees) + \
-        ((self.gha_time_1_degrees - self.gha_time_0_degrees))*minSecContribution + \
-        ((self.gha_time_0_minutes + self.sha_diff_minutes)/60) + \
-        (((self.gha_time_1_minutes - self.gha_time_0_minutes)/60))*minSecContribution))
+        ((self.gha_time_0 + self.sha_diff) + \
+        ((self.gha_time_1 - self.gha_time_0))*minSecContribution))
  
         resultLAT = \
-        self.decl_time_0_degrees + (self.decl_time_1_degrees - self.decl_time_0_degrees)*minSecContribution + \
-        self.decl_time_0_minutes/60 + ((self.decl_time_1_minutes - self.decl_time_0_minutes)/60)*minSecContribution
+        self.decl_time_0 + (self.decl_time_1 - self.decl_time_0)*minSecContribution
         
         return LatLon (resultLAT, resultLON)
 
