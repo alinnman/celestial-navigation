@@ -6,7 +6,7 @@
     1. [Atmospheric Refraction](#atmospheric-refraction)
     1. [Dip of Horizon](#dip-of-horizon)
 1. [Sight Reduction](#sight-reduction)
-    1. [Using two Sights](#using-two-sights)
+    1. [Using two sights](#using-two-sights)
     1. [Using three or more sights](#using-three-or-more-sights) 
     1. [Running the chicago script](#run-chicago-script)
 1. [Dead Reckoning](#dead-reckoning)
