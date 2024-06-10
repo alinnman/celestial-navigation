@@ -46,8 +46,7 @@ def lengthOfVect (vec : list) -> float:
 def normalizeVect (vec : list) -> list:
     ''' Computes |vec| '''
     lenV = lengthOfVect (vec)
-    if lenV == 0:
-        raise ValueError ("Cannot normalize a zero vector")
+    assert (lenV > 0)
     return multScalarVect (1/lenV, vec)
 
 def crossProduct (vec1 : list, vec2 : list) -> list:
@@ -60,7 +59,7 @@ def crossProduct (vec1 : list, vec2 : list) -> list:
     return retVal
 
 def dotProduct (vec1 : list, vec2 : list) -> float:
-    ''' Computes vec1 * vec2 (dot product '''
+    ''' Computes vec1 * vec2 (dot product) '''
     assert (len (vec1) == len (vec2))
     s = 0.0
     for i in range (len(vec1)):
@@ -68,7 +67,7 @@ def dotProduct (vec1 : list, vec2 : list) -> float:
     return s
     
 def modLON (lon : int | float): 
-    ''' Transforms a longitude value to the rance (-180,180) '''
+    ''' Transforms a longitude value to the range (-180,180) '''
     x = lon + 180
     x = x % 360
     x = x - 180
@@ -203,8 +202,7 @@ def getIntersections (latlon1 : LatLon, latlon2 : LatLon, Angle1 : int | float, 
         else: 
             rho = acos (cos (degToRad(Angle2)) / (dotProduct (bVec, q)))
     except ValueError:
-        print ("Bad sight data.")
-        return None, None
+        raise ValueError ("Bad sight data. Circles do not intersect")
 
     # Calculate a rotation vector
     rotAxis = normalizeVect(crossProduct (crossProduct (aVec, bVec), q))
@@ -325,8 +323,10 @@ class Sight :
         self.measured_alt         = getDecimalDegrees (measured_alt_degrees, measured_alt_minutes, measured_alt_seconds)
         self.sha_diff             = getDecimalDegrees (sha_diff_degrees, sha_diff_minutes, 0)                
         self.observer_height      = observer_height
-        assert (self.object_name != "Sun" or self.sha_diff == 0)
-        assert (not (self.observer_height != 0 and artificial_horizon == True))
+        if not (self.object_name != "Sun" or self.sha_diff == 0): 
+            raise ValueError ("The Sun should have a sha_diff parameter != 0") 
+        if (self.observer_height != 0 and artificial_horizon == True):
+            raise ValueError ("observer_height should be == 0 when artificial_horizon == True") 
         if index_error_minutes != 0:
             self.__correctForIndexError (index_error_minutes)        
         if artificial_horizon:
@@ -392,11 +392,13 @@ class SightPair:
 
 class SightCollection:
     def __init__ (self, sfList : list):
-        assert (len (sfList) >= 2)
+        if (len (sfList) < 2):
+            raise ValueError ("SightCollection should have at least two sights") 
         self.sfList = sfList
 
     def getIntersections (self, limit : int | float = 100, estimatedPosition = None):
         nrOfFixes = len(self.sfList)
+        assert (nrOfFixes >= 2)
         if (nrOfFixes == 2):
             '''
             For two star fixes just use the algorithm of SightPair.getIntersections
@@ -456,8 +458,7 @@ class SightCollection:
                         if dist > limit:
                             # Probably multiple possible observation points. 
                             # Best option is to perform sight reduction on 2 sights and select the correct point manually.
-                            print ("Seems to be multiple possible coordinates. Please perform two-point sight reduction instead.")
-                            return None
+                            raise ValueError ("Cannot sort multiple intersections to find a reasonable set of coordinates")
             print ("MEAN VALUE COORDINATE from multi-point sight data.")              
             summationVec = [0,0,0]
             # Make a mean value on the best intersections. 
@@ -467,9 +468,6 @@ class SightCollection:
                 summationVec = addVecs (summationVec, multScalarVect (1/nrOfChosenPoints, rectVec))
             summationVec = normalizeVect (summationVec)
             return toLatLon (summationVec)
-        else:
-            print ("Invalid input.")
-            return None
         
 class SightTrip:
     ''' Object used for dead-reckoning in daytime (with only Sun sights)  '''
@@ -543,7 +541,7 @@ class SightTrip:
             currentRotation = currentRotation - (distanceResult)/derivative
             iterCount += 1
         if iterCount >= iterLimit:
-            return None, None
+            raise ValueError ("Cannot calculate a trip vector") 
         else:
             return takenOut, rotated
 
