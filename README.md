@@ -17,8 +17,13 @@
 
 ![US Navy training in celestial navigation](pics/us-navy.jpg "US Navy Training in Celestial Navigation")
 
-This project contains a simple python script to be used for [celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation) togheter with some demos and documentation. Sights (altitude measurements) have to be obtained using a sextant, a nautical almanac and an accurate clock. 
-The python script takes care of the **sight reduction** (conversion to estimated location on Earth). For two sights you will get two possible coordinates. For three or more sights you will get one coordinate (calculated as a mean value). 
+This project contains a simple python script to be used for [celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation) togheter with some demos and documentation.
+Sights (altitude measurements) have to be obtained using a sextant, a nautical almanac and an accurate clock. 
+The python script takes care of the **sight reduction** (conversion to estimated location on Earth),
+a task that traditionally is performed using careful manual work using special tables (sight reduction tables), pen, dividers and specialized plotting charts. 
+Using a calculator or computer can speed up this manual task, and also possibly reduce possible (human) errors. 
+
+For two sights you will get two possible coordinates. For three or more sights you will get one coordinate (calculated as a mean value). 
 You can use the script on a mobile phone without internet connection. If you also have access to a solar powered battery you have a tool useful while traveling in remote places or on the ocean. 
 
 The script supports **stationary** observations, i.e. when observations are made from a single position, typically using multiple sights. 
