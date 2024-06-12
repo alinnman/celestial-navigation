@@ -1,4 +1,7 @@
 from starfix import Sight, SightCollection, getRepresentation, getGoogleMapString
+from time import time
+
+starttime = time ()
 
 # Our starfix data
         
@@ -86,3 +89,9 @@ print ("B GP     = " + getGoogleMapString(b.GP,4))
 
 print ("C radius = " + str(round(c.getRadius (),1)))
 print ("C GP     = " + getGoogleMapString(c.GP,4))
+
+endtime = time ()
+
+takenMs = round((endtime-starttime)*1000,2)
+
+print ("Time taken = " +str(takenMs)+" ms")  
