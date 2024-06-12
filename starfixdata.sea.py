@@ -1,4 +1,7 @@
 from starfix import Sight, SightTrip, getRepresentation, getGoogleMapString, LatLon
+from time import time
+
+starttime = time ()
 
 # We are sailing from point s1 to point s2, in the Baltic Sea.  
 # We are sailing from point s1 to point s2, in the Baltic Sea.  
@@ -77,6 +80,8 @@ print ("S2 GP     = " + getGoogleMapString(s2.GP,4))
 print ("Starting point GM = " + getGoogleMapString (intersections[1],4))
 print ("Ending   point GM = " + getGoogleMapString (intersections[0],4))
 
+endtime = time ()
 
+takenMs = round((endtime-starttime)*1000,2)
 
- 
+print ("Time taken = " +str(takenMs)+" ms")  
