@@ -416,8 +416,11 @@ class SightCollection:
                     p = SightPair (self.sfList [i], self.sfList [j])
                     pInt = p.getIntersections (estimatedPosition)
                     if pInt != None:
-                        coords.append (pInt[0])
-                        coords.append (pInt[1])                        
+                        if (type (pInt) == tuple):
+                            coords.append (pInt[0])
+                            coords.append (pInt[1])
+                        elif (type (pInt) == LatLon):
+                            coords.append (pInt)                         
             nrOfCoords = len (coords)
             dists = dict ()
             # Collect all distance values between intersections

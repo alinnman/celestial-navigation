@@ -25,7 +25,7 @@ a = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 51, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True, \
-              index_error_minutes  = 10
+              index_error_minutes  = 0
               )
 
 b = Sight (   object_name          = "Sun", \
@@ -47,12 +47,35 @@ b = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 9, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True,\
-              index_error_minutes  = 5
+              index_error_minutes  = 0
+              )
+              
+c = Sight (   object_name          = "Sun", \
+              time_year            = 2024,\
+              time_month           = 6,\
+              time_day             = 13,\
+              time_hour            = 15, \
+              time_minute          = 3, \
+              time_second          = 41, \
+              gha_time_0_degrees   = 44, \
+              gha_time_0_minutes   = 56.6, \
+              gha_time_1_degrees   = 59, \
+              gha_time_1_minutes   = 56.5, \
+              decl_time_0_degrees  = 23, \
+              decl_time_0_minutes  = 15.5, \
+              decl_time_1_degrees  = 23, \
+              decl_time_1_minutes  = 15.6, \
+              measured_alt_degrees = 66, \
+              measured_alt_minutes = 15, \
+              measured_alt_seconds = 0, \
+              artificial_horizon   = True,\
+              index_error_minutes  = 0
               )
       
 print ("Two daytime observations of the sun")
-collection = SightCollection ([a, b])
+collection = SightCollection ([a, b, c])
 intersections = collection.getIntersections (estimatedPosition = LatLon(59,19))
+#intersections = collection.getIntersections ()
 print (getRepresentation(intersections,1))
 print ("GM = " + getGoogleMapString(intersections,4))
 
@@ -63,6 +86,9 @@ print ("A GP     = " + getGoogleMapString(a.GP,4))
 
 print ("B radius = " + str(round(b.getRadius (),1)))
 print ("B GP     = " + getGoogleMapString(b.GP,4))
+
+print ("C radius = " + str(round(c.getRadius (),1)))
+print ("C GP     = " + getGoogleMapString(c.GP,4))
 
 print ("-----------------------------------")
  
