@@ -74,8 +74,8 @@ c = Sight (   object_name          = "Sun", \
       
 print ("Two daytime observations of the sun")
 collection = SightCollection ([a, b, c])
-intersections = collection.getIntersections (estimatedPosition = LatLon(59,19))
-#intersections = collection.getIntersections ()
+#intersections = collection.getIntersections (estimatedPosition = LatLon(59,19))
+intersections = collection.getIntersections ()
 print (getRepresentation(intersections,1))
 print ("GM = " + getGoogleMapString(intersections,4))
 
