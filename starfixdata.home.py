@@ -3,7 +3,7 @@ from starfix import Sight, SightCollection, SightTrip, LatLon,getRepresentation,
 
 # This is observations from actual sextant readings. 
 # I used a simple plastic sextant (Davis Mk III) and an artificial horizon. 
-# This is just test data. 
+# THIS IS JUST TEST DATA. 
      
 a = Sight (   object_name          = "Sun", \
               time_year            = 2024,\
@@ -138,7 +138,8 @@ f = Sight (   object_name          = "Sun", \
               semi_diameter_correction = 15.7
               )
 
-collection = SightCollection ([c, f])
+#collection = SightCollection ([c, f])
+collection = SightCollection ([a, b, c, d, e])
 
 intersections = collection.getIntersections (estimatedPosition = LatLon(59,19))
 #intersections = collection.getIntersections ()
