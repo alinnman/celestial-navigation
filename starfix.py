@@ -166,26 +166,17 @@ def NMtoKM (nm : int | float) -> float:
     return (nm/(360*60))*EARTH_CIRCUMFERENCE
  
 # Calibration etc. 
-
-def bearingToPoint (origin : LatLon, point : LatLon) -> float:
-    pointIsWest = point.lon < origin.lon
-    originR = toRectangular (origin)
-    pointR  = toRectangular (point)
-    diffR   = normalizeVect (subtractVecs (pointR, originR))
-    dueNorth = LatLon (origin.lat+0.1, origin.lon)
-    dueNorthR = toRectangular (dueNorth)
-    diffDueR = normalizeVect (subtractVecs (dueNorthR, originR))
-    DP = dotProduct (diffR, diffDueR)
-    angle = acos (DP) * (180 / pi)
-    if pointIsWest:
-        angle = 360 - angle
-    return angle
-
+ 
 def angleBetweenPoints (origin : LatLon, point1 : LatLon, point2 : LatLon) -> float:
-    bearing1 = bearingToPoint (origin, point1)
-    bearing2 = bearingToPoint (origin, point2)
-    return abs(modLON(modCourse (bearing2 - bearing1)))
+    originR = toRectangular (origin)
+    point1R = toRectangular (point1)
+    point2R = toRectangular (point2) 
     
+    point1GC = normalizeVect (crossProduct (originR, point1R))
+    point2GC = normalizeVect (crossProduct (originR, point2R))
+    DP = dotProduct (point1GC, point2GC)
+    return (acos (DP) * (180 / pi))
+        
 # Horizon
 
 def getDipOfHorizon (hM : int | float) -> float:
