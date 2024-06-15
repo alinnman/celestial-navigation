@@ -138,8 +138,8 @@ f = Sight (   object_name          = "Sun", \
               semi_diameter_correction = 15.7
               )
 
-#collection = SightCollection ([c, f])
-collection = SightCollection ([a, b, c, d, e])
+collection = SightCollection ([a, d, e, f])
+#collection = SightCollection ([a, b, c, d, e, f])
 
 intersections = collection.getIntersections (estimatedPosition = LatLon(59,19))
 #intersections = collection.getIntersections ()
@@ -149,23 +149,27 @@ print ("GM = " + getGoogleMapString(intersections,4))
 #Diagnostics for map rendering etc. 
 print ("Some useful data follows") 
 
-#print ("A radius = " + str(round(a.getRadius (),1)))
-#print ("A GP     = " + getGoogleMapString(a.GP,4))
+print ("A radius = " + str(round(a.getRadius (),1)))
+print ("A GP     = " + getGoogleMapString(a.GP,4))
 
-#print ("B radius = " + str(round(b.getRadius (),1)))
-#print ("B GP     = " + getGoogleMapString(b.GP,4))
+print ("B radius = " + str(round(b.getRadius (),1)))
+print ("B GP     = " + getGoogleMapString(b.GP,4))
 
 print ("C radius = " + str(round(c.getRadius (),1)))
 print ("C GP     = " + getGoogleMapString(c.GP,4))
 
-#print ("D radius = " + str(round(c.getRadius (),1)))
-#print ("D GP     = " + getGoogleMapString(c.GP,4))
+print ("D radius = " + str(round(d.getRadius (),1)))
+print ("D GP     = " + getGoogleMapString(d.GP,4))
 
-#print ("E radius = " + str(round(e.getRadius (),1)))
-#print ("E GP     = " + getGoogleMapString(e.GP,4))
+print ("E radius = " + str(round(e.getRadius (),1)))
+print ("E GP     = " + getGoogleMapString(e.GP,4))
 
 print ("F radius = " + str(round(f.getRadius (),1)))
 print ("F GP     = " + getGoogleMapString(f.GP,4))
 
 print ("-----------------------------------")
  
+'''
+Intersection map: 
+https://www.mapdevelopers.com/draw-circle-tool.php?circles=%5B%5B5460600%2C22.9198%2C-29.2284%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B6000400%2C22.9755725%2C75.5820142%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B6328800%2C23.2584%2C-45.8641%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B6569100%2C23.2852084%2C86.4208598%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B6709200%2C23.3216284%2C88.859911%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B6807200%2C23.3013225%2C90.641288%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%5D
+'''
