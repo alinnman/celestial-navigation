@@ -308,7 +308,8 @@ class Sight :
                   sha_diff_minutes : int | float = 0, \
                   observer_height : int | float = 0, \
                   artificial_horizon : bool = False, \
-                  index_error_minutes : int = 0 ):
+                  index_error_minutes : int = 0, \
+                  semi_diameter_correction : int | float = 0 ):
         self.object_name          = object_name
         self.time_year            = time_year
         self.time_month           = time_month
@@ -328,37 +329,32 @@ class Sight :
         if (self.observer_height != 0 and artificial_horizon == True):
             raise ValueError ("observer_height should be == 0 when artificial_horizon == True") 
         if index_error_minutes != 0:
-            self.__correctForIndexError (index_error_minutes)        
+            self.__correctForIndexError (index_error_minutes)
         if artificial_horizon:
             self.__correctForArtficialHorizon ()
+        if semi_diameter_correction != 0:
+            self.__correctSemiDiameter (semi_diameter_correction)
 
         self.__correctDipOfHorizon ()
         self.__correctForRefraction ()
         self.GP = self.__calculateGP ()
-        
+    
+    def __correctSemiDiameter (self, sd):
+        self.measured_alt += sd/60
+    
     def __correctForIndexError (self, ie):
-        madDecimal = 90-self.getAngle()
-        newMad = madDecimal - (ie/60)
-        self.measured_alt = newMad        
+        self.measured_alt -= ie/60
         
     def __correctForArtficialHorizon (self):
-        madDecimal = 90-self.getAngle()
-        newMad = madDecimal / 2
-        self.measured_alt = newMad
+        self.measured_alt /= 2
         
     def __correctDipOfHorizon (self):
         if self.observer_height == 0:
-            return
-        madDecimal = 90-self.getAngle()
-        dip = getDipOfHorizon (self.observer_height)/60
-        newMad = madDecimal + dip
-        self.measured_alt = newMad        
+            return  
+        self.measured_alt += getDipOfHorizon (self.observer_height)/60
     
     def __correctForRefraction (self):
-        madDecimal = 90-self.getAngle ()
-        refraction = getRefraction (madDecimal)/60
-        newMad = madDecimal - refraction
-        self.measured_alt = newMad
+        self.measured_alt -= getRefraction (self.measured_alt)/60
     
     def __calculateGP (self) -> LatLon:
         
