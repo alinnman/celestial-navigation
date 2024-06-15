@@ -22,12 +22,17 @@ class LatLon:
 # Utility routines (algrebraic, spheric geometry) 
 
 def addVecs (vec1 : list, vec2 : list) -> list: 
-    ''' Performs addition of twp cartesian vectors '''
+    ''' Performs addition of two cartesian vectors '''
     assert (len (vec1) == len (vec2))
     retVal = []
     for i in range (len(vec1)):
         retVal.append (vec1[i] + vec2[i])
     return retVal
+
+def subtractVecs (vec1 : list, vec2 : list) -> list:
+    ''' Performs subtraction of two cartesian vectors '''
+    assert (len (vec1) == len (vec2))
+    return addVecs (vec1, multScalarVect(-1, vec2))
 
 def multScalarVect (scalar : int | float, vec : list) -> list:
     ''' Performs multiplication of a cartesian vector with a scalar '''
@@ -144,7 +149,7 @@ def takeoutCourse (latLon : LatLon, course : int | float, speedKnots : int | flo
     return LatLon (latLon.lat+diffLat, latLon.lon+diffLon)
     
 def distanceBetweenPoints (latLon1 : LatLon, latLon2 : LatLon) -> float:
-    ''' Calculate distance between two points. Using great circles '''
+    ''' Calculate distance between two points in km. Using great circles '''
     normVec1 = toRectangular (latLon1)
     normVec2 = toRectangular (latLon2)
     dp = dotProduct (normVec1, normVec2)
@@ -159,6 +164,27 @@ def KMtoNM (km : int | float) -> float:
 def NMtoKM (nm : int | float) -> float:
     ''' Convert from nautical miles to kilometers '''
     return (nm/(360*60))*EARTH_CIRCUMFERENCE
+ 
+# Calibration etc. 
+
+def bearingToPoint (origin : LatLon, point : LatLon) -> float:
+    pointIsWest = point.lon < origin.lon
+    originR = toRectangular (origin)
+    pointR  = toRectangular (point)
+    diffR   = normalizeVect (subtractVecs (pointR, originR))
+    dueNorth = LatLon (origin.lat+0.1, origin.lon)
+    dueNorthR = toRectangular (dueNorth)
+    diffDueR = normalizeVect (subtractVecs (dueNorthR, originR))
+    DP = dotProduct (diffR, diffDueR)
+    angle = acos (DP) * (180 / pi)
+    if pointIsWest:
+        angle = 360 - angle
+    return angle
+
+def angleBetweenPoints (origin : LatLon, point1 : LatLon, point2 : LatLon) -> float:
+    bearing1 = bearingToPoint (origin, point1)
+    bearing2 = bearingToPoint (origin, point2)
+    return abs(modLON(modCourse (bearing2 - bearing1)))
     
 # Horizon
 
@@ -374,6 +400,11 @@ class Sight :
     
     def getRadius (self):
         return (self.getAngle()/360)*EARTH_CIRCUMFERENCE
+    
+    def getDistanceFrom (self, p : LatLon) -> float:
+        pDistance = distanceBetweenPoints (p, self.GP)
+        theRadius = self.getRadius ()
+        return pDistance - theRadius
         
 class SightPair:
     def __init__ (self, sf1 : Sight, sf2 : Sight):
@@ -450,7 +481,8 @@ class SightCollection:
                 return None
                 
             # Make sure the chosen points are nearby each other
-            print ("BEST COORDINATES")
+            #print ("BEST COORDINATES")
+            '''
             for cp1 in chosenPoints:
                 print (getRepresentation (coords[cp1],1))  
                 for cp2 in chosenPoints:
@@ -460,6 +492,7 @@ class SightCollection:
                             # Probably multiple possible observation points. 
                             # Best option is to perform sight reduction on 2 sights and select the correct point manually.
                             raise ValueError ("Cannot sort multiple intersections to find a reasonable set of coordinates")
+            '''
             print ("MEAN VALUE COORDINATE from multi-point sight data.")              
             summationVec = [0,0,0]
             # Make a mean value on the best intersections. 

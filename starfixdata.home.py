@@ -134,39 +134,135 @@ f = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 8, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True,\
-              index_error_minutes  = 0,\
+              index_error_minutes  = 6,\
               semi_diameter_correction = 15.7
               )
 
-collection = SightCollection ([a, d, e, f])
-#collection = SightCollection ([a, b, c, d, e, f])
+g = Sight (   object_name          = "Sun", \
+              time_year            = 2024,\
+              time_month           = 6,\
+              time_day             = 15,\
+              time_hour            = 13, \
+              time_minute          = 2, \
+              time_second          = 34, \
+              gha_time_0_degrees   = 14, \
+              gha_time_0_minutes   = 50.5, \
+              gha_time_1_degrees   = 29, \
+              gha_time_1_minutes   = 50.4, \
+              decl_time_0_degrees  = 23, \
+              decl_time_0_minutes  = 20.4, \
+              decl_time_1_degrees  = 23, \
+              decl_time_1_minutes  = 20.5, \
+              measured_alt_degrees = 94, \
+              measured_alt_minutes = 13, \
+              measured_alt_seconds = 0, \
+              artificial_horizon   = True,\
+              index_error_minutes  = 6
+              )
+
+h = Sight (   object_name          = "Sun", \
+              time_year            = 2024,\
+              time_month           = 6,\
+              time_day             = 15,\
+              time_hour            = 14, \
+              time_minute          = 31, \
+              time_second          = 35, \
+              gha_time_0_degrees   = 29, \
+              gha_time_0_minutes   = 50.4, \
+              gha_time_1_degrees   = 44, \
+              gha_time_1_minutes   = 50.2, \
+              decl_time_0_degrees  = 23, \
+              decl_time_0_minutes  = 20.5, \
+              decl_time_1_degrees  = 23, \
+              decl_time_1_minutes  = 20.6, \
+              measured_alt_degrees = 74, \
+              measured_alt_minutes = 29, \
+              measured_alt_seconds = 0, \
+              artificial_horizon   = True,\
+              index_error_minutes  = 6
+              )
+
+i = Sight (   object_name          = "Sun", \
+              time_year            = 2024,\
+              time_month           = 6,\
+              time_day             = 15,\
+              time_hour            = 14, \
+              time_minute          = 49, \
+              time_second          = 7, \
+              gha_time_0_degrees   = 29, \
+              gha_time_0_minutes   = 50.4, \
+              gha_time_1_degrees   = 44, \
+              gha_time_1_minutes   = 50.2, \
+              decl_time_0_degrees  = 23, \
+              decl_time_0_minutes  = 20.5, \
+              decl_time_1_degrees  = 23, \
+              decl_time_1_minutes  = 20.6, \
+              measured_alt_degrees = 70, \
+              measured_alt_minutes = 17, \
+              measured_alt_seconds = 0, \
+              artificial_horizon   = True,\
+              index_error_minutes  = 6
+              )
+
+collection = SightCollection ([f, g, h, i])
+#collection = SightCollection ([a, b, c, d, e, f, g])
+
+home = LatLon (59.318659676810654, 18.04959717835501)
 
 intersections = collection.getIntersections (estimatedPosition = LatLon(59,19))
 #intersections = collection.getIntersections ()
 print (getRepresentation(intersections,1))
 print ("GM = " + getGoogleMapString(intersections,4))
+print ("Intersection distance from home = " + str(distanceBetweenPoints(intersections, home)))
 
 #Diagnostics for map rendering etc. 
 print ("Some useful data follows") 
 
 print ("A radius = " + str(round(a.getRadius (),1)))
 print ("A GP     = " + getGoogleMapString(a.GP,4))
+print ("Diff     = " + str(a.getDistanceFrom (home)))
+print ("--")
 
 print ("B radius = " + str(round(b.getRadius (),1)))
 print ("B GP     = " + getGoogleMapString(b.GP,4))
+print ("Diff     = " + str(b.getDistanceFrom (home)))
+print ("--")
 
 print ("C radius = " + str(round(c.getRadius (),1)))
 print ("C GP     = " + getGoogleMapString(c.GP,4))
+print ("Diff     = " + str(c.getDistanceFrom (home)))
+print ("--")
 
 print ("D radius = " + str(round(d.getRadius (),1)))
 print ("D GP     = " + getGoogleMapString(d.GP,4))
+print ("Diff     = " + str(d.getDistanceFrom (home)))
+print ("--")
 
 print ("E radius = " + str(round(e.getRadius (),1)))
 print ("E GP     = " + getGoogleMapString(e.GP,4))
+print ("Diff     = " + str(e.getDistanceFrom (home)))
+print ("--")
+
 
 print ("F radius = " + str(round(f.getRadius (),1)))
 print ("F GP     = " + getGoogleMapString(f.GP,4))
+print ("Diff     = " + str(f.getDistanceFrom (home)))
+print ("--")
 
+print ("G radius = " + str(round(g.getRadius (),1)))
+print ("G GP     = " + getGoogleMapString(g.GP,4))
+print ("Diff     = " + str(g.getDistanceFrom (home)))
+print ("--")
+
+print ("H radius = " + str(round(h.getRadius (),1)))
+print ("H GP     = " + getGoogleMapString(h.GP,4))
+print ("Diff     = " + str(h.getDistanceFrom (home)))
+print ("--")
+
+print ("I radius = " + str(round(i.getRadius (),1)))
+print ("I GP     = " + getGoogleMapString(i.GP,4))
+print ("Diff     = " + str(i.getDistanceFrom (home)))
+print ("--")
 print ("-----------------------------------")
  
 '''
