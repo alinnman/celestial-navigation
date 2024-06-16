@@ -1,9 +1,14 @@
-from starfix import Sight, SightCollection, SightTrip, LatLon,getRepresentation, getGoogleMapString, distanceBetweenPoints, EARTH_CIRCUMFERENCE
+from starfix import Sight, SightCollection, SightTrip, LatLon, Sextant, getDecimalDegreesFromTuple, getRepresentation, \
+                             getGoogleMapString, distanceBetweenPoints, EARTH_CIRCUMFERENCE
+from calibration import calibrationRealValue, calibrationMeasuredValue
 
 
 # This is observations from actual sextant readings. 
 # I used a simple plastic sextant (Davis Mk III) and an artificial horizon. 
 # THIS IS JUST TEST DATA. 
+  
+mySextant = Sextant (getDecimalDegreesFromTuple (calibrationMeasuredValue) / getDecimalDegreesFromTuple (calibrationRealValue))    
+     
      
 a = Sight (   object_name          = "Sun", \
               time_year            = 2024,\
@@ -24,7 +29,8 @@ a = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 51, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True, \
-              index_error_minutes  = 0
+              index_error_minutes  = 0, \
+              sextant = mySextant
               )
 
 b = Sight (   object_name          = "Sun", \
@@ -46,7 +52,8 @@ b = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 9, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True,\
-              index_error_minutes  = 0
+              index_error_minutes  = 0,\
+              sextant = mySextant
               )
               
 c = Sight (   object_name          = "Sun", \
@@ -68,7 +75,8 @@ c = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 15, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True,\
-              index_error_minutes  = 0
+              index_error_minutes  = 0,\
+              sextant = mySextant
               )
 
 d = Sight (   object_name          = "Sun", \
@@ -90,7 +98,8 @@ d = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 56, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True,\
-              index_error_minutes  = 0
+              index_error_minutes  = 0,\
+              sextant = mySextant
               )
 
 e = Sight (   object_name          = "Sun", \
@@ -112,7 +121,8 @@ e = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 25, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True,\
-              index_error_minutes  = 0
+              index_error_minutes  = 0,\
+              sextant = mySextant
               )
 
 f = Sight (   object_name          = "Sun", \
@@ -134,8 +144,9 @@ f = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 8, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True,\
-              index_error_minutes  = 6,\
-              semi_diameter_correction = 15.7
+              index_error_minutes  = 0,\
+              semi_diameter_correction = 15.7,\
+              sextant = mySextant
               )
 
 g = Sight (   object_name          = "Sun", \
@@ -157,7 +168,8 @@ g = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 13, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True,\
-              index_error_minutes  = 6
+              index_error_minutes  = 0,\
+              sextant = mySextant
               )
 
 h = Sight (   object_name          = "Sun", \
@@ -179,7 +191,8 @@ h = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 29, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True,\
-              index_error_minutes  = 6
+              index_error_minutes  = 0,\
+              sextant = mySextant
               )
 
 i = Sight (   object_name          = "Sun", \
@@ -201,11 +214,12 @@ i = Sight (   object_name          = "Sun", \
               measured_alt_minutes = 17, \
               measured_alt_seconds = 0, \
               artificial_horizon   = True,\
-              index_error_minutes  = 6
+              index_error_minutes  = 0,\
+              sextant = mySextant
               )
 
-collection = SightCollection ([f, g, h, i])
-#collection = SightCollection ([a, b, c, d, e, f, g])
+#collection = SightCollection ([e, i])
+collection = SightCollection ([a, b, c, d, e, f, g, h, i])
 
 home = LatLon (59.318659676810654, 18.04959717835501)
 

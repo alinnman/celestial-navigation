@@ -117,7 +117,10 @@ def getDMS (angle : int | float) -> tuple[int | float]:
     return degrees, minutes, seconds
 
 def getDecimalDegrees (degrees : int | float, minutes : int | float, seconds : int | float) -> float:
-    return degrees + minutes/60 + seconds/3600    
+    return degrees + minutes/60 + seconds/3600
+
+def getDecimalDegreesFromTuple (t : tuple) -> float: 
+    return getDecimalDegrees (t[0], t[1], t[2])
     
 def rotateVector (vec : list, rotVec : list, angleRadians : int | float) -> list:
     '''
@@ -165,7 +168,11 @@ def NMtoKM (nm : int | float) -> float:
     ''' Convert from nautical miles to kilometers '''
     return (nm/(360*60))*EARTH_CIRCUMFERENCE
  
-# Calibration etc. 
+# Sextant, Calibration etc. 
+
+class Sextant:
+    def __init__  (self, graduationError : float): 
+        self.graduationError = graduationError
  
 def angleBetweenPoints (origin : LatLon, point1 : LatLon, point2 : LatLon) -> float:
     '''' Return the angle in degrees between two terrestrial targets (point1 and point2) as seen from the observation point (origin) '''
@@ -327,7 +334,8 @@ class Sight :
                   observer_height : int | float = 0, \
                   artificial_horizon : bool = False, \
                   index_error_minutes : int = 0, \
-                  semi_diameter_correction : int | float = 0 ):
+                  semi_diameter_correction : int | float = 0,\
+                  sextant : Sextant = None):
         self.object_name          = object_name
         self.time_year            = time_year
         self.time_month           = time_month
@@ -348,6 +356,8 @@ class Sight :
         '''
         if (self.observer_height != 0 and artificial_horizon == True):
             raise ValueError ("observer_height should be == 0 when artificial_horizon == True") 
+        if sextant != None:
+            self.__correctForGraduationError (sextant)
         if index_error_minutes != 0:
             self.__correctForIndexError (index_error_minutes)
         if artificial_horizon:
@@ -358,6 +368,9 @@ class Sight :
         self.__correctDipOfHorizon ()
         self.__correctForRefraction ()
         self.GP = self.__calculateGP ()
+    
+    def __correctForGraduationError (self, sextant : Sextant):
+        self.measured_alt /= sextant.graduationError
     
     def __correctSemiDiameter (self, sd):
         self.measured_alt += sd/60
