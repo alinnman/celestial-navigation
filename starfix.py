@@ -168,6 +168,7 @@ def NMtoKM (nm : int | float) -> float:
 # Calibration etc. 
  
 def angleBetweenPoints (origin : LatLon, point1 : LatLon, point2 : LatLon) -> float:
+    '''' Return the angle in degrees between two terrestrial targets (point1 and point2) as seen from the observation point (origin) '''
     originR = toRectangular (origin)
     point1R = toRectangular (point1)
     point2R = toRectangular (point2) 
@@ -175,7 +176,7 @@ def angleBetweenPoints (origin : LatLon, point1 : LatLon, point2 : LatLon) -> fl
     point1GC = normalizeVect (crossProduct (originR, point1R))
     point2GC = normalizeVect (crossProduct (originR, point2R))
     DP = dotProduct (point1GC, point2GC)
-    return (acos (DP) * (180 / pi))
+    return acos (DP) * (180 / pi)
         
 # Horizon
 
@@ -341,8 +342,10 @@ class Sight :
         self.measured_alt         = getDecimalDegrees (measured_alt_degrees, measured_alt_minutes, measured_alt_seconds)
         self.sha_diff             = getDecimalDegrees (sha_diff_degrees, sha_diff_minutes, 0)                
         self.observer_height      = observer_height
+        '''
         if not (self.object_name != "Sun" or self.sha_diff == 0): 
             raise ValueError ("The Sun should have a sha_diff parameter != 0") 
+        '''
         if (self.observer_height != 0 and artificial_horizon == True):
             raise ValueError ("observer_height should be == 0 when artificial_horizon == True") 
         if index_error_minutes != 0:
