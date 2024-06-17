@@ -58,6 +58,7 @@ S2 = Sight (   object_name          = "Sun", \
 
 collection = SightCollection ([S1, S2])
 
+# This is the exact position of my observation location
 home = LatLon (59.318659676810654, 18.04959717835501)
 
 intersections = collection.getIntersections (estimatedPosition = LatLon(59,19))
