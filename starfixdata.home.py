@@ -5,8 +5,8 @@ from calibration import calibrationRealValue, calibrationMeasuredValue
 
 # This is observations from actual sextant readings. 
 # I used a simple plastic sextant (Davis Mk III) and an artificial horizon. 
-# THIS IS JUST TEST DATA. 
-  
+
+# Defining the Sextant object, using the calculated gradation error as parameter.   
 mySextant = Sextant (getDecimalDegreesFromTuple (calibrationMeasuredValue) / getDecimalDegreesFromTuple (calibrationRealValue))    
 
 S1 = Sight (   object_name          = "Sun", \
