@@ -354,7 +354,7 @@ But there are some question marks about this accuracy, and I will have to make m
 ## 6. Sextant Calibration <a name="calibration"></a>
 
 There are many technical aspects of handling and calibrating a sextant and we will not mention all these things here, with one exception.
-A sextant may show a *gradation error* which can cause errors for larger measured angles. The little plastic sextant I have used (a Davis Mark III) was suspected by me, 
+A sextant may show a **gradation error** which can cause errors for larger measured angles. The little plastic sextant I have used (a Davis Mark III) was suspected by me, 
 and I decided to measure it by taking a terrestrial angle fix and compare it to the data from my map. And yes, there was an error of about 2 minutes / 10 degrees.
 For the details see [this sample](starfixdata.home.py) where a measurement of a local view is used as input to a calibration parameter of the used sextant.  
 
