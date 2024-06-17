@@ -11,7 +11,8 @@
     1. [Running the chicago script](#run-chicago-script)
 1. [Dead Reckoning](#dead-reckoning)
     1. [Running the sea script](#run-sea-script) 
-1. [A real-life example](#real-life)     
+1. [A real-life example](#real-life)
+1. [Sextant Calibration](#calibration)     
 
 ## 1. Introduction <a name="introduction"></a>
 
@@ -349,3 +350,11 @@ You can also see a real-life measurement I recently made using a simple plastic 
 The sample can be found [here](starfixdata.home.py)
 The resulting position is just 1.45 nautical miles away from my real position, which I consider being an excellent result given the simple equipment and my modest level of training. 
 But there are some question marks about this accuracy, and I will have to make more sights since I need to get more training. 
+
+## 6. Sextant Calibration <a name="calibration"></a>
+
+There are many technical aspects of handling and calibrating a sextant and we will not mention all these things here, with one exception.
+A sextant may show a *gradation error* which can cause errors for larger measured angles. The little plastic sextant I have used (a Davis Mark III) was suspected by me, 
+and I decided to measure it by taking a terrestrial angle fix and compare it to the data from my map. And yes, there was an error of about 2 minutes / 10 degrees.
+For the details see [this sample](starfixdata.home.py) where a measurement of a local view is used as input to a calibration parameter of the used sextant.  
+
