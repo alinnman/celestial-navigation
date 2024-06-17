@@ -93,7 +93,7 @@ The data is picked from your clock, sextant and the Nautical Almanac in the foll
 | *sha_diff_degrees*   | SHA of star vs Aries in degrees              | Only use for stars. Otherwise skip                             | Nautical Almanac |
 | *sha_diff_minutes*   | SHA of star vs Aries in minutes              | Only use for stars. Otherwise skip                             | Nautical Almanac |
 | *observer_height*    | Height of observer above sea level in meters | Only relevant for observations using natural horizon           | Height Measurement |
-| *sextant*            | An object defining a specific sextant        | See [starfixdata.home.py](this code sample) for details        | Calibration | 
+| *sextant*            | An object defining a specific sextant        | See [this code sample](starfixdata.home.py) for details        | Calibration | 
 
 ### 2.i. Atmospheric refraction<a name="atmospheric-refraction"></a>
 
