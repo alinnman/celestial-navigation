@@ -18,9 +18,9 @@
 
 ![US Navy training in celestial navigation](pics/us-navy.jpg "US Navy Training in Celestial Navigation")
 
-This project contains a simple python script to be used for [celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation) togheter with some demos and documentation.
+This project contains a toolkit (written in Python) to be used for [celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation) togheter with some demos and documentation.
 Sights (altitude measurements) have to be obtained using a sextant, a nautical almanac and an accurate clock. 
-The python script takes care of the **sight reduction** (conversion to estimated location on Earth),
+The toolkit takes care of the **sight reduction** (conversion to estimated location on Earth),
 a task that traditionally is performed with careful manual work using special tables (sight reduction tables), pen, dividers and specialized plotting charts. 
 Using a calculator can speed up this manual task, and also reduce possible (human) errors. 
 A computer can do it even quicker, and this script will typically perform a sight reduction in less than one millisecond.  
