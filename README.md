@@ -23,8 +23,8 @@ Sights (altitude measurements) have to be obtained using a sextant, a nautical a
 The toolkit takes care of the **sight reduction** (conversion to estimated location on Earth),
 a task that traditionally is performed with careful manual work using special tables (sight reduction tables), pen, dividers and specialized plotting charts. 
 Using a calculator can speed up this manual task, and also reduce possible (human) errors. 
-A computer can do it even quicker, and this script will typically perform a sight reduction in less than one millisecond.  
-You can use the script on a mobile phone without internet connection. If you also have access to a solar powered battery you have a tool useful while traveling in remote places or on the ocean.
+A **computer** can do it even quicker, and this toolkit will typically perform a sight reduction in less than one millisecond.  
+You can use a script on a mobile phone without internet connection. If you also have access to a solar powered battery you have a tool useful while traveling in remote places or on the ocean.
 
 * The script supports **stationary** observations, i.e. when observations are made from a single position, 
   using multiple sights where the position is determined from the intersection(s) of the small circles of equal altitude.
