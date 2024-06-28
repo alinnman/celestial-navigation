@@ -355,7 +355,7 @@ But there are some question marks about this accuracy, and I will have to make m
 ## 6. Terrestrial Navigation <a name="terrestrial"></a>
 
 A sextant can be used for terrestrial navigation too, if you orient it horizontally. Typically you take sights of lighthouses when performing a landfall towards a coast. 
-[This sample](terrestrial.landfall.py) shows and example. The underlying maths are quite similar to sight reduction of star fixes. You need to find the intersection of two 
+[This sample](terrestrial.landfall.py) shows an example of this. The underlying maths are quite similar to sight reduction of star fixes. You need to find the intersection of two 
 circles representing equal angle to two terrestrial points. 
 
 ## 7. Sextant Calibration <a name="calibration"></a>
