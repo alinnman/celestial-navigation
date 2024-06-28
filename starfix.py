@@ -328,11 +328,13 @@ def getCircleForAngle (point1 : LatLon, point2 : LatLon, angle : int | float) ->
     point1V = toRectangular (point1)
     point2V = toRectangular (point2)
     midPoint = normalizeVect (addVecs (point1V, point2V))
+    # Use the basic formula for finding a circumscribing circle 
     A = distanceBetweenPoints (point1, point2) 
     B = (A/2) * (1 / tan (degToRad (angle / 2)))
-    C = (A/4) * (1 / (sin (degToRad (angle / 2)) * cos(degToRad (angle / 2))))
+    C = (A/4) * (1 / (sin (degToRad (angle / 2) *\
+                      cos (degToRad (angle / 2)))))
     X = B - C 
-    # calculate position of circle
+    # calculate position and radius of circle
     rotationAngle = X / EARTH_RADIUS
     rotCenter = rotateVector (midPoint, normalizeVect(subtractVecs (point2V, point1V)), rotationAngle)
     radius = radToDeg(angleBPoints (toLatLon(rotCenter), point1))
@@ -350,6 +352,7 @@ def getTerrestrialPosition (pointA1 : LatLon,\
     '''
     A = getCircleForAngle (pointA1, pointA2, angleA)
     B = getCircleForAngle (pointB1, pointB2, angleB)
+    # Finally compute the intersection. Since we require an estimated position we will eliminate the false intersection. 
     return getIntersections (A[0], B[0], A[1], B[1], estimatedPosition)
 
 # Celestial Navigation
