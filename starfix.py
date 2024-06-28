@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 EARTH_CIRCUMFERENCE_EQUATORIAL = 40075.017
 EARTH_CIRCUMFERENCE_MERIDIONAL = 40007.86
 EARTH_CIRCUMFERENCE = (EARTH_CIRCUMFERENCE_EQUATORIAL + EARTH_CIRCUMFERENCE_MERIDIONAL) / 2
+EARTH_RADIUS = EARTH_CIRCUMFERENCE / (2 * pi) 
 
 # Data types
 
@@ -14,10 +15,15 @@ class LatLon:
     def __init__ (self, lat : float | int, lon : float | int): 
         self.lat = lat
         self.lon = lon
+        
+    def __str__(self):
+        return "LAT = " + str(self.lat) + "; LON = " + str(self.lon)        
 
     def getTuple (self) -> tuple[float | int] :
         ''' Used to simplify some code where tuples are more practical '''
         return self.lon, self.lat
+        
+
         
 # Utility routines (algrebraic, spheric geometry) 
 
@@ -151,12 +157,16 @@ def takeoutCourse (latLon : LatLon, course : int | float, speedKnots : int | flo
     diffLon = (sin (degToRad(course))*distanceDegrees/stretchAtStart)
     return LatLon (latLon.lat+diffLat, latLon.lon+diffLon)
     
-def distanceBetweenPoints (latLon1 : LatLon, latLon2 : LatLon) -> float:
-    ''' Calculate distance between two points in km. Using great circles '''
+def angleBPoints (latLon1 : LatLon, latLon2 : LatLon) -> float: 
     normVec1 = toRectangular (latLon1)
     normVec2 = toRectangular (latLon2)
     dp = dotProduct (normVec1, normVec2)
     angle = acos (dp)
+    return angle    
+    
+def distanceBetweenPoints (latLon1 : LatLon, latLon2 : LatLon) -> float:
+    ''' Calculate distance between two points in km. Using great circles '''
+    angle = angleBPoints (latLon1, latLon2) 
     distance = (EARTH_CIRCUMFERENCE/(2*pi)) * angle
     return distance    
 
@@ -168,7 +178,7 @@ def NMtoKM (nm : int | float) -> float:
     ''' Convert from nautical miles to kilometers '''
     return (nm/(360*60))*EARTH_CIRCUMFERENCE
  
-# Sextant, Calibration etc. 
+# Sextant calibration
 
 class Sextant:
     def __init__  (self, graduationError : float): 
@@ -184,6 +194,7 @@ def angleBetweenPoints (origin : LatLon, point1 : LatLon, point2 : LatLon) -> fl
     point2GC = normalizeVect (crossProduct (originR, point2R))
     DP = dotProduct (point1GC, point2GC)
     return acos (DP) * (180 / pi)
+        
         
 # Horizon
 
@@ -307,6 +318,41 @@ def getRepresentation (ins : LatLon | tuple | list, numDecimals : int, lat=False
                 retVal = retVal + ";"
         retVal = retVal + ")"
         return retVal
+
+# Terrestrial Navigation
+
+def getCircleForAngle (point1 : LatLon, point2 : LatLon, angle : int | float) -> tuple [LatLon, float] : 
+    '''
+    Calculate the circumscribed circle for two observed points, giving a circle to use for determining terrestrial position 
+    '''
+    point1V = toRectangular (point1)
+    point2V = toRectangular (point2)
+    midPoint = normalizeVect (addVecs (point1V, point2V))
+    A = distanceBetweenPoints (point1, point2) 
+    B = (A/2) * (1 / tan (degToRad (angle / 2)))
+    C = (A/4) * (1 / (sin (degToRad (angle / 2)) * cos(degToRad (angle / 2))))
+    X = B - C 
+    # calculate position of circle
+    rotationAngle = X / EARTH_RADIUS
+    rotCenter = rotateVector (midPoint, normalizeVect(subtractVecs (point2V, point1V)), rotationAngle)
+    radius = radToDeg(angleBPoints (toLatLon(rotCenter), point1))
+    return toLatLon(rotCenter), radius
+    
+def getTerrestrialPosition (pointA1 : LatLon,\
+                            pointA2 : LatLon,\
+                            angleA : int | float,\
+                            pointB1 : LatLon,\
+                            pointB2 : LatLon,\
+                            angleB : int | float,
+                            estimatedPosition : LatLon = None) -> LatLon : 
+    '''
+    Given two pairs of terrestial observations (pos + angle) determine the observer's position 
+    '''
+    A = getCircleForAngle (pointA1, pointA2, angleA)
+    B = getCircleForAngle (pointB1, pointB2, angleB)
+    return getIntersections (A[0], B[0], A[1], B[1], estimatedPosition)
+
+# Celestial Navigation
 
 class Sight :
     '''  Object representing a sight (star fix '''
