@@ -344,7 +344,7 @@ def getTerrestrialPosition (pointA1 : LatLon,\
                             pointB1 : LatLon,\
                             pointB2 : LatLon,\
                             angleB : int | float,
-                            estimatedPosition : LatLon = None) -> LatLon : 
+                            estimatedPosition : LatLon) -> LatLon : 
     '''
     Given two pairs of terrestial observations (pos + angle) determine the observer's position 
     '''
