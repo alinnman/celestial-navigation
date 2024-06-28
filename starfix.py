@@ -331,8 +331,8 @@ def getCircleForAngle (point1 : LatLon, point2 : LatLon, angle : int | float) ->
     # Use the basic formula for finding a circumscribing circle 
     A = distanceBetweenPoints (point1, point2) 
     B = (A/2) * (1 / tan (degToRad (angle / 2)))
-    C = (A/4) * (1 / (sin (degToRad (angle / 2) *\
-                      cos (degToRad (angle / 2)))))
+    C = (A/4) * (1 / (sin (degToRad (angle / 2)) *\
+                      cos (degToRad (angle / 2))))
     X = B - C 
     # calculate position and radius of circle
     rotationAngle = X / EARTH_RADIUS
