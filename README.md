@@ -358,6 +358,10 @@ A sextant can be used for terrestrial navigation too, if you orient it horizonta
 [This sample](terrestrial.landfall.py) shows an example of this. The underlying maths are quite similar to sight reduction of star fixes. You need to find the intersection of two 
 circles representing equal angle to two terrestrial points. 
 
+The following picture shows how the sample results in two circles of equal angle. The red arrow is the correct position. 
+
+![Navigation towards three lighthouses](pics/lighthouses.png "Terrestrial Navigation")
+
 ## 7. Sextant Calibration <a name="calibration"></a>
 
 There are many technical aspects of handling and calibrating a sextant and we will not mention all these things here, with one exception.
