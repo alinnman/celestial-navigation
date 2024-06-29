@@ -23,8 +23,6 @@ class LatLon:
         ''' Used to simplify some code where tuples are more practical '''
         return self.lon, self.lat
         
-
-        
 # Utility routines (algrebraic, spheric geometry) 
 
 def addVecs (vec1 : list, vec2 : list) -> list: 
@@ -167,7 +165,7 @@ def angleBPoints (latLon1 : LatLon, latLon2 : LatLon) -> float:
 def distanceBetweenPoints (latLon1 : LatLon, latLon2 : LatLon) -> float:
     ''' Calculate distance between two points in km. Using great circles '''
     angle = angleBPoints (latLon1, latLon2) 
-    distance = (EARTH_CIRCUMFERENCE/(2*pi)) * angle
+    distance = EARTH_RADIUS * angle
     return distance    
 
 def KMtoNM (km : int | float) -> float: 
@@ -193,8 +191,7 @@ def angleBetweenPoints (origin : LatLon, point1 : LatLon, point2 : LatLon) -> fl
     point1GC = normalizeVect (crossProduct (originR, point1R))
     point2GC = normalizeVect (crossProduct (originR, point2R))
     DP = dotProduct (point1GC, point2GC)
-    return acos (DP) * (180 / pi)
-        
+    return acos (DP) * (180 / pi)        
         
 # Horizon
 
@@ -204,7 +201,7 @@ def getDipOfHorizon (hM : int | float) -> float:
         hM : height in meters
     '''
     h = hM / 1000
-    r = EARTH_CIRCUMFERENCE / (2*pi)
+    r = EARTH_RADIUS
     d = sqrt (h*(2*r + h))
     return (atan2 (d, r))*(180/pi)*60
     
@@ -323,7 +320,7 @@ def getRepresentation (ins : LatLon | tuple | list, numDecimals : int, lat=False
 
 def getCircleForAngle (point1 : LatLon, point2 : LatLon, angle : int | float) -> tuple [LatLon, float] : 
     '''
-    Calculate the circumscribed circle for two observed points, giving a circle to use for determining terrestrial position 
+    Calculate the circumscribed circle for two observed points with a specified angle, giving a circle to use for determining terrestrial position 
     '''
     point1V = toRectangular (point1)
     point2V = toRectangular (point2)
