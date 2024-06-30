@@ -31,7 +31,8 @@ You can use a script on a mobile phone without internet connection. If you also 
   using multiple sights where the position is determined from the intersection(s) of the small circles of equal altitude.
   For two sights you will get two possible coordinates. For three or more sights you will get one coordinate (calculated as a mean value). 
 * There is also support for **dead reckoning** observations, typically at sea on a moving ship. This also needs a working compass and a chip log or similar.
-  See [section 4](#dead-reckoning) below for more information. 
+  See [section 4](#dead-reckoning) below for more information.
+* As a bonus there is also support for **terrestial navigation**. See [Section 6](#terrestial) below for more information.
 
 For more information on installation see [here](INSTALL.md).
 
