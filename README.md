@@ -25,13 +25,14 @@ The toolkit takes care of the **sight reduction** (conversion to estimated locat
 a task that traditionally is performed with careful manual work using special tables (sight reduction tables), pen, dividers and specialized plotting charts. 
 Using a calculator can speed up this manual task, and also reduce possible (human) errors. 
 A **computer** can do it even quicker, and this toolkit will typically perform a sight reduction in less than one millisecond.  
-You can use a script on a mobile phone without internet connection. If you also have access to a solar powered battery you have a tool useful while traveling in remote places or on the ocean.
+You can use the toolkit on a mobile phone without internet connection. If you also have access to a solar powered battery you have a tool useful while traveling in remote places or on the ocean.
 
 * The script supports **stationary** observations, i.e. when observations are made from a single position, 
   using multiple sights where the position is determined from the intersection(s) of the small circles of equal altitude.
   For two sights you will get two possible coordinates. For three or more sights you will get one coordinate (calculated as a mean value). 
 * There is also support for **dead reckoning** observations, typically at sea on a moving ship. This also needs a working compass and a chip log or similar.
-  See [section 4](#dead-reckoning) below for more information. 
+  See [section 4](#dead-reckoning) below for more information.
+* As a bonus there is also support for **terrestial navigation**. See [Section 6](#terrestrial) below for more information.
 
 For more information on installation see [here](INSTALL.md).
 
