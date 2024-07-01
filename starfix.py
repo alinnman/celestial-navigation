@@ -183,7 +183,7 @@ class Sextant:
         self.graduationError = graduationError
  
 def angleBetweenPoints (origin : LatLon, point1 : LatLon, point2 : LatLon) -> float:
-    '''' Return the angle in degrees between two terrestrial targets (point1 and point2) as seen from the observation point (origin) '''
+    ''' Return the angle in degrees between two terrestrial targets (point1 and point2) as seen from the observation point (origin) '''
     originR = toRectangular (origin)
     point1R = toRectangular (point1)
     point2R = toRectangular (point2) 
@@ -234,8 +234,8 @@ def getIntersections (latlon1 : LatLon, latlon2 : LatLon, Angle1 : int | float, 
             rho = acos (cos (degToRad(Angle1)) / (dotProduct (aVec, q)))
         else: 
             rho = acos (cos (degToRad(Angle2)) / (dotProduct (bVec, q)))
-    except ValueError:
-        raise ValueError ("Bad sight data. Circles do not intersect")
+    except ValueError as exc:
+        raise ValueError ("Bad sight data. Circles do not intersect") from exc
 
     # Calculate a rotation vector
     rotAxis = normalizeVect(crossProduct (crossProduct (aVec, bVec), q))
@@ -481,15 +481,11 @@ class SightCollection:
         nrOfFixes = len(self.sfList)
         assert (nrOfFixes >= 2)
         if (nrOfFixes == 2):
-            '''
-            For two star fixes just use the algorithm of SightPair.getIntersections
-            '''
+            # For two star fixes just use the algorithm of SightPair.getIntersections
             intersections = SightPair (self.sfList[0],self.sfList[1]).getIntersections(estimatedPosition)
             return intersections
         elif (nrOfFixes >= 3):
-            '''
-            For >= 3 star fixes perform pairwise calculation on every pair of fixes and then run a sorting algorithm 
-            '''
+            # For >= 3 star fixes perform pairwise calculation on every pair of fixes and then run a sorting algorithm 
             coords = []
             # Perform pairwise sight reductions
             for i in range (nrOfFixes):
@@ -514,7 +510,7 @@ class SightCollection:
                         dists [i,j] = dist
             # Sort the distances, with lower distances first
             sortedDists = dict(sorted(dists.items(), key=lambda item: item[1]))
-            nrOfSortedDists = len (sortedDists)
+            # nrOfSortedDists = len (sortedDists)
             chosenPoints = set ()
             cpLimit = int((nrOfFixes**2 - nrOfFixes) / 2)
             # Find the points which are located close to other points
@@ -536,17 +532,17 @@ class SightCollection:
                 
             # Make sure the chosen points are nearby each other
             #print ("BEST COORDINATES")
-            '''
-            for cp1 in chosenPoints:
-                print (getRepresentation (coords[cp1],1))  
-                for cp2 in chosenPoints:
-                    if cp1 != cp2:
-                        dist = distanceBetweenPoints (coords[cp1], coords[cp2])
-                        if dist > limit:
-                            # Probably multiple possible observation points. 
-                            # Best option is to perform sight reduction on 2 sights and select the correct point manually.
-                            raise ValueError ("Cannot sort multiple intersections to find a reasonable set of coordinates")
-            '''
+            fineSorting = False
+            if (fineSorting):
+                for cp1 in chosenPoints:
+                    print (getRepresentation (coords[cp1],1))  
+                    for cp2 in chosenPoints:
+                        if cp1 != cp2:
+                            dist = distanceBetweenPoints (coords[cp1], coords[cp2])
+                            if dist > limit:
+                                # Probably multiple possible observation points. 
+                                # Best option is to perform sight reduction on 2 sights and select the correct point manually.
+                                raise ValueError ("Cannot sort multiple intersections to find a reasonable set of coordinates")
             print ("MEAN VALUE COORDINATE from multi-point sight data.")              
             summationVec = [0,0,0]
             # Make a mean value on the best intersections. 
@@ -617,7 +613,7 @@ class SightTrip:
         limit = 0.001
         iterLimit = 100
         iterCount = 0
-        ready = False
+        # ready = False
         takenOut = None
         rotated  = None
         while iterCount < iterLimit:
