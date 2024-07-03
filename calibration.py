@@ -1,9 +1,10 @@
-from starfix import angleBetweenPoints, getDMS, LatLon
+''' Just a sample showing a simple sextant calibration '''
+
+from starfix import angle_between_points, get_dms, LatLon
 
 hyllan = LatLon (59.32062936826502, 18.046798890457488)
 westerTowerEastWall = LatLon (59.34574443361814, 18.033477910104178)
-kaknäs = LatLon(59.33503270844517, 18.126800449743094)
+kaknas = LatLon(59.33503270844517, 18.126800449743094)
 
-calibrationRealValue = getDMS(angleBetweenPoints(hyllan, westerTowerEastWall, kaknäs))
+calibrationRealValue = get_dms(angle_between_points(hyllan, westerTowerEastWall, kaknas))
 calibrationMeasuredValue = (85, 56, 0)
-

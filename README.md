@@ -125,14 +125,14 @@ where
 
 Using two star fixes a sight reduction can be done in the following way 
 
-    from starfix import Sight, SightCollection, getRepresentation
+    from starfix import Sight, SightCollection, get_representation
 	
     a = Sight (....Parameters....)
     b = Sight (....Parameters....)
     
     collection = SightCollection ([a, b])
-    intersections = collection.getIntersections ()
-    print (getRepresentation(intersections,1))
+    intersections = collection.get_intersections ()
+    print (get_representation(intersections,1))
     
 The result will be a tuple of **two** coordinates (intersections of two circles of equal altitude). These intersections can be located far away from each other.
 You will have to decide which one of them is the correct observation point, based on previous knowledge of your location. 
@@ -278,12 +278,12 @@ When sailing (or moving on the ground) you can use this technique to support dea
 See above for how to create a sight object
     
     # We reach s2 by applying about 175 degrees for 1 hour (time between taking of sights) with a speed of 20 knots. 
-    cCourse = 175
-    speed = 20    
-    st = SightTrip (sightStart = s1, sightEnd = s2,\
-                estimatedStartingPoint    = s1LatLon,\
-                courseDegrees             = cCourse,\
-                speedKnots                = speed)
+    C_COURSE = 175
+    SPEED = 20    
+    st = SightTrip (sight_start = s1, sight_end = s2,\
+                    estimated_starting_point        = s1LatLon,\
+                    course_degrees                  = C_COURSE,\
+                    speed_knots                     = SPEED)
 
 Now you can calculate the coordinates for this trip.
 

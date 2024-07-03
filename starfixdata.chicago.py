@@ -1,10 +1,13 @@
-from starfix import Sight, SightCollection, getRepresentation, getGoogleMapString
+''' This is a sample for celestial navigation for a stationary observer '''
+
 from time import time
+from starfix import Sight, SightCollection, get_representation, get_google_map_string
+
 
 starttime = time ()
 
 # Our starfix data
-        
+
 a = Sight (   object_name          = "Sun", \
               time_year            = 2024,\
               time_month           = 5,\
@@ -67,31 +70,31 @@ c = Sight (   object_name          = "Vega", \
               sha_diff_degrees     = 80, \
               sha_diff_minutes     = 33.4 \
               )
-              
+
 print ("Two daytime observations of the sun")
 collection = SightCollection ([a, b])
-intersections = collection.getIntersections ()
-print (getRepresentation(intersections,1))
+intersections = collection.get_intersections ()
+print (get_representation(intersections,1))
 print ("-----------------------------------")
 print ("We add an additional night time observation of Vega")
 collection = SightCollection ([a, b, c])
-intersections = collection.getIntersections ()
-print (getRepresentation(intersections,1))
+intersections = collection.get_intersections ()
+print (get_representation(intersections,1))
 
 
-#Diagnostics for map rendering etc. 
-print ("Some useful data follows") 
-print ("A radius = " + str(round(a.getRadius (),1)))
-print ("A GP     = " + getGoogleMapString(a.GP,4))
+#Diagnostics for map rendering etc.
+print ("Some useful data follows")
+print ("A radius = " + str(round(a.get_radius (),1)))
+print ("A GP     = " + get_google_map_string(a.gp,4))
 
-print ("B radius = " + str(round(b.getRadius (),1)))
-print ("B GP     = " + getGoogleMapString(b.GP,4))
+print ("B radius = " + str(round(b.get_radius (),1)))
+print ("B GP     = " + get_google_map_string(b.gp,4))
 
-print ("C radius = " + str(round(c.getRadius (),1)))
-print ("C GP     = " + getGoogleMapString(c.GP,4))
+print ("C radius = " + str(round(c.get_radius (),1)))
+print ("C GP     = " + get_google_map_string(c.gp,4))
 
 endtime = time ()
 
 takenMs = round((endtime-starttime)*1000,2)
 
-print ("Time taken = " +str(takenMs)+" ms")  
+print ("Time taken = " +str(takenMs)+" ms")

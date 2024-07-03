@@ -1,13 +1,18 @@
-from starfix import Sight, SightCollection, SightTrip, LatLon, Sextant, getDecimalDegreesFromTuple, getRepresentation, \
-                    getGoogleMapString, distanceBetweenPoints, EARTH_CIRCUMFERENCE
+''' This is a real-world sample. Very basic sextant used '''
+
+from starfix import Sight, SightCollection, LatLon, Sextant,\
+                    get_decimal_degrees_from_tuple,\
+                    get_representation, \
+                    get_google_map_string, distance_between_points
 from calibration import calibrationRealValue, calibrationMeasuredValue
 
 
-# This is observations from actual sextant readings. 
-# I used a simple plastic sextant (Davis Mk III) and an artificial horizon. 
+# This is observations from actual sextant readings.
+# I used a simple plastic sextant (Davis Mk III) and an artificial horizon.
 
-# Defining the Sextant object, using the calculated gradation error as parameter.   
-mySextant = Sextant (getDecimalDegreesFromTuple (calibrationMeasuredValue) / getDecimalDegreesFromTuple (calibrationRealValue))    
+# Defining the Sextant object, using the calculated gradation error as parameter.
+mySextant = Sextant (get_decimal_degrees_from_tuple (calibrationMeasuredValue) / \
+                     get_decimal_degrees_from_tuple (calibrationRealValue))
 
 S1 = Sight (   object_name          = "Sun", \
               time_year            = 2024,\
@@ -61,22 +66,22 @@ collection = SightCollection ([S1, S2])
 # This is the exact position of my observation location
 home = LatLon (59.318659676810654, 18.04959717835501)
 
-intersections = collection.getIntersections (estimatedPosition = LatLon(59,19))
-print (getRepresentation(intersections,1))
-print ("GM = " + getGoogleMapString(intersections,4))
-print ("Intersection distance from home = " + str(distanceBetweenPoints(intersections, home)))
+intersections = collection.get_intersections (estimated_position = LatLon(59,19))
+print (get_representation(intersections,1))
+print ("GM = " + get_google_map_string(intersections,4))
+print ("Intersection distance from home = " + str(distance_between_points(intersections, home)))
 
-#Diagnostics for map rendering etc. 
-print ("Some useful data follows") 
+#Diagnostics for map rendering etc.
+print ("Some useful data follows")
 
-print ("S1 radius = " + str(round(S1.getRadius (),1)))
-print ("S1 GP     = " + getGoogleMapString(S1.GP,4))
-print ("Diff     = " + str(S1.getDistanceFrom (home)))
+print ("S1 radius = " + str(round(S1.get_radius (),1)))
+print ("S1 GP     = " + get_google_map_string(S1.gp,4))
+print ("Diff     = " + str(S1.get_distance_from (home)))
 print ("--")
 
-print ("S2 radius = " + str(round(S2.getRadius (),1)))
-print ("S2 GP     = " + getGoogleMapString(S2.GP,4))
-print ("Diff     = " + str(S2.getDistanceFrom (home)))
+print ("S2 radius = " + str(round(S2.get_radius (),1)))
+print ("S2 GP     = " + get_google_map_string(S2.gp,4))
+print ("Diff     = " + str(S2.get_distance_from (home)))
 print ("--")
 print ("-----------------------------------")
  
