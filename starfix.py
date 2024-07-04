@@ -279,7 +279,7 @@ def get_refraction (apparent_angle : int | float) -> float:
     See: https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction 
     
     Parameter:
-        apparentAngle: The apparent (measured) altitude in degrees
+        apparent_angle: The apparent (measured) altitude in degrees
     Returns:
         The refraction in arc minutes
     '''
@@ -300,7 +300,7 @@ def get_representation (ins : LatLon | tuple | list, num_decimals : int, lat=Fal
     assert num_decimals >= 0
     if isinstance (ins, LatLon):
         ins = ins.get_tuple ()
-    if isinstance (ins, float) or isinstance (ins, int):
+    if isinstance (ins, (float, int)):
         degrees = int (ins)
         if lat:
             if ins < 0:
@@ -315,7 +315,7 @@ def get_representation (ins : LatLon | tuple | list, num_decimals : int, lat=Fal
         minutes = float (abs((ins - degrees)*60))
         a_degrees = abs (degrees)
         return prefix + " " + str(a_degrees) + "°," + str(round(minutes, num_decimals)) + "′"
-    elif isinstance (ins, tuple) or isinstance (ins, list):
+    if isinstance (ins, (tuple, list)):
         pair = isinstance (ins, tuple)
         length = len (ins)
         ret_val = "("
@@ -328,6 +328,7 @@ def get_representation (ins : LatLon | tuple | list, num_decimals : int, lat=Fal
                 ret_val = ret_val + ";"
         ret_val = ret_val + ")"
         return ret_val
+    raise ValueError ("Incorrect types for represenation.")
 
 # Terrestrial Navigation
 
