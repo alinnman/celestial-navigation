@@ -25,7 +25,7 @@ The toolkit takes care of the **sight reduction** (conversion to estimated locat
 a task that traditionally is performed with careful manual work using special tables (sight reduction tables), pen, dividers and specialized plotting charts. 
 Using a calculator can speed up this manual task, and also reduce possible (human) errors. 
 A **computer** can do it even quicker, and this toolkit will typically perform a sight reduction in less than one millisecond.  
-You can use the toolkit on a mobile phone without internet connection. If you also have access to a solar powered battery you have a tool useful while traveling in remote places or on the ocean.
+You can use the toolkit on a mobile phone without internet connection. If you also have access to a solar powered battery (powerbank) you have a tool useful while traveling in remote places or on the ocean.
 
 * The script supports **stationary** observations, i.e. when observations are made from a single position, 
   using multiple sights where the position is determined from the intersection(s) of the small circles of equal altitude.
@@ -287,9 +287,9 @@ See above for how to create a sight object
 
 Now you can calculate the coordinates for this trip.
 
-    intersections = st.getIntersections ()
-    print ("Starting point = " + str(getRepresentation(intersections[0],1)))
-    print ("End point = " + str(getRepresentation(intersections[1],1)))
+    intersections = st.get_intersections ()
+    print ("Starting point = " + str(get_representation(intersections[0],1)))
+    print ("End point = " + str(get_representation(intersections[1],1)))
 
 The algorithm is a calculation based on distance calculations on segments of the small circles related to $s_1$ and $s_2$. 
 
