@@ -37,7 +37,7 @@ def add_vecs (vec1 : list, vec2 : list) -> list:
 
 def subtract_vecs (vec1 : list, vec2 : list) -> list:
     ''' Performs subtraction of two cartesian vectors '''
-    assert (len (vec1) == len (vec2))
+    assert len (vec1) == len (vec2)
     return add_vecs (vec1, mult_scalar_vect(-1, vec2))
 
 def mult_scalar_vect (scalar : int | float, vec : list) -> list:
@@ -71,7 +71,7 @@ def cross_product (vec1 : list, vec2 : list) -> list:
 
 def dot_product (vec1 : list, vec2 : list) -> float:
     ''' Computes vec1 * vec2 (dot product) '''
-    assert (len (vec1) == len (vec2))
+    assert len (vec1) == len (vec2)
     s = 0.0
     for i, v1 in enumerate (vec1):
         s += v1*vec2[i]
