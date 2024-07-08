@@ -134,7 +134,7 @@ def get_decimal_degrees_from_tuple (t : tuple) -> float:
 def rotate_vector (vec : list, rot_vec : list, angle_radians : int | float) -> list:
     '''
     Rotate a vector around a rotation vector. Based on Rodrigues formula. 
-    https://en.wikipedia.org/wiki/Rodrigues%27_formula 
+    https://en.wikipedia.org/wiki/Rodrigues%27_formula
     '''
     assert len(vec) == len(rot_vec) == 3
 
@@ -597,7 +597,8 @@ class SightCollection:
             return to_latlon (summation_vec)
 
 class SightTrip:
-    ''' Object used for dead-reckoning in daytime (with only Sun sights)  '''
+    ''' Object used for dead-reckoning. Sights are taken on different times
+        Course and speed are estimated input parameters.  '''
     def __init__ (self, \
                        sight_start : Sight,\
                        sight_end : Sight,\
