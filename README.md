@@ -267,9 +267,12 @@ The cardinality of $D$ can be calculated
 
 $|D| = {|I|}^2 - {|I|} = n^4 + 2n^3 - n$
 
-We now need to eliminate all "false" intersections and only choose those close to the probable location of the observer.
+We now need to eliminate all "false" intersections and only choose those close 
+to the probable location of the observer.
 
-The final part of the algorithm sorts the set $D$ to extract a maximum of $\frac{n^2-n}{2}$ intersection points, and also applying a maximal allowed distance limit (which defaults to 100 km).
+The final part of the algorithm sorts the set $D$ to extract a maximum of $\frac{n^2-n}{2}$
+intersection points, and also applying a maximal allowed distance limit
+(which defaults to 100 km).
 
 The final result will be a **single** mean value of the extracted intersection points.
 
