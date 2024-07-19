@@ -39,8 +39,8 @@ useful while traveling in remote places or on the ocean.
 
 * The script supports **stationary** observations, i.e. when observations are
   made from a single position,
-  using multiple sights where the position is determined from the intersection
-  (s) of the small circles of equal altitude.
+  using multiple sights where the position is determined from the intersection(s)
+  of the small circles of equal altitude.
   For two sights you will get two possible coordinates.
   For three or more sights you will get one coordinate
   (calculated as a mean value).
