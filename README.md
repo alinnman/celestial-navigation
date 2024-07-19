@@ -51,7 +51,7 @@ useful while traveling in remote places or on the ocean.
 * As a bonus there is also support for **terrestial navigation**.
   See [Section 6](#terrestrial) below for more information.
 
-For more information on installation see [here](INSTALL.md).
+For more information on installation and usage of the Python scripts see [here](INSTALL.md).
 
 A [digital version of the Nautical Almanac](NAtrad(A4)_2024.pdf) for 2024
 is included in this repository.
