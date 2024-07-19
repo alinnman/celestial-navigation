@@ -1,4 +1,7 @@
-''' A toolkit for celestial navigation, in particular sight reductions '''
+''' A toolkit for celestial navigation, in particular sight reductions 
+    Author: August Linnman, 2024, email: august@linnman.net
+    MIT License (see LICENSE file)
+'''
 
 from math import pi, sin, cos, acos, sqrt, tan, atan2
 from datetime import datetime, timezone
