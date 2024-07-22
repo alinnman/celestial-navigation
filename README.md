@@ -84,8 +84,8 @@ You create a sight with code like this (for the Sun).
               measured_alt_seconds = 0 \
               )
 
-You can also see a complete example in the python script [starfixdata.chicago.py]
-(starfixdata.chicago.py) and also [a corresponding excel file](chicago.ods).
+You can also see a complete example in [a python script](starfixdata.chicago.py)
+and also [a corresponding excel file](chicago.ods).
 This sample is built using altitudes taken from a star atlas Stellarium
 <https://en.wikipedia.org/wiki/Stellarium_(software)> from a point in central
 Chicago on May 5th 2024.
