@@ -5,8 +5,10 @@ celestial navigation.
 
 *Before we start: All symbols below are in vector notation
 and vector algebraic operations are used.
-All angles are measured in radians.
-If you don't know these concepts you need to brush up or add up your maths knowledge*
+All angles are measured in radians. 
+You need to know the difference between spherical coordinates (on a sphere)
+and cartesian (3D) coordinates and the conversion formula between them. 
+If you don't know these concepts you need to brush up or add up to your maths knowledge*
 
 1. Make (at least) two observations of celestial objects.
 <br><br>Using your **sextant** measure the altitude to two celestial objects.
