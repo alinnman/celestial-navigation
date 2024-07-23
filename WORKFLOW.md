@@ -22,7 +22,7 @@ $\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
 for the two measurements.<br><br>
 1. Look up ground points (GP) in Nautical Almanac
 <br><br>
-You find the Nautical Almanac [here](NAtrad(A4)_2024.pdf).<br>
+You find the Nautical Almanac [here](NAtrad(A4)_2024.pdf). You will now need the timestamps $t_1$ and $t_2$ from the step above.<br>
 *The toolkit will take care of the GP calculation,
 you just have to extract the tabular data for the current and next hour
 if you use the code in the toolkit.*
