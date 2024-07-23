@@ -25,8 +25,8 @@ You find the Nautical Almanac [here](NAtrad(A4)_2024.pdf).<br>
 you just have to extract the tabular data for the current and next hour
 if you use the code in the toolkit.*
 <br><br>The ground points are represented by two vectors $a$ and $b$.<br>
-*The coordinates must be converted from spherical to cartesian before you start.
-*<br><br>
+*The coordinates must be converted from spherical to cartesian before you start.*
+<br><br>
 1. Perform a sight reduction
 <br><br>Two circles $A$ and $B$ define the
 circles of equal altitude defined from the sighting data as described above.
