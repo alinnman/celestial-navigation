@@ -45,7 +45,7 @@ $p_{\mathrm{rot}} = q \cos \rho + \left( r \times q \right) \sin \rho + r \left(
 <br><br>
 Apply the formula above for $\rho$ and $-\rho$ and you will **get the two 
 intersection points $p_1$ and $p_2$**.
-Convert these vectors back to spherical coordinates.
+Convert these vectors back to spherical coordinates. One of these coordinates matches your physical location. 
 <br><br>
 For more details and background see the [Readme File](README.md).
 
