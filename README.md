@@ -181,7 +181,8 @@ three-dimensional and its surface has "radius = 1")
 We aim for finding the intersections $p_1$ and $p_2$ for the circles $A$ and $B$
 and the point $q$ being the midpoint between $p_1$ and $p_2$.
 
-Using the Pythagorean Theorem for a Sphere it is easy to see this:
+Using the [Pythagorean Theorem for a Sphere](https://en.wikipedia.org/wiki/Spherical_law_of_cosines)
+it is easy to see this:
 
 $\cos aq \cos pq = \cos \alpha$ <br/>
 $\cos bq \cos pq = \cos \beta$ <br/>
