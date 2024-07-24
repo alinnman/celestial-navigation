@@ -193,9 +193,11 @@ From which we derive this
 
 $q \cdot (a \cos \beta - b \cos \alpha) = 0$
 
-Applying two cross-products we can get the value for $q$
+Applying two cross-products and a normalization we can get the value for $q$
 
-$q = \mathrm{normalize}((a \times b) \times (a \cos \beta - b \cos \alpha))$
+$q_U = (a \times b) \times (a \cos \beta - b \cos \alpha)$
+
+$q = \hat{q_U}$ (normalization)
 
 Now we can find the intersection points by rotating $q$ for an angle of $\rho$ 
 along a rotation axis $r$. <br/>
