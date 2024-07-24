@@ -1,6 +1,6 @@
 # Short description of the workflow and maths of celestial navigation
 
-This is a short description (checklist) of the steps you take when performing
+This is a short description of the logical steps you take when performing
 celestial navigation.
 
 *Before we start: All symbols below are in vector notation
@@ -23,17 +23,17 @@ for the two measurements.<br><br>
 1. Look up ground points (GP) in Nautical Almanac
 <br><br>
 You find the Nautical Almanac [here](NAtrad(A4)_2024.pdf).
-You will now need the timestamps $t_1$ and $t_2$ from the step above.<br>
+You will now need the timestamps $t_1$ and $t_2$ from the step above.<br><br>
 *NOTE: [The toolkit](starfix.py) will take care of the GP calculation,
 you just have to extract the tabular data for the current and next hour
 if you use the code in the toolkit.*
 <br><br>The ground points are represented by two vectors $a$ and $b$.<br>
 *The coordinates must be converted from spherical to cartesian before you start.*<br>
 *NOTE: You will also need to take care of atmospheric refraction and horizon dip.
-For more info see the [readme file](README.md)*
+For more info see the [Readme File](README.md)*.
 <br><br>
 1. Perform a sight reduction
-*NOTE: [The toolkit](starfix.py) will take care of the sight reducion work.*
+<br><br>*NOTE: [The toolkit](starfix.py) will take care of the sight reducion work.*
 <br><br>Two circles $A$ and $B$ define the
 circles of equal altitude defined from the sighting data as described above.
 <br><br>
