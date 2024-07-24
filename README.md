@@ -53,6 +53,8 @@ useful while traveling in remote places or on the ocean.
 
 For more information on installation and usage of the Python scripts see [here](INSTALL.md).
 
+A short explanation of the logical steps and algorithms used can be found [here](WORKFLOW.md)
+
 A [digital version of the Nautical Almanac](NAtrad(A4)_2024.pdf) for 2024
 is included in this repository.
 
