@@ -173,6 +173,8 @@ circles of equal altitude defined from the sighting data as described above.
 The circles relate to a *sight pair* $S_{p_{1,2}} = \{s_1, s_2\}$
 which we will come back to later.
 
+![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
+
 $A = \lbrace p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land |p| = 1 \rbrace$ <br/>
 $B = \lbrace p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land |p| = 1 \rbrace$
 
