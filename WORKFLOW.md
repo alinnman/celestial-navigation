@@ -51,6 +51,8 @@ Apply the formula above for $\rho$ and $-\rho$ and you will **get the two
 intersection points $p_1$ and $p_2$**.
 Convert these vectors back to spherical coordinates. One of these coordinates matches your physical location. 
 <br><br>
+![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
+<br><br>
 For more details and background see the [Readme File](README.md).
 
 
