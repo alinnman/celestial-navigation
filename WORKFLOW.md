@@ -20,7 +20,7 @@ An hour will typically be sufficient.
 $\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
 <br><br>Using your **clock** register the corresponding times $t_1$ and $t_2$ 
 for the two measurements.<br><br>
-1. Look up ground points (GP) in Nautical Almanac
+1. Look up ground points (GP) in the Nautical Almanac
 <br><br>
 You find the Nautical Almanac [here](NAtrad(A4)_2024.pdf).
 You will now need the timestamps $t_1$ and $t_2$ from the step above.<br><br>
