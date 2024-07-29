@@ -197,16 +197,18 @@ $q \cdot (a \cos \beta - b \cos \alpha) = 0$
 
 Applying two cross-products and a normalization we can get the value for $q$
 
-$q_u = (a \times b) \times (a \cos \beta - b \cos \alpha)$
+$q_u = N \left( (a \times b) \times (a \cos \beta - b \cos \alpha) \right)$
 
-$q = \hat{q_u}$ (normalization)
+where $N$ is normalization
+
+$N(x) = \frac{x}{|x|}$
 
 Now we can find the intersection points by rotating $q$ for an angle of $\rho$ 
 along a rotation axis $r$. <br/>
 $\rho$ and $r$ are calculated this way:
 
-$r = (a \times b) \times q$ <br/>
-$\rho = \arccos(p \cdot q) = \arccos\left(\frac{\cos \alpha}{a \cdot q}\right)$
+$r = N \left( (a \times b) \times q \right)$ <br/>
+$\rho = \arccos(p \cdot q) = \arccos\left(\frac{\cos \alpha}{a \cdot q}\right) = \arccos\left(\frac{\cos \beta}{b \cdot q}\right)$
 
 The final rotation is accomplished using [Rodrigues/Gauss rotation formula](https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula).
 

@@ -40,9 +40,9 @@ circles of equal altitude defined from the sighting data as described above.
 $A = \lbrace p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land |p| = 1 \rbrace$ <br/>
 $B = \lbrace p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land |p| = 1 \rbrace$<br><br>
 Calculate the midpoint $q$ between intersections<br><br>
-$q = \mathrm{normalize}((a \times b) \times (a \cos \beta - b \cos \alpha))$<br><br>
+$q = N((a \times b) \times (a \cos \beta - b \cos \alpha))\space;\space N(x) = \frac{x}{|x|}$<br><br>
 Calculate a rotation vector $r$ and a rotation angle $\rho$<br><br>
-$r = (a \times b) \times q$ <br/>
+$r = N \left( (a \times b) \times q \right)$ <br/>
 $\rho = \arccos\left(\frac{\cos \alpha}{a \cdot q}\right)$<br><br>
 Finally apply a rotation operation<br><br>
 $p_{\mathrm{rot}} = q \cos \rho + \left( r \times q \right) \sin \rho + r \left(r \cdot q \right)\left(1 - \cos \rho \right)$
