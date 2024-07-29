@@ -444,7 +444,7 @@ circles representing equal angle to two terrestrial points.
 The following picture shows how the sample results in two circles of equal angle.
 The three small circles are centered on three lighthouses and you have measured
 the observed angle between them from your observation point with a sextant.
-The red arrow is the calculated correct position.
+The red arrow points towards the calculated correct position (intersection).
 
 ![Navigation towards three lighthouses](pics/lighthouses.png "Terrestrial Navigation")
 
