@@ -19,5 +19,5 @@ Regarding future plans for this project. These are some things I may consider do
 
 But the design goal is **portability and a small footprint**,
 with no dependency on an internet connection.
-Keeping it runnable in a lightweith Python environment is desirable.
+Keeping it runnable in a lightweigth Python environment is desirable.
 Any contributions are welcome!
