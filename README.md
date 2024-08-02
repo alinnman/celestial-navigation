@@ -62,6 +62,8 @@ A more detailed description of celestial navigation can be found [here](https://
 
 If you wonder why I wrote this in the first place, then see [this short explanation](WHY.md).
 
+If you want to contribute to the project then see [this page](CONTRIBUTING.md).
+
 ## 2. Making sights <a name="making-sights"></a>
 
 You create a sight with code like this (for the Sun).
