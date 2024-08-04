@@ -40,7 +40,7 @@ circles of equal altitude defined from the sighting data as described above.
 <br><br>
 $A = \lbrace p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land |p| = 1 \rbrace$ <br/>
 $B = \lbrace p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land |p| = 1 \rbrace$<br><br>
-Calculate the midpoint $q$ between intersections<br><br>
+Calculate the midpoint $q$ between intersections of $A$ and $B$.<br><br>
 $q = N((a \times b) \times (a \cos \beta - b \cos \alpha))\space;\space N(x) = \frac{x}{|x|}$<br><br>
 Calculate a rotation vector $r$ and a rotation angle $\rho$<br><br>
 $r = N \left( (a \times b) \times q \right)$ <br/>
