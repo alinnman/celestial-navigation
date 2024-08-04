@@ -26,7 +26,7 @@ for the two measurements.<br><br>
 You will now need the timestamps $t_1$ and $t_2$ from the step above.<br><br>
 The ground points are represented by two vectors $a$ and $b$.<br><br>
 *NOTE: The coordinates from the Nautical Almanac must be converted from spherical to cartesian before you start.*<br>
-*NOTE: You will also need to take care of atmospheric refraction and horizon dip.*
+*NOTE: You will also need to take care of atmospheric refraction and horizon dip.*<br>
 *NOTE:[The toolkit](starfix.py) will take care of the GP calculation, atmospheric refraction and horizon dip.
 You just have to extract the tabular data for the current and next hour
 if you use the code in the toolkit.*<br><br>
@@ -50,7 +50,7 @@ $p_{\mathrm{rot}} = q \cos \rho + \left( r \times q \right) \sin \rho + r \left(
 <br><br>
 Apply the formula above for $\rho$ and $-\rho$ and you will **get the two 
 intersection points $p_1$ and $p_2$**.
-Convert these vectors back to spherical coordinates. One of these coordinates (see yellow markers in picture below) matches your physical location. 
+Convert these vectors back to spherical coordinates. One of these coordinates matches your physical location. See **yellow markers** in picture below.
 <br><br>
 ![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
 <br><br>
