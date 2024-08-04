@@ -1,10 +1,10 @@
 # Short description of the workflow and maths of celestial navigation
 
-This is a short description of the logical steps you take when performing
+This is a short description of the steps you take when performing
 celestial navigation.
 
 *Before we start: All symbols below are in vector notation
-and vector algebraic operations are used.
+and vector algebraic operations are used. (dot and cross products, absolute values, trigonometrics).
 All angles are measured in radians. 
 You need to know the difference between spherical coordinates (on a sphere)
 and cartesian (3D) coordinates and the conversion formula between them. 
@@ -22,18 +22,19 @@ $\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
 for the two measurements.<br><br>
 1. Look up ground points (GP) in the Nautical Almanac
 <br><br>
-You find the Nautical Almanac [here](NAtrad(A4)_2024.pdf).
+*You find a digital (PDF) Nautical Almanac [here](NAtrad(A4)_2024.pdf) and you can buy hard-copies (for 2024) [here](https://www.amazon.com/Nautical-Almanac-2024-Year/dp/1951116690/ref=sr_1_1?crid=2TIHPIQYLTMSP&dib=eyJ2IjoiMSJ9.d3xFA2pQJx8dny0H5kmiZLliYeANWFYB9BZ8He317-o6bo-502TzFBFZ53Z-urSD2yU0G4GWMfNzJGBe_H332Fm4m7P1csqConMxBzK2PrFKKlWK4lgfJQg6yz6ChRGMazwrBs_sFjCPsPZO70yoju7daDJEfIkEnapIbSINaxPVotcCFWwCbsUZykR9a41qx7pt6f_BF3H2phdzmDyQc91EzxYspG6EUhy4rKSDV84._yKQxdQUbiOyz16NzLeFG1_ZmjRXS9ZH1Cf_qHssoTE&dib_tag=se&keywords=nautical+almanac+2024&qid=1722754135&sprefix=nautical+almanac+2024%2Caps%2C243&sr=8-1).*<br><br>
 You will now need the timestamps $t_1$ and $t_2$ from the step above.<br><br>
-*NOTE: [The toolkit](starfix.py) will take care of the GP calculation,
-you just have to extract the tabular data for the current and next hour
-if you use the code in the toolkit.*
-<br><br>The ground points are represented by two vectors $a$ and $b$.<br>
-*The coordinates must be converted from spherical to cartesian before you start.*<br>
-*NOTE: You will also need to take care of atmospheric refraction and horizon dip.
-For more info see the [Readme File](README.md)*.
+The ground points are represented by two vectors $a$ and $b$.<br><br>
+*NOTE: The coordinates from the Nautical Almanac must be converted from spherical to cartesian before you start.*<br>
+*NOTE: You will also need to take care of atmospheric refraction and horizon dip.*
+*NOTE:[The toolkit](starfix.py) will take care of the GP calculation, atmospheric refraction and horizon dip.
+You just have to extract the tabular data for the current and next hour
+if you use the code in the toolkit.*<br><br>
+For more info see the [Readme File](README.md).
 <br><br>
 1. Perform a sight reduction
-<br><br>*NOTE: [The toolkit](starfix.py) will take care of the sight reducion work.*
+<br><br>*NOTE: [The toolkit](starfix.py) will take care of the sight reducion work.*<br>
+*NOTE: Old-school celestial navigation on a ship uses* **sight reduction tables** *as a "cheat" to avoid complex hand-calculations of the formulas below, and this works perfectly. You can learn about this [here](https://www.youtube.com/watch?v=hDd1es5oQto&list=PLWcAZhCRTMByW_XEQ0y0OlGmxO3jp0LyE).* 
 <br><br>Two circles $A$ and $B$ define the
 circles of equal altitude defined from the sighting data as described above.
 <br><br>
@@ -49,11 +50,11 @@ $p_{\mathrm{rot}} = q \cos \rho + \left( r \times q \right) \sin \rho + r \left(
 <br><br>
 Apply the formula above for $\rho$ and $-\rho$ and you will **get the two 
 intersection points $p_1$ and $p_2$**.
-Convert these vectors back to spherical coordinates. One of these coordinates matches your physical location. 
+Convert these vectors back to spherical coordinates. One of these coordinates (see yellow markers in picture below) matches your physical location. 
 <br><br>
 ![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
 <br><br>
-For more details and background see the [Readme File](README.md).
+For more details, proof of maths used and background see the [Readme File](README.md).
 
 
 
