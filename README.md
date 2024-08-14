@@ -203,7 +203,7 @@ $q_u = N \left( (a \times b) \times (a \cos \beta - b \cos \alpha) \right)$
 
 where $N$ is normalization
 
-$N(x) = \frac{x}{|x|}$
+$N(x) = \frac{x}{\left|x\right|}$
 
 Now we can find the intersection points by rotating $q$ for an angle of $\rho$ 
 along a rotation axis $r$. <br/>
@@ -250,7 +250,7 @@ $S_p = \lbrace {S_p}_{i,j} | i<=n \land j<=n \land j>i+1 \rbrace$
 It is easy to see that the number of sight pairs (the cardinality) can be 
 calculated like this
 
-$|S_p| = \frac{n^2 + n}{2} $
+$\left|S_p\right| = \frac{n^2 + n}{2} $
 
 For each sight pair we now collect the two corresponding intersection points
 ($L$ = left, $R$ = right) using the algorithm described in 2.1 above.
@@ -263,7 +263,7 @@ $I_p = \lbrace I_{p,i,j,O} | O \in \{L,R \} \land i<=n \land j<=n \land j>i+1 \r
 
 The cardinality can easily be shown as
 
-$|I_p| = n^2 + n $
+$\left|I_p\right| = n^2 + n $
 
 For each pair of intersection points we calculate the distance.
 The distance is easily calculated using this formula.
@@ -272,11 +272,11 @@ $d\left(x,y\right) = \arccos (x \cdot y) $
 
 This will give us the following set
 
-$D = \lbrace d\left(I_k,I_l\right) | k < |I| \land l < |I| \land k <> l \rbrace$
+$D = \lbrace d\left(I_k,I_l\right) | k < \left|I\right| \land l < \left|I\right| \land k <> l \rbrace$
 
 The cardinality of $D$ can be calculated
 
-$|D| = {|I|}^2 - {|I|} = n^4 + 2n^3 - n$
+$\left|D\right| = {\left|I\right|}^2 - {\left|I\right|} = n^4 + 2n^3 - n$
 
 We now need to eliminate all "false" intersections and only choose those close 
 to the probable location of the observer.
