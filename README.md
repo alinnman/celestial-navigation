@@ -190,8 +190,8 @@ and the point $q$ being the midpoint between $p_1$ and $p_2$.
 Using the [Pythagorean Theorem for a Sphere](https://en.wikipedia.org/wiki/Spherical_law_of_cosines)
 it is easy to see this:
 
-$\cos aq \cos pq = \cos \alpha$ <br/>
-$\cos bq \cos pq = \cos \beta$ <br/>
+$\cos aq\cdot \cos pq = \cos \alpha$ <br/>
+$\cos bq\cdot \cos pq = \cos \beta$ <br/>
 
 From which we derive this
 
