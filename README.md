@@ -177,12 +177,12 @@ which we will come back to later.
 
 ![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
 
-$A = \lbrace p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land |p| = 1 \rbrace$ <br/>
-$B = \lbrace p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land |p| = 1 \rbrace$
+$A = \lbrace p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land \left|p\right| = 1 \rbrace$ <br/>
+$B = \lbrace p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land \left|p\right| = 1 \rbrace$
 
 (From now on we assume all coordinates/vectors are located on the unity sphere,
-i.e. $\lbrace p \in \mathbb{R}^3 \mid |p| = 1 \rbrace$, i.e. the Earth is
-three-dimensional and its surface has "radius = 1")
+i.e. $\lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$, i.e. the Earth is
+a three-dimensional sphere and its surface has "radius = 1")
 
 We aim for finding the intersections $p_1$ and $p_2$ for the circles $A$ and $B$
 and the point $q$ being the midpoint between $p_1$ and $p_2$.
