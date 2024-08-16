@@ -67,7 +67,7 @@ If you want to contribute to the project then see [this page](CONTRIBUTING.md).
 
 ## 2. Making sights <a name="making-sights"></a>
 
-You create a sight with code like this (for the Sun).
+You create a sight with code like this (for the Sun). You specify data from your sextant and clock (chronometer). You also add tabular data from the Nautical Almanac. This data is given from the current hour of the observation, and the next hour. (You don't have to enter linear factors etc. from the almanac). 
 
     a = Sight (   object_name          = "Sun", \
               time_year            = 2024,\
@@ -158,6 +158,7 @@ Currently the tool does not aim for very high accuracy and more elaborate correc
 
 * Refraction correction is simple (see above), and does not take into account temperature, elevation etc. 
 * Earth oblateness (OB term) is ignored. 
+* Handling of parallax is ignored. It may be needed for Moon sights though, but causes very small errors for all other celestial objects. 
 
 Future implementations may contain more precise corrections though. See [more about future plans](CONTRIBUTING.md).
 
