@@ -230,6 +230,7 @@ $p_{\mathrm{rot}} = q \cos \rho + \left( r \times q \right) \sin \rho + r \left(
 
 Apply the formula above for $\rho$ and $-\rho$ and you will get the two 
 intersection points $p_1$ and $p_2$.
+**One of these points matches your location**.
 
 Note: The algorithm will only work if at least one of the circles is a small circle.
 It cannot be used for calculating intersections of two great circles.
