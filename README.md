@@ -6,6 +6,7 @@
 1. [Making Sights](#making-sights)
     1. [Atmospheric Refraction](#atmospheric-refraction)
     1. [Dip of Horizon](#dip-of-horizon)
+    1. [Ignored Corrections](#ignored-corrections)    
 1. [Sight Reduction](#sight-reduction)
     1. [Using two sights](#using-two-sights)
     1. [Using three or more sights](#using-three-or-more-sights)
@@ -133,6 +134,8 @@ $R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right)$
 Where $R$ is the refraction in arc minutes and $h_a$ is the measured angle
 from zenith in degrees.
 
+This is a very simple correction. 
+
 ### 2.ii. Dip of horizon<a name="dip-of-horizon"></a>
 
 If you specify the *observer_height* parameter you will correct for the dip of
@@ -148,6 +151,15 @@ where
 * $d = \sqrt{h \left( 2r + h \right)}$.
 * $h$ is the height of the observer (in meters).
 * $r$ is the radius of the Earth (in meters).
+
+### 2.iii. Ignored Corrections<a name="ignored-corrections"></a>
+
+Currently the tool does not aim for very high accuracy and more elaborate corrections are currently elminated.
+
+* Refraction correction is simple (see above), and does not take into account temperature, elevation etc. 
+* Earth oblateness (OB term) is ignored. 
+
+Future implementations may contain more precise corrections though. See [more about future plans](CONTRIBUTING.md).
 
 ## 3. Sight reduction<a name="sight-reduction"></a>
 
@@ -221,6 +233,8 @@ intersection points $p_1$ and $p_2$.
 
 Note: The algorithm will only work if at least one of the circles is a small circle.
 It cannot be used for calculating intersections of two great circles.
+
+Note: I have chosen to use an algorithm based on 3D cartesian vectors. Standard literature on sight reduction typically uses 2D spherical coordinates, such as [Longhand haversine sight reduction](https://en.wikipedia.org/wiki/Sight_reduction#Longhand_haversine_sight_reduction). Such calculations in 2D are easier to carry out by hand but more complex for a computer. The 3D/cartesian approach is more structurally simple and easier to convert to well-functioning software. 
 
 ### 3.ii. Using three or more sights<a name="using-three-or-more-sights"></a>
 
