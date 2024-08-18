@@ -38,7 +38,7 @@ You can use the toolkit on a mobile phone without internet connection.
 If you also have access to a solar powered battery (powerbank) you have a tool
 useful while traveling in remote places or on the ocean.
 
-* The script supports **stationary** observations, i.e. when observations are
+* The toolkit supports **stationary** observations, i.e. when observations are
   made from a single position,
   using multiple sights where the position is determined from the intersection(s)
   of the small circles of equal altitude.
