@@ -158,7 +158,7 @@ where
 Currently the tool does not aim for very high accuracy and more elaborate corrections are currently elminated.
 
 * Refraction correction is simple (see above), and does not take into account temperature, elevation etc. 
-* Earth oblateness (OB term) is ignored. 
+* Earth oblateness is ignored. 
 * Handling of parallax is ignored. It may be needed for Moon sights though, but causes very small errors for all other celestial objects. 
 
 Future implementations may contain more precise corrections though. See [more about future plans](CONTRIBUTING.md).
