@@ -183,15 +183,29 @@ You will have to decide which one of them is the correct observation point,
 based on previous knowledge of your location.
 
 The intersections are calculated using an algorithm based on [this article](https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere) <br/>
-This is a short outline of the algorithm. Two circles $A$ and $B$ define the
-circles of equal altitude defined from the sighting data as described above.
-The circles relate to a *sight pair* $S_{p_{1,2}} = \{s_1, s_2\}$
-which we will come back to later.
+This is a short outline of the algorithm. 
 
 ![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
 
+For both measurements take note of the measured altitude
+(from your **sextant**), $f_1$ and $f_2$.
+
+Using your **clock** register the corresponding times $t_1$ and $t_2$
+for the two measurements
+
+Define angles $\alpha$ and $\beta$ this way:
+$\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
+
+From the Nautical Almanac, using the timestamps $t_1$ and $t_2$,
+get the ground point vectors (GP:s) $a$ and $b$.
+
+Now we can define two circles of equal altitude, $A$ and $B$.
+
 $A = \lbrace p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land \left|p\right| = 1 \rbrace$ <br/>
 $B = \lbrace p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land \left|p\right| = 1 \rbrace$
+
+The circles relate to a *sight pair* $S_{p_{1,2}} = \{s_1, s_2\}$
+which we will come back to later.
 
 (From now on we assume all coordinates/vectors are located on the unity sphere,
 i.e. $\lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$, i.e. the Earth is
