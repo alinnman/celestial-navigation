@@ -22,7 +22,7 @@ You are advised to adjust this script for your used sextant.
 
 You are also advised to make copies (and modifications) of the supplied samples
 [starfixdata.chicago.py](starfixdata.chicago.py)
-or [starfixdata.sea.py] (starfixdata.sea.py) to support your workflow and observations.
+or [starfixdata.sea.py](starfixdata.sea.py) to support your workflow and observations.
 
 The Nautical Almanac must be used manually to get the GP (ground point) of your observations.
 Currently the almanac of 2024 is bundled in the repository in a digital version.
