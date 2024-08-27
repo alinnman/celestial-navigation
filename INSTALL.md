@@ -12,7 +12,7 @@ The python scripts could be installed in
 to allow for use on an Android mobile phone
 (with no need for internet access).
 To aid in installation a good file browser is recommended
-(for copying and decompressing of ZIP files) such as [Cx File Explorer](https://play.google.com/store/apps/details?id=com.cxinventor.file.explorer&pcampaignid=web_share)
+(for copying and decompressing of ZIP files) such as [Cx File Explorer](https://play.google.com/store/apps/details?id=com.cxinventor.file.explorer&pcampaignid=web_share).
 
 The script [starfix.py](starfix.py) contains the core routines.
 
