@@ -198,7 +198,7 @@ Define angles $\alpha$ and $\beta$ this way:
 $\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
 
 From the Nautical Almanac, using the timestamps $t_1$ and $t_2$,
-get the ground point vectors (GP:s) $a$ and $b$.
+get the geographic position vectors (GP:s) $a$ and $b$.
 
 Now we can define two circles of equal altitude, $A$ and $B$.
 
@@ -400,7 +400,7 @@ where<br>
 * $r$ is a rotation function (based on Rodrigues formula, see above)
 * $t$ is a straight movement function based on approximate course $\phi$
   with distance $\tau$.
-* $p_{\text{GPs2}}$ is the vector of the *ground point* of sight $s_2$
+* $p_{\text{GPs2}}$ is the vector of the *geographic position* of sight $s_2$
 * $\alpha_{s2}$ is the altitude measured for $s_2$ (see above for calculation)
 
 The solution of the equation $K(\rho) = 0$ is computed using [Newton's method](https://en.wikipedia.org/wiki/Newton%27s_method).
