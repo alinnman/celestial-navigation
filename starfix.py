@@ -393,11 +393,11 @@ class Sight :
                   gha_time_1_minutes : int | float, \
                   decl_time_0_degrees : int, \
                   decl_time_0_minutes : int | float, \
-                  decl_time_1_degrees : int, \
-                  decl_time_1_minutes : int | float, \
                   measured_alt_degrees : int | float, \
                   measured_alt_minutes : int | float, \
                   measured_alt_seconds : int | float, \
+                  decl_time_1_degrees : int = None, \
+                  decl_time_1_minutes : int | float = None, \
                   sha_diff_degrees : int | float = 0, \
                   sha_diff_minutes : int | float = 0, \
                   observer_height : int | float = 0, \
@@ -416,6 +416,10 @@ class Sight :
               (gha_time_0_degrees, gha_time_0_minutes, 0)
         self.gha_time_1           = get_decimal_degrees\
               (gha_time_1_degrees, gha_time_1_minutes, 0)
+        if decl_time_1_degrees is None:
+            decl_time_1_degrees = decl_time_0_degrees
+        if decl_time_1_minutes is None:
+            decl_time_1_minutes = decl_time_0_minutes 
         self.decl_time_0          = get_decimal_degrees\
               (decl_time_0_degrees, decl_time_0_minutes, 0)
         self.decl_time_1          = get_decimal_degrees\
