@@ -3,6 +3,26 @@
     Data is approximate star fixes from Macquarie Island
 '''
 
+'''
+Output: 
+MEAN VALUE COORDINATE from multi-point sight data.
+Location = (S 56°,47.8′;E 157°,32.0′)
+Google Map coordinate = -56.8,157.53
+
+Some useful data follows (Small circles of equal altitude). For plotting in map software etc.
+A celestial body = Acrux
+A radius = 5563.5
+A GP     = -62.7633,39.3583
+
+B celestial body = Canopus
+B radius = 7790.8
+B GP     = -51.2983,-51.5033
+
+C celestial body = Achernar
+C radius = 4450.6
+C GP     = -56.8933,-122.9567
+'''
+
 from time import time
 from starfix import Sight, SightCollection, get_representation, get_google_map_string
 
