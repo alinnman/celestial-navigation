@@ -114,17 +114,12 @@ in the following way
 | gha_time_0_minutes   | GHA minutes reading for this hour            | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
 | gha_time_1_degrees   | GHA degrees reading for next hour            | For stars use GHA of Aries.                                    | Nautical Almanac |
 | gha_time_1_minutes   | GHA minutes reading for next hour            | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
-| decl_time_0_degrees  | Declination degrees reading for this hour    |                                                                | Nautical Almanac |
+| decl_time_0_degrees  | Declination degrees reading for this hour    |   |  Nautical Almanac |
 | decl_time_0_minutes  | Declination minutes reading for this hour    | Can be zero (use decimal degrees)                              | Nautical Almanac |  
-| *decl_time_1_degrees*  | Declination degrees reading for next hour  | Can be skipped for stars. 
-| Nautical Almanac |
-| *decl_time_1_minutes*  | Declination minutes reading for next hour  | Can be skipped for stars. Can be zero (use decimal degrees)  
-| Nautical Almanac |
-| *sha_diff_degrees*   | SHA of star vs Aries in degrees              | Only use for stars. Otherwise skip                             
-| Nautical Almanac |
-| *sha_diff_minutes*   
-| SHA of star vs Aries in minutes | Only use for stars. Otherwise skip. Can be zero (use decimal degrees)                          
-| Nautical Almanac |
+| *decl_time_1_degrees*  | Declination degrees reading for next hour  | Can be skipped for stars. | Nautical Almanac |
+| *decl_time_1_minutes*  | Declination minutes reading for next hour  | Can be skipped for stars. Can be zero (use decimal degrees) | Nautical Almanac |
+| *sha_diff_degrees*   | SHA of star vs Aries in degrees              | Only use for stars. Otherwise skip | Nautical Almanac |
+| *sha_diff_minutes*  | SHA of star vs Aries in minutes | Only use for stars. Otherwise skip. Can be zero (use decimal degrees) | Nautical Almanac |
 | measured_alt_degrees | Altitude of object in degrees (0-90)         |                                                                | Sextant |
 | measured_alt_minutes | Altitude of object in minutes (0-60)         | Can be zero (use decimal degrees)                              | Sextant |
 | measured_alt_seconds | Altitude of object in seconds (0-60)         | Can be zero (use decimal degrees/minutes)                      | Sextant |
