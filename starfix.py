@@ -378,7 +378,7 @@ def get_terrestrial_position (point_a1 : LatLon,\
 # Celestial Navigation
 
 class Sight :
-    '''  Object representing a sight (star fix '''
+    '''  Object representing a sight (star fix) '''
     def __init__ (self, \
                   object_name : str, \
                   time_year : int, \
@@ -433,7 +433,7 @@ class Sight :
         if not (self.object_name != "Sun" or self.sha_diff == 0): 
             raise ValueError ("The Sun should have a sha_diff parameter != 0") 
         '''
-        if (self.observer_height != 0 and artificial_horizon is True):
+        if self.observer_height != 0 and artificial_horizon is True:
             raise ValueError ("observer_height should be == 0 when artificial_horizon == True")
         if sextant is not None:
             self.__correct_for_graduation_error (sextant)
