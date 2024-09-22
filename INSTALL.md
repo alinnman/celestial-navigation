@@ -30,7 +30,7 @@ But you may of course use a hard-copy of the nautical almanac and these can be o
 [here](https://www.amazon.com/Nautical-Almanac-2024-Year/dp/1951116690/ref=sr_1_1?crid=1IAIAP3U59XSX&dib=eyJ2IjoiMSJ9.d3xFA2pQJx8dny0H5kmiZLliYeANWFYB9BZ8He317-pq7X_P5hjJ-aQ5Ir7tAsTHKBmmclCDUVqueJoljDZ8pMVLTCGbF98Xnd4rvuET9FSOXDx-5zcZQXjvqMduNM4eVj7NjN3sq_oBYGavC31cYfErZ1TXimJXSvkgVdloz9g-meALl0_BZklDiJFh33wnJs-aba7SBQyP94c-7bBPn4qIhPGFOMmTE3Y0DZp3CgM.ZlExL1J_IC-osoQXy2XKkMZ3A4CllQRdgOp5Cy7_II8&dib_tag=se&keywords=nautical+almanac&qid=1718006483&sprefix=nautical+almanac%2Caps%2C351&sr=8-1).
 New digital versions (for 2025 and onwards)
 can be prepared using some GitHub code repositories,
-and I used [this one](https://github.com/aendie/SkyAlmanac-Py3).
+such as [this one](https://github.com/aendie/SkyAlmanac-Py3).
 
 The script sample [terrestrial.landfall.py](terrestrial.landfall.py)
 can be used (and modified) if you would like to use your sextant as an aid in
