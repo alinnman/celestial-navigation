@@ -21,6 +21,9 @@ B GP     = -51.2983,-51.5033
 C celestial body = Achernar
 C radius = 4450.6
 C GP     = -56.8933,-122.9567
+
+Map output: 
+https://www.mapdevelopers.com/draw-circle-tool.php?circles=%5B%5B5563500%2C-62.7633%2C39.3583%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B7790800%2C-51.2983%2C-51.5033%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B4450600%2C-56.8933%2C-122.9567%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%5D 
 '''
 
 from time import time
