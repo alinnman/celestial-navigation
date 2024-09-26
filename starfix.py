@@ -404,6 +404,7 @@ class Sight :
                   artificial_horizon : bool = False, \
                   index_error_minutes : int = 0, \
                   semi_diameter_correction : int | float = 0,\
+                  horizontal_parallax : int | float = 0,\
                   sextant : Sextant = None):
         self.object_name          = object_name
         self.time_year            = time_year
@@ -443,7 +444,8 @@ class Sight :
             self.__correct_for_artficial_horizon ()
         if semi_diameter_correction != 0:
             self.__correct_semi_diameter (semi_diameter_correction)
-
+        if horizontal_parallax != 0:
+            self.__correct_for_horizontal_parallax (horizontal_parallax)
         self.__correct_dip_of_horizon ()
         self.__correct_for_refraction ()
         self.gp = self.__calculate_gp ()
@@ -453,6 +455,9 @@ class Sight :
 
     def __correct_semi_diameter (self, sd : int | float):
         self.measured_alt += sd/60
+
+    def __correct_for_horizontal_parallax (self, hp : int | float):
+        self.measured_alt += hp/60 * sin(deg_to_rad(90 - self.measured_alt))
 
     def __correct_for_index_error (self, ie : int | float):
         self.measured_alt -= ie/60

@@ -121,6 +121,7 @@ in the following way
 | *sha_diff_degrees*   | SHA of star vs Aries in degrees              | Only use for stars. Otherwise skip | Nautical Almanac |
 | *sha_diff_minutes*  | SHA of star vs Aries in minutes | Only use for stars. Otherwise skip. Can be zero (use decimal degrees) | Nautical Almanac |
 | *semidiameter_correction* | Correction for limb measurements  | Typically used for Moon or Sun. d value, positive or negative, from Nautical Almanac depending on limb used. Default = 0. | Nautical Almanac | 
+| *horizontal_parallax* | Correction for horizontal parallax  | Used for the Moon. HP value. Default = 0. | Nautical Almanac | 
 | measured_alt_degrees | Altitude of object in degrees (0-90)         |                                                                | Sextant |
 | measured_alt_minutes | Altitude of object in minutes (0-60)         | Can be zero (use decimal degrees)                              | Sextant |
 | measured_alt_seconds | Altitude of object in seconds (0-60)         | Can be zero (use decimal degrees/minutes)                      | Sextant |
