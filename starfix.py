@@ -451,10 +451,10 @@ class Sight :
     def __correct_for_graduation_error (self, sextant : Sextant):
         self.measured_alt /= sextant.graduation_error
 
-    def __correct_semi_diameter (self, sd):
+    def __correct_semi_diameter (self, sd : int | float):
         self.measured_alt += sd/60
 
-    def __correct_for_index_error (self, ie):
+    def __correct_for_index_error (self, ie : int | float):
         self.measured_alt -= ie/60
 
     def __correct_for_artficial_horizon (self):
@@ -481,11 +481,11 @@ class Sight :
 
         return LatLon (result_lat, result_lon)
 
-    def get_angle (self):
+    def get_angle (self) -> float:
         ''' Returns the (Earth-based) angle of the sight '''
         return 90-self.measured_alt
 
-    def get_radius (self):
+    def get_radius (self) -> float:
         ''' Returns the radius of the sight (in kilometers) '''
         return (self.get_angle()/360)*EARTH_CIRCUMFERENCE
 
@@ -501,7 +501,7 @@ class SightPair:
         self.sf1 = sf1
         self.sf2 = sf2
 
-    def get_intersections (self, estimated_position = None) -> tuple:
+    def get_intersections (self, estimated_position : LatLon = None) -> tuple:
         ''' Return the two intersections for this sight pair. 
             The parameter estimated_position can be used to eliminate the false intersection '''
         return get_intersections (self.sf1.gp,\
