@@ -62,8 +62,6 @@ c = Sight (   object_name          = "Vega", \
               gha_time_1_minutes   = 32.9, \
               decl_time_0_degrees  = 38, \
               decl_time_0_minutes  = 48.1, \
-              decl_time_1_degrees  = 38, \
-              decl_time_1_minutes  = 48.1, \
               measured_alt_degrees = 30, \
               measured_alt_minutes = 16, \
               measured_alt_seconds = 24.6, \
