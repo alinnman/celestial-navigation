@@ -19,7 +19,7 @@ class LatLon:
     ''' Represents spherical coordinates on Earth '''
     def __init__ (self, lat : float | int, lon : float | int):
         self.lat = lat
-        self.lon = lon
+        self.lon = mod_lon(lon)
 
     def __str__(self):
         return "LAT = " + str(self.lat) + "; LON = " + str(self.lon)
@@ -128,6 +128,9 @@ def get_dms (angle : int | float) -> tuple[int | float]:
 def get_decimal_degrees (degrees : int | float, minutes : int | float, seconds : int | float)\
       -> float:
     ''' Return decimal value for an angle (from degrees+minutes+seconds) '''
+    if degrees < 0:
+        minutes = -minutes
+        seconds = -seconds
     return degrees + minutes/60 + seconds/3600
 
 def get_decimal_degrees_from_tuple (t : tuple) -> float:
@@ -417,10 +420,12 @@ class Sight :
               (gha_time_0_degrees, gha_time_0_minutes, 0)
         self.gha_time_1           = get_decimal_degrees\
               (gha_time_1_degrees, gha_time_1_minutes, 0)
+        if self.gha_time_1 < self.gha_time_0:
+            self.gha_time_1 += 360
         if decl_time_1_degrees is None:
             decl_time_1_degrees = decl_time_0_degrees
         if decl_time_1_minutes is None:
-            decl_time_1_minutes = decl_time_0_minutes 
+            decl_time_1_minutes = decl_time_0_minutes
         self.decl_time_0          = get_decimal_degrees\
               (decl_time_0_degrees, decl_time_0_minutes, 0)
         self.decl_time_1          = get_decimal_degrees\

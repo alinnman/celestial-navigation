@@ -80,6 +80,7 @@ print ("We add an additional night time observation of Vega")
 collection = SightCollection ([a, b, c])
 intersections = collection.get_intersections ()
 print (get_representation(intersections,1))
+print ("GM = " + get_google_map_string(intersections,4))
 
 
 #Diagnostics for map rendering etc.
