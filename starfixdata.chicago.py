@@ -52,7 +52,6 @@ c = Sight (   object_name          = "Vega", \
               time_year            = 2024,\
               time_month           = 5,\
               time_day             = 6,\
-
               time_hour            = 4, \
               time_minute          = 4, \
               time_second          = 13, \
