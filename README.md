@@ -351,6 +351,10 @@ use real sextant readings.
     MEAN VALUE COORDINATE from multi-point sight data.
     (N 41°,51.3′;W 87°,38.6′)
 
+There is also another similar test script in the [starfixdata.tunis.moon.py](starfixdata.tunis.moon.py)
+sample where the Moon is used. Horizontal parallax is applied to the Moon
+using the *HP* field from the Nautical Almanac.
+
 ## 4. Dead Reckoning<a name="dead-reckoning"></a>
 
 When sailing (or moving on the ground) you can use this technique to support
