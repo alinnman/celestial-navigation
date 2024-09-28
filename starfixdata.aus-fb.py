@@ -33,16 +33,16 @@ from starfix import Sight, SightCollection, get_representation, get_google_map_s
 starttime = time ()
 
 # Our starfix data
-hour = 11
-minute = 10
+HOUR = 11
+MINUTE = 10
 
 a = Sight (   object_name          = "Acrux", \
               time_year            = 2024,\
               time_month           = 8,\
               time_day             = 31,\
 
-              time_hour            = hour, \
-              time_minute          = minute, \
+              time_hour            = HOUR, \
+              time_minute          = MINUTE, \
               time_second          = 0, \
               gha_time_0_degrees   = 145, \
               gha_time_0_minutes   = 7, \
@@ -61,8 +61,8 @@ b = Sight (   object_name          = "Canopus", \
               time_year            = 2024,\
               time_month           = 8,\
               time_day             = 31,\
-              time_hour            = hour, \
-              time_minute          = minute, \
+              time_hour            = HOUR, \
+              time_minute          = MINUTE, \
               time_second          = 0, \
               gha_time_0_degrees   = 145, \
               gha_time_0_minutes   = 7, \
@@ -81,8 +81,8 @@ c = Sight (   object_name          = "Achernar", \
               time_year            = 2024,\
               time_month           = 8,\
               time_day             = 31,\
-              time_hour            = hour, \
-              time_minute          = minute, \
+              time_hour            = HOUR, \
+              time_minute          = MINUTE, \
               time_second          = 0, \
               gha_time_0_degrees   = 145, \
               gha_time_0_minutes   = 7, \
@@ -105,7 +105,8 @@ print ("Google Map coordinate = " + get_google_map_string (intersections,2))
 
 #Diagnostics for map rendering etc.
 print ("")
-print ("Some useful data follows (Small circles of equal altitude). For plotting in map software etc.")
+print ("Some useful data follows (Small circles of equal altitude). \
+       For plotting in map software etc.")
 print ("A celestial body = " + a.object_name)
 print ("A radius = " + str(round(a.get_radius (),1)))
 print ("A GP     = " + get_google_map_string(a.gp,4))

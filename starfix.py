@@ -412,10 +412,20 @@ class Sight :
         self.object_name          = object_name
         self.time_year            = time_year
         self.time_month           = time_month
+        if self.time_month > 12 or self.time_month < 1:
+            raise ValueError ("Month must be within [1,12]")
         self.time_day             = time_day
+        if self.time_day > 31 or self.time_day < 1:
+            raise ValueError ("Day must be within [0,31]")
         self.time_hour            = time_hour
+        if self.time_hour > 23 or self.time_hour < 0:
+            raise ValueError ("Hour must be within [0-23]")
         self.time_minute          = time_minute
+        if self.time_minute > 59 or self.time_minute < 0:
+            raise ValueError ("Minute must be within [0-59]")
         self.time_second          = time_second
+        if self.time_second > 59 or self.time_second < 0:
+            raise ValueError ("Second must be within [0,59]")
         self.gha_time_0           = get_decimal_degrees\
               (gha_time_0_degrees, gha_time_0_minutes, 0)
         self.gha_time_1           = get_decimal_degrees\

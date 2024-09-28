@@ -81,7 +81,6 @@ intersections = collection.get_intersections ()
 print (get_representation(intersections,1))
 print ("GM = " + get_google_map_string(intersections,4))
 
-
 #Diagnostics for map rendering etc.
 print ("Some useful data follows")
 print ("A radius = " + str(round(a.get_radius (),1)))
