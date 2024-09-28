@@ -102,6 +102,7 @@ collection = SightCollection ([a, b, c])
 intersections = collection.get_intersections (limit=500)
 print ("Location = " + get_representation(intersections,1))
 print ("Google Map coordinate = " + get_google_map_string (intersections,2))
+print (collection.get_map_developers_string())
 
 #Diagnostics for map rendering etc.
 print ("")

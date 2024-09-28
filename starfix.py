@@ -5,6 +5,7 @@
 
 from math import pi, sin, cos, acos, sqrt, tan, atan2
 from datetime import datetime, timezone
+from urllib.parse import quote_plus
 
 # Dimension of Earth
 
@@ -506,6 +507,17 @@ class Sight :
         self.decl_time_0 + (self.decl_time_1 - self.decl_time_0)*min_sec_contribution
 
         return LatLon (result_lat, result_lon)
+    
+    def get_map_developers_string (self):
+        '''
+        Return URL segment for https://mapdevelopers.com circle plotting service
+        '''     
+        result = "["
+        result = result + str (round(self.get_radius ()*1000)) + ","
+        result = result + str(round(self.gp.lat,4)) + ","
+        result = result + str(round(self.gp.lon,4)) + ","
+        result = result + "\"#AAAAAA\",\"#000000\",0.4]"
+        return result
 
     def get_angle (self) -> float:
         ''' Returns the (Earth-based) angle of the sight '''
@@ -628,6 +640,21 @@ class SightCollection:
                                           mult_scalar_vect (1/nr_of_chosen_points, rect_vec))
             summation_vec = normalize_vect (summation_vec)
             return to_latlon (summation_vec)
+    
+    def get_map_developers_string (self):
+        '''
+        Return URL for https://mapdevelopers.com circle plotting service
+        '''
+        url_start = "https://www.mapdevelopers.com/draw-circle-tool.php?circles="
+        result = "["
+        nr_of_fixes = len(self.sf_list)
+        for i in range(nr_of_fixes):
+            result = result + self.sf_list [i].get_map_developers_string()
+            if i < nr_of_fixes-1:
+                result = result + ","
+        result = result+"]"
+        result = quote_plus (result)
+        return url_start + result
 
 class SightTrip:
     ''' Object used for dead-reckoning. Sights are taken on different times
@@ -710,3 +737,7 @@ class SightTrip:
             raise ValueError ("Cannot calculate a trip vector")
         else:
             return taken_out, rotated
+
+    def get_map_developers_string (self):
+        s_c = SightCollection ([self.sight_start, self.sight_end])
+        return s_c.get_map_developers_string ()
