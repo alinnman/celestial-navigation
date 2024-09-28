@@ -426,12 +426,18 @@ class Sight :
             decl_time_1_degrees = decl_time_0_degrees
         if decl_time_1_minutes is None:
             decl_time_1_minutes = decl_time_0_minutes
+          
         self.decl_time_0          = get_decimal_degrees\
               (decl_time_0_degrees, decl_time_0_minutes, 0)
         self.decl_time_1          = get_decimal_degrees\
               (decl_time_1_degrees, decl_time_1_minutes, 0)
+        if self.decl_time_0 < -90 or self.decl_time_0 > 90 or \
+           self.decl_time_1 < -90 or self.decl_time_1 > 90:
+            raise ValueError ("Declination values must be within [-90,90]")          
         self.measured_alt         = get_decimal_degrees\
               (measured_alt_degrees, measured_alt_minutes, measured_alt_seconds)
+        if self.measured_alt < 0 or self.measured_alt > 90:
+            raise ValueError ("Altitude value must be within [0,90]")
         self.sha_diff             = get_decimal_degrees\
               (sha_diff_degrees, sha_diff_minutes, 0)
         self.observer_height      = observer_height

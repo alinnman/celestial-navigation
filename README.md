@@ -114,13 +114,13 @@ in the following way
 | gha_time_0_minutes   | GHA minutes reading for this hour            | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
 | gha_time_1_degrees   | GHA degrees reading for next hour            | For stars use GHA of Aries.                                    | Nautical Almanac |
 | gha_time_1_minutes   | GHA minutes reading for next hour            | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
-| decl_time_0_degrees  | Declination degrees reading for this hour    |   |  Nautical Almanac |
-| decl_time_0_minutes  | Declination minutes reading for this hour    | Can be zero (use decimal degrees)                              | Nautical Almanac |  
-| *decl_time_1_degrees*  | Declination degrees reading for next hour  | Can be skipped for stars. | Nautical Almanac |
-| *decl_time_1_minutes*  | Declination minutes reading for next hour  | Can be skipped for stars. Can be zero (use decimal degrees) | Nautical Almanac |
+| decl_time_0_degrees  | Declination degrees reading for this hour (-90 - 90)    |   |  Nautical Almanac |
+| decl_time_0_minutes  | Declination minutes reading for this hour (0-60)   | Can be zero (use decimal degrees)                              | Nautical Almanac |  
+| *decl_time_1_degrees*  | Declination degrees reading for next hour (-90 - 90) | Can be skipped for stars. | Nautical Almanac |
+| *decl_time_1_minutes*  | Declination minutes reading for next hour (0-60) | Can be skipped for stars. Can be zero (use decimal degrees) | Nautical Almanac |
 | *sha_diff_degrees*   | SHA of star vs Aries in degrees              | Only use for stars. Otherwise skip | Nautical Almanac |
 | *sha_diff_minutes*  | SHA of star vs Aries in minutes | Only use for stars. Otherwise skip. Can be zero (use decimal degrees) | Nautical Almanac |
-| *semidiameter_correction* | Correction for limb measurements  | Typically used for Moon or Sun. d value, positive or negative, from Nautical Almanac depending on limb used. Default = 0. | Nautical Almanac | 
+| *semidiameter_correction* | Correction for limb measurements  | Typically used for Moon or Sun. *SD* value, positive (lower limb) or negative (upper limb). Default = 0. | Nautical Almanac | 
 | *horizontal_parallax* | Correction for horizontal parallax  | Used for the Moon. HP value. Default = 0. | Nautical Almanac | 
 | measured_alt_degrees | Altitude of object in degrees (0-90)         |                                                                | Sextant |
 | measured_alt_minutes | Altitude of object in minutes (0-60)         | Can be zero (use decimal degrees)                              | Sextant |
