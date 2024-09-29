@@ -310,7 +310,7 @@ The cardinality of $D$ can be calculated
 
 $\left|D\right| = {\left|I\right|}^2 - {\left|I\right|} = n^4 + 2n^3 - n$
 
-We now need to eliminate all "false" intersections and only choose those close 
+We now need to eliminate all false intersections and only choose those close 
 to the probable location of the observer.
 
 The final part of the algorithm sorts the set $D$ to extract a maximum of $\frac{n^2-n}{2}$
@@ -351,8 +351,11 @@ use real sextant readings.
     (N 41°,51.3′;W 87°,38.6′)
 
 There is also another similar test script in the [starfixdata.tunis.moon.py](starfixdata.tunis.moon.py)
-sample where the Moon is used. Horizontal parallax is applied to the Moon
+sample where the Moon is used. **Horizontal parallax** is applied to the Moon
 using the *HP* field from the Nautical Almanac.
+The Moon is typically the only celestial object where horizontal parallax
+needs to be considered. For other planets and the Sun the correction will almost
+always be obscured by sextant reading errors.
 
 ## 4. Dead Reckoning<a name="dead-reckoning"></a>
 
