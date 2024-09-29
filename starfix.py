@@ -508,7 +508,7 @@ class Sight :
 
         return LatLon (result_lat, result_lon)
     
-    def get_map_developers_string (self):
+    def get_map_developers_string (self) -> str:
         '''
         Return URL segment for https://mapdevelopers.com circle plotting service
         '''     
@@ -641,7 +641,7 @@ class SightCollection:
             summation_vec = normalize_vect (summation_vec)
             return to_latlon (summation_vec)
     
-    def get_map_developers_string (self):
+    def get_map_developers_string (self) -> str:
         '''
         Return URL for https://mapdevelopers.com circle plotting service
         '''
@@ -738,6 +738,9 @@ class SightTrip:
         else:
             return taken_out, rotated
 
-    def get_map_developers_string (self):
+    def get_map_developers_string (self) -> str:
+        '''
+        Return URL for https://mapdevelopers.com circle plotting service
+        '''
         s_c = SightCollection ([self.sight_start, self.sight_end])
         return s_c.get_map_developers_string ()
