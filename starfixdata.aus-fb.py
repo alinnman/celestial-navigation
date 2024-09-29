@@ -1,9 +1,7 @@
 ''' This is a sample for celestial navigation for a stationary observer 
     Sample taken from FB discussion with Nigel Coey. 
     Data is approximate star fixes from Macquarie Island
-'''
 
-'''
 Output: 
 MEAN VALUE COORDINATE from multi-point sight data.
 Location = (S 56°,50.2′;E 154°,27.0′)

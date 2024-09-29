@@ -224,7 +224,7 @@ def get_dip_of_horizon (hm : int | float) -> float:
 
 def get_intersections (latlon1 : LatLon, latlon2 : LatLon,\
                        angle1 : int | float, angle2 : int | float,\
-                       estimated_position : LatLon = None) -> LatLon | tuple:
+                       estimated_position : LatLon = None) -> LatLon | tuple[LatLon]:
     '''
     Get intersection of two circles on a spheric surface. 
     At least one of the circles must be a small circle. 
@@ -544,7 +544,7 @@ class SightPair:
         self.sf1 = sf1
         self.sf2 = sf2
 
-    def get_intersections (self, estimated_position : LatLon = None) -> tuple:
+    def get_intersections (self, estimated_position : LatLon = None) -> tuple[LatLon]:
         ''' Return the two intersections for this sight pair. 
             The parameter estimated_position can be used to eliminate the false intersection '''
         return get_intersections (self.sf1.gp,\
@@ -560,7 +560,7 @@ class SightCollection:
             raise ValueError ("SightCollection should have at least two sights")
         self.sf_list = sf_list
 
-    def get_intersections (self, limit : int | float = 100, estimated_position = None):
+    def get_intersections (self, limit : int | float = 100, estimated_position = None) -> tuple[LatLon] | LatLon:
         ''' Get an intersection from the collection of sights. 
             A mean value and sorting algorithm is applied. '''
         nr_of_fixes = len(self.sf_list)
