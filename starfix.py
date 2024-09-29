@@ -298,9 +298,14 @@ def get_refraction (apparent_angle : int | float) -> float:
 
 # Data formatting
 
-def get_google_map_string (latlon : LatLon, num_decimals : int) -> str :
+def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -> str :
     ''' Return a coordinate which can be used in Google Maps '''
-    return str(round(latlon.lat,num_decimals)) + "," + str(round(latlon.lon,num_decimals))
+    if isinstance (intersections, LatLon):
+        return str(round(intersections.lat,num_decimals)) + "," + str(round(intersections.lon,num_decimals))
+    elif isinstance (intersections, tuple):
+        assert len (intersections) == 2
+        return get_google_map_string (intersections[0], num_decimals) + "-" + \
+               get_google_map_string (intersections[1], num_decimals)
 
 def get_representation (ins : LatLon | tuple | list, num_decimals : int, lat=False) -> str:
     ''' Converts coordinate(s) to a string representation '''

@@ -68,7 +68,7 @@ home = LatLon (59.318659676810654, 18.04959717835501)
 
 intersections = collection.get_intersections (estimated_position = LatLon(59,19))
 print (get_representation(intersections,1))
-print (collection.get_map_developers_string())
+print ("MD = " + collection.get_map_developers_string())
 print ("GM = " + get_google_map_string(intersections,4))
 print ("Intersection distance from home = " + str(distance_between_points(intersections, home)))
 

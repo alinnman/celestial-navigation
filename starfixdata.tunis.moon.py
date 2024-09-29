@@ -79,7 +79,7 @@ c = Sight (   object_name          = "Vega", \
 collection = SightCollection ([a,b,c])
 intersections = collection.get_intersections ()
 print (get_representation(intersections,1))
-print (collection.get_map_developers_string())
+print ("MD = " + collection.get_map_developers_string())
 print ("GM = " + get_google_map_string(intersections,4))
 
 #Diagnostics for map rendering etc.

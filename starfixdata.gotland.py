@@ -62,14 +62,14 @@ c = Sight (   object_name          = "Sun", \
               decl_time_1_degrees  = 23, \
               decl_time_1_minutes  = 10.4, \
               measured_alt_degrees = 29, \
-              measured_alt_minutes = 15, \
+              measured_alt_minutes = 20, \
               )
 
 
 collection = SightCollection ([a, b, c])
 intersections = collection.get_intersections ()
 print (get_representation(intersections,1))
-print (collection.get_map_developers_string())
+print ("MD = " + collection.get_map_developers_string())
 print ("GM = " + get_google_map_string(intersections,4))
 
 #Diagnostics for map rendering etc.
