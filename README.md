@@ -123,8 +123,8 @@ in the following way
 | *semidiameter_correction* | Correction for limb measurements  | Typically used for Moon or Sun. *SD* value, positive (lower limb) or negative (upper limb). Default = 0. | Nautical Almanac | 
 | *horizontal_parallax* | Correction for horizontal parallax  | Used for the Moon. *HP* value. Default = 0. | Nautical Almanac | 
 | measured_alt_degrees | Altitude of object in degrees (0-90)         |                                                                | Sextant |
-| measured_alt_minutes | Altitude of object in minutes (0-60)         | Can be zero (use decimal degrees)                              | Sextant |
-| measured_alt_seconds | Altitude of object in seconds (0-60)         | Can be zero (use decimal degrees/minutes)                      | Sextant |
+| *measured_alt_minutes* | Altitude of object in minutes (0-60)         | Can be zero (use decimal degrees). Default = 0.                              | Sextant |
+| *measured_alt_seconds* | Altitude of object in seconds (0-60)         | Can be zero (use decimal degrees/minutes). Default = 0.                      | Sextant |
 | *observer_height*    | Height of observer above sea level or ground in meters | Only relevant for observations using natural horizon           | Height Measurement |
 | *sextant*            | An object defining a specific sextant        | See [this code sample](starfixdata.home.py) for details        | Calibration |
 

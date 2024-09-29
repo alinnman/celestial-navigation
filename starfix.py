@@ -398,8 +398,8 @@ class Sight :
                   decl_time_0_degrees : int, \
                   decl_time_0_minutes : int | float, \
                   measured_alt_degrees : int | float, \
-                  measured_alt_minutes : int | float, \
-                  measured_alt_seconds : int | float, \
+                  measured_alt_minutes : int | float = 0, \
+                  measured_alt_seconds : int | float = 0, \
                   decl_time_1_degrees : int = None, \
                   decl_time_1_minutes : int | float = None, \
                   sha_diff_degrees : int | float = 0, \
@@ -420,10 +420,10 @@ class Sight :
             raise ValueError ("Day must be within [0,31]")
         self.time_hour            = time_hour
         if self.time_hour > 23 or self.time_hour < 0:
-            raise ValueError ("Hour must be within [0-23]")
+            raise ValueError ("Hour must be within [0,23]")
         self.time_minute          = time_minute
         if self.time_minute > 59 or self.time_minute < 0:
-            raise ValueError ("Minute must be within [0-59]")
+            raise ValueError ("Minute must be within [0,59]")
         self.time_second          = time_second
         if self.time_second > 59 or self.time_second < 0:
             raise ValueError ("Second must be within [0,59]")

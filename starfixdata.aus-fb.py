@@ -8,6 +8,7 @@ Output:
 MEAN VALUE COORDINATE from multi-point sight data.
 Location = (S 56°,50.2′;E 154°,27.0′)
 Google Map coordinate = -56.84,154.45
+https://www.mapdevelopers.com/draw-circle-tool.php?circles=%5B%5B5563507%2C-63.2367%2C39.3583%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B7790847%2C-52.7017%2C-51.5033%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B4450597%2C-57.1067%2C-122.9567%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%5D
 
 Some useful data follows (Small circles of equal altitude). For plotting in map software etc.
 A celestial body = Acrux
@@ -51,8 +52,6 @@ a = Sight (   object_name          = "Acrux", \
               decl_time_0_degrees  = -63, \
               decl_time_0_minutes  = 14.2, \
               measured_alt_degrees = 40, \
-              measured_alt_minutes = 0, \
-              measured_alt_seconds = 0, \
               sha_diff_degrees     = 173, \
               sha_diff_minutes     = 1.1 \
               )
@@ -71,8 +70,6 @@ b = Sight (   object_name          = "Canopus", \
               decl_time_0_degrees  = -52, \
               decl_time_0_minutes  = 42.1, \
               measured_alt_degrees = 20, \
-              measured_alt_minutes = 0, \
-              measured_alt_seconds = 0, \
               sha_diff_degrees     = 263, \
               sha_diff_minutes     = 52.8 \
               )
@@ -91,8 +88,6 @@ c = Sight (   object_name          = "Achernar", \
               decl_time_0_degrees  = -57, \
               decl_time_0_minutes  = 6.4, \
               measured_alt_degrees = 50, \
-              measured_alt_minutes = 0, \
-              measured_alt_seconds = 0, \
               sha_diff_degrees     = 335, \
               sha_diff_minutes     = 20 \
               )
