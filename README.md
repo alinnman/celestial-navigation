@@ -118,9 +118,9 @@ in the following way
 | time_minute          | Observation time - Minutes (0-59).            | In UTC.                                                        | Clock |
 | *time_second*        | Observation time - Seconds (0-59).            | In UTC. Default = 0.   | Clock |
 | gha_time_0_degrees   | GHA degrees reading for this hour.            | For stars use GHA of Aries.                                    | Nautical Almanac |
-| gha_time_0_minutes   | GHA minutes reading for this hour.            | Can be zero (use decimal degrees) (0-609). For stars use GHA of Aries. | Nautical Almanac |
+| gha_time_0_minutes   | GHA minutes reading for this hour (0-60).           | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
 | gha_time_1_degrees   | GHA degrees reading for next hour.            | For stars use GHA of Aries.                                    | Nautical Almanac |
-| gha_time_1_minutes   | GHA minutes reading for next hour.            | Can be zero (use decimal degrees) (0-60). For stars use GHA of Aries. | Nautical Almanac |
+| gha_time_1_minutes   | GHA minutes reading for next hour (0-60).            | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
 | decl_time_0_degrees  | Declination degrees reading for this hour (-90 - 90).    |   |  Nautical Almanac |
 | decl_time_0_minutes  | Declination minutes reading for this hour (0-60).   | Can be zero (use decimal degrees).                              | Nautical Almanac |  
 | *decl_time_1_degrees*  | Declination degrees reading for next hour (-90 - 90). | Can be skipped for stars. | Nautical Almanac |
