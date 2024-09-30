@@ -62,8 +62,6 @@ and [2025](2025_Nautical_Almanac.pdf)
 are included in this repository.
 
 A more detailed description of celestial navigation can be found [here](https://www.waypointamsterdam.com/Handy_stuf/Short_Guide_To_Astro_navigation.pdf).<br>
-An even more detailed description, with a lot of references to various
-algorithms etc. can be found [here](https://www.hughes38.com/wp-content/uploads/2016/03/astro.pdf).
 
 A historical document, the Admiralty Navigational Manual (1938),
 from His Majestys Stationary Office (UK) can be found [here](https://archive.org/details/dli.ernet.211556/mode/2up).
