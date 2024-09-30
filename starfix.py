@@ -170,7 +170,7 @@ def takeout_course (latlon : LatLon, course : int | float, speed_knots : int | f
     return LatLon (latlon.lat+diff_lat, latlon.lon+diff_lon)
 
 def angle_b_points (latlon1 : LatLon, latlon2 : LatLon) -> float:
-    ''' Calculates the angle between to points on Earth '''
+    ''' Calculates the angle between two points on Earth '''
     normvec1 = to_rectangular (latlon1)
     normvec2 = to_rectangular (latlon2)
     dp = dot_product (normvec1, normvec2)
