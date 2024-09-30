@@ -42,7 +42,6 @@ a = Sight (   object_name          = "Acrux", \
 
               time_hour            = HOUR, \
               time_minute          = MINUTE, \
-              time_second          = 0, \
               gha_time_0_degrees   = 145, \
               gha_time_0_minutes   = 7, \
               gha_time_1_degrees   = 160, \
@@ -60,7 +59,6 @@ b = Sight (   object_name          = "Canopus", \
               time_day             = 31,\
               time_hour            = HOUR, \
               time_minute          = MINUTE, \
-              time_second          = 0, \
               gha_time_0_degrees   = 145, \
               gha_time_0_minutes   = 7, \
               gha_time_1_degrees   = 160, \
@@ -78,7 +76,6 @@ c = Sight (   object_name          = "Achernar", \
               time_day             = 31,\
               time_hour            = HOUR, \
               time_minute          = MINUTE, \
-              time_second          = 0, \
               gha_time_0_degrees   = 145, \
               gha_time_0_minutes   = 7, \
               gha_time_1_degrees   = 160, \
