@@ -72,7 +72,10 @@ If you want to contribute to the project then see [this page](CONTRIBUTING.md).
 
 ## 2. Making sights <a name="making-sights"></a>
 
-You create a sight with code like this (for the Sun). You specify data from your sextant and clock (chronometer). You also add tabular data from the Nautical Almanac. This data is given from the current hour of the observation, and the next hour. (You don't have to enter linear factors etc. from the almanac). 
+You create a sight with code like this (for the Sun). You specify data from your
+sextant and clock (chronometer). You also add tabular data from the
+Nautical Almanac. This data is given from the current hour of the observation,
+and the next hour. (You don't have to enter linear factors etc. from the almanac).
 
     a = Sight (   object_name          = "Sun", \
               time_year            = 2024,\
@@ -134,7 +137,9 @@ in the following way
 
 ### 2.i. Atmospheric refraction<a name="atmospheric-refraction"></a>
 
-The measured altitude values (attributes measured_alt_degrees, measured_alt_minutes and measure_alt_seconds) are corrected for atmospheric refraction using [Bennett's empirical formula](https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction)
+The measured altitude values (attributes measured_alt_degrees,
+measured_alt_minutes and measure_alt_seconds) are corrected for atmospheric
+refraction using [Bennett's empirical formula](https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction)
 
 $R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right)$
 
@@ -146,7 +151,7 @@ This is a very simple correction.
 ### 2.ii. Dip of horizon<a name="dip-of-horizon"></a>
 
 If you specify the *observer_height* parameter you will correct for the dip of
-the horizon. This is useful for observations from a ship deck at sea, or from a 
+the horizon. This is useful for observations from a ship deck at sea, or from a
 hill/mountain with flat surroundings.
 The dip is calculated using this formula
 
@@ -161,12 +166,15 @@ where
 
 ### 2.iii. Ignored Corrections<a name="ignored-corrections"></a>
 
-Currently the tool does not aim for very high accuracy and more elaborate corrections are currently elminated.
+Currently the tool does not aim for very high accuracy and more elaborate
+corrections are currently elminated.
 
-* Refraction correction is simple (see above), and does not take into account temperature, elevation etc. 
-* Earth oblateness is ignored. 
+* Refraction correction is simple (see above), and does not take into account
+temperature, elevation etc.
+* Earth oblateness is ignored.
 
-Future implementations may contain more precise corrections though. See [more about future plans](CONTRIBUTING.md).
+Future implementations may contain more precise corrections though.
+See [more about future plans](CONTRIBUTING.md).
 
 ## 3. Sight reduction<a name="sight-reduction"></a>
 
@@ -188,8 +196,9 @@ of equal altitude). These intersections can be located far away from each other.
 You will have to decide which one of them is the correct observation point,
 based on previous knowledge of your location.
 
-The intersections are calculated using an algorithm based on [this article](https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere) <br/>
-This is a short outline of the algorithm. 
+The intersections are calculated using an algorithm based on
+[this article](https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere) <br/>
+This is a short outline of the algorithm.
 
 ![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
 
@@ -214,8 +223,8 @@ The circles relate to a *sight pair* $S_{p_{1,2}} = \{s_1, s_2\}$
 which we will come back to later.
 
 (From now on we assume all coordinates/vectors are located on the unity sphere,
-i.e. $\lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$, i.e. the Earth is
-a three-dimensional sphere and its surface has "radius = 1")
+i.e. $\lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$,
+i.e. the Earth is a three-dimensional sphere and its surface has "radius = 1")
 
 We aim for finding the intersections $p_1$ and $p_2$ for the circles $A$ and $B$
 and the point $q$ being the midpoint between $p_1$ and $p_2$.
