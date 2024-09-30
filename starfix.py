@@ -462,7 +462,9 @@ class Sight :
             raise ValueError ("The Sun should have a sha_diff parameter != 0") 
         '''
         if self.observer_height != 0 and artificial_horizon is True:
-            raise ValueError ("observer_height should be == 0 when artificial_horizon == True")
+            raise ValueError ("Observer_height should be == 0 when artificial_horizon == True")
+        if self.observer_height < 0:
+            raise ValueError ("Observer_height should be >= 0")
         if sextant is not None:
             self.__correct_for_graduation_error (sextant)
         if index_error_minutes != 0:
