@@ -115,7 +115,7 @@ in the following way
 | time_day             | Current day of month (1-31)                        | In UTC                                                         | Clock |
 | time_hour            | Observation time - Hours (0-23)              | In UTC.                                                        | Clock |
 | time_minute          | Observation time - Minutes (0-59)            | In UTC.                                                        | Clock |
-| time_second          | Observation time - Seconds (0-59)            | In UTC.                                                        | Clock |
+| *time_second*        | Observation time - Seconds (0-59)            | In UTC. Default = 0   | Clock |
 | gha_time_0_degrees   | GHA degrees reading for this hour            | For stars use GHA of Aries.                                    | Nautical Almanac |
 | gha_time_0_minutes   | GHA minutes reading for this hour            | Can be zero (use decimal degrees) (0-609). For stars use GHA of Aries. | Nautical Almanac |
 | gha_time_1_degrees   | GHA degrees reading for next hour            | For stars use GHA of Aries.                                    | Nautical Almanac |

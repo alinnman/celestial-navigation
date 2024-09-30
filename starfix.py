@@ -395,7 +395,6 @@ class Sight :
                   time_day : int, \
                   time_hour : int, \
                   time_minute : int, \
-                  time_second : int, \
                   gha_time_0_degrees : int, \
                   gha_time_0_minutes : int | float, \
                   gha_time_1_degrees : int, \
@@ -403,6 +402,7 @@ class Sight :
                   decl_time_0_degrees : int, \
                   decl_time_0_minutes : int | float, \
                   measured_alt_degrees : int | float, \
+                  time_second : int = 0, \
                   measured_alt_minutes : int | float = 0, \
                   measured_alt_seconds : int | float = 0, \
                   decl_time_1_degrees : int = None, \
