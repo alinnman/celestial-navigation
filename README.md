@@ -167,7 +167,7 @@ where
 ### 2.iii. Ignored Corrections<a name="ignored-corrections"></a>
 
 Currently the tool does not aim for very high accuracy and more elaborate
-corrections are currently elminated.
+corrections are currently eliminated.
 
 * Refraction correction is simple (see above), and does not take into account
 temperature, elevation etc.
