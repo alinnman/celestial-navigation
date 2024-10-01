@@ -1,4 +1,8 @@
-''' This is a sample for celestial navigation for a stationary observer '''
+''' This is a sample for celestial navigation for a stationary observer 
+    (C) August Linnman, 2024, email: august@linnman.net
+    MIT License (see LICENSE file)
+
+'''
 
 from time import time
 from starfix import Sight, SightCollection, get_representation, get_google_map_string

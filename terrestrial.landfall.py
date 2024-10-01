@@ -1,4 +1,8 @@
-''' Simple sample for terrestrial navigation (landfall) '''
+''' Simple sample for terrestrial navigation (landfall) 
+    (C) August Linnman, 2024, email: august@linnman.net
+    MIT License (see LICENSE file)
+
+'''
 
 from starfix import get_terrestrial_position, LatLon,\
       get_google_map_string, deg_to_rad, EARTH_RADIUS

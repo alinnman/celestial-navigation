@@ -1,4 +1,8 @@
-''' This is a real-world sample. Very basic sextant used '''
+''' This is a real-world sample. Very basic sextant used 
+    (C) August Linnman, 2024, email: august@linnman.net
+    MIT License (see LICENSE file)
+
+'''
 
 from starfix import Sight, SightCollection, LatLon, Sextant,\
                     get_decimal_degrees_from_tuple,\

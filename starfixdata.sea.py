@@ -1,5 +1,9 @@
 ''' Simple sample representing a trip at sea where celestial navigation is supporting
-    celestial navigation'''
+    celestial navigation
+    (C) August Linnman, 2024, email: august@linnman.net
+    MIT License (see LICENSE file)    
+    
+'''
 
 from time import time
 from starfix import Sight, SightTrip, get_representation, get_google_map_string, LatLon

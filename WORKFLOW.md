@@ -1,3 +1,8 @@
+<!---
+    (C) August Linnman, 2024, email: august@linnman.net
+    MIT License (see LICENSE file)
+-->
+
 # Short description of the workflow and maths of celestial navigation
 
 This is a short description of the steps you take when performing

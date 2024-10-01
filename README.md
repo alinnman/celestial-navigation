@@ -1,3 +1,8 @@
+<!---
+    (C) August Linnman, 2024, email: august@linnman.net
+    MIT License (see LICENSE file)
+-->
+
 # celestial-navigation
 
 ## Table of contents
