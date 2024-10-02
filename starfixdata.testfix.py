@@ -2,6 +2,21 @@
     (C) August Linnman, 2024, email: august@linnman.net
     MIT License (see LICENSE file)
 
+    Output: 
+    MEAN VALUE COORDINATE from multi-point sight data.
+    (S 33°,51.9′;E 18°,26.3′)
+    MD = https://www.mapdevelopers.com/draw-circle-tool.php?circles=%5B%5B3597112%2C-15.755%2C-11.2303%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B7209312%2C-15.2506%2C-51.2115%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B6630917%2C-8.197%2C77.2256%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%5D
+    GM = -33.8644,18.4384
+    Some useful data follows
+    A radius = 3597.1
+    A GP     = -15.755,-11.2303
+    B radius = 7209.3
+    B GP     = -15.2506,-51.2115
+    C radius = 6630.9
+    C GP     = -8.197,77.2256
+    Time taken = 3.19 ms    
+
+
 '''
 
 from time import time
