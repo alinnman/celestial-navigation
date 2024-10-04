@@ -212,16 +212,20 @@ def angle_between_points (origin : LatLon, point1 : LatLon, point2 : LatLon) -> 
 
 # Horizon
 
-def get_dip_of_horizon (hm : int | float) -> float:
+def get_dip_of_horizon (hm : int | float, temperature : float, dT_dH : float, pressure : float) -> float:
     ''' Calculate dip of horizon in arc minutes 
     Parameter:
         hm : height in meters
     '''
-    KFACTOR = 1/6.5 
+    # k_factor = 1/6.5
+    k_factor = 503*(pressure*10)*(1/((temperature+273)**2))*(0.0343 + dT_dH)
+    # print ("KFACTOR = " + str(KFACTOR))
     h = hm / 1000
     r = EARTH_RADIUS
-    R = r / (1 - KFACTOR)
-    return (acos (R/(R+h)))*(180/pi)*60
+    R = r / (1 - k_factor)
+    the_dip = (acos (R/(R+h)))*(180/pi)*60
+    #print ("The dip = " + str(the_dip))
+    return the_dip
 
 def get_intersections (latlon1 : LatLon, latlon2 : LatLon,\
                        angle1 : int | float, angle2 : int | float,\
@@ -294,7 +298,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 
 # Atmospheric refraction
 
-def get_refraction (apparent_angle : int | float) -> float:
+def get_refraction (apparent_angle : int | float, temperature : float, pressure : float) -> float:
     '''
     Calculate an estimation of the effect of atmospheric refraction using Bennett's formula
     See: https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction 
@@ -308,7 +312,7 @@ def get_refraction (apparent_angle : int | float) -> float:
     h = apparent_angle
     d = h + 7.31 / (h + 4.4)
     d2 = d*q
-    return 1 / tan (d2)
+    return (1 / tan (d2))*(pressure / 101.1)*(283.0/(273.0 + temperature))
 
 # Data formatting
 
@@ -318,7 +322,7 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
         return str(round(intersections.lat,num_decimals)) + "," + str(round(intersections.lon,num_decimals))
     elif isinstance (intersections, tuple):
         assert len (intersections) == 2
-        return get_google_map_string (intersections[0], num_decimals) + "-" + \
+        return get_google_map_string (intersections[0], num_decimals) + ";" + \
                get_google_map_string (intersections[1], num_decimals)
 
 def get_representation (ins : LatLon | tuple | list, num_decimals : int, lat=False) -> str:
@@ -429,7 +433,14 @@ class Sight :
                   index_error_minutes : int = 0, \
                   semi_diameter_correction : int | float = 0,\
                   horizontal_parallax : int | float = 0,\
-                  sextant : Sextant = None):
+                  sextant : Sextant = None,\
+                  temperature : float = 10.0,\
+                  dt_dh : float = -0.01,\
+                  pressure : float = 101.0, 
+                  ho_obs : bool = False):
+        self.temperature          = temperature
+        self.dt_dh                = dt_dh
+        self.pressure             = pressure
         self.object_name          = object_name
         self.time_year            = time_year
         self.time_month           = time_month
@@ -490,8 +501,9 @@ class Sight :
             self.__correct_semi_diameter (semi_diameter_correction)
         if horizontal_parallax != 0:
             self.__correct_for_horizontal_parallax (horizontal_parallax)
-        self.__correct_for_refraction ()            
-        self.__correct_dip_of_horizon ()
+        if not ho_obs:    
+            self.__correct_for_refraction ()
+            self.__correct_dip_of_horizon ()
         self.gp = self.__calculate_gp ()
 
     def __correct_for_graduation_error (self, sextant : Sextant):
@@ -512,10 +524,10 @@ class Sight :
     def __correct_dip_of_horizon (self):
         if self.observer_height == 0:
             return
-        self.measured_alt += get_dip_of_horizon (self.observer_height)/60
+        self.measured_alt += get_dip_of_horizon (self.observer_height, self.temperature, self.dT_dH, self.pressure)/60
 
     def __correct_for_refraction (self):
-        self.measured_alt -= get_refraction (self.measured_alt)/60
+        self.measured_alt -= get_refraction (self.measured_alt, self.temperature, self.pressure)/60
 
     def __calculate_gp (self) -> LatLon:
 
