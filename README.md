@@ -160,7 +160,7 @@ the horizon. This is useful for observations from a ship deck at sea, or from a
 hill/mountain with flat surroundings.
 The dip is calculated using this formula
 
-$a_{\text{diff}}= \acos{ \frac{R}{R+h}}$
+$a_{\text{diff}}= \arccos{ \frac{R}{R+h}}$
 
 where
 
