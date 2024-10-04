@@ -267,6 +267,18 @@ Apply the formula above for $\rho$ and $-\rho$ and you will get the two
 intersection points $p_1$ and $p_2$.
 **One of these points matches your location**.
 
+When performing the calculation above we also deduce the intersection angle for the two small circles (**fitness**). This angle will be used later on when we compare many different intersections. When the angle is small the error margin will be rather high and this can be used to reduce the effects of intersections with big uncertainty. An angle close to 90 degrees however indicates a rather precise measurement and this should be prioritized. 
+
+This is the algorithm for calculating the fitness. 
+
+$d_1 = N((p_1 - a) \times a)$ <br/>
+$d_2 = N((p_1 - b) \times b)$ 
+
+From this we calculate the angle 
+
+$a_{\text{fitness}} = \arcsin\left(d_1 \times d_2\right)$
+
+
 Note: The algorithm will only work if at least one of the circles is a small circle.
 It cannot be used for calculating intersections of two great circles.
 
@@ -333,7 +345,7 @@ to the probable location of the observer.
 
 The final part of the algorithm sorts the set $D$ to extract a maximum of $\frac{n^2-n}{2}$
 intersection points, and also applying a maximal allowed distance limit
-(which defaults to 100 km).
+(which defaults to 100 km). The **fitness** value (see above) is used for applying for giving priority for intersections with a larger angle. 
 
 The final result will be a **single** mean value of the extracted intersection points.
 
