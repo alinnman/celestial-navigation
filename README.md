@@ -139,6 +139,10 @@ in the following way
 | *measured_alt_seconds* | Altitude of object in seconds (0-60).         | Can be zero (use decimal degrees/minutes). Default = 0.                      | Sextant |
 | *observer_height*    | Height of observer above sea level or ground in meters (>= 0). | Only relevant for observations using natural horizon. Default = 0.          | Height Measurement |
 | *sextant*            | An object defining a specific sextant.        | See [this code sample](starfixdata.home.py) for details. Default = None.       | Calibration |
+| *temperature*            | Measured temperature at observing point. (degrees celsius)        |  Default = 10    | Observations or meteorology information |
+| *dt_dh* | Temperature gradient (degrees celsius / meter) | default = -0.01 | Observations or meteorology information |
+| *pressure* | Measured pressure at observing point. (kPa) | Default = 100 | Observations or meteorology information | 
+| *ho_obs* | Set to True if dip and refraction corrections should be omitted | Default = False | N/A |
 
 ### 2.i. Atmospheric refraction<a name="atmospheric-refraction"></a>
 
