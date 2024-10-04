@@ -70,7 +70,7 @@ collection = SightCollection ([S1, S2])
 # This is the exact position of my observation location
 home = LatLon (59.318659676810654, 18.04959717835501)
 
-intersections = collection.get_intersections (estimated_position = LatLon(59,19))
+intersections, fitness = collection.get_intersections (estimated_position = LatLon(59,19))
 print (get_representation(intersections,1))
 print ("MD = " + collection.get_map_developers_string())
 print ("GM = " + get_google_map_string(intersections,4))

@@ -160,12 +160,12 @@ the horizon. This is useful for observations from a ship deck at sea, or from a
 hill/mountain with flat surroundings.
 The dip is calculated using this formula
 
-$a_{\text{diff}}= \arctan{ \frac{d}{r}}$
+$a_{\text{diff}}= \acos{ \frac{R}{R+h}}$
 
 where
 
 * $a_{\text{diff}}$ is the calculated dip (in radians)
-* $d = \sqrt{h \left( 2r + h \right)}$.
+* $R = \frac{r}{1-\frac{1}{6.5}}$ (correction for geodetic refraction)
 * $h$ is the height of the observer (in meters).
 * $r$ is the radius of the Earth (in meters).
 

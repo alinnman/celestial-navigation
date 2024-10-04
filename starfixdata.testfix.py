@@ -2,21 +2,6 @@
     (C) August Linnman, 2024, email: august@linnman.net
     MIT License (see LICENSE file)
 
-    Output: 
-    MEAN VALUE COORDINATE from multi-point sight data.
-    (S 33°,51.9′;E 18°,26.3′)
-    MD = https://www.mapdevelopers.com/draw-circle-tool.php?circles=%5B%5B3597112%2C-15.755%2C-11.2303%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B7209312%2C-15.2506%2C-51.2115%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B6630917%2C-8.197%2C77.2256%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%5D
-    GM = -33.8644,18.4384
-    Some useful data follows
-    A radius = 3597.1
-    A GP     = -15.755,-11.2303
-    B radius = 7209.3
-    B GP     = -15.2506,-51.2115
-    C radius = 6630.9
-    C GP     = -8.197,77.2256
-    Time taken = 3.19 ms    
-
-
 '''
 
 from time import time
@@ -51,6 +36,8 @@ a = Sight (   object_name          = "Sabik", \
               sha_diff_minutes     = 3.2, \
               measured_alt_degrees = 57, \
               measured_alt_minutes = 40.2, \
+              #measured_alt_minutes = 36.8, \
+              observer_height      = 2.5 \
               )
 
 b = Sight (   object_name          = "Venus", \
@@ -70,6 +57,8 @@ b = Sight (   object_name          = "Venus", \
               decl_time_1_minutes  = 15.9, \
               measured_alt_degrees = 25, \
               measured_alt_minutes = 13.1, \
+              #measured_alt_minutes = 8.4, \
+              observer_height      = 2.5 \
               )
 
 c = Sight (   object_name          = "Saturn", \
@@ -86,13 +75,15 @@ c = Sight (   object_name          = "Saturn", \
               decl_time_0_degrees  = -8, \
               decl_time_0_minutes  = 11.8, \
               decl_time_1_degrees  = -8, \
-              decl_time_1_minutes  = 11.9, \
+              decl_time_1_minutes  = 11.8, \
               measured_alt_degrees = 30, \
               measured_alt_minutes = 24.7, \
+              #measured_alt_minutes = 20.2, \
+              observer_height      = 2.5 \
               )
 
 collection = SightCollection ([a, b, c])
-intersections = collection.get_intersections ()
+intersections, fitness = collection.get_intersections (limit = 100)
 print (get_representation(intersections,1))
 print ("MD = " + collection.get_map_developers_string())
 print ("GM = " + get_google_map_string(intersections,4))

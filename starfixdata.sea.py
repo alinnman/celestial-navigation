@@ -71,7 +71,7 @@ st = SightTrip (sight_start               = s1,\
                  estimated_starting_point = s1LatLon,\
                  course_degrees           = C_COURSE,\
                  speed_knots              = SPEED)
-intersections = st.get_intersections ()
+intersections, fitness = st.get_intersections ()
 print ("MD = " + st.get_map_developers_string ())
 print ("Starting point = " + str(get_representation(intersections[1],1)))
 print ("End point = " + str(get_representation(intersections[0],1)))
