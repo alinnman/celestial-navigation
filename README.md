@@ -148,14 +148,16 @@ in the following way
 
 The measured altitude values (attributes measured_alt_degrees,
 measured_alt_minutes and measure_alt_seconds) are corrected for atmospheric
-refraction using [Bennett's empirical formula](https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction)
+refraction using [Bennett's empirical formula](https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction) with adjustments for temperature and pressure. 
 
-$R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right)$
+$R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right)\frac{P}{101}\frac{283}{273+T}$
 
-Where $R$ is the refraction in arc minutes and $h_a$ is the measured angle
-from zenith in degrees.
+where 
 
-This is a very simple correction. 
+* $R$ is the refraction in arc minutes.
+* $h_a$ is the measured angle.
+* $P$ is pressure in millibars.
+* $T$ is temperature in Celsius. 
 
 ### 2.ii. Dip of horizon<a name="dip-of-horizon"></a>
 
@@ -169,17 +171,17 @@ $a_{\text{diff}}= \arccos{ \frac{R}{R+h}}$
 where
 
 * $a_{\text{diff}}$ is the calculated dip (in radians)
-* $R = \frac{r}{1-\frac{1}{6.5}}$ (correction for geodetic refraction)
+* $R = \frac{r}{1-k}$ (corrected radius of Earth for geodetic refraction)
 * $h$ is the height of the observer (in meters).
 * $r$ is the radius of the Earth (in meters).
+* $k = 503\frac{P}{T^2}\left(0.0342+\frac{dT}{dh}\right)$ (refraction coefficient)
 
 ### 2.iii. Ignored Corrections<a name="ignored-corrections"></a>
 
 Currently the tool does not aim for very high accuracy and more elaborate
 corrections are currently eliminated.
 
-* Refraction correction is simple (see above), and does not take into account
-temperature, elevation etc.
+* Refraction correction is simple (see above), but probably good enough for basic celestial navigation. 
 * Earth oblateness is ignored.
 
 Future implementations may contain more precise corrections though.
