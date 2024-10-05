@@ -288,7 +288,7 @@ $a_{\text{fitness}} = \arcsin\left(d_1 \times d_2\right)$
 Note: The algorithm will only work if at least one of the circles is a small circle.
 It cannot be used for calculating intersections of two great circles.
 
-Note: I have chosen to use an algorithm based on 3D cartesian vectors. Standard literature on sight reduction typically uses 2D spherical coordinates, such as [Longhand haversine sight reduction](https://en.wikipedia.org/wiki/Sight_reduction#Longhand_haversine_sight_reduction). Such calculations in 2D are easier to carry out by hand but more complex for a computer. The 3D/cartesian approach is more structurally simple and easier to convert to well-functioning software. 
+Note: I have chosen to use an algorithm based on 3D cartesian vectors. Standard literature on sight reduction typically uses 2D spherical coordinates, such as [Longhand haversine sight reduction](https://en.wikipedia.org/wiki/Sight_reduction#Longhand_haversine_sight_reduction). Such calculations in 2D are easier to carry out by hand but results in more complex computer software. The 3D/cartesian approach is more structurally simple and easier to convert to well-functioning software. 
 
 ### 3.ii. Using three or more sights<a name="using-three-or-more-sights"></a>
 
