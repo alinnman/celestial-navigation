@@ -141,7 +141,7 @@ in the following way
 | *sextant*            | An object defining a specific sextant.        | See [this code sample](starfixdata.home.py) for details. Default = None.       | Calibration |
 | *temperature*            | Measured temperature at observing point. (degrees celsius)        |  Default = 10    | Observations or meteorology information |
 | *dt_dh* | Temperature gradient (degrees celsius / meter) | default = -0.01 | Observations or meteorology information |
-| *pressure* | Measured pressure at observing point. (kPa) | Default = 100 | Observations or meteorology information | 
+| *pressure* | Measured pressure at observing point. (kPa) | Default = 101 | Observations or meteorology information | 
 | *ho_obs* | Set to True if dip and refraction corrections should be omitted | Default = False | N/A |
 
 ### 2.i. Atmospheric refraction<a name="atmospheric-refraction"></a>
