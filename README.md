@@ -175,6 +175,10 @@ where
 * $h$ is the height of the observer (in meters).
 * $r$ is the radius of the Earth (in meters).
 * $k = 503\frac{P}{T^2}\left(0.0342+\frac{dT}{dh}\right)$ (refraction coefficient)
+* $\frac{dT}{dh}$ is the temperature gradient
+
+If you use an artficial horizon the dip is always zero,
+and the *observer_height* parameter should be zero.
 
 ### 2.iii. Ignored Corrections<a name="ignored-corrections"></a>
 
