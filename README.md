@@ -175,10 +175,15 @@ where
 * $h$ is the height of the observer (in meters).
 * $r$ is the radius of the Earth (in meters).
 * $k = 503\frac{P}{T^2}\left(0.0342+\frac{dT}{dh}\right)$ (refraction coefficient)
+* $P$ is the pressure (in millibars)
+* $T$ is the temperature (in Kelvins)
 * $\frac{dT}{dh}$ is the temperature gradient
 
 If you use an artficial horizon the dip is always zero,
 and the *observer_height* parameter should be zero.
+
+For more information about the formula above please refer to
+[this article](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2010JD014067).
 
 ### 2.iii. Ignored Corrections<a name="ignored-corrections"></a>
 
