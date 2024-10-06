@@ -13,20 +13,20 @@ starttime = time ()
 
 # Our starfix data
 
-year = 2024
-month = 9
-day = 17
-hour = 23
-minute = 36
-second = 13
+YEAR = 2024
+MONTH = 9
+DAY = 17
+HOUR = 23
+MINUTE = 36
+SECOND = 13
 
 a = Sight (   object_name          = "Capella", \
-              time_year            = year,\
-              time_month           = month,\
-              time_day             = day,\
-              time_hour            = hour, \
-              time_minute          = minute, \
-              time_second          = second, \
+              time_year            = YEAR,\
+              time_month           = MONTH,\
+              time_day             = DAY,\
+              time_hour            = HOUR, \
+              time_minute          = MINUTE, \
+              time_second          = SECOND, \
               gha_time_0_degrees   = 342, \
               gha_time_0_minutes   = 21.9, \
               gha_time_1_degrees   = 357, \
@@ -41,12 +41,12 @@ a = Sight (   object_name          = "Capella", \
               )
 
 b = Sight (   object_name          = "Moon", \
-              time_year            = year,\
-              time_month           = month,\
-              time_day             = day,\
-              time_hour            = hour, \
-              time_minute          = minute+5, \
-              time_second          = second, \
+              time_year            = YEAR,\
+              time_month           = MONTH,\
+              time_day             = DAY,\
+              time_hour            = HOUR, \
+              time_minute          = MINUTE+5, \
+              time_second          = SECOND, \
               gha_time_0_degrees   = 347, \
               gha_time_0_minutes   = 55.7, \
               gha_time_1_degrees   = 2, \
@@ -62,12 +62,12 @@ b = Sight (   object_name          = "Moon", \
               )
 
 c = Sight (   object_name          = "Vega", \
-              time_year            = year,\
-              time_month           = month,\
-              time_day             = day,\
-              time_hour            = hour, \
-              time_minute          = minute+10, \
-              time_second          = second, \
+              time_year            = YEAR,\
+              time_month           = MONTH,\
+              time_day             = DAY,\
+              time_hour            = HOUR, \
+              time_minute          = MINUTE+10, \
+              time_second          = SECOND, \
               gha_time_0_degrees   = 342, \
               gha_time_0_minutes   = 21.9, \
               gha_time_1_degrees   = 357, \
