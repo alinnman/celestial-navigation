@@ -17,7 +17,7 @@ Havringe = LatLon (58.60355, 17.316041)
 ANGLE_1 = 20
 ANGLE_2 = 45
 
-p, c1, r1, c2, r2 =\
+p, c1, r1, c2, r2, fitness  =\
       get_terrestrial_position (Havringe, GustafDalen, ANGLE_1, GustafDalen, Landsort, ANGLE_2)
 print ("Your location 1 = " + get_google_map_string(p[0],4))
 print ("Your location 2 = " + get_google_map_string(p[1],4))
