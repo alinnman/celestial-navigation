@@ -282,7 +282,7 @@ $d_2 = N((p_1 - b) \times b)$
 
 From this we calculate the angle 
 
-$a_{\text{fitness}} = \arcsin\left(d_1 \times d_2\right)$
+$a_{\text{fitness}} = \arcsin\left(|d_1 \times d_2|\right)$
 
 
 Note: The algorithm will only work if at least one of the circles is a small circle.
