@@ -524,7 +524,7 @@ class Sight :
     def __correct_dip_of_horizon (self):
         if self.observer_height == 0:
             return
-        self.measured_alt += get_dip_of_horizon (self.observer_height, self.temperature, self.dT_dH, self.pressure)/60
+        self.measured_alt += get_dip_of_horizon (self.observer_height, self.temperature, self.dt_dh, self.pressure)/60
 
     def __correct_for_refraction (self):
         self.measured_alt -= get_refraction (self.measured_alt, self.temperature, self.pressure)/60
