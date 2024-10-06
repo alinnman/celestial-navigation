@@ -15,7 +15,7 @@ GustafDalen = LatLon (58.594091, 17.467489)
 Havringe = LatLon (58.60355, 17.316041)
 
 ANGLE_1 = 20
-ANGLE_2 =  45
+ANGLE_2 = 45
 
 p, c1, r1, c2, r2 =\
       get_terrestrial_position (Havringe, GustafDalen, ANGLE_1, GustafDalen, Landsort, ANGLE_2)
