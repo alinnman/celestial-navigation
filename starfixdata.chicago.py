@@ -7,7 +7,6 @@
 from time import time
 from starfix import Sight, SightCollection, get_representation, get_google_map_string
 
-
 starttime = time ()
 
 # Our starfix data

@@ -2,6 +2,7 @@
     (C) August Linnman, 2024, email: august@linnman.net
     MIT License (see LICENSE file)
 
+    A simple test using Stellarium data. Moon altitude used, and parallax values used. 
 '''
 
 from time import time

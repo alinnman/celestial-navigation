@@ -2,6 +2,8 @@
     (C) August Linnman, 2024, email: august@linnman.net
     MIT License (see LICENSE file)
 
+    Test sample from sextant exercise. This used a Ho observation so I added
+    support for this in the code (eliminating refraction and dip calculations)
 '''
 
 from time import time
