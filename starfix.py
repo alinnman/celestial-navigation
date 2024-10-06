@@ -269,7 +269,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     int1 = normalize_vect(rotate_vector (q, rot_axis, rho))
     int2 = normalize_vect(rotate_vector (q, rot_axis, -rho))
 
-    # Calculate fitness of intersections. TODO
+    # Calculate fitness of intersections.
     fitness = 1
     if use_fitness:
         d1 = add_vecs (int1, mult_scalar_vect(-1,a_vec))
@@ -284,17 +284,17 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     ret_tuple = (to_latlon(int1), to_latlon(int2))
     if estimated_position is None:
         return ret_tuple, fitness
-    else:
-        # Check which of the intersections is closest to our estimatedCoordinates
-        best_distance = EARTH_CIRCUMFERENCE
-        best_intersection = None
-        for ints in ret_tuple:
-            the_distance = distance_between_points (ints, estimated_position)
-            if the_distance < best_distance:
-                best_distance = the_distance
-                best_intersection = ints
-        assert best_intersection is not None
-        return best_intersection, fitness
+
+    # Check which of the intersections is closest to our estimatedCoordinates
+    best_distance = EARTH_CIRCUMFERENCE
+    best_intersection = None
+    for ints in ret_tuple:
+        the_distance = distance_between_points (ints, estimated_position)
+        if the_distance < best_distance:
+            best_distance = the_distance
+            best_intersection = ints
+    assert best_intersection is not None
+    return best_intersection, fitness
 
 # Atmospheric refraction
 

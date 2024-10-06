@@ -199,7 +199,7 @@ Using two star fixes a sight reduction can be done in the following way
     b = Sight (....Parameters....)
     
     collection = SightCollection ([a, b])
-    intersections = collection.get_intersections ()
+    intersections, fitness = collection.get_intersections ()
     print (get_representation(intersections,1))
 
 The result will be a tuple of **two** coordinates (intersections of two circles 
@@ -301,7 +301,7 @@ Using three (or more) sights a sight reduction can be done in the following way
     c = Sight (....Parameters....)
     
     collection = SightCollection ([a, b, c]) # Add more sights if needed
-    intersections = collection.getIntersections ()
+    intersections, fitness = collection.getIntersections ()
     print (getRepresentation(intersections,1))
 
 A *sight* is defined as a collection of data as described in the section 1 above,
@@ -423,7 +423,7 @@ See above for how to create a sight object
 
 Now you can calculate the coordinates for this trip.
 
-    intersections = st.get_intersections ()
+    intersections, fitness = st.get_intersections ()
     print ("Starting point = " + str(get_representation(intersections[0],1)))
     print ("End point = " + str(get_representation(intersections[1],1)))
 
