@@ -218,14 +218,11 @@ def get_dip_of_horizon (hm : int | float, temperature : float, dt_dh : float, pr
     Parameter:
         hm : height in meters
     '''
-    # k_factor = 1/6.5
     k_factor = 503*(pressure*10)*(1/((temperature+273)**2))*(0.0343 + dt_dh)
-    # print ("KFACTOR = " + str(KFACTOR))
     h = hm / 1000
     r = EARTH_RADIUS
     rr = r / (1 - k_factor)
     the_dip = (acos (rr/(rr+h)))*(180/pi)*60
-    #print ("The dip = " + str(the_dip))
     return the_dip
 
 def get_intersections (latlon1 : LatLon, latlon2 : LatLon,\
