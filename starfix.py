@@ -583,7 +583,7 @@ class SightPair:
                                   estimated_position)
 
 class SightCollection:
-    ''' Represents a collection of >2 sights '''
+    ''' Represents a collection of >= 2 sights '''
 
     def __init__ (self, sf_list : list[Sight]):
         if len (sf_list) < 2:
