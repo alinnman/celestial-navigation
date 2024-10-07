@@ -175,6 +175,15 @@ where
 * $h$ is the height of the observer (in meters).
 * $r$ is the radius of the Earth (in meters).
 * $k = 503\frac{P}{T^2}\left(0.0342+\frac{dT}{dh}\right)$ (refraction coefficient)
+* $P$ is the pressure (in millibars)
+* $T$ is the temperature (in Kelvins)
+* $\frac{dT}{dh}$ is the temperature gradient
+
+If you use an artficial horizon the dip is always zero,
+and the *observer_height* parameter should be zero.
+
+For more information about the formula above please refer to
+[this article](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2010JD014067).
 
 ### 2.iii. Ignored Corrections<a name="ignored-corrections"></a>
 
@@ -282,7 +291,7 @@ $d_2 = N((p_1 - b) \times b)$
 
 From this we calculate the angle 
 
-$a_{\text{fitness}} = \arcsin\left(d_1 \times d_2\right)$
+$a_{\text{fitness}} = \arcsin\left(|d_1 \times d_2|\right)$
 
 
 Note: The algorithm will only work if at least one of the circles is a small circle.

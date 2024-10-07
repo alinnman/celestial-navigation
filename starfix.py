@@ -212,24 +212,23 @@ def angle_between_points (origin : LatLon, point1 : LatLon, point2 : LatLon) -> 
 
 # Horizon
 
-def get_dip_of_horizon (hm : int | float, temperature : float, dT_dH : float, pressure : float) -> float:
+def get_dip_of_horizon (hm : int | float, temperature : float, dt_dh : float, pressure : float)\
+      -> float:
     ''' Calculate dip of horizon in arc minutes 
     Parameter:
         hm : height in meters
     '''
-    # k_factor = 1/6.5
-    k_factor = 503*(pressure*10)*(1/((temperature+273)**2))*(0.0343 + dT_dH)
-    # print ("KFACTOR = " + str(KFACTOR))
+    k_factor = 503*(pressure*10)*(1/((temperature+273)**2))*(0.0343 + dt_dh)
     h = hm / 1000
     r = EARTH_RADIUS
-    R = r / (1 - k_factor)
-    the_dip = (acos (R/(R+h)))*(180/pi)*60
-    #print ("The dip = " + str(the_dip))
+    rr = r / (1 - k_factor)
+    the_dip = (acos (rr/(rr+h)))*(180/pi)*60
     return the_dip
 
 def get_intersections (latlon1 : LatLon, latlon2 : LatLon,\
                        angle1 : int | float, angle2 : int | float,\
-                       estimated_position : LatLon = None, use_fitness : bool = True) -> tuple[LatLon | tuple[LatLon], float]:
+                       estimated_position : LatLon = None, use_fitness : bool = True)\
+                          -> tuple[LatLon | tuple[LatLon], float]:
     '''
     Get intersection of two circles on a spheric surface. 
     At least one of the circles must be a small circle. 
@@ -277,7 +276,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         tang1 = normalize_vect (tang1)
         d2 = add_vecs (int1, mult_scalar_vect(-1,b_vec))
         tang2 = cross_product (d2, b_vec)
-        tang2 = normalize_vect (tang2) 
+        tang2 = normalize_vect (tang2)
         weighted = cross_product (tang1, tang2)
         fitness = length_of_vect (weighted)
 
@@ -319,7 +318,8 @@ def get_refraction (apparent_angle : int | float, temperature : float, pressure 
 def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -> str :
     ''' Return a coordinate which can be used in Google Maps '''
     if isinstance (intersections, LatLon):
-        return str(round(intersections.lat,num_decimals)) + "," + str(round(intersections.lon,num_decimals))
+        return str(round(intersections.lat,num_decimals)) + "," +\
+               str(round(intersections.lon,num_decimals))
     elif isinstance (intersections, tuple):
         assert len (intersections) == 2
         return get_google_map_string (intersections[0], num_decimals) + ";" + \
@@ -392,7 +392,7 @@ def get_terrestrial_position (point_a1 : LatLon,\
                               point_b2 : LatLon,\
                               angle_b : int | float,
                               estimated_position : LatLon = None)\
-                                  -> tuple [LatLon | tuple, LatLon, float, LatLon, float] :
+                                  -> tuple [LatLon | tuple, LatLon, float, LatLon, float, float] :
     '''
     Given two pairs of terrestial observations (pos + angle) determine the observer's position 
     '''
@@ -401,7 +401,7 @@ def get_terrestrial_position (point_a1 : LatLon,\
     # Finally compute the intersection.
     # Since we require an estimated position we will eliminate the false intersection.
     intersection, fitness = get_intersections (a[0], b[0], a[1], b[1], estimated_position)
-    return intersection, a[0], a[1], b[0], b[1]
+    return intersection, a[0], a[1], b[0], b[1], fitness
 
 # Celestial Navigation
 
@@ -436,7 +436,7 @@ class Sight :
                   sextant : Sextant = None,\
                   temperature : float = 10.0,\
                   dt_dh : float = -0.01,\
-                  pressure : float = 101.0, 
+                  pressure : float = 101.0,
                   ho_obs : bool = False):
         self.temperature          = temperature
         self.dt_dh                = dt_dh
@@ -468,14 +468,14 @@ class Sight :
             decl_time_1_degrees = decl_time_0_degrees
         if decl_time_1_minutes is None:
             decl_time_1_minutes = decl_time_0_minutes
-          
+
         self.decl_time_0          = get_decimal_degrees\
               (decl_time_0_degrees, decl_time_0_minutes, 0)
         self.decl_time_1          = get_decimal_degrees\
               (decl_time_1_degrees, decl_time_1_minutes, 0)
         if self.decl_time_0 < -90 or self.decl_time_0 > 90 or \
            self.decl_time_1 < -90 or self.decl_time_1 > 90:
-            raise ValueError ("Declination values must be within [-90,90]")          
+            raise ValueError ("Declination values must be within [-90,90]")
         self.measured_alt         = get_decimal_degrees\
               (measured_alt_degrees, measured_alt_minutes, measured_alt_seconds)
         if self.measured_alt < 0 or self.measured_alt > 90:
@@ -501,7 +501,7 @@ class Sight :
             self.__correct_semi_diameter (semi_diameter_correction)
         if horizontal_parallax != 0:
             self.__correct_for_horizontal_parallax (horizontal_parallax)
-        if not ho_obs:    
+        if not ho_obs:
             self.__correct_for_refraction ()
             self.__correct_dip_of_horizon ()
         self.gp = self.__calculate_gp ()
@@ -524,7 +524,8 @@ class Sight :
     def __correct_dip_of_horizon (self):
         if self.observer_height == 0:
             return
-        self.measured_alt += get_dip_of_horizon (self.observer_height, self.temperature, self.dt_dh, self.pressure)/60
+        self.measured_alt += get_dip_of_horizon (self.observer_height, self.temperature,\
+                                                 self.dt_dh, self.pressure)/60
 
     def __correct_for_refraction (self):
         self.measured_alt -= get_refraction (self.measured_alt, self.temperature, self.pressure)/60
@@ -541,11 +542,11 @@ class Sight :
         self.decl_time_0 + (self.decl_time_1 - self.decl_time_0)*min_sec_contribution
 
         return LatLon (result_lat, result_lon)
-    
+
     def get_map_developers_string (self) -> str:
         '''
         Return URL segment for https://mapdevelopers.com circle plotting service
-        '''     
+        '''
         result = "["
         result = result + str (round(self.get_radius ()*1000)) + ","
         result = result + str(round(self.gp.lat,4)) + ","
@@ -589,7 +590,8 @@ class SightCollection:
             raise ValueError ("SightCollection should have at least two sights")
         self.sf_list = sf_list
 
-    def get_intersections (self, limit : int | float = 100, estimated_position = None) -> tuple[tuple[LatLon] | LatLon, float]:
+    def get_intersections (self, limit : int | float = 100, estimated_position = None)\
+        -> tuple[tuple[LatLon] | LatLon, float]:
         ''' Get an intersection from the collection of sights. 
             A mean value and sorting algorithm is applied. '''
         nr_of_fixes = len(self.sf_list)
@@ -664,8 +666,8 @@ class SightCollection:
                                 raise ValueError\
                                 ("Cannot sort multiple intersections to find"+\
                                  "a reasonable set of coordinates")
-            print ("MEAN VALUE COORDINATE from multi-point sight data.")
-            print ("Nr of chosen intersections = " + str(len(chosen_points)))
+            #print ("MEAN VALUE COORDINATE from multi-point sight data.")
+            #print ("Nr of chosen intersections = " + str(len(chosen_points)))
             summation_vec = [0,0,0]
             # Make a mean value on the best intersections.
             fitness_sum = 0
@@ -674,11 +676,12 @@ class SightCollection:
                 fitness_here   = coords [cp][1]
                 fitness_sum += fitness_here
                 rect_vec = to_rectangular (selected_coord)
-                summation_vec = add_vecs (summation_vec,\
-                                          mult_scalar_vect ((1/nr_of_chosen_points)*fitness_here, rect_vec))
+                summation_vec =\
+                  add_vecs (summation_vec,\
+                  mult_scalar_vect ((1/nr_of_chosen_points)*fitness_here, rect_vec))
             summation_vec = normalize_vect (summation_vec)
             return to_latlon (summation_vec), fitness
-    
+
     def get_map_developers_string (self) -> str:
         '''
         Return URL for https://mapdevelopers.com circle plotting service
