@@ -3,9 +3,11 @@
     MIT License (see LICENSE file)
 
 '''
-
+from time import time
 from starfix import get_terrestrial_position, LatLon,\
       get_google_map_string, deg_to_rad, EARTH_RADIUS
+
+starttime = time ()
 
 # Simple sample of terrestrial navigation on three lighthouses.
 
@@ -32,3 +34,8 @@ print ("Radius 2 = " + str(deg_to_rad(r2)*EARTH_RADIUS))
 
 #Link to intersections
 #https://www.mapdevelopers.com/draw-circle-tool.php?circles=%5B%5B12922.53%2C58.4904%2C17.3669%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B19890.51%2C58.5634%2C17.8054%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B1000%2C58.6033323%2C17.3136798%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B1000%2C58.5941%2C17.4674833%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B1000%2C58.7395979%2C17.8656699%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%5D
+
+endtime = time ()
+takenMs = round((endtime-starttime)*1000,2)
+print ("Time taken = " +str(takenMs)+" ms")
+

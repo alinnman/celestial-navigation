@@ -730,7 +730,7 @@ class SightTrip:
         self.time_hours = (it2 - it1) / 3600
 
     def __calculate_distance_to_target (self, angle : int | float, a_vec : list, b_vec : list)\
-          -> tuple:
+          -> tuple [float, LatLon, LatLon]:
         rotation_angle = deg_to_rad (angle)
         rotated_vec = rotate_vector (b_vec, a_vec, rotation_angle)
         rotated_latlon = to_latlon (rotated_vec)
@@ -740,7 +740,7 @@ class SightTrip:
         dbp = distance_between_points (taken_out, self.sight_end.gp) - self.sight_end.get_radius()
         return dbp, taken_out, rotated_latlon
 
-    def get_intersections (self) -> tuple[tuple, float]:
+    def get_intersections (self) -> tuple[tuple[LatLon, LatLon], float]:
         ''' Get the intersections for this sight trip object '''
         # Calculate intersections
         pair = SightPair (self.sight_start, self.sight_end)
