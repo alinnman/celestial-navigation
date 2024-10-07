@@ -16,12 +16,14 @@ Regarding future plans for this project. These are some things I may consider do
 
 1. Create machine-readable Nautical Almanac
 1. Create a lightweight web application and/or mobile app.
+1. More elaborate sextant calibration code.
 
 But the design goal is **portability and a small footprint**,
 with no dependency on an internet connection.
 Keeping it runnable in a lightweigth Python environment is desirable,
 with the mobile phone as the natural choice of hardware.
 
-I may also consider improving on accuracy by more elaborate work  on geodesics (Earth oblateness). 
+I may also consider improving on accuracy by more elaborate work on geodesics
+(Earth oblateness).
 
 Any contributions are welcome!
