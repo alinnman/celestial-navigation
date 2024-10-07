@@ -25,8 +25,9 @@ You are also advised to make copies (and modifications) of the supplied samples
 or [starfixdata.sea.py](starfixdata.sea.py) to support your workflow and observations.
 
 The Nautical Almanac must be used manually to get the GP (ground point) of
-your observations. Currently the almanacs of 2024 and 2025 are bundled in the
-repository in a digital version.
+your observations. Currently the almanacs of [2024](2024_Nautical_Almanac.pdf)
+and [2025](2025_Nautical_Almanac.pdf)
+are bundled in the repository in a digital version.
 But you may of course use a hard-copy of the nautical almanac and these can be ordered
 [here](https://www.amazon.com/s?i=stripbooks&rh=p_27%3AU.K.+Hydrographic&s=relevancerank&text=U.K.+Hydrographic&ref=dp_byline_sr_book_1).
 New digital versions (for 2026 and onwards)
