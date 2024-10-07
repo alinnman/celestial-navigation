@@ -360,7 +360,8 @@ to the probable location of the observer.
 
 The final part of the algorithm sorts the set $D$ to extract a maximum of $\frac{n^2-n}{2}$
 intersection points, and also applying a maximal allowed distance limit
-(which defaults to 100 km). The **fitness** value (see above) is used for giving priority for intersections with a larger angle. 
+(which defaults to 100 km). The **fitness** value (see above) is used for
+giving priority (weighting) for intersections with a larger angle.
 
 The final result will be a **single** mean value of the extracted intersection points.
 
