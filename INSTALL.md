@@ -22,7 +22,8 @@ You are advised to adjust this script for your used sextant.
 
 You are also advised to make copies (and modifications) of the supplied samples
 [starfixdata.chicago.py](starfixdata.chicago.py)
-or [starfixdata.sea.py](starfixdata.sea.py) to support your workflow and observations.
+or [starfixdata.sea.py](starfixdata.sea.py) to support your workflow and observations. 
+There are also Jupyter notebooks availabe, see below. 
 
 The Nautical Almanac must be used manually to get the GP (ground point) of
 your observations. Currently the almanacs of [2024](2024_Nautical_Almanac.pdf)
@@ -37,3 +38,7 @@ such as [this one](https://github.com/aendie/SkyAlmanac-Py3).
 The script sample [terrestrial.landfall.py](terrestrial.landfall.py)
 can be used (and modified) if you would like to use your sextant as an aid in
 terrestrial navigation.
+
+In addition to the supplied script you may also run the code in [Jupyter Notebooks](https://en.wikipedia.org/wiki/Project_Jupyter#Jupyter_Notebook). 
+[Jupyter can be installed in Pydroid](https://www.codementor.io/@olalekanrahman/how-to-access-jupyter-notebook-on-pydroid-1ckw13mtgz), 
+and this allows for a convenient way to keep your workflow in an easily managed web interface. 

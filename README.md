@@ -414,6 +414,9 @@ The Moon is typically the only celestial object where horizontal parallax
 needs to be considered. For other planets and the Sun the correction will almost
 always be obscured by sextant reading errors.
 
+You may also use the supplied Jupyter Notebook scripts
+[notebook.stat.1.ipynb](notebook.stat.1.ipynb) and [notebook.stat.2.ipynb](notebook.stat.2.ipynb).
+
 ## 4. Dead Reckoning<a name="dead-reckoning"></a>
 
 When sailing (or moving on the ground) you can use this technique to support
@@ -516,6 +519,9 @@ you have the coordinates here.
     Starting point GM = 58.7684,18.0023
     Ending   point GM = 58.4364,18.0583
 
+You may also use the supplied Jupyter Notebook script
+[notebook.sea.ipynb](notebook.sea.ipynb).
+
 ## 5. A real-life example<a name="real-life"></a>
 
 You can also see a real-life measurement I recently made using a simple plastic
@@ -546,6 +552,9 @@ the observed angle between them from your observation point with a sextant.
 The red arrow points towards the calculated correct position (intersection).
 
 ![Navigation towards three lighthouses](pics/lighthouses.png "Terrestrial Navigation")
+
+You may also use the supplied Jupyter Notebook script
+[notebook.terrestrial.ipynb](notebook.terrestrial.ipynb).
 
 ## 7. Sextant Calibration <a name="calibration"></a>
 
