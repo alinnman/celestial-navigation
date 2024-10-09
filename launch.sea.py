@@ -4,4 +4,4 @@
 '''
 
 from os import system
-system ("jupyter notebook")
+system ("jupyter notebook notebook.sea.ipynb")

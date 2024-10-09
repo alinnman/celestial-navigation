@@ -43,5 +43,5 @@ In addition to the supplied scripts you may also run the code in
 [Jupyter Notebooks](https://en.wikipedia.org/wiki/Project_Jupyter#Jupyter_Notebook).
 [Jupyter can be installed in Pydroid](https://www.codementor.io/@olalekanrahman/how-to-access-jupyter-notebook-on-pydroid-1ckw13mtgz), 
 and this allows for a convenient way to keep your workflow in an easily
-managed web interface. The notebook web interface can be launched from the
-script [launch.jupyter.py](launch.jupyter.py).
+managed web interface. The notebook web interface can be launched from specific
+launch scipts (launch.xxx.py). 
