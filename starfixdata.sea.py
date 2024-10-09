@@ -1,6 +1,6 @@
 ''' Simple sample representing a trip at sea where celestial navigation is supporting
     celestial navigation
-    (C) August Linnman, 2024, email: august@linnman.net
+    © August Linnman, 2024, email: august@linnman.net
     MIT License (see LICENSE file)    
     
 '''
