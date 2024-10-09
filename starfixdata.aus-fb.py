@@ -1,7 +1,7 @@
 ''' This is a sample for celestial navigation for a stationary observer 
     Sample taken from FB discussion with Nigel Coey. 
     Data is approximate star fixes from Macquarie Island
-    (C) August Linnman, 2024, email: august@linnman.net
+    © August Linnman, 2024, email: august@linnman.net
     MIT License (see LICENSE file)
     
 Output: 
