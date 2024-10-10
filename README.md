@@ -138,7 +138,7 @@ in the following way
 | *measured_alt_minutes* | Altitude of object in minutes (0-60).         | Can be zero (use decimal degrees). Default = 0.                              | Sextant |
 | *measured_alt_seconds* | Altitude of object in seconds (0-60).         | Can be zero (use decimal degrees/minutes). Default = 0.                      | Sextant |
 | *observer_height*    | Height of observer above sea level or ground in meters (>= 0). | Only relevant for observations using natural horizon. Default = 0.          | Height Measurement |
-| *sextant*            | An object defining a specific sextant.        | See [this code sample](starfixdata.home.py) for details. Default = None.       | Calibration |
+| *sextant*            | An object defining a specific sextant.        | See [this code sample](starfixdata.xtra.home.py) for details. Default = None.       | Calibration |
 | *temperature*            | Measured temperature at observing point. (degrees celsius)        |  Default = 10    | Observations or meteorology information |
 | *dt_dh* | Temperature gradient (degrees celsius / meter) | default = -0.01 | Observations or meteorology information |
 | *pressure* | Measured pressure at observing point. (kPa) | Default = 101 | Observations or meteorology information | 
@@ -529,7 +529,7 @@ sextant (Davis Mark III), a standard watch and an artifical horizon.
 
 ![Simple celestial navigation gear](pics/celnav-gear.jpg "Simple celestial navigation gear")
 
-The sample can be found [here](starfixdata.home.py)
+The sample can be found [here](starfixdata.xtra.home.py)
 The resulting position is just 1.45 nautical miles away from my real position,
 which I consider being an excellent result given the simple equipment and my
 modest level of training.
@@ -565,5 +565,5 @@ measured angles. The little plastic sextant I have used (a Davis Mark III) was
 suspected by me,
 and I decided to measure it by taking a terrestrial angle fix and compare it to
 the data from my map. And yes, there was an error of about 2 minutes / 10 degrees.
-For the details see [this sample](starfixdata.home.py) where a measurement of a
+For the details see [this sample](starfixdata.xtra.home.py) where a measurement of a
 local view is used as input to a calibration parameter of the used sextant.  
