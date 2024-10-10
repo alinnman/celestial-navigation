@@ -12,7 +12,8 @@ The python scripts could be installed in
 to allow for use on an Android mobile phone
 (with no need for internet access).
 To aid in installation a good file browser is recommended
-(for copying and decompressing of ZIP files) such as [Cx File Explorer](https://play.google.com/store/apps/details?id=com.cxinventor.file.explorer&pcampaignid=web_share).
+(for copying and decompressing of ZIP files) such as [Cx File Explorer](https://play.google.com/store/apps/details?id=com.cxinventor.file.explorer&pcampaignid=web_share). You are recommended to unzip the file to a specific directory (not a root directory),
+on Android you could create a directory in the "Documents" tree, e.g. "Documents/work/coding".  
 
 The script [starfix.py](starfix.py) contains the core routines.
 
@@ -21,7 +22,7 @@ with a correction for errors.
 You are advised to adjust this script for your used sextant.
 
 You are also advised to make copies (and modifications) of the supplied samples
-[starfixdata.chicago.py](starfixdata.chicago.py)
+[starfixdata.stat.1.py](starfixdata.stat.1.py)
 or [starfixdata.sea.py](starfixdata.sea.py) to support your workflow and observations. 
 There are also Jupyter notebooks availabe, see below. 
 
@@ -35,7 +36,7 @@ New digital versions (for 2026 and onwards)
 can be prepared using some GitHub code repositories,
 such as [this one](https://github.com/aendie/SkyAlmanac-Py3).
 
-The script sample [terrestrial.landfall.py](terrestrial.landfall.py)
+The script sample [terrestrial.py](terrestrial.py)
 can be used (and modified) if you would like to use your sextant as an aid in
 terrestrial navigation.
 

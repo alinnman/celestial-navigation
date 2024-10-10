@@ -102,7 +102,7 @@ and the next hour. (You don't have to enter linear factors etc. from the almanac
               measured_alt_seconds = 0 \
               )
 
-You can also see a complete example in [a python script](starfixdata.chicago.py)
+You can also see a complete example in [a python script](starfixdata.stat.1.py)
 and also [a corresponding excel file](chicago.ods).
 This sample is built using altitudes taken from a star atlas Stellarium
 <https://en.wikipedia.org/wiki/Stellarium_(software)> from a point in central
@@ -378,7 +378,7 @@ The final result will be a **single** mean value of the extracted intersection p
 ### 3.iii. Running the starfixdata.chicago script<a name="run-chicago-script"></a>
 
 This picture shows the small circles defined in the
-[starfixdata.chicago.py](starfixdata.chicago.py) sample
+[starfixdata.stat.1.py](starfixdata.stat.1.py) sample
 ![Locating from Chicago](pics/chicago-intersection-1.png "Locating from Chicago")
 
 When we move in closer we can clearly see a precise intersection.
@@ -407,7 +407,7 @@ use real sextant readings.
     MEAN VALUE COORDINATE from multi-point sight data.
     (N 41°,51.3′;W 87°,38.6′)
 
-There is also another similar test script in the [starfixdata.tunis.moon.py](starfixdata.tunis.moon.py)
+There is also another similar test script in the [starfixdata.stat.2.py](starfixdata.stat.2.py)
 sample where the Moon is used. **Horizontal parallax** is applied to the Moon
 using the *HP* field from the Nautical Almanac.
 The Moon is typically the only celestial object where horizontal parallax
@@ -541,7 +541,7 @@ more sights since I need to get more training.
 A sextant can be used for terrestrial navigation too,
 if you orient it horizontally. Typically you take sights of lighthouses when
 performing a landfall towards a coast.
-[This sample](terrestrial.landfall.py) shows an example of this.
+[This sample](terrestrial.py) shows an example of this.
 The underlying maths are quite similar to sight reduction of star fixes.
 You need to find the intersection of two
 circles representing equal angle to two terrestrial points.
