@@ -72,6 +72,8 @@ c = Sight (   object_name          = "Sun", \
 
 collection = SightCollection ([a, b, c])
 intersections, fitness = collection.get_intersections ()
+endtime = time ()
+takenMs = round((endtime-starttime)*1000,2)
 print (get_representation(intersections,1))
 print ("MD = " + collection.get_map_developers_string())
 print ("GM = " + get_google_map_string(intersections,4))
@@ -86,9 +88,5 @@ print ("B GP     = " + get_google_map_string(b.gp,4))
 
 print ("C radius = " + str(round(c.get_radius (),1)))
 print ("C GP     = " + get_google_map_string(c.gp,4))
-
-endtime = time ()
-
-takenMs = round((endtime-starttime)*1000,2)
 
 print ("Time taken = " +str(takenMs)+" ms")

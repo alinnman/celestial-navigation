@@ -92,6 +92,8 @@ c = Sight (   object_name          = "Achernar", \
 
 collection = SightCollection ([a, b, c])
 intersections, fitness = collection.get_intersections (limit=500)
+endtime = time ()
+takenMs = round((endtime-starttime)*1000,2)
 print ("Location = " + get_representation(intersections,1))
 print ("GM = " + get_google_map_string (intersections,2))
 print ("MD = " + collection.get_map_developers_string())
@@ -112,8 +114,6 @@ print ("C celestial body = " + c.object_name)
 print ("C radius = " + str(round(c.get_radius (),1)))
 print ("C GP     = " + get_google_map_string(c.gp,4))
 
-endtime = time ()
 
-takenMs = round((endtime-starttime)*1000,2)
 
 print ("Time taken = " +str(takenMs)+" ms")

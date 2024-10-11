@@ -3,13 +3,14 @@
     MIT License (see LICENSE file)
 
 '''
-
+from time import time
 from starfix import Sight, SightCollection, LatLon, Sextant,\
                     get_decimal_degrees_from_tuple,\
                     get_representation, \
                     get_google_map_string, distance_between_points
 from calibration import calibrationRealValue, calibrationMeasuredValue
 
+starttime = time ()
 
 # This is observations from actual sextant readings.
 # I used a simple plastic sextant (Davis Mk III) and an artificial horizon.
@@ -71,6 +72,8 @@ collection = SightCollection ([S1, S2])
 home = LatLon (59.318659676810654, 18.04959717835501)
 
 intersections, fitness = collection.get_intersections (estimated_position = LatLon(59,19))
+endtime = time ()
+takenMs = round((endtime-starttime)*1000,2)
 print (get_representation(intersections,1))
 print ("MD = " + collection.get_map_developers_string())
 print ("GM = " + get_google_map_string(intersections,4))
@@ -89,4 +92,6 @@ print ("S2 GP     = " + get_google_map_string(S2.gp,4))
 print ("Diff     = " + str(S2.get_distance_from (home)))
 print ("--")
 print ("-----------------------------------")
+
+print ("Time taken = " +str(takenMs)+" ms")
  

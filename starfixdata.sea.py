@@ -72,10 +72,12 @@ st = SightTrip (sight_start               = s1,\
                  course_degrees           = C_COURSE,\
                  speed_knots              = SPEED)
 intersections, fitness = st.get_intersections ()
+endtime = time ()
+takenMs = round((endtime-starttime)*1000,2)
+
 print ("MD = " + st.get_map_developers_string ())
 print ("Starting point = " + str(get_representation(intersections[1],1)))
 print ("End point = " + str(get_representation(intersections[0],1)))
-
 
 # Diagnostics for map rendering etc.
 
@@ -88,8 +90,6 @@ print ("S2 GP     = " + get_google_map_string(s2.gp,4))
 print ("Starting point GM = " + get_google_map_string (intersections[1],4))
 print ("Ending   point GM = " + get_google_map_string (intersections[0],4))
 
-endtime = time ()
 
-takenMs = round((endtime-starttime)*1000,2)
 
 print ("Time taken = " +str(takenMs)+" ms")
