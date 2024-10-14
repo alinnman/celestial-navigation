@@ -148,7 +148,8 @@ in the following way
 
 The measured altitude values (attributes measured_alt_degrees,
 measured_alt_minutes and measure_alt_seconds) are corrected for atmospheric
-refraction using [Bennett's empirical formula](https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction) with adjustments for temperature and pressure. 
+refraction using [Bennett's empirical formula](https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction)
+with adjustments for temperature and pressure.
 
 $R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right)\frac{P}{101}\frac{283}{273+T}$
 
@@ -292,9 +293,9 @@ precise measurement and this should be prioritized.
 This is the algorithm for calculating the fitness.
 
 $d_1 = N((p_1 - a) \times a)$ <br/>
-$d_2 = N((p_1 - b) \times b)$ 
+$d_2 = N((p_1 - b) \times b)$
 
-From this we calculate the angle 
+From this we calculate the angle
 
 $a_{\text{fitness}} = \arcsin\left(|d_1 \times d_2|\right)$
 
@@ -393,18 +394,8 @@ is within Chicago.
 
     ((N 7°,40.8′;W 94°,14.0′);(N 41°,51.2′;W 87°,38.6′))
 
-Then we add another small circle and show the best three intersections points
+Then we add another small circle and show the calculated mean value of the intersections
 
-    BEST COORDINATES
-    (N 41°,51.2′;W 87°,38.6′)
-    (N 41°,51.3′;W 87°,38.5′)
-    (N 41°,51.5′;W 87°,38.6′)
-
-And finally we show the mean value calculation. It is easy to see our values
-being just 0.1-0.2 nautical miles apart. This accuracy cannot be expected if you
-use real sextant readings.
-
-    MEAN VALUE COORDINATE from multi-point sight data.
     (N 41°,51.3′;W 87°,38.6′)
 
 There is also another similar test script in the [starfixdata.stat.2.py](starfixdata.stat.2.py)

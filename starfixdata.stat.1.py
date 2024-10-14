@@ -71,12 +71,12 @@ c = Sight (   object_name          = "Vega", \
               sha_diff_minutes     = 33.4 \
               )
 
-#print ("Two daytime observations of the sun")
-#collection = SightCollection ([a, b])
-#intersections, fitness = collection.get_intersections ()
-#print (get_representation(intersections,1))
-#print ("-----------------------------------")
-#print ("We add an additional night time observation of Vega")
+print ("Two daytime observations of the sun")
+collection = SightCollection ([a, b])
+intersections, fitness = collection.get_intersections ()
+print (get_representation(intersections,1))
+print ("-----------------------------------")
+print ("We add an additional night time observation of Vega")
 collection = SightCollection ([a, b, c])
 intersections, fitness = collection.get_intersections ()
 endtime = time ()
