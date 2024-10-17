@@ -27,8 +27,8 @@ or [starfixdata.sea.py](starfixdata.sea.py) to support your workflow and observa
 There are also Jupyter notebooks availabe, see below. 
 
 The Nautical Almanac must be used manually to get the GP (ground point) of
-your observations. Currently the almanacs of [2024](2024_Nautical_Almanac.pdf)
-and [2025](2025_Nautical_Almanac.pdf)
+your observations. Currently the almanacs of [2024](NAtrad(A4)_2024.pdf)
+and [2025](NAtrad(A4)_2024.pdf)
 are bundled in the repository in a digital version.
 But you may of course use a hard-copy of the nautical almanac and these can be ordered
 [here](https://www.amazon.com/s?i=stripbooks&rh=p_27%3AU.K.+Hydrographic&s=relevancerank&text=U.K.+Hydrographic&ref=dp_byline_sr_book_1).

@@ -62,8 +62,8 @@ For more information on installation and usage of the Python scripts see [here](
 A short explanation of the logical steps and algorithms used in this toolkit can
 be found [here](WORKFLOW.md).
 
-Digital versions of the Nautical Almanac for [2024](2024_Nautical_Almanac.pdf)
-and [2025](2025_Nautical_Almanac.pdf)
+Digital versions of the Nautical Almanac for [2024](NAtrad(A4)_2024.pdf)
+and [2025](NAtrad(A4)_2025.pdf)
 are included in this repository.
 
 A more detailed description of celestial navigation can be found [here](https://www.waypointamsterdam.com/Handy_stuf/Short_Guide_To_Astro_navigation.pdf).<br>
