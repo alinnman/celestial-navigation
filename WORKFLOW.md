@@ -62,7 +62,7 @@ See **yellow markers** in picture below.<br><br>
 a sphere, with a divider, and then finding the intersections.
 The radius of the circles correspond to the measured altitude
 of the celestial object, just like Eratosthenes
-[found out](https://ui.adsabs.harvard.edu/abs/2018EGUGA..20.5417K/abstract) in 230 BC*
+[found out](https://ui.adsabs.harvard.edu/abs/2018EGUGA..20.5417K/abstract) in 230 BC.*
 <br><br>
 ![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
 <br><br>
