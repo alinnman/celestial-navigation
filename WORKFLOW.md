@@ -32,7 +32,7 @@ You will now need the timestamps $t_1$ and $t_2$ from the step above.<br><br>
 The GP:s are represented by two vectors $a$ and $b$.<br><br>
 *NOTE: The coordinates from the Nautical Almanac must be converted from spherical to cartesian before you start.*<br>
 *NOTE: You will also need to take care of atmospheric refraction and horizon dip.*<br>
-*NOTE:[The toolkit](starfix.py) will take care of the GP calculation, atmospheric refraction and horizon dip.
+*NOTE: [The toolkit](starfix.py) will take care of the GP calculation, atmospheric refraction and horizon dip.
 You just have to extract the tabular data for the current and next hour
 if you use the code in the toolkit.*<br><br>
 For more info see the [Readme File](README.md).
