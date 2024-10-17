@@ -53,9 +53,14 @@ $\rho = \arccos\left(\frac{\cos \alpha}{a \cdot q}\right)$<br><br>
 Finally apply a rotation operation<br><br>
 $p_{\mathrm{rot}} = q \cos \rho + \left( r \times q \right) \sin \rho + r \left(r \cdot q \right)\left(1 - \cos \rho \right)$
 <br><br>
-Apply the formula above for $\rho$ and $-\rho$ and you will **get the two 
+Apply the formula above for $\rho$ and $-\rho$ and you will **get the two
 intersection points $p_1$ and $p_2$**.
-Convert these vectors back to spherical coordinates. One of these coordinates matches your physical location. See **yellow markers** in picture below.
+Convert these vectors back to spherical coordinates.
+One of these coordinates matches your physical location.
+See **yellow markers** in picture below.<br><br>
+*The sight reduction can be illustrated with a simple drawing of two circles on
+a sphere, with a divider, and then finding the intersections.
+The radius of the circles correspond to the measured altitude of the celestial object*
 <br><br>
 ![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
 <br><br>
