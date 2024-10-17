@@ -60,7 +60,9 @@ One of these coordinates matches your physical location.
 See **yellow markers** in picture below.<br><br>
 *The sight reduction can be illustrated with a simple drawing of two circles on
 a sphere, with a divider, and then finding the intersections.
-The radius of the circles correspond to the measured altitude of the celestial object.*
+The radius of the circles correspond to the measured altitude
+of the celestial object, just like Eratosthenes
+[found out](https://ui.adsabs.harvard.edu/abs/2018EGUGA..20.5417K/abstract) in 230 BC*
 <br><br>
 ![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
 <br><br>
