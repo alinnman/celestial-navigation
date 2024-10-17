@@ -111,9 +111,9 @@ In other words: No sextant readings were made and the accuracy is very good.
 (Running this sample will give you an accuracy of just some 100 meters).
 
 The data is picked from your clock, sextant and the Nautical Almanac
-in the following way
+in the following way. Arguments in *italics* are optional.
 
-| Argument (*italics* = optional) | Description                                  | Remark                                                         | Collected From |
+| Argument | Description                                  | Remark                                                         | Collected From |
 | :-------------       | :-------------                               | :-------------                                                 | :------------- |
 | object               | Name of celestial object.                     | Only mnemonic.                                                  | N/A |
 | time_year            | Current year.                                 | In UTC.                                                         | Clock |
