@@ -104,7 +104,11 @@ intersections, fitness = collection.get_intersections (limit = 100)
 print ("GM = " + get_google_map_string(intersections,4))
 
 collection = SightCollection ([a, b, c])
-intersections, fitness = collection.get_intersections (limit = 100)
+try:
+    intersections, fitness = collection.get_intersections (limit=100)
+except ValueError as ve:
+    print ("Cannot get perform a sight reduction. Bad sight data.")
+    exit ()
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)
 print (get_representation(intersections,1))

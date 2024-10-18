@@ -71,7 +71,13 @@ st = SightTrip (sight_start               = s1,\
                  estimated_starting_point = s1LatLon,\
                  course_degrees           = C_COURSE,\
                  speed_knots              = SPEED)
-intersections, fitness = st.get_intersections ()
+
+try:
+    intersections, fitness = st.get_intersections ()
+except ValueError as ve:
+    print ("Cannot get perform a sight reduction. Bad sight data.")
+    exit ()
+
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)
 

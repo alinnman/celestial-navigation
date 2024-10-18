@@ -259,7 +259,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         else:
             rho = acos (cos (deg_to_rad(angle2)) / (dot_product (b_vec, q)))
     except ValueError as exc:
-        raise ValueError ("Bad sight data. Circles do not intersect") from exc
+        raise ValueError ("Bad sight data. Circles do not intersect.") from exc
 
     # Calculate a rotation vector
     rot_axis = normalize_vect(cross_product (cross_product (a_vec, b_vec), q))
@@ -646,9 +646,8 @@ class SightCollection:
 
             nr_of_chosen_points = len (chosen_points)
             if nr_of_chosen_points == 0:
-                # No points found. Bad star fixes. Return nothing.
-                print ("Bad sight data.")
-                return None
+                # No points found. Bad star fixes. Throw exception.
+                raise ValueError ("Bad sight data.")
 
             # Make sure the chosen points are nearby each other
             #print ("BEST COORDINATES")

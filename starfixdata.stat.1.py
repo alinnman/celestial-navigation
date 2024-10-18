@@ -73,7 +73,11 @@ c = Sight (   object_name          = "Vega", \
 
 print ("Two daytime observations of the sun")
 collection = SightCollection ([a, b])
-intersections, fitness = collection.get_intersections ()
+try:
+    intersections, fitness = collection.get_intersections ()
+except ValueError as ve:
+    print ("Cannot get perform a sight reduction. Bad sight data.")
+    exit ()
 print (get_representation(intersections,1))
 print ("-----------------------------------")
 print ("We add an additional night time observation of Vega")

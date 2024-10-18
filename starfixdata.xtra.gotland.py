@@ -71,7 +71,11 @@ c = Sight (   object_name          = "Sun", \
 
 
 collection = SightCollection ([a, b, c])
-intersections, fitness = collection.get_intersections ()
+try:
+    intersections, fitness = collection.get_intersections ()
+except ValueError as ve:
+    print ("Cannot get perform a sight reduction. Bad sight data.")
+    exit ()
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)
 print (get_representation(intersections,1))
