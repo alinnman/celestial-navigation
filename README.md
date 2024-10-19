@@ -209,8 +209,12 @@ Using two star fixes a sight reduction can be done in the following way
     b = Sight (....Parameters....)
     
     collection = SightCollection ([a, b])
-    intersections, fitness = collection.get_intersections ()
-    print (get_representation(intersections,1))
+    try:
+        intersections, fitness = collection.get_intersections ()
+        print (get_representation(intersections,1))
+    except ValueError as ve:
+        print ("Cannot get perform a sight reduction. Bad sight data.")
+        
 
 The result will be a tuple of **two** coordinates (intersections of two circles 
 of equal altitude). These intersections can be located far away from each other.
@@ -321,8 +325,11 @@ Using three (or more) sights a sight reduction can be done in the following way
     c = Sight (....Parameters....)
     
     collection = SightCollection ([a, b, c]) # Add more sights if needed
-    intersections, fitness = collection.getIntersections ()
-    print (getRepresentation(intersections,1))
+    try:
+        intersections, fitness = collection.getIntersections ()
+        print (getRepresentation(intersections,1))
+    except ValueError as ve:
+        print ("Cannot get perform a sight reduction. Bad sight data.")
 
 A *sight* is defined as a collection of data as described in the section 1 above,
 i.e. recorded data for a celestial object for a specific time.
