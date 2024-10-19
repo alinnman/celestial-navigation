@@ -77,7 +77,7 @@ try:
 except ValueError as ve:
     print ("Cannot get perform a sight reduction. Bad sight data.")
     exit ()
-    
+
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)
 print (get_representation(intersections,1))

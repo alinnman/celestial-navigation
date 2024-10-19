@@ -240,6 +240,8 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     diag_output = ""
     # Get cartesian vectors a and b (from ground points)
     a_vec = to_rectangular (latlon1)
+    if diagnostics:
+        diag_output = "" # TODO
     b_vec = to_rectangular (latlon2)
 
     # Calculate axb
@@ -585,7 +587,7 @@ class SightPair:
         return get_intersections (self.sf1.gp,\
                                   self.sf2.gp,\
                                   self.sf1.get_angle(), self.sf2.get_angle(),\
-                                  estimated_position, diagnostics)
+                                  estimated_position, diagnostics = diagnostics)
 
 class SightCollection:
     ''' Represents a collection of >= 2 sights '''
@@ -595,8 +597,9 @@ class SightCollection:
             raise ValueError ("SightCollection should have at least two sights")
         self.sf_list = sf_list
 
-    def get_intersections (self, limit : int | float = 100, estimated_position : LatLon = None, diagnostics : bool = False)\
-        -> tuple[tuple[LatLon] | LatLon, float, str]:
+    def get_intersections\
+        (self, limit : int | float = 100, estimated_position : LatLon = None,\
+         diagnostics : bool = False) -> tuple[tuple[LatLon] | LatLon, float, str]:
         ''' Get an intersection from the collection of sights. 
             A mean value and sorting algorithm is applied. '''
         diag_output = ""
@@ -605,7 +608,8 @@ class SightCollection:
         if nr_of_fixes == 2:
             # For two star fixes just use the algorithm of SightPair.getIntersections
             return SightPair (self.sf_list[0],\
-                              self.sf_list[1]).get_intersections(estimated_position, diagnostics)
+                              self.sf_list[1]).get_intersections\
+                                         (estimated_position, diagnostics = diagnostics) 
         elif nr_of_fixes >= 3:
             # For >= 3 star fixes perform pairwise calculation on every pair of fixes
             # and then run a sorting algorithm
@@ -614,7 +618,9 @@ class SightCollection:
             for i in range (nr_of_fixes):
                 for j in range (i+1, nr_of_fixes):
                     p = SightPair (self.sf_list [i], self.sf_list [j])
-                    p_int, fitness, diag_output = p.get_intersections (estimated_position, diagnostics)
+                    p_int, fitness, dia =\
+                        p.get_intersections (estimated_position, diagnostics = diagnostics)
+                    diag_output += dia
                     if p_int is not None:
                         if isinstance (p_int, tuple) or isinstance (p_int, list):
                             #for k in range (len(p_int)):
