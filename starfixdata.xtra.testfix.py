@@ -39,7 +39,6 @@ a = Sight (   object_name          = "Sabik", \
               sha_diff_degrees     = 102, \
               sha_diff_minutes     = 3.2, \
               measured_alt_degrees = 57, \
-              #measured_alt_minutes = 40.2, \
               measured_alt_minutes = 36.8, \
               observer_height      = 2.5, \
               temperature          = TEMPERATURE, \
@@ -62,7 +61,6 @@ b = Sight (   object_name          = "Venus", \
               decl_time_1_degrees  = -15, \
               decl_time_1_minutes  = 15.9, \
               measured_alt_degrees = 25, \
-              #measured_alt_minutes = 13.1, \
               measured_alt_minutes = 8.4, \
               observer_height      = 2.5, \
               temperature          = TEMPERATURE, \
@@ -85,7 +83,6 @@ c = Sight (   object_name          = "Saturn", \
               decl_time_1_degrees  = -8, \
               decl_time_1_minutes  = 11.8, \
               measured_alt_degrees = 30, \
-              #measured_alt_minutes = 24.7, \
               measured_alt_minutes = 20.2, \
               observer_height      = 2.5, \
               temperature          = TEMPERATURE, \
@@ -93,19 +90,20 @@ c = Sight (   object_name          = "Saturn", \
               )
 
 
-collection = SightCollection ([a, b])
-intersections, fitness = collection.get_intersections (limit = 100)
-print ("GM = " + get_google_map_string(intersections,4))
-collection = SightCollection ([a, c])
-intersections, fitness = collection.get_intersections (limit = 100)
-print ("GM = " + get_google_map_string(intersections,4))
-collection = SightCollection ([b, c])
-intersections, fitness = collection.get_intersections (limit = 100)
-print ("GM = " + get_google_map_string(intersections,4))
+#collection = SightCollection ([a, b])
+#intersections, fitness, diag_output = collection.get_intersections (limit = 100)
+#print ("GM = " + get_google_map_string(intersections,4))
+#collection = SightCollection ([a, c])
+#intersections, fitness, diag_output = collection.get_intersections (limit = 100)
+#print ("GM = " + get_google_map_string(intersections,4))
+#collection = SightCollection ([b, c])
+#intersections, fitness, diag_output = collection.get_intersections (limit = 100)
+#print ("GM = " + get_google_map_string(intersections,4))
 
 collection = SightCollection ([a, b, c])
 try:
-    intersections, fitness = collection.get_intersections (limit=100)
+    intersections, fitness, diag_output =\
+        collection.get_intersections (limit=100, diagnostics = False)
 except ValueError as ve:
     print ("Cannot get perform a sight reduction. Bad sight data.")
     exit ()

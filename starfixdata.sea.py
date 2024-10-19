@@ -73,7 +73,7 @@ st = SightTrip (sight_start               = s1,\
                  speed_knots              = SPEED)
 
 try:
-    intersections, fitness = st.get_intersections ()
+    intersections, fitness, diag_output = st.get_intersections ()
 except ValueError as ve:
     print ("Cannot get perform a sight reduction. Bad sight data.")
     exit ()

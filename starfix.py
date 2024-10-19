@@ -227,8 +227,9 @@ def get_dip_of_horizon (hm : int | float, temperature : float, dt_dh : float, pr
 
 def get_intersections (latlon1 : LatLon, latlon2 : LatLon,\
                        angle1 : int | float, angle2 : int | float,\
-                       estimated_position : LatLon = None, use_fitness : bool = True)\
-                          -> tuple[LatLon | tuple[LatLon], float]:
+                       estimated_position : LatLon = None,\
+                       use_fitness : bool = True, diagnostics : bool = False)\
+                          -> tuple[LatLon | tuple[LatLon], float, str]:
     '''
     Get intersection of two circles on a spheric surface. 
     At least one of the circles must be a small circle. 
@@ -236,6 +237,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     '''
     assert angle1 >= 0 and angle2 >= 0
     assert angle1 < 90 or angle2 < 90  # Make sure one of the circles is a small circle
+    diag_output = ""
     # Get cartesian vectors a and b (from ground points)
     a_vec = to_rectangular (latlon1)
     b_vec = to_rectangular (latlon2)
@@ -282,7 +284,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 
     ret_tuple = (to_latlon(int1), to_latlon(int2))
     if estimated_position is None:
-        return ret_tuple, fitness
+        return ret_tuple, fitness, diag_output
 
     # Check which of the intersections is closest to our estimatedCoordinates
     best_distance = EARTH_CIRCUMFERENCE
@@ -293,7 +295,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             best_distance = the_distance
             best_intersection = ints
     assert best_intersection is not None
-    return best_intersection, fitness
+    return best_intersection, fitness, diag_output
 
 # Atmospheric refraction
 
@@ -391,7 +393,8 @@ def get_terrestrial_position (point_a1 : LatLon,\
                               point_b1 : LatLon,\
                               point_b2 : LatLon,\
                               angle_b : int | float,
-                              estimated_position : LatLon = None)\
+                              estimated_position : LatLon = None,\
+                              diagnostics : bool = False)\
                                   -> tuple [LatLon | tuple, LatLon, float, LatLon, float, float] :
     '''
     Given two pairs of terrestial observations (pos + angle) determine the observer's position 
@@ -400,8 +403,9 @@ def get_terrestrial_position (point_a1 : LatLon,\
     b = get_circle_for_angle (point_b1, point_b2, angle_b)
     # Finally compute the intersection.
     # Since we require an estimated position we will eliminate the false intersection.
-    intersection, fitness = get_intersections (a[0], b[0], a[1], b[1], estimated_position)
-    return intersection, a[0], a[1], b[0], b[1], fitness
+    intersection, fitness, diag_output =\
+        get_intersections (a[0], b[0], a[1], b[1], estimated_position, diagnostics)
+    return intersection, a[0], a[1], b[0], b[1], fitness, diag_output
 
 # Celestial Navigation
 
@@ -574,13 +578,14 @@ class SightPair:
         self.sf1 = sf1
         self.sf2 = sf2
 
-    def get_intersections (self, estimated_position : LatLon = None) -> tuple[tuple[LatLon], float]:
+    def get_intersections (self, estimated_position : LatLon = None, diagnostics : bool = False) ->\
+                           tuple[tuple[LatLon], float, str]:
         ''' Return the two intersections for this sight pair. 
             The parameter estimated_position can be used to eliminate the false intersection '''
         return get_intersections (self.sf1.gp,\
                                   self.sf2.gp,\
                                   self.sf1.get_angle(), self.sf2.get_angle(),\
-                                  estimated_position)
+                                  estimated_position, diagnostics)
 
 class SightCollection:
     ''' Represents a collection of >= 2 sights '''
@@ -590,17 +595,17 @@ class SightCollection:
             raise ValueError ("SightCollection should have at least two sights")
         self.sf_list = sf_list
 
-    def get_intersections (self, limit : int | float = 100, estimated_position = None)\
-        -> tuple[tuple[LatLon] | LatLon, float]:
+    def get_intersections (self, limit : int | float = 100, estimated_position : LatLon = None, diagnostics : bool = False)\
+        -> tuple[tuple[LatLon] | LatLon, float, str]:
         ''' Get an intersection from the collection of sights. 
             A mean value and sorting algorithm is applied. '''
+        diag_output = ""
         nr_of_fixes = len(self.sf_list)
         assert nr_of_fixes >= 2
         if nr_of_fixes == 2:
             # For two star fixes just use the algorithm of SightPair.getIntersections
-            intersections = SightPair (self.sf_list[0],\
-                                       self.sf_list[1]).get_intersections(estimated_position)
-            return intersections
+            return SightPair (self.sf_list[0],\
+                              self.sf_list[1]).get_intersections(estimated_position, diagnostics)
         elif nr_of_fixes >= 3:
             # For >= 3 star fixes perform pairwise calculation on every pair of fixes
             # and then run a sorting algorithm
@@ -609,7 +614,7 @@ class SightCollection:
             for i in range (nr_of_fixes):
                 for j in range (i+1, nr_of_fixes):
                     p = SightPair (self.sf_list [i], self.sf_list [j])
-                    p_int, fitness = p.get_intersections (estimated_position)
+                    p_int, fitness, diag_output = p.get_intersections (estimated_position, diagnostics)
                     if p_int is not None:
                         if isinstance (p_int, tuple) or isinstance (p_int, list):
                             #for k in range (len(p_int)):
@@ -648,7 +653,6 @@ class SightCollection:
             if nr_of_chosen_points == 0:
                 # No points found. Bad star fixes. Throw exception.
                 raise ValueError ("Bad sight data.")
-
             # Make sure the chosen points are nearby each other
             #print ("BEST COORDINATES")
             fine_sorting = False # This code is disabled for now
@@ -679,7 +683,7 @@ class SightCollection:
                   add_vecs (summation_vec,\
                   mult_scalar_vect ((1/nr_of_chosen_points)*fitness_here, rect_vec))
             summation_vec = normalize_vect (summation_vec)
-            return to_latlon (summation_vec), fitness
+            return to_latlon (summation_vec), fitness, diag_output
 
     def get_map_developers_string (self) -> str:
         '''
@@ -742,13 +746,13 @@ class SightTrip:
         dbp = distance_between_points (taken_out, self.sight_end.gp) - self.sight_end.get_radius()
         return dbp, taken_out, rotated_latlon
 
-    def get_intersections (self) -> tuple[tuple[LatLon, LatLon], float]:
+    def get_intersections (self, diagnostics : bool = False) ->\
+            tuple[tuple[LatLon, LatLon], float, str]:
         ''' Get the intersections for this sight trip object '''
         # Calculate intersections
         pair = SightPair (self.sight_start, self.sight_end)
-        best_intersection, fitness = pair.get_intersections\
-              (estimated_position = self.estimated_starting_point)
-
+        best_intersection, fitness, diag_output = pair.get_intersections\
+              (estimated_position = self.estimated_starting_point, diagnostics = diagnostics)
         # Determine angle of the intersection point on sightStart small circle
         a_vec = to_rectangular (self.sight_start.gp)
         b_vec = to_rectangular (best_intersection)
@@ -776,7 +780,7 @@ class SightTrip:
         if iter_count >= iter_limit:
             raise ValueError ("Cannot calculate a trip vector")
         else:
-            return (taken_out, rotated), fitness
+            return (taken_out, rotated), fitness, diag_output
 
     def get_map_developers_string (self) -> str:
         '''
