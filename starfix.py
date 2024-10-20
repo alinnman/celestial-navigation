@@ -287,7 +287,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         diag_output += "$cos(\\text{angle1})\\cdot\\text{aVec} = ("+\
             str(round(p1[0],4))+","+\
             str(round(p1[1],4))+","+\
-            str(round(p1[0],4))+")\\text{ ==> }\\textbf{p1}"+\
+            str(round(p1[2],4))+")\\text{ ==> }\\textbf{p1}"+\
             "$</br>"
     p2 = mult_scalar_vect (-cos(deg_to_rad(angle1)), b_vec)
     if diagnostics:
@@ -296,7 +296,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         diag_output += "$-cos(\\text{angle2})\\cdot\\text{bVec} = ("+\
             str(round(p2[0],4))+","+\
             str(round(p2[1],4))+","+\
-            str(round(p2[0],4))+")\\text{ ==> }\\textbf{p2}"+\
+            str(round(p2[2],4))+")\\text{ ==> }\\textbf{p2}"+\
             "$</br>"    
     p3 = add_vecs (p1, p2)
     p3 = normalize_vect (p3)
