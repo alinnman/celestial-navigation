@@ -103,7 +103,7 @@ c = Sight (   object_name          = "Saturn", \
 collection = SightCollection ([a, b, c])
 try:
     intersections, fitness, diag_output =\
-        collection.get_intersections (limit=100, diagnostics = False)
+        collection.get_intersections (limit=100)
 except ValueError as ve:
     print ("Cannot get perform a sight reduction. Bad sight data.")
     exit ()

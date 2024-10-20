@@ -609,7 +609,7 @@ class SightCollection:
             # For two star fixes just use the algorithm of SightPair.getIntersections
             return SightPair (self.sf_list[0],\
                               self.sf_list[1]).get_intersections\
-                                         (estimated_position, diagnostics = diagnostics) 
+                                         (estimated_position, diagnostics = diagnostics)
         elif nr_of_fixes >= 3:
             # For >= 3 star fixes perform pairwise calculation on every pair of fixes
             # and then run a sorting algorithm

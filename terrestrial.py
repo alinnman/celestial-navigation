@@ -19,7 +19,7 @@ P3 = LatLon (58.60355, 17.316041)
 ANGLE_1 = 20
 ANGLE_2 = 45
 
-p, c1, r1, c2, r2, fitness  =\
+p, c1, r1, c2, r2, fitness, diag_output  =\
       get_terrestrial_position (P3, P2, ANGLE_1, P2, P1, ANGLE_2)
 print ("Your location 1 = " + get_google_map_string(p[0],4))
 print ("Your location 2 = " + get_google_map_string(p[1],4))

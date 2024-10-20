@@ -210,7 +210,7 @@ Using two star fixes a sight reduction can be done in the following way
     
     collection = SightCollection ([a, b])
     try:
-        intersections, fitness = collection.get_intersections ()
+        intersections, fitness, diag_output = collection.get_intersections ()
         print (get_representation(intersections,1))
     except ValueError as ve:
         print ("Cannot get perform a sight reduction. Bad sight data.")
@@ -326,7 +326,7 @@ Using three (or more) sights a sight reduction can be done in the following way
     
     collection = SightCollection ([a, b, c]) # Add more sights if needed
     try:
-        intersections, fitness = collection.getIntersections ()
+        intersections, fitness, diag_output = collection.getIntersections ()
         print (getRepresentation(intersections,1))
     except ValueError as ve:
         print ("Cannot get perform a sight reduction. Bad sight data.")
@@ -445,7 +445,7 @@ See above for how to create a sight object
 
 Now you can calculate the coordinates for this trip.
 
-    intersections, fitness = st.get_intersections ()
+    intersections, fitness, diag_output = st.get_intersections ()
     print ("Starting point = " + str(get_representation(intersections[0],1)))
     print ("End point = " + str(get_representation(intersections[1],1)))
 
