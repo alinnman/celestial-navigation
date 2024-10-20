@@ -239,18 +239,65 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     assert angle1 < 90 or angle2 < 90  # Make sure one of the circles is a small circle
     diag_output = ""
     # Get cartesian vectors a and b (from ground points)
-    a_vec = to_rectangular (latlon1)
     if diagnostics:
-        diag_output = "" # TODO
+        diag_output = "$\\text{== Performing an intersection ==}$<br/>"
+        diag_output +=\
+        "$\\text{latlon1}=("+str(round(latlon1.lat,4))+","+str(round(latlon1.lon,4))+")$<br/>"
+        diag_output +=\
+        "$\\text{angle1}=("+str(round(angle1,4))+")$<br/>"        
+        diag_output +=\
+        "$\\text{latlon2}=("+str(round(latlon2.lat,4))+","+str(round(latlon2.lon,4))+")$<br/>"        
+        diag_output +=\
+        "$\\text{angle2}=("+str(round(angle2,4))+")$<br/>"
+        if estimated_position is not None:
+            diag_output +=\
+            "$\\text{Estimated Position LatLon}=("+\
+                str(round(estimated_position.lat,4))+","+\
+                str(round(estimated_position.lon,4))+")$<br/>"
+    a_vec = to_rectangular (latlon1)
     b_vec = to_rectangular (latlon2)
-
-    # Calculate axb
+    if diagnostics:
+        diag_output += " $\\text{latlon1 converted to cartesians}=("+\
+                         str(round(a_vec[0],4))+","+\
+                         str(round(a_vec[1],4))+","+\
+                         str(round(a_vec[2],4))+")\\text{ ==> }\\textbf{aVec}$<br/>"
+        diag_output += " $\\text{latlon2 converted to cartesians}=("+\
+                         str(round(b_vec[0],4))+","+\
+                         str(round(b_vec[1],4))+","+\
+                         str(round(b_vec[2],4))+")\\text{ ==> }\\textbf{bVec}$<br/>"
+    # Calculate N(axb)
     ab_cross = cross_product (a_vec, b_vec)
     ab_cross = normalize_vect (ab_cross)
+    if diagnostics:
+        diag_output +=\
+             "$\\text{We compute the normalized cross product of aVec and bVec}$</br>"
+        diag_output += "$N(\\text{aVec}\\times\\text{bVec})=("+\
+                        str(round(ab_cross[0],4))+","+\
+                        str(round(ab_cross[1],4))+","+\
+                        str(round(ab_cross[2],4))+")\\text{ ==> }\\textbf{abCross}$<br/>"
 
     # These steps calculate q which is located halfway between our two intersections
+    if diagnostics:
+        diag_output +=\
+        "$\\text{Now we compute the vector q, being at the midpoint between aVec and bVec}$</br>"
     p1 = mult_scalar_vect (cos(deg_to_rad(angle2)), a_vec)
+    if diagnostics:
+        diag_output +=\
+        "$\\text{We compute p1}$<br/>"
+        diag_output += "$cos(\\text{angle1})\\cdot\\text{aVec} = ("+\
+            str(round(p1[0],4))+","+\
+            str(round(p1[1],4))+","+\
+            str(round(p1[0],4))+")\\text{ ==> }\\textbf{p1}"+\
+            "$</br>"
     p2 = mult_scalar_vect (-cos(deg_to_rad(angle1)), b_vec)
+    if diagnostics:
+        diag_output +=\
+        "$\\text{We compute p2}$<br/>"
+        diag_output += "$-cos(\\text{angle2})\\cdot\\text{bVec} = ("+\
+            str(round(p2[0],4))+","+\
+            str(round(p2[1],4))+","+\
+            str(round(p2[0],4))+")\\text{ ==> }\\textbf{p2}"+\
+            "$</br>"    
     p3 = add_vecs (p1, p2)
     p3 = normalize_vect (p3)
     p4 = cross_product (ab_cross, p3)
