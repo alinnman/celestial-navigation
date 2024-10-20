@@ -38,4 +38,3 @@ print ("Radius 2 = " + str(deg_to_rad(r2)*EARTH_RADIUS))
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)
 print ("Time taken = " +str(takenMs)+" ms")
-
