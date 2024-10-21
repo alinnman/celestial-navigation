@@ -287,7 +287,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     # These steps calculate q which is located halfway between our two intersections
     if diagnostics:
         diag_output +=\
-        "\n### **Now we compute the vector $q$, being at the midpoint between" +\
+        "\n### **Now we compute the vector $\\text{q}$, being at the midpoint between" +\
          " $\\text{aVec}$ and $\\text{bVec}$**\n"
     p1 = mult_scalar_vect (cos(deg_to_rad(angle2)), a_vec)
     if diagnostics:
@@ -325,18 +325,15 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             str(round(p3[1],4))+","+\
             str(round(p3[2],4))+")\\text{ ==> }\\textbf{p3}"+\
             "$</br>"
-    p4 = cross_product (ab_cross, p3)
+    q = cross_product (ab_cross, p3)
     if diagnostics:
         diag_output +=\
-        "Perform cross product<br/>"
-        diag_output += "$\\text{abCross}\\times{p3} = ("+\
-            str(round(p4[0],4))+","+\
-            str(round(p4[1],4))+","+\
-            str(round(p4[2],4))+")\\text{ ==> }\\textbf{p4}"+\
+        "Perform cross product and get mid-point<br/>"
+        diag_output += "$\\text{abCross}\\times{\\text{p3}} = ("+\
+            str(round(q[0],4))+","+\
+            str(round(q[1],4))+","+\
+            str(round(q[2],4))+")\\text{ ==> }\\textbf{q}"+\
             "$</br>"
-    q = normalize_vect (p4)
-    if diagnostics:
-        pass
 
     # Calculate a rotation angle
     try:
