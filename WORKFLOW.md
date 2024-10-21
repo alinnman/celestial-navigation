@@ -48,7 +48,7 @@ $B = \lbrace p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land \left|p\right|
 Calculate the midpoint $q$ between intersections of $A$ and $B$.<br><br>
 $q = N((a \times b) \times (a \cos \beta - b \cos \alpha))\space;\space N(x) = \frac{x}{\left|x\right|}$<br><br>
 Calculate a rotation vector $r$ and a rotation angle $\rho$<br><br>
-$r = N \left( (a \times b) \times q \right)$ <br/>
+$r = \left( a \times b \right) \times q$ <br/>
 $\rho = \arccos\left(\frac{\cos \alpha}{a \cdot q}\right)$<br><br>
 Finally apply a rotation operation<br><br>
 $p_{\mathrm{rot}} = q \cos \rho + \left( r \times q \right) \sin \rho + r \left(r \cdot q \right)\left(1 - \cos \rho \right)$

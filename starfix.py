@@ -279,6 +279,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         #     "$\\text{We compute the normalized cross product of aVec and bVec}$</br>"
         diag_output +=\
         "\n### **We compute the normalized cross product of $\\text{aVec}$ and $\\text{bVec}$**\n"
+        diag_output += "$N$ is vector normalization. $N(x)=\\frac{x}{|x|}$<br/>"
         diag_output += "$N(\\text{aVec}\\times\\text{bVec})=("+\
                         str(round(ab_cross[0],4))+","+\
                         str(round(ab_cross[1],4))+","+\
@@ -336,20 +337,56 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             "$</br>"
 
     # Calculate a rotation angle
+    if diagnostics:
+        diag_output +=\
+        "\n### **Calculating the rotation angle and vector to find the "+\
+        "intersections from $\\text{q}$**\n"
     try:
         if angle1 < angle2:
             rho = acos (cos (deg_to_rad(angle1)) / (dot_product (a_vec, q)))
+            if diagnostics:
+                diag_output +=\
+                "$\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle1}\\right)}}"+\
+                "{\\text{aVec}\\cdot\\text{q}}\\right)}"
         else:
             rho = acos (cos (deg_to_rad(angle2)) / (dot_product (b_vec, q)))
+            if diagnostics:
+                diag_output +=\
+                "$\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle2}\\right)}}"+\
+                "{\\text{bVec}\\cdot\\text{q}}\\right)}"
+        if diagnostics:
+            diag_output += "=" + str(round(rho,4)) + "\\text{ ==> }\\rho$ (rotation angle)<br/>"
     except ValueError as exc:
         raise ValueError ("Bad sight data. Circles do not intersect.") from exc
 
     # Calculate a rotation vector
     rot_axis = normalize_vect(cross_product (cross_product (a_vec, b_vec), q))
+    if diagnostics:
+        diag_output +=\
+        "$N\\left(\\left(\\text{aVec}\\times\\text{bVec}\\right) \\times {\\text{q}} \\right) = ("+\
+        str(round(rot_axis[0],4))+","+\
+        str(round(rot_axis[1],4))+","+\
+        str(round(rot_axis[2],4))+")\\text{ ==> }\\textbf{rotAxis}"+\
+        "$</br>"
 
     # Calculate the two intersections by performing rotation of rho and -rho
-    int1 = normalize_vect(rotate_vector (q, rot_axis, rho))
-    int2 = normalize_vect(rotate_vector (q, rot_axis, -rho))
+    if diagnostics:
+        diag_output += "Compute the two intersection points with rotation operations. "+\
+                       "$GR$ is Gauss rotation formula.</br>"
+    int1 = rotate_vector (q, rot_axis, rho)
+    if diagnostics:
+        diag_output += "$GR\\left(\\text{q},\\text{rotAxis},\\rho\\right) = ("+\
+        str(round(int1[0],4))+","+\
+        str(round(int1[1],4))+","+\
+        str(round(int1[2],4))+")\\text{ ==> }\\textbf{int1}"+\
+        "$<br/>"
+    int2 = rotate_vector (q, rot_axis, -rho)
+    if diagnostics:
+        diag_output += "$GR\\left(\\text{q},\\text{rotAxis},-\\rho\\right) = ("+\
+        str(round(int2[0],4))+","+\
+        str(round(int2[1],4))+","+\
+        str(round(int2[2],4))+")\\text{ ==> }\\textbf{int2}"+\
+        "$<br/>"        
 
     # Calculate fitness of intersections.
     fitness = 1
@@ -363,7 +400,18 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         weighted = cross_product (tang1, tang2)
         fitness = length_of_vect (weighted)
 
-    ret_tuple = (to_latlon(int1), to_latlon(int2))
+    int1_latlon = to_latlon (int1)
+    int2_latlon = to_latlon (int2)
+    if diagnostics:
+        diag_output += "Converting the intersections to LatLon<br/>"
+        diag_output += "$\\text{int1}$ converts to $("+\
+        str(round(int1_latlon.lat,4))+","+\
+        str(round(int1_latlon.lon,4))+")$<br/>"
+        diag_output += "$\\text{int2}$ converts to $("+\
+        str(round(int2_latlon.lat,4))+","+\
+        str(round(int2_latlon.lon,4))+")$<br/>"
+    ret_tuple = (int1_latlon, int2_latlon)
+
     if estimated_position is None:
         return ret_tuple, fitness, diag_output
 
