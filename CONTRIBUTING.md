@@ -19,7 +19,8 @@ Regarding future plans for this project. These are some things I may consider do
 *A collection of simple Jupyter notebooks have been added, and this may be good
 enough for practical work.*
 1. Diagnostic output for describing the underlying maths.
-(Mainly for the notebooks)
+(Mainly for the notebooks)<br/>
+*Working on this right now*
 1. More elaborate sextant calibration code.
 
 But the design goal is **portability and a small footprint**,
