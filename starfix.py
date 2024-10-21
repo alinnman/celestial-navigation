@@ -228,7 +228,8 @@ def get_dip_of_horizon (hm : int | float, temperature : float, dt_dh : float, pr
 def get_intersections (latlon1 : LatLon, latlon2 : LatLon,\
                        angle1 : int | float, angle2 : int | float,\
                        estimated_position : LatLon = None,\
-                       use_fitness : bool = True, diagnostics : bool = False)\
+                       use_fitness : bool = True, diagnostics : bool = False,
+                       intersection_number : int = 0)\
                           -> tuple[LatLon | tuple[LatLon], float, str]:
     '''
     Get intersection of two circles on a spheric surface. 
@@ -240,23 +241,28 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     diag_output = ""
     # Get cartesian vectors a and b (from ground points)
     if diagnostics:
-        diag_output = "$\\text{== Performing an intersection ==}$<br/>"
+        if intersection_number != 0:
+            diag_output += "\n## Performing an intersection (#"+str(intersection_number)+")\n\n"
+        else:
+            diag_output += "\n## Performing an intersection\n\n"
+        diag_output += "### **Input parameters**\n"
         diag_output +=\
-        "$\\text{latlon1}=("+str(round(latlon1.lat,4))+","+str(round(latlon1.lon,4))+")$<br/>"
+        "$\\textbf{latlon1}=("+str(round(latlon1.lat,4))+","+str(round(latlon1.lon,4))+")$<br/>"
         diag_output +=\
-        "$\\text{angle1}=("+str(round(angle1,4))+")$<br/>"        
+        "$\\textbf{angle1}=("+str(round(angle1,4))+")$<br/>"        
         diag_output +=\
-        "$\\text{latlon2}=("+str(round(latlon2.lat,4))+","+str(round(latlon2.lon,4))+")$<br/>"        
+        "$\\textbf{latlon2}=("+str(round(latlon2.lat,4))+","+str(round(latlon2.lon,4))+")$<br/>"        
         diag_output +=\
-        "$\\text{angle2}=("+str(round(angle2,4))+")$<br/>"
+        "$\\textbf{angle2}=("+str(round(angle2,4))+")$<br/>"
         if estimated_position is not None:
             diag_output +=\
-            "$\\text{Estimated Position LatLon}=("+\
+            "$\\textbf{EstimatedPosition}=("+\
                 str(round(estimated_position.lat,4))+","+\
                 str(round(estimated_position.lon,4))+")$<br/>"
     a_vec = to_rectangular (latlon1)
     b_vec = to_rectangular (latlon2)
     if diagnostics:
+        diag_output += "\n### **Converting positions to cartesisans**\n"
         diag_output += " $\\text{latlon1 converted to cartesians}=("+\
                          str(round(a_vec[0],4))+","+\
                          str(round(a_vec[1],4))+","+\
@@ -269,8 +275,10 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     ab_cross = cross_product (a_vec, b_vec)
     ab_cross = normalize_vect (ab_cross)
     if diagnostics:
+        #diag_output +=\
+        #     "$\\text{We compute the normalized cross product of aVec and bVec}$</br>"
         diag_output +=\
-             "$\\text{We compute the normalized cross product of aVec and bVec}$</br>"
+        "\n### **We compute the normalized cross product of $\\text{aVec}$ and $\\text{bVec}$**\n"
         diag_output += "$N(\\text{aVec}\\times\\text{bVec})=("+\
                         str(round(ab_cross[0],4))+","+\
                         str(round(ab_cross[1],4))+","+\
@@ -279,11 +287,12 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     # These steps calculate q which is located halfway between our two intersections
     if diagnostics:
         diag_output +=\
-        "$\\text{Now we compute the vector q, being at the midpoint between aVec and bVec}$</br>"
+        "\n### **Now we compute the vector $q$, being at the midpoint between" +\
+         " $\\text{aVec}$ and $\\text{bVec}$**\n"
     p1 = mult_scalar_vect (cos(deg_to_rad(angle2)), a_vec)
     if diagnostics:
         diag_output +=\
-        "$\\text{We compute p1}$<br/>"
+        "We compute $\\text{p1}$<br/>"
         diag_output += "$cos(\\text{angle1})\\cdot\\text{aVec} = ("+\
             str(round(p1[0],4))+","+\
             str(round(p1[1],4))+","+\
@@ -292,16 +301,42 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     p2 = mult_scalar_vect (-cos(deg_to_rad(angle1)), b_vec)
     if diagnostics:
         diag_output +=\
-        "$\\text{We compute p2}$<br/>"
+        "We compute $\\text{p2}$<br/>"
         diag_output += "$-cos(\\text{angle2})\\cdot\\text{bVec} = ("+\
             str(round(p2[0],4))+","+\
             str(round(p2[1],4))+","+\
             str(round(p2[2],4))+")\\text{ ==> }\\textbf{p2}"+\
             "$</br>"    
     p3 = add_vecs (p1, p2)
+    if diagnostics:
+        diag_output +=\
+        "Perform addition<br/>"
+        diag_output += "$\\text{p1}+\\text{p2} = ("+\
+            str(round(p3[0],4))+","+\
+            str(round(p3[1],4))+","+\
+            str(round(p3[2],4))+")\\text{ ==> }\\textbf{p3}"+\
+            "$</br>"
     p3 = normalize_vect (p3)
+    if diagnostics:
+        diag_output +=\
+        "Normalize $\\text{p3}$<br/>"
+        diag_output += "$N(\\text{p3}) = ("+\
+            str(round(p3[0],4))+","+\
+            str(round(p3[1],4))+","+\
+            str(round(p3[2],4))+")\\text{ ==> }\\textbf{p3}"+\
+            "$</br>"
     p4 = cross_product (ab_cross, p3)
+    if diagnostics:
+        diag_output +=\
+        "Perform cross product<br/>"
+        diag_output += "$\\text{abCross}\\times{p3} = ("+\
+            str(round(p4[0],4))+","+\
+            str(round(p4[1],4))+","+\
+            str(round(p4[2],4))+")\\text{ ==> }\\textbf{p4}"+\
+            "$</br>"
     q = normalize_vect (p4)
+    if diagnostics:
+        pass
 
     # Calculate a rotation angle
     try:
@@ -627,14 +662,16 @@ class SightPair:
         self.sf1 = sf1
         self.sf2 = sf2
 
-    def get_intersections (self, estimated_position : LatLon = None, diagnostics : bool = False) ->\
+    def get_intersections (self, estimated_position : LatLon = None, diagnostics : bool = False,\
+                           intersection_number : int = 0) ->\
                            tuple[tuple[LatLon], float, str]:
         ''' Return the two intersections for this sight pair. 
             The parameter estimated_position can be used to eliminate the false intersection '''
         return get_intersections (self.sf1.gp,\
                                   self.sf2.gp,\
                                   self.sf1.get_angle(), self.sf2.get_angle(),\
-                                  estimated_position, diagnostics = diagnostics)
+                                  estimated_position, diagnostics = diagnostics,\
+                                  intersection_number = intersection_number)
 
 class SightCollection:
     ''' Represents a collection of >= 2 sights '''
@@ -662,11 +699,14 @@ class SightCollection:
             # and then run a sorting algorithm
             coords = list[tuple[LatLon, float]]()
             # Perform pairwise sight reductions
+            intersection_count = 0
             for i in range (nr_of_fixes):
                 for j in range (i+1, nr_of_fixes):
                     p = SightPair (self.sf_list [i], self.sf_list [j])
+                    intersection_count += 1
                     p_int, fitness, dia =\
-                        p.get_intersections (estimated_position, diagnostics = diagnostics)
+                        p.get_intersections (estimated_position, diagnostics = diagnostics,\
+                                             intersection_number = intersection_count)
                     diag_output += dia
                     if p_int is not None:
                         if isinstance (p_int, tuple) or isinstance (p_int, list):
