@@ -263,11 +263,11 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     b_vec = to_rectangular (latlon2)
     if diagnostics:
         diag_output += "\n### **Converting positions to cartesisans**\n"
-        diag_output += " $\\text{latlon1 converted to cartesians}=("+\
+        diag_output += " * $\\text{latlon1}$ converted to cartesians $=("+\
                          str(round(a_vec[0],4))+","+\
                          str(round(a_vec[1],4))+","+\
-                         str(round(a_vec[2],4))+")\\text{ ==> }\\textbf{aVec}$<br/>"
-        diag_output += " $\\text{latlon2 converted to cartesians}=("+\
+                         str(round(a_vec[2],4))+")\\text{ ==> }\\textbf{aVec}$\n"
+        diag_output += " * $\\text{latlon2}$ converted to cartesians $=("+\
                          str(round(b_vec[0],4))+","+\
                          str(round(b_vec[1],4))+","+\
                          str(round(b_vec[2],4))+")\\text{ ==> }\\textbf{bVec}$<br/>"
@@ -279,8 +279,8 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         #     "$\\text{We compute the normalized cross product of aVec and bVec}$</br>"
         diag_output +=\
         "\n### **We compute the normalized cross product of $\\text{aVec}$ and $\\text{bVec}$**\n"
-        diag_output += "$N$ is vector normalization. $N(x)=\\frac{x}{|x|}$<br/>"
-        diag_output += "$N(\\text{aVec}\\times\\text{bVec})=("+\
+        diag_output += "* **Definition**: $N$ is vector normalization: $\mathit{N(x)=\\frac{x}{|x|}}$\n"
+        diag_output += "* $N(\\text{aVec}\\times\\text{bVec})=("+\
                         str(round(ab_cross[0],4))+","+\
                         str(round(ab_cross[1],4))+","+\
                         str(round(ab_cross[2],4))+")\\text{ ==> }\\textbf{abCross}$<br/>"
@@ -293,48 +293,48 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     p1 = mult_scalar_vect (cos(deg_to_rad(angle2)), a_vec)
     if diagnostics:
         diag_output +=\
-        "We compute $\\text{p1}$<br/>"
-        diag_output += "$cos(\\text{angle1})\\cdot\\text{aVec} = ("+\
+        "* We compute $\\text{p1}$\n"
+        diag_output += "    * $cos(\\text{angle1})\\cdot\\text{aVec} = ("+\
             str(round(p1[0],4))+","+\
             str(round(p1[1],4))+","+\
             str(round(p1[2],4))+")\\text{ ==> }\\textbf{p1}"+\
-            "$</br>"
+            "$\n"
     p2 = mult_scalar_vect (-cos(deg_to_rad(angle1)), b_vec)
     if diagnostics:
         diag_output +=\
-        "We compute $\\text{p2}$<br/>"
-        diag_output += "$-cos(\\text{angle2})\\cdot\\text{bVec} = ("+\
+        "* We compute $\\text{p2}$\n"
+        diag_output += "    * $-cos(\\text{angle2})\\cdot\\text{bVec} = ("+\
             str(round(p2[0],4))+","+\
             str(round(p2[1],4))+","+\
             str(round(p2[2],4))+")\\text{ ==> }\\textbf{p2}"+\
-            "$</br>"    
+            "$\n"    
     p3 = add_vecs (p1, p2)
     if diagnostics:
         diag_output +=\
-        "Perform addition<br/>"
-        diag_output += "$\\text{p1}+\\text{p2} = ("+\
+        "* Perform addition\n"
+        diag_output += "    * $\\text{p1}+\\text{p2} = ("+\
             str(round(p3[0],4))+","+\
             str(round(p3[1],4))+","+\
             str(round(p3[2],4))+")\\text{ ==> }\\textbf{p3}"+\
-            "$</br>"
+            "$\n"
     p3 = normalize_vect (p3)
     if diagnostics:
         diag_output +=\
-        "Normalize $\\text{p3}$<br/>"
-        diag_output += "$N(\\text{p3}) = ("+\
+        "* Normalize $\\text{p3}$\n"
+        diag_output += "    * $N(\\text{p3}) = ("+\
             str(round(p3[0],4))+","+\
             str(round(p3[1],4))+","+\
             str(round(p3[2],4))+")\\text{ ==> }\\textbf{p3}"+\
-            "$</br>"
+            "$\n"
     q = cross_product (ab_cross, p3)
     if diagnostics:
         diag_output +=\
-        "Perform cross product and get mid-point<br/>"
-        diag_output += "$\\text{abCross}\\times{\\text{p3}} = ("+\
+        "* Perform cross product and get mid-point\n"
+        diag_output += "    * $\\text{abCross}\\times{\\text{p3}} = ("+\
             str(round(q[0],4))+","+\
             str(round(q[1],4))+","+\
             str(round(q[2],4))+")\\text{ ==> }\\textbf{q}"+\
-            "$</br>"
+            "$\n"
 
     # Calculate a rotation angle
     if diagnostics:
@@ -346,16 +346,16 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             rho = acos (cos (deg_to_rad(angle1)) / (dot_product (a_vec, q)))
             if diagnostics:
                 diag_output +=\
-                "$\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle1}\\right)}}"+\
+                "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle1}\\right)}}"+\
                 "{\\text{aVec}\\cdot\\text{q}}\\right)}"
         else:
             rho = acos (cos (deg_to_rad(angle2)) / (dot_product (b_vec, q)))
             if diagnostics:
                 diag_output +=\
-                "$\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle2}\\right)}}"+\
+                "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle2}\\right)}}"+\
                 "{\\text{bVec}\\cdot\\text{q}}\\right)}"
         if diagnostics:
-            diag_output += "=" + str(round(rho,4)) + "\\text{ ==> }\\rho$ (rotation angle)<br/>"
+            diag_output += "=" + str(round(rho,4)) + "\\text{ ==> }\\rho$ (rotation angle)\n"
     except ValueError as exc:
         raise ValueError ("Bad sight data. Circles do not intersect.") from exc
 
@@ -363,30 +363,33 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     rot_axis = normalize_vect(cross_product (cross_product (a_vec, b_vec), q))
     if diagnostics:
         diag_output +=\
-        "$N\\left(\\left(\\text{aVec}\\times\\text{bVec}\\right) \\times {\\text{q}} \\right) = ("+\
+        "* $N\\left(\\left(\\text{aVec}\\times\\text{bVec}\\right) \\times {\\text{q}} \\right) = ("+\
         str(round(rot_axis[0],4))+","+\
         str(round(rot_axis[1],4))+","+\
         str(round(rot_axis[2],4))+")\\text{ ==> }\\textbf{rotAxis}"+\
-        "$</br>"
+        "$\n"
 
     # Calculate the two intersections by performing rotation of rho and -rho
     if diagnostics:
-        diag_output += "Compute the two intersection points with rotation operations. "+\
-                       "$GR$ is Gauss rotation formula.</br>"
+        diag_output += "* Compute the two intersection points with rotation operations.\n"+\
+                       "    * **Definition**: $GR$ is Gauss rotation formula: "+\
+                       "$\\mathit{GR(q,r,\\tau) = "+\
+                       "q \\cos \\tau + \\left( r \\times q \\right) \\sin \\tau + r \\left(r \\cdot q \\right)\\left(1 - \\cos \\tau \\right)}$\n"
+
     int1 = rotate_vector (q, rot_axis, rho)
     if diagnostics:
-        diag_output += "$GR\\left(\\text{q},\\text{rotAxis},\\rho\\right) = ("+\
+        diag_output += "    * $GR\\left(\\text{q},\\text{rotAxis},\\rho\\right) = ("+\
         str(round(int1[0],4))+","+\
         str(round(int1[1],4))+","+\
         str(round(int1[2],4))+")\\text{ ==> }\\textbf{int1}"+\
-        "$<br/>"
+        "$\n"
     int2 = rotate_vector (q, rot_axis, -rho)
     if diagnostics:
-        diag_output += "$GR\\left(\\text{q},\\text{rotAxis},-\\rho\\right) = ("+\
+        diag_output += "    * $GR\\left(\\text{q},\\text{rotAxis},-\\rho\\right) = ("+\
         str(round(int2[0],4))+","+\
         str(round(int2[1],4))+","+\
         str(round(int2[2],4))+")\\text{ ==> }\\textbf{int2}"+\
-        "$<br/>"        
+        "$\n"        
 
     # Calculate fitness of intersections.
     fitness = 1
@@ -403,13 +406,13 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     int1_latlon = to_latlon (int1)
     int2_latlon = to_latlon (int2)
     if diagnostics:
-        diag_output += "Converting the intersections to LatLon<br/>"
-        diag_output += "$\\text{int1}$ converts to $("+\
+        diag_output += "* Converting the intersections to LatLon\n"
+        diag_output += "    * $\\text{int1}$ converts to $("+\
         str(round(int1_latlon.lat,4))+","+\
-        str(round(int1_latlon.lon,4))+")$<br/>"
-        diag_output += "$\\text{int2}$ converts to $("+\
+        str(round(int1_latlon.lon,4))+")\\text{ ==> }\\textbf{Intersection 1}$\n"
+        diag_output += "    * $\\text{int2}$ converts to $("+\
         str(round(int2_latlon.lat,4))+","+\
-        str(round(int2_latlon.lon,4))+")$<br/>"
+        str(round(int2_latlon.lon,4))+")\\text{ ==> }\\textbf{Intersection 2}$\n"
     ret_tuple = (int1_latlon, int2_latlon)
 
     if estimated_position is None:
