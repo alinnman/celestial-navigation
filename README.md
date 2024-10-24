@@ -182,7 +182,7 @@ where
 * $T$ is the temperature (in Kelvins)
 * $\frac{dT}{dh}$ is the temperature gradient
 
-If you use an artficial horizon the dip is always zero,
+If you use an artificial horizon the dip is always zero,
 and the *observer_height* parameter should be zero.
 
 For more information about the formula above please refer to
