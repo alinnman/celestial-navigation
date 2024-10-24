@@ -23,7 +23,7 @@ An hour will typically be sufficient.
 <br>For both measurements take note of the measured altitude, $f_1$ and $f_2$.
 <br>Define angles $\alpha$ and $\beta$ this way:
 $\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
-<br><br>Using your **clock** register the corresponding times $t_1$ and $t_2$ 
+<br><br>Using your **chronometer** (clock) register the corresponding times $t_1$ and $t_2$ 
 for the two measurements.<br><br>
 1. Look up geographic positions (GP) in the **Nautical Almanac**
 <br><br>
