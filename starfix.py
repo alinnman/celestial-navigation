@@ -670,7 +670,7 @@ class Sight :
     def __correct_set_time (self, chronometer : Chronometer):
         dt1 = datetime (self.time_year, self.time_month, self.time_day,\
                         self.time_hour, self.time_minute, self.time_second)
-        
+
         dt2 = chronometer.get_corrected_time (dt1)
         self.time_year   = dt2.year
         self.time_month  = dt2.month

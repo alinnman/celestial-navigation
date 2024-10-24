@@ -20,7 +20,11 @@ starttime = time ()
 mySextant = Sextant (get_decimal_degrees_from_tuple (calibrationMeasuredValue) / \
                      get_decimal_degrees_from_tuple (calibrationRealValue))
 
-myChronometer = Chronometer (datetime.fromisoformat("2024-06-14 03:00:00+00:00"), 0, 0.3)
+# Defining the Chronometer object
+myChronometer = Chronometer\
+    (set_time                   = datetime.fromisoformat("2024-06-14 03:00:00+00:00"),\
+     set_time_deviation_seconds = 0,\
+     drift_sec_per_day          = 0.3)
 
 S1 = Sight (   object_name          = "Sun", \
               time_year            = 2024,\
