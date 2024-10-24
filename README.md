@@ -30,7 +30,7 @@ This project contains a toolkit (written in Python) to be used for
 [celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation)
 together with some demos and documentation.
 Sights (altitude measurements) have to be obtained using a sextant,
-a nautical almanac and an accurate clock.
+a nautical almanac and an accurate chronometer.
 The toolkit takes care of the **sight reduction**
 (conversion to estimated location on Earth),
 a task that traditionally is performed with careful manual work using special
@@ -78,7 +78,7 @@ If you want to contribute to the project then see [this page](CONTRIBUTING.md).
 ## 2. Making sights <a name="making-sights"></a>
 
 You create a sight with code like this (for the Sun). You specify data from your
-sextant and clock (chronometer). You also add tabular data from the
+sextant and chronometer. You also add tabular data from the
 Nautical Almanac. This data is given from the current hour of the observation,
 and the next hour. (You don't have to enter linear factors etc. from the almanac).
 
@@ -110,18 +110,18 @@ Chicago on May 5th 2024.
 In other words: No sextant readings were made and the accuracy is very good.
 (Running this sample will give you an accuracy of just some 100 meters).
 
-The data is picked from your clock, sextant and the Nautical Almanac
+The data is picked from your chronometer, sextant and the Nautical Almanac
 in the following way. Arguments in *italics* are optional.
 
 | Argument | Description                                  | Remark                                                         | Collected From |
 | :-------------       | :-------------                               | :-------------                                                 | :------------- |
 | object               | Name of celestial object.                     | Only mnemonic.                                                  | N/A |
-| time_year            | Current year.                                 | In UTC.                                                         | Clock |
-| time_month           | Current month (1-12).                               | In UTC.                                                         | Clock |
-| time_day             | Current day of month (1-31).                        | In UTC.                                                         | Clock |
-| time_hour            | Observation time - Hours (0-23).              | In UTC.                                                        | Clock |
-| time_minute          | Observation time - Minutes (0-59).            | In UTC.                                                        | Clock |
-| *time_second*        | Observation time - Seconds (0-59).            | In UTC. Default = 0.   | Clock |
+| time_year            | Current year.                                 | In UTC.                                                         | Chronometer |
+| time_month           | Current month (1-12).                               | In UTC.                                                         | Chronometer |
+| time_day             | Current day of month (1-31).                        | In UTC.                                                         | Chronometer |
+| time_hour            | Observation time - Hours (0-23).              | In UTC.                                                        | Chronometer |
+| time_minute          | Observation time - Minutes (0-59).            | In UTC.                                                        | Chronometer |
+| *time_second*        | Observation time - Seconds (0-59).            | In UTC. Default = 0.   | Chronometer |
 | gha_time_0_degrees   | GHA degrees reading for this hour.            | For stars use GHA of Aries.                                    | Nautical Almanac |
 | gha_time_0_minutes   | GHA minutes reading for this hour (0-60).           | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
 | gha_time_1_degrees   | GHA degrees reading for next hour.            | For stars use GHA of Aries.                                    | Nautical Almanac |
@@ -230,7 +230,7 @@ This is a short outline of the algorithm.
 For both measurements take note of the measured altitude
 (from your **sextant**), $f_1$ and $f_2$.
 
-Using your **clock** register the corresponding times $t_1$ and $t_2$
+Using your **chronometer** register the corresponding times $t_1$ and $t_2$
 for the two measurements
 
 Define angles $\alpha$ and $\beta$ this way:
