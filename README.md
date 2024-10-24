@@ -111,7 +111,7 @@ Chicago on May 5th 2024.
 In other words: No sextant readings were made and the accuracy is very good.
 (Running this sample will give you an accuracy of just some 100 meters).
 
-The data is picked from your chronometer, sextant and the Nautical Almanac
+The data is picked from your chronometer (clock), sextant and the Nautical Almanac
 in the following way. Arguments in *italics* are optional.
 
 | Argument | Description                                  | Remark                                                         | Collected From |
@@ -570,6 +570,7 @@ local view is used as input to a calibration parameter of the used sextant.
 
 ## 8. Chronometer Handling <a name="chronometer"></a>
 
-If you use a mechanical chronometer you may have a **drift** to take care of.
+Your chronometer may have a **drift** to take care of, typically if it is mechanical
+or digital with no auto-setting. 
 The toolkit contains a Chronometer class which can be used to handle this and
 you will find an example of handling this in [this sample](starfixdata.xtra.home.py)
