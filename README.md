@@ -191,7 +191,7 @@ For more information about the formula above please refer to
 ### 2.iii. Ignored Corrections<a name="ignored-corrections"></a>
 
 Currently the tool does not aim for very high accuracy and more elaborate
-corrections are currently eliminated.
+corrections are eliminated.
 
 * Refraction correction is simple (see above), but probably good enough for basic celestial navigation. 
 * Earth oblateness is ignored.
@@ -203,7 +203,7 @@ See [more about future plans](CONTRIBUTING.md).
 
 ### 3.i. Using two sights<a name="using-two-sights"></a>
 
-Using two star fixes a sight reduction can be done in the following way
+Using two star fixes a sight reduction can be done in the following way:
 
     from starfix import Sight, SightCollection, get_representation
  
@@ -232,7 +232,7 @@ This is a short outline of the algorithm.
 For both measurements take note of the measured altitude
 (from your **sextant**), $f_1$ and $f_2$.
 
-Using your **chronometer** register the corresponding times $t_1$ and $t_2$
+Using your **chronometer** (clock) register the corresponding times $t_1$ and $t_2$
 for the two measurements
 
 Define angles $\alpha$ and $\beta$ this way:
@@ -296,17 +296,17 @@ will be rather high and this can be used to reduce the effects of intersections
 with big uncertainty. An angle close to 90 degrees however indicates a rather
 precise measurement and this should be prioritized.
 
-This is the algorithm for calculating the fitness.
+This is the algorithm for calculating the fitness:
 
 $d_1 = N((p_1 - a) \times a)$ <br/>
 $d_2 = N((p_1 - b) \times b)$
 
-From this we calculate the angle
+From this we calculate the fitness factor $\phi$:
 
-$a_{\text{fitness}} = \arcsin\left(|d_1 \times d_2|\right)$
+$\phi = |d_1 \times d_2|$  ;  $0<=\phi<=1$
 
 
-Note: The algorithm will only work if at least one of the circles is a small circle.
+Note: The sight reduction algorithm described in this section will only work if at least one of the circles is a small circle.
 It cannot be used for calculating intersections of two great circles.
 
 Note: I have chosen to use an algorithm based on 3D cartesian vectors.
