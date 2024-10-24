@@ -21,6 +21,7 @@
 1. [A real-life example](#real-life)
 1. [Terrestrial Navigation](#terrestrial)
 1. [Sextant Calibration](#calibration)
+1. [Chronometer Handling](#chronometer)
 
 ## 1. Introduction <a name="introduction"></a>
 
@@ -138,7 +139,8 @@ in the following way. Arguments in *italics* are optional.
 | *measured_alt_minutes* | Altitude of object in minutes (0-60).         | Can be zero (use decimal degrees). Default = 0.                              | Sextant |
 | *measured_alt_seconds* | Altitude of object in seconds (0-60).         | Can be zero (use decimal degrees/minutes). Default = 0.                      | Sextant |
 | *observer_height*    | Height of observer above sea level or ground in meters (>= 0). | Only relevant for observations using natural horizon. Default = 0.          | Height Measurement |
-| *sextant*            | An object defining a specific sextant.        | See [this code sample](starfixdata.xtra.home.py) for details. Default = None.       | Calibration |
+| *sextant*            | An object defining a specific used sextant.        | See [this code sample](starfixdata.xtra.home.py) for details. Default = None.       | Sextant Calibration |
+| *chronometer*            | An object defining a specific used chronometer.        | See [this code sample](starfixdata.xtra.home.py) for details. Default = None.       | Chronometer Calibration |
 | *temperature*            | Measured temperature at observing point. (degrees celsius)        |  Default = 10    | Observations or meteorology information |
 | *dt_dh* | Temperature gradient (degrees celsius / meter) | default = -0.01 | Observations or meteorology information |
 | *pressure* | Measured pressure at observing point. (kPa) | Default = 101 | Observations or meteorology information | 
@@ -565,3 +567,9 @@ and I decided to measure it by taking a terrestrial angle fix and compare it to
 the data from my map. And yes, there was an error of about 2 minutes / 10 degrees.
 For the details see [this sample](starfixdata.xtra.home.py) where a measurement of a
 local view is used as input to a calibration parameter of the used sextant.  
+
+## 8. Chronometer Handling <a name="chronometer"></a>
+
+If you use a mechanical chronometer you may have a **drift** to take care of.
+The toolkit contains a Chronometer class which can be used to handle this and
+you will find an example of handling this in [this sample](starfixdata.xtra.home.py)

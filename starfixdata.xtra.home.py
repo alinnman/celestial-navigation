@@ -4,7 +4,8 @@
 
 '''
 from time import time
-from starfix import Sight, SightCollection, LatLon, Sextant,\
+from datetime import datetime
+from starfix import Sight, SightCollection, LatLon, Sextant, Chronometer,\
                     get_decimal_degrees_from_tuple,\
                     get_representation, \
                     get_google_map_string, distance_between_points
@@ -18,6 +19,8 @@ starttime = time ()
 # Defining the Sextant object, using the calculated gradation error as parameter.
 mySextant = Sextant (get_decimal_degrees_from_tuple (calibrationMeasuredValue) / \
                      get_decimal_degrees_from_tuple (calibrationRealValue))
+
+myChronometer = Chronometer (datetime.fromisoformat("2024-06-14 03:00:00+00:00"), 0, 0.3)
 
 S1 = Sight (   object_name          = "Sun", \
               time_year            = 2024,\
@@ -40,7 +43,8 @@ S1 = Sight (   object_name          = "Sun", \
               artificial_horizon   = True,\
               index_error_minutes  = 0,\
               semi_diameter_correction = 15.7,\
-              sextant = mySextant
+              sextant = mySextant,\
+              chronometer = myChronometer
               )
 
 S2 = Sight (   object_name          = "Sun", \
@@ -63,7 +67,8 @@ S2 = Sight (   object_name          = "Sun", \
               measured_alt_seconds = 0, \
               artificial_horizon   = True,\
               index_error_minutes  = 0,\
-              sextant = mySextant
+              sextant = mySextant,\
+              chronometer = myChronometer
               )
 
 collection = SightCollection ([S1, S2])

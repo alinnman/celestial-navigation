@@ -210,6 +210,25 @@ def angle_between_points (origin : LatLon, point1 : LatLon, point2 : LatLon) -> 
     dp = dot_product (point_1gc, point_2gc)
     return acos (dp) * (180 / pi)
 
+# Chronometer
+
+class Chronometer: # pylint: disable=R0903
+    ''' This class represents a chronometer (clock) with known error/drift '''
+    def __init__ (self, set_time : datetime, set_time_deviation_seconds : int | float, \
+                  drift_sec_per_day : int | float):
+        self.set_time = set_time
+        self.set_time_deviation_seconds = set_time_deviation_seconds
+        self.drift_sec_per_day = drift_sec_per_day
+
+    def get_corrected_time (self, measured_time : datetime) -> datetime:
+        ''' Calculate proper time based on a measured time '''
+        st1 = int(self.set_time.timestamp())
+        mt1 = int(measured_time.timestamp())
+        diff_days = (mt1 - st1) / (24*3600)
+        drift = diff_days * self.drift_sec_per_day
+        mt_corr = mt1 + drift
+        return datetime.fromtimestamp (mt_corr)
+
 # Horizon
 
 def get_dip_of_horizon (hm : int | float, temperature : float, dt_dh : float, pressure : float)\
@@ -279,7 +298,8 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         #     "$\\text{We compute the normalized cross product of aVec and bVec}$</br>"
         diag_output +=\
         "\n### **We compute the normalized cross product of $\\text{aVec}$ and $\\text{bVec}$**\n"
-        diag_output += "* **Definition**: $N$ is vector normalization: $\mathit{N(x)=\\frac{x}{|x|}}$\n"
+        diag_output += "* **Definition**: $N$ is vector normalization:"+\
+                       " $\\mathit{N(x)=\\frac{x}{|x|}}$\n"
         diag_output += "* $N(\\text{aVec}\\times\\text{bVec})=("+\
                         str(round(ab_cross[0],4))+","+\
                         str(round(ab_cross[1],4))+","+\
@@ -363,7 +383,8 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     rot_axis = normalize_vect(cross_product (cross_product (a_vec, b_vec), q))
     if diagnostics:
         diag_output +=\
-        "* $N\\left(\\left(\\text{aVec}\\times\\text{bVec}\\right) \\times {\\text{q}} \\right) = ("+\
+        "* $N\\left(\\left(\\text{aVec}\\times\\text{bVec}\\right)"+\
+        " \\times {\\text{q}} \\right) = ("+\
         str(round(rot_axis[0],4))+","+\
         str(round(rot_axis[1],4))+","+\
         str(round(rot_axis[2],4))+")\\text{ ==> }\\textbf{rotAxis}"+\
@@ -374,7 +395,8 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         diag_output += "* Compute the two intersection points with rotation operations.\n"+\
                        "    * **Definition**: $GR$ is Gauss rotation formula: "+\
                        "$\\mathit{GR(q,r,\\tau) = "+\
-                       "q \\cos \\tau + \\left( r \\times q \\right) \\sin \\tau + r \\left(r \\cdot q \\right)\\left(1 - \\cos \\tau \\right)}$\n"
+                       "q \\cos \\tau + \\left( r \\times q \\right) \\sin \\tau + "+\
+                       "r \\left(r \\cdot q \\right)\\left(1 - \\cos \\tau \\right)}$\n"
 
     int1 = rotate_vector (q, rot_axis, rho)
     if diagnostics:
@@ -570,6 +592,7 @@ class Sight :
                   semi_diameter_correction : int | float = 0,\
                   horizontal_parallax : int | float = 0,\
                   sextant : Sextant = None,\
+                  chronometer : Chronometer = None,\
                   temperature : float = 10.0,\
                   dt_dh : float = -0.01,\
                   pressure : float = 101.0,
@@ -629,6 +652,8 @@ class Sight :
             raise ValueError ("Observer_height should be >= 0")
         if sextant is not None:
             self.__correct_for_graduation_error (sextant)
+        if chronometer is not None:
+            self.__correct_set_time (chronometer)
         if index_error_minutes != 0:
             self.__correct_for_index_error (index_error_minutes)
         if artificial_horizon:
@@ -641,6 +666,18 @@ class Sight :
             self.__correct_for_refraction ()
             self.__correct_dip_of_horizon ()
         self.gp = self.__calculate_gp ()
+
+    def __correct_set_time (self, chronometer : Chronometer):
+        dt1 = datetime (self.time_year, self.time_month, self.time_day,\
+                        self.time_hour, self.time_minute, self.time_second)
+        
+        dt2 = chronometer.get_corrected_time (dt1)
+        self.time_year   = dt2.year
+        self.time_month  = dt2.month
+        self.time_day    = dt2.day
+        self.time_hour   = dt2.hour
+        self.time_minute = dt2.minute
+        self.time_second = dt2.second
 
     def __correct_for_graduation_error (self, sextant : Sextant):
         self.measured_alt /= sextant.graduation_error
