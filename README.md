@@ -567,11 +567,12 @@ suspected by me,
 and I decided to measure it by taking a terrestrial angle fix and compare it to
 the data from my map. And yes, there was an error of about 2 minutes / 10 degrees.
 For the details see [this sample](starfixdata.xtra.home.py) where a measurement of a
-local view is used as input to a calibration parameter of the used sextant.  
+local view is used as input to a calibration parameter of the used sextant.
+See the <tt>Sextant</tt> class.
 
 ## 8. Chronometer Handling <a name="chronometer"></a>
 
 Your chronometer may have a **drift** to take care of, typically if it is mechanical
 or digital with no auto-setting. 
-The toolkit contains a Chronometer class which can be used to handle this and
-you will find an example of handling this in [this sample](starfixdata.xtra.home.py)
+The toolkit contains a <tt>Chronometer</tt> class which can be used to handle this and
+you will find an example of handling this in [this sample](starfixdata.xtra.home.py).
