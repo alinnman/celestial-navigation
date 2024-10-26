@@ -4,7 +4,6 @@
 
 '''
 from time import time
-from datetime import datetime
 from starfix import Sight, SightCollection, LatLon, Sextant, Chronometer,\
                     get_decimal_degrees_from_tuple,\
                     get_representation, \
@@ -22,7 +21,7 @@ mySextant = Sextant (get_decimal_degrees_from_tuple (calibrationMeasuredValue) /
 
 # Defining the Chronometer object
 myChronometer = Chronometer\
-    (set_time                   = datetime.fromisoformat("2024-06-14 03:00:00+00:00"),\
+    (set_time                   = "2024-06-14 03:00:00+00:00",\
      set_time_deviation_seconds = 0,\
      drift_sec_per_day          = 0.3)
 

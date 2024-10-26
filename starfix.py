@@ -214,9 +214,9 @@ def angle_between_points (origin : LatLon, point1 : LatLon, point2 : LatLon) -> 
 
 class Chronometer: # pylint: disable=R0903
     ''' This class represents a chronometer (clock) with known error/drift '''
-    def __init__ (self, set_time : datetime, set_time_deviation_seconds : int | float, \
+    def __init__ (self, set_time : str, set_time_deviation_seconds : int | float, \
                   drift_sec_per_day : int | float):
-        self.set_time = set_time
+        self.set_time = datetime.fromisoformat(set_time)
         self.set_time_deviation_seconds = set_time_deviation_seconds
         self.drift_sec_per_day = drift_sec_per_day
 
