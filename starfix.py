@@ -605,20 +605,10 @@ class Sight :
         set_time_dt               = datetime.fromisoformat (set_time)
         self.time_year            = set_time_dt.year
         self.time_month           = set_time_dt.month
-        if self.time_month > 12 or self.time_month < 1:
-            raise ValueError ("Month must be within [1,12]")
         self.time_day             = set_time_dt.day
-        if self.time_day > 31 or self.time_day < 1:
-            raise ValueError ("Day must be within [0,31]")
         self.time_hour            = set_time_dt.hour
-        if self.time_hour > 23 or self.time_hour < 0:
-            raise ValueError ("Hour must be within [0,23]")
         self.time_minute          = set_time_dt.minute
-        if self.time_minute > 59 or self.time_minute < 0:
-            raise ValueError ("Minute must be within [0,59]")
         self.time_second          = set_time_dt.second
-        if self.time_second > 59 or self.time_second < 0:
-            raise ValueError ("Second must be within [0,59]")
         self.gha_time_0           = get_decimal_degrees\
               (gha_time_0_degrees, gha_time_0_minutes, 0)
         self.gha_time_1           = get_decimal_degrees\
