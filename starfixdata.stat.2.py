@@ -13,20 +13,8 @@ starttime = time ()
 
 # Our starfix data
 
-YEAR = 2024
-MONTH = 9
-DAY = 17
-HOUR = 23
-MINUTE = 36
-SECOND = 13
-
 a = Sight (   object_name          = "Capella", \
-              time_year            = YEAR,\
-              time_month           = MONTH,\
-              time_day             = DAY,\
-              time_hour            = HOUR, \
-              time_minute          = MINUTE, \
-              time_second          = SECOND, \
+              set_time             = "2024-09-17 23:36:13+00:00", \
               gha_time_0_degrees   = 342, \
               gha_time_0_minutes   = 21.9, \
               gha_time_1_degrees   = 357, \
@@ -41,12 +29,7 @@ a = Sight (   object_name          = "Capella", \
               )
 
 b = Sight (   object_name          = "Moon", \
-              time_year            = YEAR,\
-              time_month           = MONTH,\
-              time_day             = DAY,\
-              time_hour            = HOUR, \
-              time_minute          = MINUTE+5, \
-              time_second          = SECOND, \
+              set_time             = "2024-09-17 23:41:13+00:00", \
               gha_time_0_degrees   = 347, \
               gha_time_0_minutes   = 55.7, \
               gha_time_1_degrees   = 2, \
@@ -62,12 +45,7 @@ b = Sight (   object_name          = "Moon", \
               )
 
 c = Sight (   object_name          = "Vega", \
-              time_year            = YEAR,\
-              time_month           = MONTH,\
-              time_day             = DAY,\
-              time_hour            = HOUR, \
-              time_minute          = MINUTE+10, \
-              time_second          = SECOND, \
+              set_time             = "2024-09-17 23:46:13+00:00", \
               gha_time_0_degrees   = 342, \
               gha_time_0_minutes   = 21.9, \
               gha_time_1_degrees   = 357, \

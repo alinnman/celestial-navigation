@@ -567,11 +567,12 @@ class Sight :
     '''  Object representing a sight (star fix) '''
     def __init__ (self, \
                   object_name : str, \
-                  time_year : int, \
-                  time_month : int, \
-                  time_day : int, \
-                  time_hour : int, \
-                  time_minute : int, \
+                  set_time : str, \
+                  #time_year : int, \
+                  #time_month : int, \
+                  #time_day : int, \
+                  #time_hour : int, \
+                  #time_minute : int, \
                   gha_time_0_degrees : int, \
                   gha_time_0_minutes : int | float, \
                   gha_time_1_degrees : int, \
@@ -579,7 +580,7 @@ class Sight :
                   decl_time_0_degrees : int, \
                   decl_time_0_minutes : int | float, \
                   measured_alt_degrees : int | float, \
-                  time_second : int = 0, \
+                  #time_second : int = 0, \
                   measured_alt_minutes : int | float = 0, \
                   measured_alt_seconds : int | float = 0, \
                   decl_time_1_degrees : int = None, \
@@ -601,20 +602,21 @@ class Sight :
         self.dt_dh                = dt_dh
         self.pressure             = pressure
         self.object_name          = object_name
-        self.time_year            = time_year
-        self.time_month           = time_month
+        set_time_dt               = datetime.fromisoformat (set_time)
+        self.time_year            = set_time_dt.year
+        self.time_month           = set_time_dt.month
         if self.time_month > 12 or self.time_month < 1:
             raise ValueError ("Month must be within [1,12]")
-        self.time_day             = time_day
+        self.time_day             = set_time_dt.day
         if self.time_day > 31 or self.time_day < 1:
             raise ValueError ("Day must be within [0,31]")
-        self.time_hour            = time_hour
+        self.time_hour            = set_time_dt.hour
         if self.time_hour > 23 or self.time_hour < 0:
             raise ValueError ("Hour must be within [0,23]")
-        self.time_minute          = time_minute
+        self.time_minute          = set_time_dt.minute
         if self.time_minute > 59 or self.time_minute < 0:
             raise ValueError ("Minute must be within [0,59]")
-        self.time_second          = time_second
+        self.time_second          = set_time_dt.second
         if self.time_second > 59 or self.time_second < 0:
             raise ValueError ("Second must be within [0,59]")
         self.gha_time_0           = get_decimal_degrees\

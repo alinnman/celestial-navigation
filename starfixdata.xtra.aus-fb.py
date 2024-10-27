@@ -34,16 +34,9 @@ from starfix import Sight, SightCollection, get_representation, get_google_map_s
 starttime = time ()
 
 # Our starfix data
-HOUR = 11
-MINUTE = 10
 
 a = Sight (   object_name          = "Acrux", \
-              time_year            = 2024,\
-              time_month           = 8,\
-              time_day             = 31,\
-
-              time_hour            = HOUR, \
-              time_minute          = MINUTE, \
+              set_time             = "2024-08-31 11:10+00:00" ,\
               gha_time_0_degrees   = 145, \
               gha_time_0_minutes   = 7, \
               gha_time_1_degrees   = 160, \
@@ -56,11 +49,7 @@ a = Sight (   object_name          = "Acrux", \
               )
 
 b = Sight (   object_name          = "Canopus", \
-              time_year            = 2024,\
-              time_month           = 8,\
-              time_day             = 31,\
-              time_hour            = HOUR, \
-              time_minute          = MINUTE, \
+              set_time             = "2024-08-31 11:10+00:00" ,\
               gha_time_0_degrees   = 145, \
               gha_time_0_minutes   = 7, \
               gha_time_1_degrees   = 160, \
@@ -73,11 +62,7 @@ b = Sight (   object_name          = "Canopus", \
               )
 
 c = Sight (   object_name          = "Achernar", \
-              time_year            = 2024,\
-              time_month           = 8,\
-              time_day             = 31,\
-              time_hour            = HOUR, \
-              time_minute          = MINUTE, \
+              set_time             = "2024-08-31 11:10+00:00" ,\
               gha_time_0_degrees   = 145, \
               gha_time_0_minutes   = 7, \
               gha_time_1_degrees   = 160, \

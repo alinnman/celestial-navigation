@@ -84,12 +84,7 @@ Nautical Almanac. This data is given from the current hour of the observation,
 and the next hour. (You don't have to enter linear factors etc. from the almanac).
 
     a = Sight (   object_name          = "Sun", \
-              time_year            = 2024,\
-              time_month           = 5,\
-              time_day             = 5,\
-              time_hour            = 15, \
-              time_minute          = 55, \
-              time_second          = 18, \
+              set_time             = "2024:05:05 15:55:18+00:00"
               gha_time_0_degrees   = 45, \
               gha_time_0_minutes   = 50.4, \
               gha_time_1_degrees   = 60, \
@@ -117,12 +112,7 @@ in the following way. Arguments in *italics* are optional.
 | Argument | Description                                  | Remark                                                         | Collected From |
 | :-------------       | :-------------                               | :-------------                                                 | :------------- |
 | object               | Name of celestial object.                     | Only mnemonic.                                                  | N/A |
-| time_year            | Current year.                                 | In UTC.                                                         | Chronometer |
-| time_month           | Current month (1-12).                               | In UTC.                                                         | Chronometer |
-| time_day             | Current day of month (1-31).                        | In UTC.                                                         | Chronometer |
-| time_hour            | Observation time - Hours (0-23).              | In UTC.                                                        | Chronometer |
-| time_minute          | Observation time - Minutes (0-59).            | In UTC.                                                        | Chronometer |
-| *time_second*        | Observation time - Seconds (0-59).            | In UTC. Default = 0.   | Chronometer |
+| set_time | Time for observation | [Use ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601) | Chronometer |
 | gha_time_0_degrees   | GHA degrees reading for this hour.            | For stars use GHA of Aries.                                    | Nautical Almanac |
 | gha_time_0_minutes   | GHA minutes reading for this hour (0-60).           | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
 | gha_time_1_degrees   | GHA degrees reading for next hour.            | For stars use GHA of Aries.                                    | Nautical Almanac |

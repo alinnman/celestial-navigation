@@ -19,12 +19,7 @@ s1LatLon = LatLon (59, 18)
 #This is the star fix for s1, the starting point
 
 s1 = Sight (  object_name          = "Sun", \
-              time_year            = 2024, \
-              time_month           = 6, \
-              time_day             = 20, \
-              time_hour            = 6, \
-              time_minute          = 14, \
-              time_second          = 38, \
+              set_time             = "2024-06-20 06:14:38+00:00", \
               gha_time_0_degrees   = 269, \
               gha_time_0_minutes   = 35.2, \
               gha_time_1_degrees   = 284 , \
@@ -44,12 +39,7 @@ s1 = Sight (  object_name          = "Sun", \
 # We take a sight here and get this.
 
 s2 = Sight (  object_name          = "Sun", \
-              time_year            = 2024, \
-              time_month           = 6, \
-              time_day             = 20, \
-              time_hour            = 7, \
-              time_minute          = 14, \
-              time_second          = 38, \
+              set_time             = "2024-06-20 07:13:38+00:00", \
               gha_time_0_degrees   = 284, \
               gha_time_0_minutes   = 35.1, \
               gha_time_1_degrees   = 299 , \

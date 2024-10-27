@@ -13,12 +13,7 @@ starttime = time ()
 # Our starfix data
 
 a = Sight (   object_name          = "Sun", \
-              time_year            = 2024,\
-              time_month           = 6,\
-              time_day             = 29,\
-              time_hour            = 8, \
-              time_minute          = 21, \
-              time_second          = 0, \
+              set_time             = "2024-06-29 08:21:00+00:00", \
               gha_time_0_degrees   = 299, \
               gha_time_0_minutes   = 6.6, \
               gha_time_1_degrees   = 314, \
@@ -32,12 +27,7 @@ a = Sight (   object_name          = "Sun", \
               )
 
 b = Sight (   object_name          = "Sun", \
-              time_year            = 2024,\
-              time_month           = 6,\
-              time_day             = 29,\
-              time_hour            = 12, \
-              time_minute          = 51, \
-              time_second          = 0, \
+              set_time             = "2024-06-29 12:51:00+00:00", \
               gha_time_0_degrees   = 359, \
               gha_time_0_minutes   = 6.1, \
               gha_time_1_degrees   = 14, \
@@ -51,12 +41,7 @@ b = Sight (   object_name          = "Sun", \
               )
 
 c = Sight (   object_name          = "Sun", \
-              time_year            = 2024,\
-              time_month           = 6,\
-              time_day             = 29,\
-              time_hour            = 15, \
-              time_minute          = 36, \
-              time_second          = 0, \
+              set_time             = "2024-06-28 15:36:00+00:00", \
               gha_time_0_degrees   = 44, \
               gha_time_0_minutes   = 5.7, \
               gha_time_1_degrees   = 59, \

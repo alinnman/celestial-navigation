@@ -14,22 +14,10 @@ starttime = time ()
 
 # Our starfix data
 
-YEAR = 2024
-MONTH = 10
-DAY = 1
-HOUR = 17
-MINUTE = 13
-SECOND = 0
-
 TEMPERATURE = 18
 
 a = Sight (   object_name          = "Sabik", \
-              time_year            = YEAR,\
-              time_month           = MONTH,\
-              time_day             = DAY,\
-              time_hour            = HOUR, \
-              time_minute          = MINUTE, \
-              time_second          = SECOND, \
+              set_time             = "2024-10-01 17:13:00+00:00", \
               gha_time_0_degrees   = 265, \
               gha_time_0_minutes   = 55.1, \
               gha_time_1_degrees   = 280, \
@@ -46,12 +34,7 @@ a = Sight (   object_name          = "Sabik", \
               )
 
 b = Sight (   object_name          = "Venus", \
-              time_year            = YEAR,\
-              time_month           = MONTH,\
-              time_day             = DAY,\
-              time_hour            = HOUR, \
-              time_minute          = MINUTE, \
-              time_second          = SECOND, \
+              set_time             = "2024-10-01 17:13:00+00:00", \
               gha_time_0_degrees   = 47, \
               gha_time_0_minutes   = 57.8, \
               gha_time_1_degrees   = 62, \
@@ -67,13 +50,8 @@ b = Sight (   object_name          = "Venus", \
               ho_obs               = True \
               )
 
-c = Sight (   object_name          = "Saturn", \
-              time_year            = YEAR,\
-              time_month           = MONTH,\
-              time_day             = DAY,\
-              time_hour            = HOUR, \
-              time_minute          = MINUTE, \
-              time_second          = SECOND, \
+c = Sight (   object_name          = "Saturn",\
+              set_time             = "2024-10-01 17:13:00+00:00", \
               gha_time_0_degrees   = 279, \
               gha_time_0_minutes   = 30.9, \
               gha_time_1_degrees   = 294, \

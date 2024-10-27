@@ -26,12 +26,7 @@ myChronometer = Chronometer\
      drift_sec_per_day          = 0.3)
 
 S1 = Sight (   object_name          = "Sun", \
-              time_year            = 2024,\
-              time_month           = 6,\
-              time_day             = 14,\
-              time_hour            = 5, \
-              time_minute          = 57, \
-              time_second          = 50, \
+              set_time             = "2024-06-14 05:57:50+00:00", \
               gha_time_0_degrees   = 254, \
               gha_time_0_minutes   = 54.8, \
               gha_time_1_degrees   = 269, \
@@ -51,12 +46,7 @@ S1 = Sight (   object_name          = "Sun", \
               )
 
 S2 = Sight (   object_name          = "Sun", \
-              time_year            = 2024,\
-              time_month           = 6,\
-              time_day             = 15,\
-              time_hour            = 14, \
-              time_minute          = 49, \
-              time_second          = 7, \
+              set_time             = "2024-06-15 14:49:07+00:00", \
               gha_time_0_degrees   = 29, \
               gha_time_0_minutes   = 50.4, \
               gha_time_1_degrees   = 44, \
