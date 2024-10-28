@@ -566,3 +566,7 @@ Your chronometer may have a **drift** to take care of, typically if it is mechan
 or digital with no auto-setting. 
 The toolkit contains a <tt>Chronometer</tt> class which can be used to handle this and
 you will find an example of handling this in [this sample](starfixdata.xtra.home.py).
+
+If you need to set your chronometer away from any other reliable time sources you may 
+use the method of [Lunar Distances](https://en.wikipedia.org/wiki/Lunar_distance_(navigation)).
+For your help Lunar Distance [tables](LDtable(A4)_2024.pdf) are bundled in the reposityr. 
