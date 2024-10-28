@@ -569,4 +569,4 @@ you will find an example of handling this in [this sample](starfixdata.xtra.home
 
 If you need to set your chronometer away from any other reliable time sources you may 
 use the method of [Lunar Distances](https://en.wikipedia.org/wiki/Lunar_distance_(navigation)).
-For your help Lunar Distance [tables](LDtable(A4)_2024.pdf) are bundled in the reposityr. 
+For your help Lunar Distance [tables](LDtable(A4)_2024.pdf) are bundled in the repository. 
