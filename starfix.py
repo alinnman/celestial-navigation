@@ -568,11 +568,6 @@ class Sight :
     def __init__ (self, \
                   object_name : str, \
                   set_time : str, \
-                  #time_year : int, \
-                  #time_month : int, \
-                  #time_day : int, \
-                  #time_hour : int, \
-                  #time_minute : int, \
                   gha_time_0_degrees : int, \
                   gha_time_0_minutes : int | float, \
                   gha_time_1_degrees : int, \
@@ -580,7 +575,6 @@ class Sight :
                   decl_time_0_degrees : int, \
                   decl_time_0_minutes : int | float, \
                   measured_alt_degrees : int | float, \
-                  #time_second : int = 0, \
                   measured_alt_minutes : int | float = 0, \
                   measured_alt_seconds : int | float = 0, \
                   decl_time_1_degrees : int = None, \
@@ -602,13 +596,7 @@ class Sight :
         self.dt_dh                = dt_dh
         self.pressure             = pressure
         self.object_name          = object_name
-        set_time_dt               = datetime.fromisoformat (set_time)
-        self.time_year            = set_time_dt.year
-        self.time_month           = set_time_dt.month
-        self.time_day             = set_time_dt.day
-        self.time_hour            = set_time_dt.hour
-        self.time_minute          = set_time_dt.minute
-        self.time_second          = set_time_dt.second
+        self.set_time_dt          = datetime.fromisoformat (set_time)
         self.gha_time_0           = get_decimal_degrees\
               (gha_time_0_degrees, gha_time_0_minutes, 0)
         self.gha_time_1           = get_decimal_degrees\
@@ -660,16 +648,9 @@ class Sight :
         self.gp = self.__calculate_gp ()
 
     def __correct_set_time (self, chronometer : Chronometer):
-        dt1 = datetime (self.time_year, self.time_month, self.time_day,\
-                        self.time_hour, self.time_minute, self.time_second)
-
+        dt1 = self.set_time_dt
         dt2 = chronometer.get_corrected_time (dt1)
-        self.time_year   = dt2.year
-        self.time_month  = dt2.month
-        self.time_day    = dt2.day
-        self.time_hour   = dt2.hour
-        self.time_minute = dt2.minute
-        self.time_second = dt2.second
+        self.set_time_dt = dt2
 
     def __correct_for_graduation_error (self, sextant : Sextant):
         self.measured_alt /= sextant.graduation_error
@@ -697,7 +678,7 @@ class Sight :
 
     def __calculate_gp (self) -> LatLon:
 
-        min_sec_contribution = self.time_minute/60 + self.time_second/3600
+        min_sec_contribution = self.set_time_dt.minute/60 + self.set_time_dt.second/3600
 
         result_lon = mod_lon (- \
         ((self.gha_time_0 + self.sha_diff) + \
@@ -887,21 +868,9 @@ class SightTrip:
         self.__calculate_time_hours ()
 
     def __calculate_time_hours (self):
-        dt1 = datetime(self.sight_start.time_year,\
-                       self.sight_start.time_month,\
-                       self.sight_start.time_day,\
-                       self.sight_start.time_hour,\
-                       self.sight_start.time_minute,\
-                       self.sight_start.time_second,\
-                       tzinfo=timezone.utc)
+        dt1 = self.sight_start.set_time_dt
         it1 = int(dt1.timestamp())
-        dt2 = datetime(self.sight_end.time_year,\
-                       self.sight_end.time_month,\
-                       self.sight_end.time_day,\
-                       self.sight_end.time_hour,\
-                       self.sight_end.time_minute,\
-                       self.sight_end.time_second,\
-                       tzinfo=timezone.utc)
+        dt2 = self.sight_end.set_time_dt
         it2 = int(dt2.timestamp())
         self.time_hours = (it2 - it1) / 3600
 
