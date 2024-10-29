@@ -714,6 +714,10 @@ class Sight :
         the_radius = self.get_radius ()
         return p_distance - the_radius
 
+    def get_azimuth (self, from_pos : LatLon) -> float:
+        ''' Return the azimuth of this sight (to the GP) from a particular point on Earth '''
+        # TODO
+
 class SightPair:
     ''' Represents a pair of sights, needed for making a sight reduction '''
     def __init__ (self, sf1 : Sight, sf2 : Sight):
