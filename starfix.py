@@ -170,7 +170,8 @@ def takeout_course (latlon : LatLon, course : int | float, speed_knots : int | f
     return LatLon (latlon.lat+diff_lat, latlon.lon+diff_lon)
 
 def angle_b_points (latlon1 : LatLon, latlon2 : LatLon) -> float:
-    ''' Calculates the angle between two points on Earth '''
+    ''' Calculates the angle between two points on Earth 
+        Return : Angle in radians '''
     normvec1 = to_rectangular (latlon1)
     normvec2 = to_rectangular (latlon2)
     dp = dot_product (normvec1, normvec2)
@@ -243,6 +244,8 @@ def get_dip_of_horizon (hm : int | float, temperature : float, dt_dh : float, pr
     rr = r / (1 - k_factor)
     the_dip = (acos (rr/(rr+h)))*(180/pi)*60
     return the_dip
+
+# Intersections
 
 def get_intersections (latlon1 : LatLon, latlon2 : LatLon,\
                        angle1 : int | float, angle2 : int | float,\
@@ -715,7 +718,19 @@ class Sight :
         return p_distance - the_radius
 
     def get_azimuth (self, from_pos : LatLon) -> float:
-        ''' Return the azimuth of this sight (to the GP) from a particular point on Earth '''
+        ''' Return the azimuth of this sight (to the GP) from a particular point on Earth 
+            Returns the azimuth in degrees (0-360)'''
+        
+        #a = to_rectangular (self.gp)
+        #b = to_rectangular (from_pos)
+        #nortPole = to_rectangular (LatLon (90, 0))
+        #eastTangent = normalize_vect(cross_product (b, nortPole))
+        #northTangent = cross_product (eastTangent, b)
+        #direction = normalize_vect(subtract_vecs (a,b))
+        #fac1 = dot_product (direction, northTangent)
+        #fac2 = dot_product (direction, eastTangent)
+        #return rad_to_deg (atan2 (fac1, fac2))
+
         # TODO
 
 class SightPair:
