@@ -463,21 +463,22 @@ def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
     elif from_pos.lat == -90:
         return to_pos.lon % 360
     # Antipodes has to be handled
-    if (to_pos.lat == -from_pos.lat) and (((to_pos.lon - from_pos.lon) % 180) == 0):
+    elif (to_pos.lat == -from_pos.lat) and (((to_pos.lon - from_pos.lon) % 180) == 0):
         return 0
     # Same coordinate?
-    if (to_pos.lat == from_pos.lat) and (to_pos.lon == from_pos.lon):
+    elif (to_pos.lat == from_pos.lat) and (to_pos.lon == from_pos.lon):
         return 0
-    a = to_rectangular (to_pos)
-    b = to_rectangular (from_pos)
-    north_pole = [0, 0, 1] # to_rectangular (LatLon (90, 0))
-    east_tangent = normalize_vect(cross_product (north_pole, b))
-    north_tangent = normalize_vect (cross_product (b, east_tangent))
-    direction = normalize_vect(subtract_vecs (a,b))
-    fac1 = dot_product (direction, north_tangent)
-    fac2 = dot_product (direction, east_tangent)
-    r = rad_to_deg (atan2 (fac2, fac1))
-    return r % 360
+    else:
+        a = to_rectangular (to_pos)
+        b = to_rectangular (from_pos)
+        north_pole = [0, 0, 1] # to_rectangular (LatLon (90, 0))
+        east_tangent = normalize_vect(cross_product (north_pole, b))
+        north_tangent = normalize_vect (cross_product (b, east_tangent))
+        direction = normalize_vect(subtract_vecs (a,b))
+        fac1 = dot_product (direction, north_tangent)
+        fac2 = dot_product (direction, east_tangent)
+        r = rad_to_deg (atan2 (fac2, fac1))
+        return r % 360
 
 # Atmospheric refraction
 
