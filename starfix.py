@@ -462,6 +462,12 @@ def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
         return (-to_pos.lon) % 360
     elif from_pos.lat == -90:
         return to_pos.lon % 360
+    # Antipodes has to be handled
+    if (to_pos.lat == -from_pos.lat) and (((to_pos.lon - from_pos.lon) % 180) == 0):
+        return 0
+    # Same coordinate?
+    if (to_pos.lat == from_pos.lat) and (to_pos.lon == from_pos.lon):
+        return 0
     a = to_rectangular (to_pos)
     b = to_rectangular (from_pos)
     north_pole = to_rectangular (LatLon (90, 0))
