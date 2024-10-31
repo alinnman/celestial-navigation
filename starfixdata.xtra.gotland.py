@@ -67,6 +67,16 @@ print (get_representation(intersections,1))
 print ("MD = " + collection.get_map_developers_string())
 print ("GM = " + get_google_map_string(intersections,4))
 
+# Check azimuth
+print (type(intersections))
+az = a.get_azimuth (intersections)
+print ("Azimuth A = " + str(round(az,2)))
+az = b.get_azimuth (intersections)
+print ("Azimuth B = " + str(round(az,2)))
+az = c.get_azimuth (intersections)
+print ("Azimuth C = " + str(round(az,2)))
+
+
 #Diagnostics for map rendering etc.
 print ("Some useful data follows")
 print ("A radius = " + str(round(a.get_radius (),1)))

@@ -454,6 +454,20 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     assert best_intersection is not None
     return best_intersection, fitness, diag_output
 
+def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
+    ''' Return the azimuth of the to_pos sight from from_pos sight
+        Returns the azimuth in degrees (0-360)'''
+    a = to_rectangular (to_pos)
+    b = to_rectangular (from_pos)
+    north_pole = to_rectangular (LatLon (90, 0))
+    east_tangent = normalize_vect(cross_product (north_pole, b))
+    north_tangent = normalize_vect (cross_product (b, east_tangent))
+    direction = normalize_vect(subtract_vecs (a,b))
+    fac1 = dot_product (direction, north_tangent)
+    fac2 = dot_product (direction, east_tangent)
+    r = rad_to_deg (atan2 (fac2, fac1))
+    return r % 360
+
 # Atmospheric refraction
 
 def get_refraction (apparent_angle : int | float, temperature : float, pressure : float) -> float:
@@ -720,18 +734,7 @@ class Sight :
     def get_azimuth (self, from_pos : LatLon) -> float:
         ''' Return the azimuth of this sight (to the GP) from a particular point on Earth 
             Returns the azimuth in degrees (0-360)'''
-        
-        #a = to_rectangular (self.gp)
-        #b = to_rectangular (from_pos)
-        #nortPole = to_rectangular (LatLon (90, 0))
-        #eastTangent = normalize_vect(cross_product (b, nortPole))
-        #northTangent = cross_product (eastTangent, b)
-        #direction = normalize_vect(subtract_vecs (a,b))
-        #fac1 = dot_product (direction, northTangent)
-        #fac2 = dot_product (direction, eastTangent)
-        #return rad_to_deg (atan2 (fac1, fac2))
-
-        # TODO
+        return get_azimuth (self.gp, from_pos)
 
 class SightPair:
     ''' Represents a pair of sights, needed for making a sight reduction '''
