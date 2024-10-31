@@ -470,7 +470,7 @@ def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
         return 0
     a = to_rectangular (to_pos)
     b = to_rectangular (from_pos)
-    north_pole = to_rectangular (LatLon (90, 0))
+    north_pole = [0, 0, 1] # to_rectangular (LatLon (90, 0))
     east_tangent = normalize_vect(cross_product (north_pole, b))
     north_tangent = normalize_vect (cross_product (b, east_tangent))
     direction = normalize_vect(subtract_vecs (a,b))
