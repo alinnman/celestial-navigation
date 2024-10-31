@@ -457,12 +457,11 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
     ''' Return the azimuth of the to_pos sight from from_pos sight
         Returns the azimuth in degrees (0-360)'''
+    # From the poles we need to calculate azimuths differently
     if from_pos.lat == 90:
-        # All azimuths from the North Pole are to the south
-        return 180
+        return (-to_pos.lon) % 360
     elif from_pos.lat == -90:
-        # All azimuths from the South Pole are to the north
-        return 0
+        return to_pos.lon % 360
     a = to_rectangular (to_pos)
     b = to_rectangular (from_pos)
     north_pole = to_rectangular (LatLon (90, 0))
