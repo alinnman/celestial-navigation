@@ -75,7 +75,6 @@ print ("MD = " + collection.get_map_developers_string())
 print ("GM = " + get_google_map_string(intersections,4))
 
 # Check azimuth
-print (type(intersections))
 az = a.get_azimuth (intersections)
 print ("Azimuth A = " + str(round(az,2)))
 az = b.get_azimuth (intersections)
