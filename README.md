@@ -16,6 +16,7 @@
     1. [Using two sights](#using-two-sights)
     1. [Using three or more sights](#using-three-or-more-sights)
     1. [Running the chicago script](#run-chicago-script)
+    1. [Azimuth calculation](#azimuth)
 1. [Dead Reckoning](#dead-reckoning)
     1. [Running the sea script](#run-sea-script)
 1. [A real-life example](#real-life)
@@ -407,6 +408,30 @@ always be obscured by sextant reading errors.
 
 You may also use the supplied Jupyter Notebook scripts
 [notebook.stat.1.ipynb](notebook.stat.1.ipynb) and [notebook.stat.2.ipynb](notebook.stat.2.ipynb).
+
+### 3.iv. Azimuth Calculation<a name="azimuth"></a>
+
+The azimuth (compass angle) to a celestial object is normally **not** used as
+an input parameter to celestial navigation. But it is an important piece of
+information since it can be used to select the correct sight from a sight pair
+(see [above](#3i-using-two-sights)) or for just double-checking a sight reduction.
+
+The azimuth of an observed celestial object is computed using this algorithm.
+
+Let $a$ be the GP of the observed object and $b$ the position of the observer.<br/>
+Let $np$ be the North Pole = $[0,0,1]$
+
+The eastern direction from observer is computed as<br/> $et = N(np \times b)$ <br/>
+
+The northern direction from observer is computed as<br/> $nt = N(b \times et)$ <br/>
+
+The direction vector from observer to GP is computed as<br/> $d = N(a-b)$ <br/>
+
+The azimuth angle can now be computed as<br/>
+$\phi_{\text{azimuth}} = \text{atan2}(d \cdot et, d \cdot nt)$
+
+This [sample](starfixdata.stat.1.py) contains an example of calculation of the
+azimuth for sights.
 
 ## 4. Dead Reckoning<a name="dead-reckoning"></a>
 
