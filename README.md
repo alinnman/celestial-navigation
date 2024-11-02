@@ -421,13 +421,16 @@ The azimuth of an observed celestial object is computed using this algorithm.
 Let $a$ be the GP of the observed object and $b$ the position of the observer.<br/>
 Let $np$ be the North Pole = $[0,0,1]$
 
-The eastern direction from observer is computed as<br/> $et = N(np \times b)$ <br/>
+The eastern direction $et$ from observer is
+computed as<br/> $et = N(np \times b)$ <br/>
 
-The northern direction from observer is computed as<br/> $nt = N(b \times et)$ <br/>
+The northern $nt$ direction from observer is
+computed as<br/> $nt = N(b \times et)$ <br/>
 
-The direction vector from observer to GP is computed as<br/> $d = N(a-b)$ <br/>
+The direction vector $d$ from observer to GP is
+computed as<br/> $d = N(a-b)$ <br/>
 
-The azimuth angle can now be computed as<br/>
+The azimuth angle $\phi_{\text{azimuth}}$ can now be computed as<br/>
 $\phi_{\text{azimuth}} = \text{atan2}(d \cdot et, d \cdot nt)$
 
 This [sample](starfixdata.stat.1.py) contains an example of calculation of the
