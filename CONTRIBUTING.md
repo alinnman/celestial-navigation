@@ -16,12 +16,14 @@ Regarding future plans for this project. These are some things I may consider do
 
 1. Create machine-readable Nautical Almanac
 1. Create a lightweight web application and/or mobile app. <br/>
-*A collection of simple Jupyter notebooks have been added, and this may be good enough for practical work.*
+*A collection of simple Jupyter notebooks have been added, and this may be good
+enough for practical work.*
 1. Diagnostic output for describing the underlying maths.
 (Mainly for the notebooks)<br/>
 *Working on this right now*
 1. More elaborate sextant calibration code.
 1. Possibly start using ISO 6709 strings for angle parameters.
+1. Code for Lunar Distance measurements.
 
 But the design goal is **portability and a small footprint**,
 with no dependency on an internet connection.
