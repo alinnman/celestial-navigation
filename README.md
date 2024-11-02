@@ -419,19 +419,19 @@ information since it can be used to select the correct sight from a sight pair
 The azimuth of an observed celestial object is computed using this algorithm.
 
 Let $a$ be the GP of the observed object and $b$ the position of the observer.<br/>
-Let $np$ be the North Pole = $[0,0,1]$
+Let $p$ be the North Pole = $[0,0,1]$
 
-The eastern direction $et$ from observer is
-computed as<br/> $et = N(np \times b)$ <br/>
+The eastern direction $e$ from observer is
+computed as<br/> $e = N(p \times b)$ <br/>
 
-The northern $nt$ direction from observer is
-computed as<br/> $nt = N(b \times et)$ <br/>
+The northern $n$ direction from observer is
+computed as<br/> $n = N(b \times e)$ <br/>
 
 The direction vector $d$ from observer to GP is
 computed as<br/> $d = N(a-b)$ <br/>
 
 The azimuth angle $\phi_{\text{azimuth}}$ can now be computed as<br/>
-$\phi_{\text{azimuth}} = \text{atan2}(d \cdot et, d \cdot nt)$
+$\phi_{\text{azimuth}} = \text{atan2}(d \cdot e, d \cdot n)$
 
 This [sample](starfixdata.stat.1.py) contains an example of calculation of the
 azimuth for sights.
