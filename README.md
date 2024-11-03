@@ -129,6 +129,7 @@ in the following way. Arguments in *italics* are optional.
 | measured_alt_degrees | Altitude of object in degrees. (0-90).         |                                                                | Sextant |
 | *measured_alt_minutes* | Altitude of object in minutes (0-60).         | Can be zero (use decimal degrees). Default = 0.                              | Sextant |
 | *measured_alt_seconds* | Altitude of object in seconds (0-60).         | Can be zero (use decimal degrees/minutes). Default = 0.                      | Sextant |
+| *index_error_minutes*    | Specify known index error of sextant. | Default = 0. | Sextant |
 | *artficial_horizon*    | Indicates if you use an artificial horizon. True or False. | All sextant readings will be divided by 2. Default = False.          | N/A |
 | *observer_height*    | Height of observer above sea level or ground in meters (>= 0). | Only relevant for observations using natural horizon. Default = 0.          | Height Measurement |
 | *sextant*            | An object defining a specific used sextant.        | See [this code sample](starfixdata.xtra.home.py) for details. Default = None.       | Sextant Calibration |
