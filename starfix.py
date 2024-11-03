@@ -545,6 +545,36 @@ def get_representation (ins : LatLon | tuple | list, num_decimals : int, lat=Fal
         return ret_val
     raise ValueError ("Incorrect types for represenation.")
 
+def parse_angle_string (angle_string : str) -> float:
+    ''' Read a string "DD:MM:SS" and return a decimal degree value.
+        Minute and second specifications are optional. 
+        Decimal values can be used. '''
+    splitted = angle_string.split (":")
+    print (type(splitted))
+    print (splitted)
+    degrees = minutes = seconds = None
+    if len (splitted) == 0 or len (splitted) > 3:
+        raise ValueError ("Invalid number of items in angle specification")
+    try:
+        degrees = float(splitted [0])
+        try:
+            minutes = float (splitted [1])
+            seconds = float (splitted [2])
+        except IndexError:
+            pass
+    except ValueError as exc:
+        raise ValueError ("Invalid data in angle specification") from exc
+    ret_val = degrees
+    if minutes is not None:
+        if degrees < 0:
+            minutes = -minutes
+        ret_val += minutes / 60
+    if seconds is not None:
+        if degrees < 0:
+            seconds = -seconds
+        ret_val += seconds / 3600
+    return ret_val
+
 # Terrestrial Navigation
 
 def get_circle_for_angle (point1 : LatLon, point2 : LatLon, angle : int | float)\
