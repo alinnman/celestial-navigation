@@ -167,12 +167,13 @@ where
 
 * $a_{\text{diff}}$ is the calculated dip (in radians)
 * $R = \frac{r}{1-k}$ (corrected radius of Earth for geodetic refraction)
-* $h$ is the height of the observer (in meters).
+* $h$ is the elevation of the observer (in meters) above the horizon.
 * $r$ is the radius of the Earth (in meters).
 * $k = 503\frac{P}{T^2}\left(0.0342+\frac{dT}{dh}\right)$ (refraction coefficient)
 * $P$ is the pressure (in millibars)
 * $T$ is the temperature (in Kelvins)
-* $\frac{dT}{dh}$ is the temperature gradient
+* $\frac{dT}{dh}$ is the temperature gradient. (Rate of temperature change with
+ increasing elevation).
 
 If you use an artificial horizon the dip is always zero,
 and the *observer_height* parameter should be zero.
