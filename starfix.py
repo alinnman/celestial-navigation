@@ -550,8 +550,6 @@ def parse_angle_string (angle_string : str) -> float:
         Minute and second specifications are optional. 
         Decimal values can be used. '''
     splitted = angle_string.split (":")
-    print (type(splitted))
-    print (splitted)
     degrees = minutes = seconds = None
     if len (splitted) == 0 or len (splitted) > 3:
         raise ValueError ("Invalid number of items in angle specification")
