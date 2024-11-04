@@ -666,10 +666,8 @@ class Sight :
         else:
             self.sha_diff         = 0
         self.observer_height      = observer_height
-        
-        #if not (self.object_name != "Sun" or self.sha_diff == 0): 
-        #    raise ValueError ("The Sun should have a sha_diff parameter != 0") 
-        
+        #if not (self.object_name != "Sun" or self.sha_diff == 0):
+        #    raise ValueError ("The Sun should have a sha_diff parameter != 0")
         if self.observer_height != 0 and artificial_horizon is True:
             raise ValueError ("Observer_height should be == 0 when artificial_horizon == True")
         if self.observer_height < 0:
