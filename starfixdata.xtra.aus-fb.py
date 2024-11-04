@@ -37,41 +37,29 @@ starttime = time ()
 
 a = Sight (   object_name          = "Acrux", \
               set_time             = "2024-08-31 11:10+00:00" ,\
-              gha_time_0_degrees   = 145, \
-              gha_time_0_minutes   = 7, \
-              gha_time_1_degrees   = 160, \
-              gha_time_1_minutes   = 9.4, \
-              decl_time_0_degrees  = -63, \
-              decl_time_0_minutes  = 14.2, \
-              measured_alt_degrees = 40, \
-              sha_diff_degrees     = 173, \
-              sha_diff_minutes     = 1.1 \
+              gha_time_0           = "145:7", \
+              gha_time_1           = "160:9.4", \
+              decl_time_0          = "-63:14.2", \
+              measured_alt         = "40", \
+              sha_diff             = "173:1.1" \
               )
 
 b = Sight (   object_name          = "Canopus", \
               set_time             = "2024-08-31 11:10+00:00" ,\
-              gha_time_0_degrees   = 145, \
-              gha_time_0_minutes   = 7, \
-              gha_time_1_degrees   = 160, \
-              gha_time_1_minutes   = 9.4, \
-              decl_time_0_degrees  = -52, \
-              decl_time_0_minutes  = 42.1, \
-              measured_alt_degrees = 20, \
-              sha_diff_degrees     = 263, \
-              sha_diff_minutes     = 52.8 \
+              gha_time_0           = "145:7", \
+              gha_time_1           = "160:9.4", \
+              decl_time_0          = "-52:42.1", \
+              measured_alt         = "20", \
+              sha_diff             = "263:52.8" \
               )
 
 c = Sight (   object_name          = "Achernar", \
               set_time             = "2024-08-31 11:10+00:00" ,\
-              gha_time_0_degrees   = 145, \
-              gha_time_0_minutes   = 7, \
-              gha_time_1_degrees   = 160, \
-              gha_time_1_minutes   = 9.4, \
-              decl_time_0_degrees  = -57, \
-              decl_time_0_minutes  = 6.4, \
-              measured_alt_degrees = 50, \
-              sha_diff_degrees     = 335, \
-              sha_diff_minutes     = 20 \
+              gha_time_0           = "145:7", \
+              gha_time_1           = "160:9.4", \
+              decl_time_0          = "-57:6.4", \
+              measured_alt         = "50", \
+              sha_diff             = "335:20" \
               )
 
 

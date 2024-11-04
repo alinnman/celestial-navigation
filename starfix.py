@@ -623,66 +623,53 @@ def get_terrestrial_position (point_a1 : LatLon,\
 class Sight :
     '''  Object representing a sight (star fix) '''
     def __init__ (self, \
-                  object_name : str, \
-                  set_time : str, \
-                  gha_time_0_degrees : int, \
-                  gha_time_0_minutes : int | float, \
-                  gha_time_1_degrees : int, \
-                  gha_time_1_minutes : int | float, \
-                  decl_time_0_degrees : int, \
-                  decl_time_0_minutes : int | float, \
-                  measured_alt_degrees : int | float, \
-                  measured_alt_minutes : int | float = 0, \
-                  measured_alt_seconds : int | float = 0, \
-                  decl_time_1_degrees : int = None, \
-                  decl_time_1_minutes : int | float = None, \
-                  sha_diff_degrees : int | float = 0, \
-                  sha_diff_minutes : int | float = 0, \
-                  observer_height : int | float = 0, \
-                  artificial_horizon : bool = False, \
-                  index_error_minutes : int = 0, \
+                  object_name              : str, \
+                  set_time                 : str, \
+                  gha_time_0               : str,\
+                  gha_time_1               : str,\
+                  decl_time_0              : str, \
+                  measured_alt             : str,\
+                  decl_time_1              : str = None, \
+                  sha_diff                 : str = None, \
+                  observer_height          : int | float = 0, \
+                  artificial_horizon       : bool = False, \
+                  index_error_minutes      : int = 0, \
                   semi_diameter_correction : int | float = 0,\
-                  horizontal_parallax : int | float = 0,\
-                  sextant : Sextant = None,\
-                  chronometer : Chronometer = None,\
-                  temperature : float = 10.0,\
-                  dt_dh : float = -0.01,\
-                  pressure : float = 101.0,
-                  ho_obs : bool = False):
+                  horizontal_parallax      : int | float = 0,\
+                  sextant                  : Sextant = None,\
+                  chronometer              : Chronometer = None,\
+                  temperature              : float = 10.0,\
+                  dt_dh                    : float = -0.01,\
+                  pressure                 : float = 101.0,
+                  ho_obs                   : bool = False):
         self.temperature          = temperature
         self.dt_dh                = dt_dh
         self.pressure             = pressure
         self.object_name          = object_name
         self.set_time_dt          = datetime.fromisoformat (set_time)
-        self.gha_time_0           = get_decimal_degrees\
-              (gha_time_0_degrees, gha_time_0_minutes, 0)
-        self.gha_time_1           = get_decimal_degrees\
-              (gha_time_1_degrees, gha_time_1_minutes, 0)
+        self.gha_time_0           = parse_angle_string (gha_time_0)
+        self.gha_time_1           = parse_angle_string (gha_time_1)
         if self.gha_time_1 < self.gha_time_0:
             self.gha_time_1 += 360
-        if decl_time_1_degrees is None:
-            decl_time_1_degrees = decl_time_0_degrees
-        if decl_time_1_minutes is None:
-            decl_time_1_minutes = decl_time_0_minutes
-
-        self.decl_time_0          = get_decimal_degrees\
-              (decl_time_0_degrees, decl_time_0_minutes, 0)
-        self.decl_time_1          = get_decimal_degrees\
-              (decl_time_1_degrees, decl_time_1_minutes, 0)
+        if decl_time_1 is None:
+            decl_time_1 = decl_time_0
+        self.decl_time_0           = parse_angle_string (decl_time_0)
+        self.decl_time_1           = parse_angle_string (decl_time_1)
         if self.decl_time_0 < -90 or self.decl_time_0 > 90 or \
            self.decl_time_1 < -90 or self.decl_time_1 > 90:
             raise ValueError ("Declination values must be within [-90,90]")
-        self.measured_alt         = get_decimal_degrees\
-              (measured_alt_degrees, measured_alt_minutes, measured_alt_seconds)
+        self.measured_alt          = parse_angle_string (measured_alt)
         if self.measured_alt < 0 or self.measured_alt > 90:
             raise ValueError ("Altitude value must be within [0,90]")
-        self.sha_diff             = get_decimal_degrees\
-              (sha_diff_degrees, sha_diff_minutes, 0)
+        if sha_diff is not None:
+            self.sha_diff         = parse_angle_string (sha_diff)
+        else:
+            self.sha_diff         = 0
         self.observer_height      = observer_height
-        '''
-        if not (self.object_name != "Sun" or self.sha_diff == 0): 
-            raise ValueError ("The Sun should have a sha_diff parameter != 0") 
-        '''
+        
+        #if not (self.object_name != "Sun" or self.sha_diff == 0): 
+        #    raise ValueError ("The Sun should have a sha_diff parameter != 0") 
+        
         if self.observer_height != 0 and artificial_horizon is True:
             raise ValueError ("Observer_height should be == 0 when artificial_horizon == True")
         if self.observer_height < 0:

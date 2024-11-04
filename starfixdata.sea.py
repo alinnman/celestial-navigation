@@ -20,17 +20,10 @@ s1LatLon = LatLon (59, 18)
 
 s1 = Sight (  object_name          = "Sun", \
               set_time             = "2024-06-20 06:14:38+00:00", \
-              gha_time_0_degrees   = 269, \
-              gha_time_0_minutes   = 35.2, \
-              gha_time_1_degrees   = 284 , \
-              gha_time_1_minutes   = 35.1, \
-              decl_time_0_degrees  = 23, \
-              decl_time_0_minutes  = 26.2, \
-              decl_time_1_degrees  = 23, \
-              decl_time_1_minutes  = 26.2, \
-              measured_alt_degrees = 30, \
-              measured_alt_minutes = 51, \
-              measured_alt_seconds = 27.1 \
+              gha_time_0           = "269:35.2", \
+              gha_time_1           = "284:35.1", \
+              decl_time_0          = "23:26.2", \
+              measured_alt         = "30:51:27.1" \
               )
 
 
@@ -40,17 +33,10 @@ s1 = Sight (  object_name          = "Sun", \
 
 s2 = Sight (  object_name          = "Sun", \
               set_time             = "2024-06-20 07:13:38+00:00", \
-              gha_time_0_degrees   = 284, \
-              gha_time_0_minutes   = 35.1, \
-              gha_time_1_degrees   = 299 , \
-              gha_time_1_minutes   = 35.0, \
-              decl_time_0_degrees  = 23, \
-              decl_time_0_minutes  = 26.2, \
-              decl_time_1_degrees  = 23, \
-              decl_time_1_minutes  = 26.2, \
-              measured_alt_degrees = 38, \
-              measured_alt_minutes = 34, \
-              measured_alt_seconds = 21.6 \
+              gha_time_0           = "284:35.1", \
+              gha_time_1           = "299:35.0", \
+              decl_time_0          = "23:26.2", \
+              measured_alt         = "38:34:21.6" \
               )
 
 # We reach s2 by applying about 175 degrees for 1 hour with a speed of 20 knots.

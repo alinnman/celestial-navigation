@@ -18,16 +18,11 @@ TEMPERATURE = 18
 
 a = Sight (   object_name          = "Sabik", \
               set_time             = "2024-10-01 17:13:00+00:00", \
-              gha_time_0_degrees   = 265, \
-              gha_time_0_minutes   = 55.1, \
-              gha_time_1_degrees   = 280, \
-              gha_time_1_minutes   = 57.5, \
-              decl_time_0_degrees  = -15, \
-              decl_time_0_minutes  = 45.3, \
-              sha_diff_degrees     = 102, \
-              sha_diff_minutes     = 3.2, \
-              measured_alt_degrees = 57, \
-              measured_alt_minutes = 36.8, \
+              gha_time_0           = "265:55.1", \
+              gha_time_1           = "280:57.5", \
+              decl_time_0          = "-15:45.3", \
+              sha_diff             = "102:3.2", \
+              measured_alt         = "57:36.8", \
               observer_height      = 2.5, \
               temperature          = TEMPERATURE, \
               ho_obs               = True \
@@ -35,16 +30,11 @@ a = Sight (   object_name          = "Sabik", \
 
 b = Sight (   object_name          = "Venus", \
               set_time             = "2024-10-01 17:13:00+00:00", \
-              gha_time_0_degrees   = 47, \
-              gha_time_0_minutes   = 57.8, \
-              gha_time_1_degrees   = 62, \
-              gha_time_1_minutes   = 57.3, \
-              decl_time_0_degrees  = -15, \
-              decl_time_0_minutes  = 14.8, \
-              decl_time_1_degrees  = -15, \
-              decl_time_1_minutes  = 15.9, \
-              measured_alt_degrees = 25, \
-              measured_alt_minutes = 8.4, \
+              gha_time_0           = "47:57.8", \
+              gha_time_1           = "62:57.3", \
+              decl_time_0          = "-15:14.8", \
+              decl_time_1          = "-15:15.9", \
+              measured_alt         = "25:8.4", \
               observer_height      = 2.5, \
               temperature          = TEMPERATURE, \
               ho_obs               = True \
@@ -52,16 +42,10 @@ b = Sight (   object_name          = "Venus", \
 
 c = Sight (   object_name          = "Saturn",\
               set_time             = "2024-10-01 17:13:00+00:00", \
-              gha_time_0_degrees   = 279, \
-              gha_time_0_minutes   = 30.9, \
-              gha_time_1_degrees   = 294, \
-              gha_time_1_minutes   = 33.5, \
-              decl_time_0_degrees  = -8, \
-              decl_time_0_minutes  = 11.8, \
-              decl_time_1_degrees  = -8, \
-              decl_time_1_minutes  = 11.8, \
-              measured_alt_degrees = 30, \
-              measured_alt_minutes = 20.2, \
+              gha_time_0           = "279:30.9", \
+              gha_time_1           = "294:33.5", \
+              decl_time_0          = "-8:11.8", \
+              measured_alt         = "30:20.2", \
               observer_height      = 2.5, \
               temperature          = TEMPERATURE, \
               ho_obs               = True \

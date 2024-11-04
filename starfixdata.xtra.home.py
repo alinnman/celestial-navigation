@@ -27,17 +27,11 @@ myChronometer = Chronometer\
 
 S1 = Sight (   object_name          = "Sun", \
               set_time             = "2024-06-14 05:57:50+00:00", \
-              gha_time_0_degrees   = 254, \
-              gha_time_0_minutes   = 54.8, \
-              gha_time_1_degrees   = 269, \
-              gha_time_1_minutes   = 54.7, \
-              decl_time_0_degrees  = 23, \
-              decl_time_0_minutes  = 17.1, \
-              decl_time_1_degrees  = 23, \
-              decl_time_1_minutes  = 17.3, \
-              measured_alt_degrees = 57, \
-              measured_alt_minutes = 8, \
-              measured_alt_seconds = 0, \
+              gha_time_0           = "254:54.8", \
+              gha_time_1           = "269:54.7", \
+              decl_time_0          = "23:17.1", \
+              decl_time_1          = "23:17.3", \
+              measured_alt         = "57:8", \
               artificial_horizon   = True,\
               index_error_minutes  = 0,\
               semi_diameter_correction = 15.7,\
@@ -47,17 +41,11 @@ S1 = Sight (   object_name          = "Sun", \
 
 S2 = Sight (   object_name          = "Sun", \
               set_time             = "2024-06-15 14:49:07+00:00", \
-              gha_time_0_degrees   = 29, \
-              gha_time_0_minutes   = 50.4, \
-              gha_time_1_degrees   = 44, \
-              gha_time_1_minutes   = 50.2, \
-              decl_time_0_degrees  = 23, \
-              decl_time_0_minutes  = 20.5, \
-              decl_time_1_degrees  = 23, \
-              decl_time_1_minutes  = 20.6, \
-              measured_alt_degrees = 70, \
-              measured_alt_minutes = 17, \
-              measured_alt_seconds = 0, \
+              gha_time_0           = "29:50.4", \
+              gha_time_1           = "44:50.2", \
+              decl_time_0          = "23:20.5", \
+              decl_time_1          = "23:20.6", \
+              measured_alt         = "70:17", \
               artificial_horizon   = True,\
               index_error_minutes  = 0,\
               sextant = mySextant,\

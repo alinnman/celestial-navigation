@@ -86,17 +86,11 @@ and the next hour. (You don't have to enter linear factors etc. from the almanac
 
     a = Sight (   object_name          = "Sun", \
               set_time             = "2024:05:05 15:55:18+00:00"
-              gha_time_0_degrees   = 45, \
-              gha_time_0_minutes   = 50.4, \
-              gha_time_1_degrees   = 60, \
-              gha_time_1_minutes   = 50.4, \
-              decl_time_0_degrees  = 16, \
-              decl_time_0_minutes  = 30.6, \
-              decl_time_1_degrees  = 16, \
-              decl_time_1_minutes  = 31.3, \
-              measured_alt_degrees = 55, \
-              measured_alt_minutes = 8, \
-              measured_alt_seconds = 0 \
+              gha_time_0           = "45:50.4", \
+              gha_time_1           = "60:50.4", \
+              decl_time_0          = "16:30.6", \
+              decl_time_1          = "16:31.3", \
+              measured_alt         = "55:8:0" \
               )
 
 You can also see a complete example in [a python script](starfixdata.stat.1.py)
@@ -114,21 +108,14 @@ in the following way. Arguments in *italics* are optional.
 | :-------------       | :-------------                               | :-------------                                                 | :------------- |
 | object               | Name of celestial object.                     | Only mnemonic.                                                  | N/A |
 | set_time | Time for observation | [Use ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601) | Chronometer |
-| gha_time_0_degrees   | GHA degrees reading for this hour.            | For stars use GHA of Aries.                                    | Nautical Almanac |
-| gha_time_0_minutes   | GHA minutes reading for this hour (0-60).           | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
-| gha_time_1_degrees   | GHA degrees reading for next hour.            | For stars use GHA of Aries.                                    | Nautical Almanac |
-| gha_time_1_minutes   | GHA minutes reading for next hour (0-60).            | Can be zero (use decimal degrees). For stars use GHA of Aries. | Nautical Almanac |
-| decl_time_0_degrees  | Declination degrees reading for this hour (-90 - 90).    |   |  Nautical Almanac |
-| decl_time_0_minutes  | Declination minutes reading for this hour (0-60).   | Can be zero (use decimal degrees).                              | Nautical Almanac |  
-| *decl_time_1_degrees*  | Declination degrees reading for next hour (-90 - 90). | Can be skipped for stars. Default = decl_time_0_degrees | Nautical Almanac |
-| *decl_time_1_minutes*  | Declination minutes reading for next hour (0-60). | Can be skipped for stars. Can be zero (use decimal degrees). Default = decl_time_1_minutes | Nautical Almanac |
-| *sha_diff_degrees*   | SHA of star vs Aries in degrees.              | Only use for stars. Otherwise skip. Default = 0. | Nautical Almanac |
-| *sha_diff_minutes*  | SHA of star vs Aries in minutes (0-60). | Only use for stars. Otherwise skip. Can be zero (use decimal degrees). Default = 0. | Nautical Almanac |
-| *semidiameter_correction* | Correction for limb measurements.  | Typically used for Moon or Sun. *SD* value, positive (lower limb) or negative (upper limb). Default = 0. | Nautical Almanac | 
+| gha_time_0   | GHA reading for this hour. | String with format "DD:MM:SS". For stars use GHA of Aries. | Nautical Almanac |
+| gha_time_1   | GHA reading for next hour. | String with format "DD:MM:SS". For stars use GHA of Aries. | Nautical Almanac |
+| decl_time_0  | Declination reading for this hour. | String with format "DD:MM:SS".|  Nautical Almanac |
+| *decl_time_1*  | Declination reading for next hour. | String with format "DD:MM:SS". Can be skipped for stars. Default = decl_time_0 | Nautical Almanac |
+| *sha_diff*   | SHA of star vs Aries in degrees. | String with format "DD:MM:SS". Only use for stars. Otherwise skip. Default = "0". | Nautical Almanac |
+| *semidiameter_correction* | Correction for limb measurements.  | Typically used for Moon or Sun. *SD* value (arcminutes), positive (lower limb) or negative (upper limb). Default = 0. | Nautical Almanac | 
 | *horizontal_parallax* | Correction for horizontal parallax.  | Used for the Moon. *HP* value. Default = 0. | Nautical Almanac | 
-| measured_alt_degrees | Altitude of object in degrees. (0-90).         |                                                                | Sextant |
-| *measured_alt_minutes* | Altitude of object in minutes (0-60).         | Can be zero (use decimal degrees). Default = 0.                              | Sextant |
-| *measured_alt_seconds* | Altitude of object in seconds (0-60).         | Can be zero (use decimal degrees/minutes). Default = 0.                      | Sextant |
+| measured_alt | Altitude of object in degrees. | String with format "DD:MM:SS". | Sextant |
 | *index_error_minutes*    | Specify known index error of sextant. | Default = 0. | Sextant |
 | *artficial_horizon*    | Indicates if you use an artificial horizon. True or False. | All sextant readings will be divided by 2. Default = False.          | N/A |
 | *observer_height*    | Height of observer above sea level or ground in meters (>= 0). | Only relevant for observations using natural horizon. Default = 0.          | Height Measurement |

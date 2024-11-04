@@ -14,44 +14,29 @@ starttime = time ()
 
 a = Sight (   object_name          = "Sun", \
               set_time             = "2024-06-29 08:21:00+00:00", \
-              gha_time_0_degrees   = 299, \
-              gha_time_0_minutes   = 6.6, \
-              gha_time_1_degrees   = 314, \
-              gha_time_1_minutes   = 6.5, \
-              decl_time_0_degrees  = 23, \
-              decl_time_0_minutes  = 11.6, \
-              decl_time_1_degrees  = 23, \
-              decl_time_1_minutes  = 11.4, \
-              measured_alt_degrees = 46, \
-              measured_alt_minutes = 23, \
+              gha_time_0           = "299:6.6", \
+              gha_time_1           = "314:6.5", \
+              decl_time_0          = "23:11.6", \
+              decl_time_1          = "23:11.4", \
+              measured_alt         = "46:23" \
               )
 
 b = Sight (   object_name          = "Sun", \
               set_time             = "2024-06-29 12:51:00+00:00", \
-              gha_time_0_degrees   = 359, \
-              gha_time_0_minutes   = 6.1, \
-              gha_time_1_degrees   = 14, \
-              gha_time_1_minutes   = 6.6, \
-              decl_time_0_degrees  = 23, \
-              decl_time_0_minutes  = 11.1, \
-              decl_time_1_degrees  = 23, \
-              decl_time_1_minutes  = 10.8, \
-              measured_alt_degrees = 49, \
-              measured_alt_minutes = 18, \
+              gha_time_0           = "359:6.1", \
+              gha_time_1           = "14:6.6", \
+              decl_time_0          = "23:11.1", \
+              decl_time_1          = "23:10.8", \
+              measured_alt         = "49:18" \
               )
 
 c = Sight (   object_name          = "Sun", \
               set_time             = "2024-06-28 15:36:00+00:00", \
-              gha_time_0_degrees   = 44, \
-              gha_time_0_minutes   = 5.7, \
-              gha_time_1_degrees   = 59, \
-              gha_time_1_minutes   = 5.6, \
-              decl_time_0_degrees  = 23, \
-              decl_time_0_minutes  = 10.5, \
-              decl_time_1_degrees  = 23, \
-              decl_time_1_minutes  = 10.4, \
-              measured_alt_degrees = 29, \
-              measured_alt_minutes = 20, \
+              gha_time_0           = "44:5.7", \
+              gha_time_1           = "59:5.6", \
+              decl_time_0          = "23:10.5", \
+              decl_time_1          = "23:10.4", \
+              measured_alt         = "29:20" \
               )
 
 

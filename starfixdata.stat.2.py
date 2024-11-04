@@ -15,48 +15,30 @@ starttime = time ()
 
 a = Sight (   object_name          = "Capella", \
               set_time             = "2024-09-17 23:36:13+00:00", \
-              gha_time_0_degrees   = 342, \
-              gha_time_0_minutes   = 21.9, \
-              gha_time_1_degrees   = 357, \
-              gha_time_1_minutes   = 24.4, \
-              decl_time_0_degrees  = 46, \
-              decl_time_0_minutes  = 1.2, \
-              sha_diff_degrees     = 280, \
-              sha_diff_minutes     = 22.3, \
-              measured_alt_degrees = 33, \
-              measured_alt_minutes = 9, \
-              measured_alt_seconds = 34 \
+              gha_time_0           = "342:21.9", \
+              gha_time_1           = "357:24.4", \
+              decl_time_0          = "46 :1.2", \
+              sha_diff             = "280:22.3", \
+              measured_alt         = "33 :9    :34" \
               )
 
 b = Sight (   object_name          = "Moon", \
               set_time             = "2024-09-17 23:41:13+00:00", \
-              gha_time_0_degrees   = 347, \
-              gha_time_0_minutes   = 55.7, \
-              gha_time_1_degrees   = 2, \
-              gha_time_1_minutes   = 24.6, \
-              decl_time_0_degrees  = -3, \
-              decl_time_0_minutes  = 43.5, \
-              decl_time_1_degrees  = -3, \
-              decl_time_1_minutes  = 25.3, \
+              gha_time_0           = "347:55.7" , \
+              gha_time_1           = "2  :24.6", \
+              decl_time_0          = "-3 :43.5", \
+              decl_time_1          = "-3 :25.3", \
               horizontal_parallax  = 61.2, \
-              measured_alt_degrees = 48, \
-              measured_alt_minutes = 22, \
-              measured_alt_seconds = 5.2 \
+              measured_alt         = "48 :22  :5.2" \
               )
 
 c = Sight (   object_name          = "Vega", \
               set_time             = "2024-09-17 23:46:13+00:00", \
-              gha_time_0_degrees   = 342, \
-              gha_time_0_minutes   = 21.9, \
-              gha_time_1_degrees   = 357, \
-              gha_time_1_minutes   = 24.4, \
-              decl_time_0_degrees  = 38, \
-              decl_time_0_minutes  = 48.6, \
-              sha_diff_degrees     = 80, \
-              sha_diff_minutes     = 33.3, \
-              measured_alt_degrees = 25, \
-              measured_alt_minutes = 39, \
-              measured_alt_seconds = 4, \
+              gha_time_0           = "342:21.9", \
+              gha_time_1           = "357:24.4", \
+              decl_time_0          = "38 :48.6", \
+              sha_diff             = "80 :33.3", \
+              measured_alt         = "25 :39:4" \
               )
 
 collection = SightCollection ([a,b,c])
