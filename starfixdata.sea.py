@@ -51,7 +51,7 @@ st = SightTrip (sight_start               = s1,\
 try:
     intersections, fitness, diag_output = st.get_intersections ()
 except ValueError as ve:
-    print ("Cannot get perform a sight reduction. Bad sight data.")
+    print ("Cannot perform a sight reduction. Bad sight data.")
     exit ()
 
 endtime = time ()

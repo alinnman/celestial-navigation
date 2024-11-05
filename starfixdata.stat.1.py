@@ -43,7 +43,7 @@ collection = SightCollection ([a, b])
 try:
     intersections, fitness, diag_output = collection.get_intersections ()
 except ValueError as ve:
-    print ("Cannot get perform a sight reduction. Bad sight data.")
+    print ("Cannot perform a sight reduction. Bad sight data.")
     exit ()
 print (get_representation(intersections,1))
 print ("-----------------------------------")

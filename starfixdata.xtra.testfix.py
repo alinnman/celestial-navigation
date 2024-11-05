@@ -67,7 +67,7 @@ try:
     intersections, fitness, diag_output =\
         collection.get_intersections (limit=100)
 except ValueError as ve:
-    print ("Cannot get perform a sight reduction. Bad sight data.")
+    print ("Cannot perform a sight reduction. Bad sight data.")
     exit ()
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)

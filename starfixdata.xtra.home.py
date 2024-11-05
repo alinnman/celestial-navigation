@@ -61,7 +61,7 @@ try:
     intersections, fitness, diag_output =\
         collection.get_intersections (estimated_position = LatLon(59,19))
 except ValueError as ve:
-    print ("Cannot get perform a sight reduction. Bad sight data.")
+    print ("Cannot perform a sight reduction. Bad sight data.")
     exit ()
 
 endtime = time ()
