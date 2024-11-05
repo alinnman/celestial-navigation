@@ -1,3 +1,7 @@
+# Quick Demo
+
+A [quick demo](https://colab.research.google.com/drive/1U5KRO7280yxc1fHyZIkpfIhS3st9K8Uf?usp=sharing) of the code can be found at Google Colab. You can use it to run a standard three-star fix. A Google account is necessary. 
+
 # Installation
 
 The code is installed using just a file copy of the python (.py) and (optionally)
