@@ -1,6 +1,6 @@
 # Quick Demo
 
-A [quick demo](https://colab.research.google.com/drive/1U5KRO7280yxc1fHyZIkpfIhS3st9K8Uf?usp=sharing) of the code can be found at Google Colab. You can use it to run a standard three-star fix. A Google account is necessary. 
+A [quick demo](https://colab.research.google.com/github/alinnman/celestial-navigation/blob/main/starfix_colab_demo.ipynb) of the code can be found at Google Colab. You can use it to run a standard three-star fix. A Google account is necessary. 
 
 # Installation
 
