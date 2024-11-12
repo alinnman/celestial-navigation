@@ -659,8 +659,6 @@ class Sight :
            self.decl_time_1 < -90 or self.decl_time_1 > 90:
             raise ValueError ("Declination values must be within [-90,90]")
         self.measured_alt          = parse_angle_string (measured_alt)
-        if self.measured_alt < 0 or self.measured_alt > 90:
-            raise ValueError ("Altitude value must be within [0,90]")
         if sha_diff is not None:
             self.sha_diff         = parse_angle_string (sha_diff)
         else:
@@ -680,6 +678,8 @@ class Sight :
             self.__correct_for_index_error (index_error_minutes)
         if artificial_horizon:
             self.__correct_for_artficial_horizon ()
+        if self.measured_alt < 0 or self.measured_alt > 90:
+            raise ValueError ("Altitude value must be within [0,90]")            
         if semi_diameter_correction != 0:
             self.__correct_semi_diameter (semi_diameter_correction)
         if horizontal_parallax != 0:

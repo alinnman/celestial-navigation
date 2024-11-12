@@ -1,13 +1,17 @@
-# Quick Demo
+# Installation and usage
 
-A [quick demo](https://colab.research.google.com/drive/1U5KRO7280yxc1fHyZIkpfIhS3st9K8Uf?usp=sharing) of the code can be found at Google Colab. You can use it to run a standard three-star fix. A Google account is necessary. 
+## Quick Demo
 
-# Installation
+A [quick demo](https://colab.research.google.com/github/alinnman/celestial-navigation/blob/main/starfix_colab_demo.ipynb)
+of the code can be run at Google Colab. You can use it to run a standard
+three-star fix. A Google account is necessary.
+
+## Installation
 
 The code is installed using just a file copy of the python (.py) and (optionally)
 Jupyter notebook (.ipynb) files to a suitable directory.
 No additional libraries are necessary.
-Python 3.11 is required. 
+Python 3.11 is required.
 This [link](https://github.com/alinnman/celestial-navigation/archive/refs/heads/main.zip)
 will download all code in a ZIP file.
 
@@ -16,8 +20,10 @@ The python scripts could be installed in
 to allow for use on an Android mobile phone
 (with no need for internet access).
 To aid in installation a good file browser is recommended
-(for copying and decompressing of ZIP files) such as [Cx File Explorer](https://play.google.com/store/apps/details?id=com.cxinventor.file.explorer&pcampaignid=web_share). You are recommended to unzip the file to a specific directory (not a root directory),
-on Android you could create a directory in the "Documents" tree, e.g. "Documents/work/coding".  
+(for copying and decompressing of ZIP files) such as [Cx File Explorer](https://play.google.com/store/apps/details?id=com.cxinventor.file.explorer&pcampaignid=web_share).
+You are recommended to unzip the file to a specific directory (not a root directory),
+on Android you could create a directory in the "Documents" tree,
+e.g. "Documents/work/coding".  
 
 The script [starfix.py](starfix.py) contains the core routines.
 
@@ -27,8 +33,9 @@ You are advised to adjust this script for your used sextant.
 
 You are also advised to make copies (and modifications) of the supplied samples
 [starfixdata.stat.1.py](starfixdata.stat.1.py)
-or [starfixdata.sea.py](starfixdata.sea.py) to support your workflow and observations. 
-There are also Jupyter notebooks availabe, see below. 
+or [starfixdata.sea.py](starfixdata.sea.py)
+to support your workflow and observations.
+There are also Jupyter notebooks availabe, see below.
 
 The Nautical Almanac must be used manually to get the GP (ground point) of
 your observations. Currently the almanacs of [2024](NAtrad(A4)_2024.pdf)
@@ -46,7 +53,7 @@ terrestrial navigation.
 
 In addition to the supplied scripts you may also run the code in
 [Jupyter Notebooks](https://en.wikipedia.org/wiki/Project_Jupyter#Jupyter_Notebook).
-[Jupyter can be installed in Pydroid](https://www.codementor.io/@olalekanrahman/how-to-access-jupyter-notebook-on-pydroid-1ckw13mtgz), 
+[Jupyter can be installed in Pydroid](https://www.codementor.io/@olalekanrahman/how-to-access-jupyter-notebook-on-pydroid-1ckw13mtgz),
 and this allows for a convenient way to keep your workflow in an easily
 managed web interface. The notebook web interface can be launched from specific
-launch scipts (launch.xxx.py). 
+launch scipts (launch.xxx.py).

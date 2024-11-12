@@ -101,6 +101,7 @@ Chicago on May 5th 2024.
 In other words: No sextant readings were made and the accuracy is very good.
 (Running this sample will give you an accuracy of just some 100 meters).
 
+<a name="parameters"></a>
 The data is picked from your chronometer (clock), sextant and the Nautical Almanac
 in the following way. Arguments in *italics* are optional.
 
