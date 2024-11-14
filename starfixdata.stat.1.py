@@ -44,12 +44,18 @@ try:
     intersections, fitness, diag_output = collection.get_intersections ()
 except ValueError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
+    print ("Check the circles! " + collection.get_map_developers_string())
     exit ()
 print (get_representation(intersections,1))
 print ("-----------------------------------")
 print ("We add an additional night time observation of Vega")
 collection = SightCollection ([a, b, c])
-intersections, fitness, diag_output = collection.get_intersections ()
+try:
+    intersections, fitness, diag_output = collection.get_intersections ()
+except ValueError as ve:
+    print ("Cannot perform a sight reduction. Bad sight data.")
+    print ("Check the circles! " + collection.get_map_developers_string())
+    exit ()
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,3)
 print (get_representation(intersections,1))

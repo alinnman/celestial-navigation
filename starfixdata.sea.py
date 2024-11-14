@@ -52,6 +52,7 @@ try:
     intersections, fitness, diag_output = st.get_intersections ()
 except ValueError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
+    print ("Check the circles! " + st.get_map_developers_string())
     exit ()
 
 endtime = time ()

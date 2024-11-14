@@ -679,7 +679,7 @@ class Sight :
         if artificial_horizon:
             self.__correct_for_artficial_horizon ()
         if self.measured_alt < 0 or self.measured_alt > 90:
-            raise ValueError ("Altitude value must be within [0,90]")            
+            raise ValueError ("Altitude value must be within [0,90]")
         if semi_diameter_correction != 0:
             self.__correct_semi_diameter (semi_diameter_correction)
         if horizontal_parallax != 0:
