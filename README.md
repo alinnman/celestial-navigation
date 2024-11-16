@@ -198,7 +198,8 @@ Using two star fixes a sight reduction can be done in the following way:
         print (get_representation(intersections,1))
     except ValueError as ve:
         print ("Cannot get perform a sight reduction. Bad sight data.")
-        
+        ## For debugging: Get a map where you can look at the intersections
+        print ("Check the circles! " + collection.get_map_developers_string())        
 
 You can enter an estimated position (Dead Reckoning Position, **DRP**) as a parameter.
 This will reduce the number of calculations and eliminate intersections being far
@@ -322,6 +323,8 @@ Using three (or more) sights a sight reduction can be done in the following way
         print (getRepresentation(intersections,1))
     except ValueError as ve:
         print ("Cannot get perform a sight reduction. Bad sight data.")
+        ## For debugging: Get a map where you can look at the intersections
+        print ("Check the circles! " + collection.get_map_developers_string())
 
 A *sight* is defined as a collection of data as described in the section 1 above,
 i.e. recorded data for a celestial object for a specific time.
