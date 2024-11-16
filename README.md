@@ -200,6 +200,13 @@ Using two star fixes a sight reduction can be done in the following way:
         print ("Cannot get perform a sight reduction. Bad sight data.")
         
 
+You can enter an estimated position (Dead Reckoning Position, **DRP**) as a parameter.
+This will reduce the number of calculations and eliminate intersections being far
+off the place where you assume you are located.
+
+        intersections, fitness, diag_output = collection.get_intersections \
+        (estimated_position = LatLon (57,19))
+
 The result will be a tuple of **two** coordinates (intersections of two circles 
 of equal altitude). These intersections can be located far away from each other.
 You will have to decide which one of them is the correct observation point,
