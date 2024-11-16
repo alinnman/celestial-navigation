@@ -317,7 +317,8 @@ Using three (or more) sights a sight reduction can be done in the following way
     
     collection = SightCollection ([a, b, c]) # Add more sights if needed
     try:
-        intersections, fitness, diag_output = collection.getIntersections ()
+        intersections, fitness, diag_output = collection.getIntersections \
+        (estimated_position (LatLon(23,45))) // DRP can be entered if suitable
         print (getRepresentation(intersections,1))
     except ValueError as ve:
         print ("Cannot get perform a sight reduction. Bad sight data.")
