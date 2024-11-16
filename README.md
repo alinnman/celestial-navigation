@@ -456,11 +456,11 @@ accuracy. You do this by defining a trip segment like this.
 
 See above for how to create a sight object
 
-    # We reach s2 by applying about 175 degrees for 1 hour
+    # We reach s2 by moving in a direction of about 175 degrees for 1 hour
     # (time between taking of sights) with a speed of 20 knots. 
     C_COURSE = 175
     SPEED = 20    
-    st = SightTrip (sight_start = s1, sight_end = s2,\
+    st = SightTrip (sight_start = s1, sight_end     = s2,\
                     estimated_starting_point        = s1LatLon,\
                     course_degrees                  = C_COURSE,\
                     speed_knots                     = SPEED)
