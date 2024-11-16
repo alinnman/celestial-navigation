@@ -432,7 +432,7 @@ The direction vector $d$ from observer to GP is
 computed as<br/> $d = N(a-b)$ <br/>
 
 The azimuth angle $\phi_{\text{azimuth}}$ can now be computed as<br/>
-$\phi_{\text{azimuth}} = \text{atan2}(d \cdot e, d \cdot n)$
+$\phi_{\text{azimuth}} = \arctan(\frac{d \cdot e}{d \cdot n})$
 
 This [sample](starfixdata.stat.1.py) contains an example of calculation of the
 azimuth for sights.
