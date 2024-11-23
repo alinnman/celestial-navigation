@@ -187,7 +187,7 @@ See [more about future plans](CONTRIBUTING.md).
 
 Using two star fixes a sight reduction can be done in the following way:
 
-    from starfix import Sight, SightCollection, get_representation
+    from starfix import Sight, SightCollection, get_representation, IntersectError
  
     a = Sight (....Parameters....)
     b = Sight (....Parameters....)
@@ -196,7 +196,7 @@ Using two star fixes a sight reduction can be done in the following way:
     try:
         intersections, fitness, diag_output = collection.get_intersections ()
         print (get_representation(intersections,1))
-    except ValueError as ve:
+    except IntersectError as ve:
         print ("Cannot get perform a sight reduction. Bad sight data.")
         ## For debugging: Get a map where you can look at the intersections
         print ("Check the circles! " + collection.get_map_developers_string())        
@@ -295,8 +295,8 @@ From this we calculate the fitness factor $\phi$:
 
 $\phi = |d_1 \times d_2|$  ;  $0<=\phi<=1$
 
-
-Note: The sight reduction algorithm described in this section will only work if at least one of the circles is a small circle.
+Note: The sight reduction algorithm described in this section will only work if
+at least one of the circles is a small circle.
 It cannot be used for calculating intersections of two great circles.
 
 Note: I have chosen to use an algorithm based on 3D cartesian vectors.
@@ -310,7 +310,7 @@ simple and easier to convert to well-functioning software.
 
 Using three (or more) sights a sight reduction can be done in the following way
 
-    from starfix import Sight, SightCollection, getRepresentation
+    from starfix import Sight, SightCollection, getRepresentation, IntersectError
  
     a = Sight (....Parameters....)
     b = Sight (....Parameters....)
@@ -321,7 +321,7 @@ Using three (or more) sights a sight reduction can be done in the following way
         intersections, fitness, diag_output = collection.getIntersections \
         (estimated_position (LatLon(23,45))) ## DRP can be entered if suitable
         print (getRepresentation(intersections,1))
-    except ValueError as ve:
+    except IntersectError as ve:
         print ("Cannot get perform a sight reduction. Bad sight data.")
         ## For debugging: Get a map where you can look at the intersections
         print ("Check the circles! " + collection.get_map_developers_string())

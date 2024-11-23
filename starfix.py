@@ -247,6 +247,12 @@ def get_dip_of_horizon (hm : int | float, temperature : float, dt_dh : float, pr
 
 # Intersections
 
+class IntersectError (ValueError):
+    ''' Exception used for failed intersections '''
+
+    def __init__ (self, info : str):
+        super().__init__ (info)
+
 def get_intersections (latlon1 : LatLon, latlon2 : LatLon,\
                        angle1 : int | float, angle2 : int | float,\
                        estimated_position : LatLon = None,\
@@ -380,7 +386,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         if diagnostics:
             diag_output += "=" + str(round(rho,4)) + "\\text{ ==> }\\rho$ (rotation angle)\n"
     except ValueError as exc:
-        raise ValueError ("Bad sight data. Circles do not intersect.") from exc
+        raise IntersectError ("Bad sight data. Circles do not intersect.") from exc
 
     # Calculate a rotation vector
     rot_axis = normalize_vect(cross_product (cross_product (a_vec, b_vec), q))
@@ -543,7 +549,7 @@ def get_representation (ins : LatLon | tuple | list, num_decimals : int, lat=Fal
                 ret_val = ret_val + ";"
         ret_val = ret_val + ")"
         return ret_val
-    raise ValueError ("Incorrect types for represenation.")
+    raise ValueError ("Incorrect types for representation.")
 
 def parse_angle_string (angle_string : str) -> float:
     ''' Read a string "DD:MM:SS" and return a decimal degree value.
@@ -850,7 +856,7 @@ class SightCollection:
             nr_of_chosen_points = len (chosen_points)
             if nr_of_chosen_points == 0:
                 # No points found. Bad star fixes. Throw exception.
-                raise ValueError ("Bad sight data.")
+                raise IntersectError ("Bad sight data.")
             # Make sure the chosen points are nearby each other
             #print ("BEST COORDINATES")
             fine_sorting = False # This code is disabled for now
@@ -864,7 +870,7 @@ class SightCollection:
                                 # Probably multiple possible observation points.
                                 # Best option is to perform sight reduction on 2 sights
                                 # and select the correct point manually.
-                                raise ValueError\
+                                raise IntersectError\
                                 ("Cannot sort multiple intersections to find"+\
                                  "a reasonable set of coordinates")
             #print ("MEAN VALUE COORDINATE from multi-point sight data.")
@@ -964,7 +970,7 @@ class SightTrip:
             current_rotation = current_rotation - (distance_result)/derivative
             iter_count += 1
         if iter_count >= iter_limit:
-            raise ValueError ("Cannot calculate a trip vector")
+            raise IntersectError ("Cannot calculate a trip vector")
         else:
             return (taken_out, rotated), fitness, diag_output
 

@@ -6,7 +6,8 @@
 '''
 
 from time import time
-from starfix import Sight, SightTrip, get_representation, get_google_map_string, LatLon
+from starfix import Sight, SightTrip, get_representation, get_google_map_string,\
+     LatLon, IntersectError
 
 starttime = time ()
 
@@ -50,7 +51,7 @@ st = SightTrip (sight_start               = s1,\
 
 try:
     intersections, fitness, diag_output = st.get_intersections ()
-except ValueError as ve:
+except IntersectError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
     print ("Check the circles! " + st.get_map_developers_string())
     exit ()

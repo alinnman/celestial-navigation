@@ -5,7 +5,8 @@
 '''
 
 from time import time
-from starfix import Sight, SightCollection, get_representation, get_google_map_string
+from starfix import Sight, SightCollection, get_representation,\
+                    get_google_map_string, IntersectError
 
 starttime = time ()
 
@@ -52,7 +53,7 @@ print ("We add an additional night time observation of Vega")
 collection = SightCollection ([a, b, c])
 try:
     intersections, fitness, diag_output = collection.get_intersections ()
-except ValueError as ve:
+except IntersectError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
     print ("Check the circles! " + collection.get_map_developers_string())
     exit ()
