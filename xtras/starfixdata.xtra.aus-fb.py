@@ -28,7 +28,7 @@ https://www.mapdevelopers.com/draw-circle-tool.php?circles=%5B%5B5563500%2C-62.7
 '''
 
 from time import time
-from starfix import Sight, SightCollection, get_representation, get_google_map_string
+from starfix import Sight, SightCollection, get_representation, get_google_map_string, IntersectError
 
 
 starttime = time ()
@@ -66,7 +66,7 @@ c = Sight (   object_name          = "Achernar", \
 collection = SightCollection ([a, b, c])
 try:
     intersections, fitness, diag_output = collection.get_intersections (limit=500)
-except ValueError as ve:
+except IntersectError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
     exit ()
 endtime = time ()

@@ -7,7 +7,8 @@ from time import time
 from starfix import Sight, SightCollection, LatLon, Sextant, Chronometer,\
                     get_decimal_degrees_from_tuple,\
                     get_representation, \
-                    get_google_map_string, distance_between_points
+                    get_google_map_string, distance_between_points,\
+                    IntersectError
 from calibration import calibrationRealValue, calibrationMeasuredValue
 
 starttime = time ()
@@ -60,7 +61,7 @@ home = LatLon (59.318659676810654, 18.04959717835501)
 try:
     intersections, fitness, diag_output =\
         collection.get_intersections (estimated_position = LatLon(59,19))
-except ValueError as ve:
+except IntersectError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
     exit ()
 
