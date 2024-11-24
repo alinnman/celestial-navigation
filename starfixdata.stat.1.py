@@ -43,7 +43,7 @@ print ("Two daytime observations of the sun")
 collection = SightCollection ([a, b])
 try:
     intersections, fitness, diag_output = collection.get_intersections ()
-except ValueError as ve:
+except IntersectError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
     print ("Check the circles! " + collection.get_map_developers_string())
     exit ()
