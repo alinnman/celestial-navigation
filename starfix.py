@@ -23,7 +23,7 @@ class LatLon:
         self.lon = mod_lon(lon)
 
     def __str__(self):
-        return "LAT = " + str(self.lat) + "; LON = " + str(self.lon)
+        return "LAT = " + str(round(self.lat,4)) + "; LON = " + str(round(self.lon,4))
 
     def get_tuple (self) -> tuple[float | int] :
         ''' Used to simplify some code where tuples are more practical '''
@@ -448,17 +448,17 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 
     if estimated_position is None:
         return ret_tuple, fitness, diag_output
-
-    # Check which of the intersections is closest to our estimatedCoordinates
-    best_distance = EARTH_CIRCUMFERENCE
-    best_intersection = None
-    for ints in ret_tuple:
-        the_distance = distance_between_points (ints, estimated_position)
-        if the_distance < best_distance:
-            best_distance = the_distance
-            best_intersection = ints
-    assert best_intersection is not None
-    return best_intersection, fitness, diag_output
+    else:
+        # Check which of the intersections is closest to our estimatedCoordinates
+        best_distance = EARTH_CIRCUMFERENCE
+        best_intersection = None
+        for ints in ret_tuple:
+            the_distance = distance_between_points (ints, estimated_position)
+            if the_distance < best_distance:
+                best_distance = the_distance
+                best_intersection = ints
+        assert best_intersection is not None
+        return best_intersection, fitness, diag_output
 
 def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
     ''' Return the azimuth of the to_pos sight from from_pos sight
@@ -820,9 +820,7 @@ class SightCollection:
                                              intersection_number = intersection_count)
                     diag_output += dia
                     if p_int is not None:
-                        if isinstance (p_int, tuple) or isinstance (p_int, list):
-                            #for k in range (len(p_int)):
-                            #    coords.append (p_int[k])
+                        if isinstance (p_int, (list, tuple)):
                             for pix in p_int:
                                 coords.append ((pix, fitness))
                         elif isinstance (p_int, LatLon):
@@ -832,11 +830,21 @@ class SightCollection:
             nr_of_coords = len (coords)
             dists = dict ()
             # Collect all distance values between intersections
+            if diagnostics:
+                diag_output += "## Distance table\n\n"
+                diag_output += "Nr of intersections = " + str(nr_of_coords) + "\n\n"
             for i in range (nr_of_coords):
                 for j in range (i, nr_of_coords):
                     if i != j:
                         dist = distance_between_points (coords[i][0], coords[j][0])
                         dists [i,j] = dist
+                        if diagnostics:
+                            diag_output +=\
+                                "Distance (" +\
+                                 str(i) +\
+                                 " ["+str(coords[i][0])+"], " +\
+                                 str(j) +\
+                                 " ["+str(coords[j][0])+"]) = " + str(round(dist,1)) + " km\n\n"
             # Sort the distances, with lower distances first
             sorted_dists = dict(sorted(dists.items(), key=lambda item: item[1]))
             # nrOfSortedDists = len (sortedDists)
@@ -857,8 +865,8 @@ class SightCollection:
             if nr_of_chosen_points == 0:
                 # No points found. Bad star fixes. Throw exception.
                 raise IntersectError ("Bad sight data.")
+            
             # Make sure the chosen points are nearby each other
-            #print ("BEST COORDINATES")
             fine_sorting = False # This code is disabled for now
             if fine_sorting:
                 for cp1 in chosen_points:
@@ -873,8 +881,7 @@ class SightCollection:
                                 raise IntersectError\
                                 ("Cannot sort multiple intersections to find"+\
                                  "a reasonable set of coordinates")
-            #print ("MEAN VALUE COORDINATE from multi-point sight data.")
-            #print ("Nr of chosen intersections = " + str(len(chosen_points)))
+
             summation_vec = [0,0,0]
             # Make a mean value on the best intersections.
             fitness_sum = 0
