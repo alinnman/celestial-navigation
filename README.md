@@ -105,9 +105,9 @@ In other words: No sextant readings were made and the accuracy is very good.
 The data is picked from your chronometer (clock), sextant and the Nautical Almanac
 in the following way. Arguments in *italics* are optional.
 
-| Argument | Description                                  | Remark                                                         | Collected From |
-| :-------------       | :-------------                               | :-------------                                                 | :------------- |
-| object               | Name of celestial object.                     | Only mnemonic.                                                  | N/A |
+| Argument | Description | Remark | Collected From |
+| :------------- | :------------- | :------------- | :------------- |
+| object | Name of celestial object. | Only mnemonic. | N/A |
 | set_time | Time for observation | [Use ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601) | Chronometer |
 | gha_time_0   | GHA reading for this hour. | String with format "DD:MM:SS". For stars use GHA of Aries. | Nautical Almanac |
 | gha_time_1   | GHA reading for next hour. | String with format "DD:MM:SS". For stars use GHA of Aries. | Nautical Almanac |
@@ -414,8 +414,8 @@ You may also use the supplied Jupyter Notebook scripts
 
 The azimuth (compass angle) to a celestial object is normally **not** used as
 an input parameter to celestial navigation. But it is an important piece of
-information since it can be used to select the correct intersection from a sight pair
-(see [above](#3i-using-two-sights)) or for just double-checking a sight reduction.
+information since it can be used to select the correct intersection from a sight
+pair (see [above](#3i-using-two-sights)) or for just double-checking a sight reduction.
 
 The azimuth of an observed celestial object is computed using this algorithm.
 
