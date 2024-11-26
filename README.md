@@ -414,7 +414,7 @@ You may also use the supplied Jupyter Notebook scripts
 
 The azimuth (compass angle) to a celestial object is normally **not** used as
 an input parameter to celestial navigation. But it is an important piece of
-information since it can be used to select the correct sight from a sight pair
+information since it can be used to select the correct intersection from a sight pair
 (see [above](#3i-using-two-sights)) or for just double-checking a sight reduction.
 
 The azimuth of an observed celestial object is computed using this algorithm.
