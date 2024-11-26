@@ -46,7 +46,7 @@ collection = SightCollection ([a,b,c])
 try:
     intersections, fitness, diag_output = collection.get_intersections ()
 except IntersectError as ve:
-    print ("Cannot perform a sight reduction. Bad sight data.")
+    print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
     print ("Check the circles! " + collection.get_map_developers_string())
     exit ()
 endtime = time ()
