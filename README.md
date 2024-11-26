@@ -93,7 +93,7 @@ and the next hour. (You don't have to enter linear factors etc. from the almanac
               measured_alt         = "55:8:0" \
               )
 
-You can also see a complete example in [a python script](starfixdata.stat.1.py)
+You can also see a complete example in [a python script](starfixdata_stat_1.py)
 and also [a corresponding excel file](chicago.ods).
 This sample is built using altitudes taken from a star atlas Stellarium
 <https://en.wikipedia.org/wiki/Stellarium_(software)> from a point in central
@@ -114,17 +114,17 @@ in the following way. Arguments in *italics* are optional.
 | decl_time_0  | Declination reading for this hour. | String with format "DD:MM:SS".|  Nautical Almanac |
 | *decl_time_1*  | Declination reading for next hour. | String with format "DD:MM:SS". Can be skipped for stars. Default = decl_time_0 | Nautical Almanac |
 | *sha_diff*   | SHA of star vs Aries in degrees. | String with format "DD:MM:SS". Only use for stars. Otherwise skip. Default = "0". | Nautical Almanac |
-| *semidiameter_correction* | Correction for limb measurements.  | Typically used for Moon or Sun. *SD* value (arcminutes), positive (lower limb) or negative (upper limb). Default = 0. | Nautical Almanac | 
-| *horizontal_parallax* | Correction for horizontal parallax.  | Used for the Moon. *HP* value. Default = 0. | Nautical Almanac | 
+| *semidiameter_correction* | Correction for limb measurements.  | Typically used for Moon or Sun. *SD* value (arcminutes), positive (lower limb) or negative (upper limb). Default = 0. | Nautical Almanac |
+| *horizontal_parallax* | Correction for horizontal parallax.  | Used for the Moon. *HP* value. Default = 0. | Nautical Almanac |
 | measured_alt | Altitude of object in degrees. | String with format "DD:MM:SS". | Sextant |
 | *index_error_minutes*    | Specify known index error of sextant. | Default = 0. | Sextant |
 | *artficial_horizon*    | Indicates if you use an artificial horizon. True or False. | All sextant readings will be divided by 2. Default = False.          | N/A |
 | *observer_height*    | Height of observer above sea level or ground in meters (>= 0). | Only relevant for observations using natural horizon. Default = 0.          | Height Measurement |
-| *sextant*            | An object defining a specific used sextant.        | See [this code sample](starfixdata.xtra.home.py) for details. Default = None.       | Sextant Calibration |
-| *chronometer*            | An object defining a specific used chronometer.        | See [this code sample](starfixdata.xtra.home.py) for details. Default = None.       | Chronometer Calibration |
+| *sextant*            | An object defining a specific used sextant.        | See [this code sample](xtras/starfixdata_xtra_home.py) for details. Default = None.       | Sextant Calibration |
+| *chronometer*            | An object defining a specific used chronometer.        | See [this code sample](xtras/starfixdata_xtra_home.py) for details. Default = None.       | Chronometer Calibration |
 | *temperature*            | Measured temperature at observing point. (degrees celsius)        |  Default = 10    | Observations or meteorology information |
 | *dt_dh* | Temperature gradient (degrees celsius / meter) | default = -0.01 | Observations or meteorology information |
-| *pressure* | Measured pressure at observing point. (kPa) | Default = 101 | Observations or meteorology information | 
+| *pressure* | Measured pressure at observing point. (kPa) | Default = 101 | Observations or meteorology information |
 | *ho_obs* | Set to True if dip and refraction corrections should be omitted | Default = False | N/A |
 
 ### 2.i. Atmospheric refraction<a name="atmospheric-refraction"></a>
@@ -136,12 +136,12 @@ with adjustments for temperature and pressure.
 
 $R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right)\frac{P}{101}\frac{283}{273+T}$
 
-where 
+where
 
 * $R$ is the refraction in arc minutes.
 * $h_a$ is the measured angle.
 * $P$ is pressure in millibars.
-* $T$ is temperature in Celsius. 
+* $T$ is temperature in Celsius.
 
 ### 2.ii. Dip of horizon<a name="dip-of-horizon"></a>
 
@@ -175,7 +175,8 @@ For more information about the formula above please refer to
 Currently the tool does not aim for very high accuracy and more elaborate
 corrections are eliminated.
 
-* Refraction correction is simple (see above), but probably good enough for basic celestial navigation. 
+* Refraction correction is simple (see above), but probably good enough for
+basic celestial navigation.
 * Earth oblateness is ignored.
 
 Future implementations may contain more precise corrections though.
@@ -208,7 +209,7 @@ off the place where you assume you are located.
         intersections, fitness, diag_output = collection.get_intersections \
         (estimated_position = LatLon (57,19))
 
-The result will be a tuple of **two** coordinates (intersections of two circles 
+The result will be a tuple of **two** coordinates (intersections of two circles
 of equal altitude). These intersections can be located far away from each other.
 You will have to decide which one of them is the correct observation point,
 based on previous knowledge of your location.
@@ -264,7 +265,7 @@ where $N$ is normalization
 
 $N(x) = \frac{x}{\left|x\right|}$
 
-Now we can find the intersection points by rotating $q$ for an angle of $\rho$ 
+Now we can find the intersection points by rotating $q$ for an angle of $\rho$
 along a rotation axis $r$. <br/>
 $\rho$ and $r$ are calculated this way:
 
@@ -275,7 +276,7 @@ The final rotation is accomplished using [Rodrigues/Gauss rotation formula](http
 
 $p_{\mathrm{rot}} = q \cos \rho + \left( r \times q \right) \sin \rho + r \left(r \cdot q \right)\left(1 - \cos \rho \right)$
 
-Apply the formula above for $\rho$ and $-\rho$ and you will get the two 
+Apply the formula above for $\rho$ and $-\rho$ and you will get the two
 intersection points $p_1$ and $p_2$.
 **One of these points matches your location**.
 
@@ -337,7 +338,7 @@ Now set up a set of sight pairs
 
 $S_p = \lbrace {S_p}_{i,j} | i<=n \land j<=n \land j>i+1 \rbrace$
 
-It is easy to see that the number of sight pairs (the cardinality) can be 
+It is easy to see that the number of sight pairs (the cardinality) can be
 calculated like this
 
 $\left|S_p\right| = \frac{n^2 + n}{2} $
@@ -368,7 +369,7 @@ The cardinality of $D$ can be calculated
 
 $\left|D\right| = {\left|I\right|}^2 - {\left|I\right|} = n^4 + 2n^3 - n$
 
-We now need to eliminate all false intersections and only choose those close 
+We now need to eliminate all false intersections and only choose those close
 to the probable location of the observer.
 
 The final part of the algorithm sorts the set $D$ to extract a maximum of $\frac{n^2-n}{2}$
@@ -378,10 +379,10 @@ giving priority (weighting) for intersections with a larger angle.
 
 The final result will be a **single** mean value of the extracted intersection points.
 
-### 3.iii. Running the starfixdata.chicago script<a name="run-chicago-script"></a>
+### 3.iii. Running the Chicago script<a name="run-chicago-script"></a>
 
 This picture shows the small circles defined in the
-[starfixdata.stat.1.py](starfixdata.stat.1.py) sample
+[starfixdata.stat.1.py](starfixdata_stat_1.py) sample
 ![Locating from Chicago](pics/chicago-intersection-1.png "Locating from Chicago")
 
 When we move in closer we can clearly see a precise intersection.
@@ -400,7 +401,7 @@ Then we add another small circle and show the calculated mean value of the inter
 
     (N 41°,51.3′;W 87°,38.6′)
 
-There is also another similar test script in the [starfixdata.stat.2.py](starfixdata.stat.2.py)
+There is also another similar test script in the [starfixdata_stat_2.py](starfixdata_stat_2.py)
 sample where the Moon is used. **Horizontal parallax** is applied to the Moon
 using the *HP* field from the Nautical Almanac.
 The Moon is typically the only celestial object where horizontal parallax
@@ -434,7 +435,7 @@ computed as<br/> $d = N(a-b)$ <br/>
 The azimuth angle $\phi_{\text{azimuth}}$ can now be computed as<br/>
 $\phi_{\text{azimuth}} = \arctan(\frac{d \cdot e}{d \cdot n})$
 
-This [sample](starfixdata.stat.1.py) contains an example of calculation of the
+This [sample](starfixdata_stat_1.py) contains an example of calculation of the
 azimuth for sights.
 
 ## 4. Dead Reckoning<a name="dead-reckoning"></a>
@@ -493,7 +494,7 @@ where<br>
 
 The solution of the equation $K(\rho) = 0$ is computed using [Newton's method](https://en.wikipedia.org/wiki/Newton%27s_method).
 
-The supplied script sample [starfixdata.sea.py](starfixdata.sea.py) contains
+The supplied script sample [starfixdata_sea.py](starfixdata_sea.py) contains
 a demo for a short trip at sea (in the Baltic Sea).
 
 This is a picture of the small circles generated by the sample.
@@ -514,7 +515,7 @@ assume linearity of the circle segments.
 
 ![Sailing in the Baltic Sea (closeup)](pics/baltic-intersection-2-edit.png "Sailing in the Baltic Sea (closeup)")
 
-### 4.i. Running the starfixdata.sea script<a name="run-sea-script"></a>
+### 4.i. Running the Sea script<a name="run-sea-script"></a>
 
 The script outputs the estimated starting and ending points for our trip segment
 (see the red arrow in the map above)
@@ -549,7 +550,7 @@ sextant (Davis Mark III), a standard watch and an artificial horizon.
 
 ![Simple celestial navigation gear](pics/celnav-gear.jpg "Simple celestial navigation gear")
 
-The sample can be found [here](starfixdata.xtra.home.py)
+The sample can be found [here](xtras/starfixdata_xtra_home.py)
 The resulting position is just 1.45 nautical miles away from my real position,
 which I consider being an excellent result given the simple equipment and my
 modest level of training.
@@ -585,17 +586,20 @@ measured angles. The little plastic sextant I have used (a Davis Mark III) was
 suspected by me,
 and I decided to measure it by taking a terrestrial angle fix and compare it to
 the data from my map. And yes, there was an error of about 2 minutes / 10 degrees.
-For the details see [this sample](starfixdata.xtra.home.py) where a measurement of a
-local view is used as input to a calibration parameter of the used sextant.
+For the details see [this sample](xtras/starfixdata_xtra_home.py) where a
+measurement of a local view is used as input to a calibration parameter of the
+used sextant.
 See the <tt>Sextant</tt> class.
 
 ## 8. Chronometer Handling <a name="chronometer"></a>
 
 Your chronometer may have a **drift** to take care of, typically if it is mechanical
-or digital with no auto-setting. 
+or digital with no auto-setting.
 The toolkit contains a <tt>Chronometer</tt> class which can be used to handle this and
-you will find an example of handling this in [this sample](starfixdata.xtra.home.py).
+you will find an example of handling this in [this sample](xtras/starfixdata_xtra_home.py).
 
-If you need to set your chronometer away from any other reliable time sources you may 
-use the method of [Lunar Distances](https://en.wikipedia.org/wiki/Lunar_distance_(navigation)).
-For your help Lunar Distance [tables](LDtable(A4)_2024.pdf) are bundled in the repository. 
+If you need to set your chronometer away from any other reliable time sources
+you may use the method of
+[Lunar Distances](https://en.wikipedia.org/wiki/Lunar_distance_(navigation)).
+For your help Lunar Distance [tables](LDtable(A4)_2024.pdf)
+are bundled in the repository.

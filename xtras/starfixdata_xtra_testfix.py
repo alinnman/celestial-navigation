@@ -7,7 +7,8 @@
 '''
 
 from time import time
-from starfix import Sight, SightCollection, get_representation, get_google_map_string, IntersectError
+from starfix import Sight, SightCollection, get_representation,\
+     get_google_map_string, IntersectError
 
 
 starttime = time ()

@@ -32,8 +32,8 @@ with a correction for errors.
 You are advised to adjust this script for your used sextant.
 
 You are also advised to make copies (and modifications) of the supplied samples
-[starfixdata.stat.1.py](starfixdata.stat.1.py)
-or [starfixdata.sea.py](starfixdata.sea.py)
+[starfixdata_stat_1.py](starfixdata_stat_1.py)
+or [starfixdata_sea.py](starfixdata_sea.py)
 to support your workflow and observations.
 There are also Jupyter notebooks availabe, see below.
 

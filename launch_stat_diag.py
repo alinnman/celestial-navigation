@@ -4,4 +4,4 @@
 '''
 
 from os import system
-system ("jupyter notebook notebook.stat.1.diag.ipynb")
+system ("jupyter notebook notebook_stat_diag.ipynb")
