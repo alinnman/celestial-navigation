@@ -197,7 +197,7 @@ Using two star fixes a sight reduction can be done in the following way:
         intersections, fitness, diag_output = collection.get_intersections ()
         print (get_representation(intersections,1))
     except IntersectError as ve:
-        print ("Cannot get perform a sight reduction. Bad sight data.")
+        print ("Cannot get perform a sight reduction. Bad sight data.\n" + str(ve))
         ## For debugging: Get a map where you can look at the intersections
         print ("Check the circles! " + collection.get_map_developers_string())        
 
@@ -322,7 +322,7 @@ Using three (or more) sights a sight reduction can be done in the following way
         (estimated_position (LatLon(23,45))) ## DRP can be entered if suitable
         print (getRepresentation(intersections,1))
     except IntersectError as ve:
-        print ("Cannot get perform a sight reduction. Bad sight data.")
+        print ("Cannot get perform a sight reduction. Bad sight data.\n" + str(ve))
         ## For debugging: Get a map where you can look at the intersections
         print ("Check the circles! " + collection.get_map_developers_string())
 

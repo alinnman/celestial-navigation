@@ -301,6 +301,8 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
                          str(round(b_vec[2],4))+")\\text{ ==> }\\textbf{bVec}$<br/>"
     # Calculate N(axb)
     ab_cross = cross_product (a_vec, b_vec)
+    if length_of_vect (ab_cross) == 0:
+        raise IntersectError ("Failed to calculate intersection. Identical source points?")
     ab_cross = normalize_vect (ab_cross)
     if diagnostics:
         #diag_output +=\
@@ -832,22 +834,42 @@ class SightCollection:
             # Collect all distance values between intersections
             if diagnostics:
                 diag_output += "## Distance table\n\n"
-                diag_output += "Nr of intersections = " + str(nr_of_coords) + "\n\n"
+                diag_output += "Intersections\n"
+                diag_output += "| Id | Coordinate |\n"
+                diag_output += "|----|------------|\n"
+                for i in range (nr_of_coords):
+                    diag_output += "|**"+str(i)+"**|"+str(coords[i][0])+"|\n"
+                diag_output += "\n\nDistances\n"
+
+            if diagnostics:
+                diag_output += "|"
+                for i in range (nr_of_coords):
+                    diag_output += "|" + str(i)
+                diag_output += "|\n"
+                diag_output += "|----"
+                for i in range (nr_of_coords):
+                    diag_output += "|----"
+                diag_output += "|\n"
             for i in range (nr_of_coords):
+                diag_output += "|**" + str(i) + "**"
+                if diag_output:
+                    for _ in range (0, i):
+                        diag_output += "|-"
                 for j in range (i, nr_of_coords):
                     if i != j:
                         dist = distance_between_points (coords[i][0], coords[j][0])
                         dists [i,j] = dist
                         if diagnostics:
-                            diag_output +=\
-                                "Distance (" +\
-                                 str(i) +\
-                                 " ["+str(coords[i][0])+"], " +\
-                                 str(j) +\
-                                 " ["+str(coords[j][0])+"]) = " + str(round(dist,1)) + " km\n\n"
+                            diag_output += "|" + str(round(dist,1)) + " km"
+                    else:
+                        if diagnostics:
+                            diag_output += "|/"
+                if diagnostics:
+                    diag_output += "|\n"
+            if diagnostics:
+                diag_output += "\n\n"
             # Sort the distances, with lower distances first
             sorted_dists = dict(sorted(dists.items(), key=lambda item: item[1]))
-            # nrOfSortedDists = len (sortedDists)
             chosen_points = set ()
             cp_limit = int((nr_of_fixes**2 - nr_of_fixes) / 2)
             # Find the points which are located close to other points
@@ -865,7 +887,7 @@ class SightCollection:
             if nr_of_chosen_points == 0:
                 # No points found. Bad star fixes. Throw exception.
                 raise IntersectError ("Bad sight data.")
-            
+
             # Make sure the chosen points are nearby each other
             fine_sorting = False # This code is disabled for now
             if fine_sorting:
