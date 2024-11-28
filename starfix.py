@@ -25,7 +25,7 @@ class LatLon:
     def __str__(self):
         return "LAT = " + str(round(self.lat,4)) + "; LON = " + str(round(self.lon,4))
 
-    def get_tuple (self) -> tuple[float | int] :
+    def get_tuple (self) -> tuple[float | int, float | int] :
         ''' Used to simplify some code where tuples are more practical '''
         return self.lon, self.lat
 
@@ -119,7 +119,7 @@ def to_rectangular (latlon : LatLon) -> list:
     a_vec = normalize_vect (a_vec)
     return a_vec
 
-def get_dms (angle : int | float) -> tuple[int | float]:
+def get_dms (angle : int | float) -> tuple[int, int, int | float]:
     ''' Convert an angle (in degrees) to a tuple of degrees, arc minutes and arc seconds '''
     degrees = int (angle)
     minutes = int ((angle-degrees)*60)
@@ -255,15 +255,16 @@ class IntersectError (ValueError):
 
 def get_intersections (latlon1 : LatLon, latlon2 : LatLon,\
                        angle1 : int | float, angle2 : int | float,\
-                       estimated_position : LatLon = None,\
+                       estimated_position = None,\
                        use_fitness : bool = True, diagnostics : bool = False,
                        intersection_number : int = 0)\
-                          -> tuple[LatLon | tuple[LatLon], float, str]:
+                          -> tuple[LatLon | tuple[LatLon, LatLon], float, str]:
     '''
     Get intersection of two circles on a spheric surface. 
     At least one of the circles must be a small circle. 
 https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere 
     '''
+    assert estimated_position is None or isinstance (estimated_position, LatLon)
     assert angle1 >= 0 and angle2 >= 0
     assert angle1 < 90 or angle2 < 90  # Make sure one of the circles is a small circle
     diag_output = ""
@@ -518,7 +519,8 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
         return get_google_map_string (intersections[0], num_decimals) + ";" + \
                get_google_map_string (intersections[1], num_decimals)
 
-def get_representation (ins : LatLon | tuple | list, num_decimals : int, lat=False) -> str:
+def get_representation\
+    (ins : LatLon | tuple | list | float | int, num_decimals : int, lat=False) -> str:
     ''' Converts coordinate(s) to a string representation '''
     assert num_decimals >= 0
     if isinstance (ins, LatLon):
@@ -526,12 +528,12 @@ def get_representation (ins : LatLon | tuple | list, num_decimals : int, lat=Fal
     if isinstance (ins, (float, int)):
         degrees = int (ins)
         if lat:
-            if ins < 0:
+            if degrees < 0:
                 prefix = "S"
             else:
                 prefix = "N"
         else:
-            if ins < 0:
+            if degrees < 0:
                 prefix = "W"
             else:
                 prefix = "E"
@@ -612,12 +614,13 @@ def get_terrestrial_position (point_a1 : LatLon,\
                               point_b1 : LatLon,\
                               point_b2 : LatLon,\
                               angle_b : int | float,
-                              estimated_position : LatLon = None,\
+                              estimated_position = None,\
                               diagnostics : bool = False)\
-                                  -> tuple [LatLon | tuple, LatLon, float, LatLon, float, float] :
+            -> tuple [LatLon | tuple, LatLon, float, LatLon, float, float, str] :
     '''
     Given two pairs of terrestial observations (pos + angle) determine the observer's position 
     '''
+    assert estimated_position is None or isinstance (estimated_position, LatLon)
     a = get_circle_for_angle (point_a1, point_a2, angle_a)
     b = get_circle_for_angle (point_b1, point_b2, angle_b)
     # Finally compute the intersection.
@@ -637,19 +640,23 @@ class Sight :
                   gha_time_1               : str,\
                   decl_time_0              : str, \
                   measured_alt             : str,\
-                  decl_time_1              : str = None, \
-                  sha_diff                 : str = None, \
+                  decl_time_1              = None, \
+                  sha_diff                 = None, \
                   observer_height          : int | float = 0, \
                   artificial_horizon       : bool = False, \
                   index_error_minutes      : int = 0, \
                   semi_diameter_correction : int | float = 0,\
                   horizontal_parallax      : int | float = 0,\
-                  sextant                  : Sextant = None,\
-                  chronometer              : Chronometer = None,\
+                  sextant                  = None,\
+                  chronometer              = None,\
                   temperature              : float = 10.0,\
                   dt_dh                    : float = -0.01,\
                   pressure                 : float = 101.0,
                   ho_obs                   : bool = False):
+        assert decl_time_1 is None or isinstance (decl_time_1, str)
+        assert sha_diff    is None or isinstance (sha_diff,    str)
+        assert sextant     is None or isinstance (sextant,     Sextant)
+        assert chronometer is None or isinstance (chronometer, Chronometer)
         self.temperature          = temperature
         self.dt_dh                = dt_dh
         self.pressure             = pressure
@@ -775,11 +782,12 @@ class SightPair:
         self.sf1 = sf1
         self.sf2 = sf2
 
-    def get_intersections (self, estimated_position : LatLon = None, diagnostics : bool = False,\
+    def get_intersections (self, estimated_position = None, diagnostics : bool = False,\
                            intersection_number : int = 0) ->\
-                           tuple[tuple[LatLon], float, str]:
+                           tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Return the two intersections for this sight pair. 
             The parameter estimated_position can be used to eliminate the false intersection '''
+        assert estimated_position is None or isinstance (estimated_position, LatLon)
         return get_intersections (self.sf1.gp,\
                                   self.sf2.gp,\
                                   self.sf1.get_angle(), self.sf2.get_angle(),\
@@ -795,10 +803,11 @@ class SightCollection:
         self.sf_list = sf_list
 
     def get_intersections\
-        (self, limit : int | float = 100, estimated_position : LatLon = None,\
-         diagnostics : bool = False) -> tuple[tuple[LatLon] | LatLon, float, str]:
+        (self, limit : int | float = 100, estimated_position = None,\
+         diagnostics : bool = False) -> tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Get an intersection from the collection of sights. 
             A mean value and sorting algorithm is applied. '''
+        assert estimated_position is None or isinstance (estimated_position, LatLon)
         diag_output = ""
         nr_of_fixes = len(self.sf_list)
         assert nr_of_fixes >= 2
@@ -807,7 +816,8 @@ class SightCollection:
             return SightPair (self.sf_list[0],\
                               self.sf_list[1]).get_intersections\
                                          (estimated_position, diagnostics = diagnostics)
-        elif nr_of_fixes >= 3:
+        #elif nr_of_fixes >= 3:
+        else:
             # For >= 3 star fixes perform pairwise calculation on every pair of fixes
             # and then run a sorting algorithm
             coords = list[tuple[LatLon, float]]()
@@ -916,7 +926,7 @@ class SightCollection:
                   add_vecs (summation_vec,\
                   mult_scalar_vect ((1/nr_of_chosen_points)*fitness_here, rect_vec))
             summation_vec = normalize_vect (summation_vec)
-            return to_latlon (summation_vec), fitness, diag_output
+            return to_latlon (summation_vec), fitness_sum, diag_output
 
     def get_map_developers_string (self) -> str:
         '''
@@ -968,7 +978,7 @@ class SightTrip:
         return dbp, taken_out, rotated_latlon
 
     def get_intersections (self, diagnostics : bool = False) ->\
-            tuple[tuple[LatLon, LatLon], float, str]:
+            tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Get the intersections for this sight trip object '''
         # Calculate intersections
         pair = SightPair (self.sight_start, self.sight_end)
@@ -976,8 +986,8 @@ class SightTrip:
               (estimated_position = self.estimated_starting_point, diagnostics = diagnostics)
         # Determine angle of the intersection point on sightStart small circle
         a_vec = to_rectangular (self.sight_start.gp)
-        b_vec = to_rectangular (best_intersection)
         assert isinstance (best_intersection, LatLon)
+        b_vec = to_rectangular (best_intersection)
 
         # Apply Newtons method to find the location
         current_rotation = 0
@@ -1001,6 +1011,8 @@ class SightTrip:
         if iter_count >= iter_limit:
             raise IntersectError ("Cannot calculate a trip vector")
         else:
+            assert taken_out is not None
+            assert rotated is not None
             return (taken_out, rotated), fitness, diag_output
 
     def get_map_developers_string (self) -> str:

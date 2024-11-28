@@ -21,6 +21,7 @@ ANGLE_2 = 45
 
 p, c1, r1, c2, r2, fitness, diag_output  =\
       get_terrestrial_position (P3, P2, ANGLE_1, P2, P1, ANGLE_2)
+assert isinstance (p, tuple)
 print ("Your location 1 = " + get_google_map_string(p[0],4))
 print ("Your location 2 = " + get_google_map_string(p[1],4))
 
@@ -30,10 +31,6 @@ print ("Centerpoint 1 = " + get_google_map_string (c1, 4))
 print ("Radius 1 = " + str(deg_to_rad(r1)*EARTH_RADIUS))
 print ("Centerpoint 2 = " + get_google_map_string (c2, 4))
 print ("Radius 2 = " + str(deg_to_rad(r2)*EARTH_RADIUS))
-
-
-#Link to intersections
-#https://www.mapdevelopers.com/draw-circle-tool.php?circles=%5B%5B12922.53%2C58.4904%2C17.3669%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B19890.51%2C58.5634%2C17.8054%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B1000%2C58.6033323%2C17.3136798%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B1000%2C58.5941%2C17.4674833%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B1000%2C58.7395979%2C17.8656699%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%5D
 
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)

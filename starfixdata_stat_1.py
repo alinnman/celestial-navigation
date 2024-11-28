@@ -6,7 +6,7 @@
 
 from time import time
 from starfix import Sight, SightCollection, get_representation,\
-                    get_google_map_string, IntersectError
+                    get_google_map_string, IntersectError, LatLon
 
 starttime = time ()
 
@@ -64,6 +64,7 @@ print ("MD = " + collection.get_map_developers_string())
 print ("GM = " + get_google_map_string(intersections,4))
 
 # Check azimuth
+assert isinstance (intersections, LatLon)
 az = a.get_azimuth (intersections)
 print ("Azimuth A = " + str(round(az,2)))
 az = b.get_azimuth (intersections)

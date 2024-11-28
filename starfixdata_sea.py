@@ -60,6 +60,7 @@ endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)
 
 print ("MD = " + st.get_map_developers_string ())
+assert isinstance (intersections, tuple)
 print ("Starting point = " + str(get_representation(intersections[1],1)))
 print ("End point = " + str(get_representation(intersections[0],1)))
 
