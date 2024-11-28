@@ -47,8 +47,8 @@ useful while traveling in remote places or on the ocean.
 
 * The toolkit supports **stationary** observations, i.e. when observations are
   made from a single position,
-  using multiple sights where the position is determined from the intersection(s)
-  of the small circles of equal altitude.
+  using multiple sights where the position is determined from the
+  intersection(s) of the small circles of equal altitude.
   For two sights you will get two possible coordinates.
   For three or more sights you will get one coordinate
   (calculated as a mean value).
@@ -59,7 +59,8 @@ useful while traveling in remote places or on the ocean.
 * As a bonus there is also support for **terrestial navigation**.
   See [Section 6](#terrestrial) below for more information.
 
-For more information on installation and usage of the Python scripts see [here](INSTALL.md).
+For more information on installation and usage of the Python scripts see
+[here](INSTALL.md).
 
 A short explanation of the logical steps and algorithms used in this toolkit can
 be found [here](WORKFLOW.md).
@@ -68,12 +69,15 @@ Digital versions of the Nautical Almanac for [2024](NAtrad(A4)_2024.pdf)
 and [2025](NAtrad(A4)_2025.pdf)
 are included in this repository.
 
-A more detailed description of celestial navigation can be found [here](https://www.waypointamsterdam.com/Handy_stuf/Short_Guide_To_Astro_navigation.pdf).<br>
+A more detailed description of celestial navigation can be found
+[here](https://www.waypointamsterdam.com/Handy_stuf/Short_Guide_To_Astro_navigation.pdf).<br>
 
 A historical document, the Admiralty Navigational Manual (1938),
-from His Majestys Stationary Office (UK) can be found [here](https://archive.org/details/dli.ernet.211556/mode/2up).
+from His Majestys Stationary Office (UK) can be found
+[here](https://archive.org/details/dli.ernet.211556/mode/2up).
 
-If you wonder why I wrote this in the first place, then see [this short explanation](WHY.md).
+If you wonder why I wrote this in the first place, then see
+[this short explanation](WHY.md).
 
 If you want to contribute to the project then see [this page](CONTRIBUTING.md).
 
@@ -82,7 +86,8 @@ If you want to contribute to the project then see [this page](CONTRIBUTING.md).
 You create a sight with code like this (for the Sun). You specify data from your
 sextant and chronometer. You also add tabular data from the
 Nautical Almanac. This data is given from the current hour of the observation,
-and the next hour. (You don't have to enter linear factors etc. from the almanac).
+and the next hour.
+(You don't have to enter linear factors etc. from the almanac).
 
     a = Sight (   object_name          = "Sun", \
               set_time             = "2024:05:05 15:55:18+00:00"
@@ -102,8 +107,9 @@ In other words: No sextant readings were made and the accuracy is very good.
 (Running this sample will give you an accuracy of just some 100 meters).
 
 <a name="parameters"></a>
-The data is picked from your chronometer (clock), sextant and the Nautical Almanac
-in the following way. Arguments in *italics* are optional.
+The data is picked from your chronometer (clock),
+sextant and the Nautical Almanac in the following way.
+Arguments in *italics* are optional.
 
 | Argument | Description | Remark | Collected From |
 | :------------- | :------------- | :------------- | :------------- |
@@ -131,10 +137,12 @@ in the following way. Arguments in *italics* are optional.
 
 The measured altitude values (attributes measured_alt_degrees,
 measured_alt_minutes and measure_alt_seconds) are corrected for atmospheric
-refraction using [Bennett's empirical formula](https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction)
+refraction using
+[Bennett's empirical formula](https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction)
 with adjustments for temperature and pressure.
 
-$R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right)\frac{P}{101}\frac{283}{273+T}$
+$R = \cot \left( h_a + \frac{7.31}{h_a + 4.4} \right)
+\frac{P}{101}\frac{283}{273+T}$
 
 where
 
@@ -158,7 +166,8 @@ where
 * $R = \frac{r}{1-k}$ (corrected radius of Earth for geodetic refraction)
 * $h$ is the elevation of the observer (in meters) above the horizon.
 * $r$ is the radius of the Earth (in meters).
-* $k = 503\frac{P}{T^2}\left(0.0342+\frac{dT}{dh}\right)$ (refraction coefficient)
+* $k = 503\frac{P}{T^2}\left(0.0342+\frac{dT}{dh}\right)$
+  (refraction coefficient)
 * $P$ is the pressure (in millibars)
 * $T$ is the temperature (in Kelvins)
 * $\frac{dT}{dh}$ is the temperature gradient. (Rate of temperature change with
@@ -168,7 +177,7 @@ If you use an artificial horizon the dip is always zero,
 and the *observer_height* parameter should be zero.
 
 For more information about the formula above please refer to
-[this article](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2010JD014067).
+[this article](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2010JD014067)
 
 ### 2.iii. Ignored Corrections<a name="ignored-corrections"></a>
 
@@ -202,9 +211,10 @@ Using two star fixes a sight reduction can be done in the following way:
         ## For debugging: Get a map where you can look at the intersections
         print ("Check the circles! " + collection.get_map_developers_string())        
 
-You can enter an estimated position (Dead Reckoning Position, **DRP**) as a parameter.
-This will reduce the number of calculations and eliminate intersections being far
-off the place where you assume you are located.
+You can enter an estimated position (Dead Reckoning Position, **DRP**)
+as a parameter.
+This will reduce the number of calculations and eliminate intersections being
+far off the place where you assume you are located.
 
         intersections, fitness, diag_output = collection.get_intersections \
         (estimated_position = LatLon (57,19))
@@ -215,7 +225,8 @@ You will have to decide which one of them is the correct observation point,
 based on previous knowledge of your location.
 
 The intersections are calculated using an algorithm based on
-[this article](https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere) <br/>
+[this article](https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere)
+<br/>
 This is a short outline of the algorithm.
 
 ![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
@@ -223,8 +234,8 @@ This is a short outline of the algorithm.
 For both measurements take note of the measured altitude
 (from your **sextant**), $f_1$ and $f_2$.
 
-Using your **chronometer** (clock) register the corresponding times $t_1$ and $t_2$
-for the two measurements
+Using your **chronometer** (clock) register the corresponding
+times $t_1$ and $t_2$ for the two measurements.
 
 Define angles $\alpha$ and $\beta$ this way:
 $\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
@@ -234,8 +245,10 @@ get the geographic position vectors (GP:s) $a$ and $b$.
 
 Now we can define two circles of equal altitude, $A$ and $B$.
 
-$A = \lbrace p \in \mathbb{R}^3 \mid p \cdot a = \cos \alpha \land \left|p\right| = 1 \rbrace$ <br/>
-$B = \lbrace p \in \mathbb{R}^3 \mid p \cdot b = \cos \beta \land \left|p\right| = 1 \rbrace$
+$A = \lbrace p \in \mathbb{R}^3 \mid
+p \cdot a = \cos \alpha \land \left|p\right| = 1 \rbrace$ <br/>
+$B = \lbrace p \in \mathbb{R}^3 \mid
+p \cdot b = \cos \beta \land \left|p\right| = 1 \rbrace$
 
 The circles relate to a *sight pair* $S_{p_{1,2}} = \{s_1, s_2\}$
 which we will come back to later.
@@ -247,7 +260,8 @@ i.e. the Earth is a three-dimensional sphere and its surface has "radius = 1")
 We aim for finding the intersections $p_1$ and $p_2$ for the circles $A$ and $B$
 and the point $q$ being the midpoint between $p_1$ and $p_2$.
 
-Using the [Pythagorean Theorem for a Sphere](https://en.wikipedia.org/wiki/Spherical_law_of_cosines)
+Using the
+[Pythagorean Theorem for a Sphere](https://en.wikipedia.org/wiki/Spherical_law_of_cosines)
 it is easy to see this:
 
 $\cos aq\cdot \cos pq = \cos \alpha$ <br/>
@@ -270,11 +284,15 @@ along a rotation axis $r$. <br/>
 $\rho$ and $r$ are calculated this way:
 
 $r = \left(a \times b\right) \times q$ <br/>
-$\rho = \arccos(p \cdot q) = \arccos\left(\frac{\cos \alpha}{a \cdot q}\right) = \arccos\left(\frac{\cos \beta}{b \cdot q}\right)$
+$\rho = \arccos(p \cdot q) = \arccos\left(\frac{\cos \alpha}{a \cdot q}\right) =
+\arccos\left(\frac{\cos \beta}{b \cdot q}\right)$
 
-The final rotation is accomplished using [Rodrigues/Gauss rotation formula](https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula).
+The final rotation is accomplished using
+[Rodrigues/Gauss rotation formula](https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula)
+.
 
-$p_{\mathrm{rot}} = q \cos \rho + \left( r \times q \right) \sin \rho + r \left(r \cdot q \right)\left(1 - \cos \rho \right)$
+$p_{\mathrm{rot}} = q \cos \rho + \left( r \times q \right) \sin \rho +
+r \left(r \cdot q \right)\left(1 - \cos \rho \right)$
 
 Apply the formula above for $\rho$ and $-\rho$ and you will get the two
 intersection points $p_1$ and $p_2$.
@@ -302,7 +320,8 @@ It cannot be used for calculating intersections of two great circles.
 
 Note: I have chosen to use an algorithm based on 3D cartesian vectors.
 Standard literature on sight reduction typically uses 2D spherical coordinates,
-such as [Longhand haversine sight reduction](https://en.wikipedia.org/wiki/Sight_reduction#Longhand_haversine_sight_reduction).
+such as **Longhand haversine sight reduction** as described
+[here](https://en.wikipedia.org/wiki/Sight_reduction#Longhand_haversine_sight_reduction).
 Such calculations in 2D are easier to carry out by hand but results in more
 complex computer software. The 3D/cartesian approach is more structurally
 simple and easier to convert to well-functioning software.
@@ -327,8 +346,8 @@ Using three (or more) sights a sight reduction can be done in the following way
         ## For debugging: Get a map where you can look at the intersections
         print ("Check the circles! " + collection.get_map_developers_string())
 
-A *sight* is defined as a collection of data as described in the section 1 above,
-i.e. recorded data for a celestial object for a specific time.
+A *sight* is defined as a collection of data as described in the
+section 1 above, i.e. recorded data for a celestial object for a specific time.
 
 A collection contains of a set of sights (star fixes) $S$
 
@@ -350,7 +369,8 @@ $S_{p,i,j} \to \lbrace I_{p,i,j,L},I_{p,i,j,R} \rbrace$
 
 This will result in a set of intersection points
 
-$I_p = \lbrace I_{p,i,j,O} | O \in \{L,R \} \land i<=n \land j<=n \land j>i+1 \rbrace$
+$I_p = \lbrace I_{p,i,j,O} | O \in \{L,R \}
+\land i<=n \land j<=n \land j>i+1 \rbrace$
 
 The cardinality can easily be shown as
 
@@ -363,7 +383,8 @@ $d\left(x,y\right) = \arccos (x \cdot y) $
 
 This will give us the following set
 
-$D = \lbrace d\left(I_k,I_l\right) | k < \left|I\right| \land l < \left|I\right| \land k <> l \rbrace$
+$D = \lbrace d\left(I_k,I_l\right) | k < \left|I\right|
+\land l < \left|I\right| \land k <> l \rbrace$
 
 The cardinality of $D$ can be calculated
 
@@ -372,12 +393,14 @@ $\left|D\right| = {\left|I\right|}^2 - {\left|I\right|} = n^4 + 2n^3 - n$
 We now need to eliminate all false intersections and only choose those close
 to the probable location of the observer.
 
-The final part of the algorithm sorts the set $D$ to extract a maximum of $\frac{n^2-n}{2}$
+The final part of the algorithm sorts the set $D$ to
+extract a maximum of $\frac{n^2-n}{2}$
 intersection points, and also applying a maximal allowed distance limit
 (which defaults to 100 km). The **fitness** value (see above) is used for
 giving priority (weighting) for intersections with a larger angle.
 
-The final result will be a **single** mean value of the extracted intersection points.
+The final result will be a **single** mean value of the
+extracted intersection points.
 
 ### 3.iii. Running the Chicago script<a name="run-chicago-script"></a>
 
@@ -397,11 +420,13 @@ is within Chicago.
 
     ((N 7°,40.8′;W 94°,14.0′);(N 41°,51.2′;W 87°,38.6′))
 
-Then we add another small circle and show the calculated mean value of the intersections
+Then we add another small circle and show the calculated
+mean value of the intersections
 
     (N 41°,51.3′;W 87°,38.6′)
 
-There is also another similar test script in the [starfixdata_stat_2.py](starfixdata_stat_2.py)
+There is also another similar test script in the
+[starfixdata_stat_2.py](starfixdata_stat_2.py)
 sample where the Moon is used. **Horizontal parallax** is applied to the Moon
 using the *HP* field from the Nautical Almanac.
 The Moon is typically the only celestial object where horizontal parallax
@@ -409,18 +434,21 @@ needs to be considered. For other planets and the Sun the correction will almost
 always be obscured by sextant reading errors.
 
 You may also use the supplied Jupyter Notebook scripts
-[notebook.stat.1.ipynb](notebook.stat.1.ipynb) and [notebook.stat.2.ipynb](notebook.stat.2.ipynb).
+[notebook.stat.1.ipynb](notebook.stat.1.ipynb) and
+[notebook.stat.2.ipynb](notebook.stat.2.ipynb).
 
 ### 3.iv. Azimuth Calculation<a name="azimuth"></a>
 
 The azimuth (compass angle) to a celestial object is normally **not** used as
 an input parameter to celestial navigation. But it is an important piece of
 information since it can be used to select the correct intersection from a sight
-pair (see [above](#3i-using-two-sights)) or for just double-checking a sight reduction.
+pair (see [above](#3i-using-two-sights))
+or for just double-checking a sight reduction.
 
 The azimuth of an observed celestial object is computed using this algorithm.
 
-Let $a$ be the GP of the observed object and $b$ the position of the observer.<br/>
+Let $a$ be the GP of the observed object and
+$b$ the position of the observer.<br/>
 Let $p$ be the North Pole = $[0,0,1]$
 
 The eastern direction $e$ from observer is
@@ -480,9 +508,11 @@ at different times. There are two intersection points $\lbrace p_1,p_2 \rbrace$.
 We select the intersection $p_i$ point which is closest to the estimated
 starting point $p_e$ by finding the minimum value of $\arccos (p_n \cdot p_e)$
 
-We now define a function on a rotation angle $\rho$ which we will apply on the circle $s_1$
+We now define a function on a rotation angle $\rho$
+which we will apply on the circle $s_1$
 
-$K(\rho) = \arccos ( (r(s_1,\rho) + t(\phi,\tau))\cdot p_{\text{GPs2}} ) - (\frac{\pi}{2} - \alpha_{s2})$
+$K(\rho) = \arccos ( (r(s_1,\rho) + t(\phi,\tau))\cdot p_{\text{GPs2}} ) -
+(\frac{\pi}{2} - \alpha_{s2})$
 
 where<br>
 
@@ -492,13 +522,15 @@ where<br>
 * $p_{\text{GPs2}}$ is the vector of the *geographic position* of sight $s_2$
 * $\alpha_{s2}$ is the altitude measured for $s_2$ (see above for calculation)
 
-The solution of the equation $K(\rho) = 0$ is computed using [Newton's method](https://en.wikipedia.org/wiki/Newton%27s_method).
+The solution of the equation $K(\rho) = 0$ is computed using
+[Newton's method](https://en.wikipedia.org/wiki/Newton%27s_method).
 
 The supplied script sample [starfixdata_sea.py](starfixdata_sea.py) contains
 a demo for a short trip at sea (in the Baltic Sea).
 
 This is a picture of the small circles generated by the sample.
-The larger circle corresponds to the first observation with a lower Sun altitude.
+The larger circle corresponds to the first observation
+with a lower Sun altitude.
 The smaller circle is the final observation with a higher Sun altitude.
 
 ![Sailing in the Baltic Sea](pics/baltic-intersection-1.png "Sailing in the Baltic Sea")
@@ -567,7 +599,8 @@ The underlying maths are quite similar to sight reduction of star fixes.
 You need to find the intersection of two
 circles representing equal angle to two terrestrial points.
 
-The following picture shows how the sample results in two circles of equal angle.
+The following picture shows how the sample results
+in two circles of equal angle.
 The three small circles are centered on three lighthouses and you have measured
 the observed angle between them from your observation point with a sextant.
 The red arrow points towards the calculated correct position (intersection).
@@ -585,7 +618,8 @@ A sextant may show a **gradation error** which can cause errors for larger
 measured angles. The little plastic sextant I have used (a Davis Mark III) was
 suspected by me,
 and I decided to measure it by taking a terrestrial angle fix and compare it to
-the data from my map. And yes, there was an error of about 2 minutes / 10 degrees.
+the data from my map.
+And yes, there was an error of about 2 minutes / 10 degrees.
 For the details see [this sample](xtras/starfixdata_xtra_home.py) where a
 measurement of a local view is used as input to a calibration parameter of the
 used sextant.
@@ -593,10 +627,11 @@ See the <tt>Sextant</tt> class.
 
 ## 8. Chronometer Handling <a name="chronometer"></a>
 
-Your chronometer may have a **drift** to take care of, typically if it is mechanical
-or digital with no auto-setting.
-The toolkit contains a <tt>Chronometer</tt> class which can be used to handle this and
-you will find an example of handling this in [this sample](xtras/starfixdata_xtra_home.py).
+Your chronometer may have a **drift** to take care of,
+typically if it is mechanical or digital with no auto-setting.
+The toolkit contains a <tt>Chronometer</tt> class which can be used to handle
+this and you will find an example of handling this in
+[this sample](xtras/starfixdata_xtra_home.py).
 
 If you need to set your chronometer away from any other reliable time sources
 you may use the method of

@@ -17,7 +17,10 @@ No spaceflight is necessary, it can be performed in your backyard
 By providing this sample I hope to give some more understanding of the concept.
 An even better way to learn is of course to study the techniques in the
 old-school way, as it has been practitioned on ships for many centuries,
-and a good start is to watch this [tutorial on Youtube](https://www.youtube.com/watch?v=hDd1es5oQto&list=PLWcAZhCRTMByW_XEQ0y0OlGmxO3jp0LyE).
+and a good start is to watch this tutorial on Youtube
+[here](https://www.youtube.com/watch?v=hDd1es5oQto&list=PLWcAZhCRTMByW_XEQ0y0OlGmxO3jp0LyE).
 
-You may also watch a [website I wrote dedicated to reasoning and challenging questions on Earth geometry](https://earthform.linnman.net/),
-including a [special challenge related to Celestial Navigation](https://earthform.linnman.net/bonus-challenge-celestial-navigation). 
+You may also watch a website I wrote dedicated to reasoning and challenging
+questions on Earth geometry [here](https://earthform.linnman.net/),
+including a special challenge related to Celestial Navigation
+[here](https://earthform.linnman.net/bonus-challenge-celestial-navigation).

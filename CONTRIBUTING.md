@@ -7,12 +7,14 @@ including improvements of the existing code.
 
 Actual sights are also welcome, in addition to the samples provided.
 
-I have started a [discussion forum](https://github.com/alinnman/celestial-navigation/discussions)
+I have started a
+[discussion forum](https://github.com/alinnman/celestial-navigation/discussions)
 where anyone is invited to discuss anything related to celestial navigation.
 
 # Future plans
 
-Regarding future plans for this project. These are some things I may consider doing.
+Regarding future plans for this project.
+These are some things I may consider doing.
 
 1. Create machine-readable Nautical Almanac
 1. Create a lightweight web application and/or mobile app. <br/>
