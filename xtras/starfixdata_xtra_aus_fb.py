@@ -28,7 +28,8 @@ https://www.mapdevelopers.com/draw-circle-tool.php?circles=%5B%5B5563500%2C-62.7
 '''
 
 from time import time
-from starfix import Sight, SightCollection, get_representation, get_google_map_string, IntersectError
+from starfix import Sight, SightCollection, get_representation,\
+     get_google_map_string, IntersectError
 
 
 starttime = time ()

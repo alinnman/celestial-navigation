@@ -67,6 +67,7 @@ except IntersectError as ve:
 
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)
+assert isinstance (intersections, LatLon)
 print (get_representation(intersections,1))
 print ("MD = " + collection.get_map_developers_string())
 print ("GM = " + get_google_map_string(intersections,4))
