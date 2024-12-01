@@ -1,4 +1,4 @@
 *checkpoints*
 __pycache__/*
-test*
+**/__pycache__/*
 .ipynb_checkpoints/starfix-pynb-checkpoint.ipynb
