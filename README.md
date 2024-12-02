@@ -5,6 +5,12 @@
 
 # celestial-navigation
 
+## Online Demo
+
+Try out an 
+[online demo](https://drive.google.com/file/d/1bZt35-P6aiPlKWktyXgU3he6Di_N-PpA/view?usp=sharing)
+of this toolkit!
+
 ## Table of contents
 
 1. [Introduction](#introduction)
