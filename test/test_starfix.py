@@ -1,6 +1,18 @@
 ''' Test suite for the toolkit '''
-
+# pylint: disable=C0413
 import unittest
+
+import sys
+from pathlib import Path
+file = Path(__file__).resolve()
+parent, root = file.parent, file.parents[1]
+sys.path.append(str(root))
+
+try:
+    sys.path.remove(str(parent))
+except ValueError:
+    pass
+
 from starfixdata_stat_1 import main as main_1
 from starfixdata_stat_2 import main as main_2
 from starfixdata_sea    import main as main_sea

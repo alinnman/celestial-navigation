@@ -3,11 +3,30 @@
     MIT License (see LICENSE file)
 
 '''
-
+# pylint: disable=C0413
 from time import time
+
+import sys
+from pathlib import Path
+file = Path(__file__).resolve()
+parent, root = file.parent, file.parents[1]
+sys.path.append(str(root))
+
+try:
+    sys.path.remove(str(parent))
+except ValueError:
+    pass
+
 from starfix import Sight, SightCollection, get_representation,\
      get_google_map_string, IntersectError, LatLon
 
+#from setuptools import setup, find_packages
+#setup(
+#    name = 'celestial_navigation',
+#    packages = find_packages(),
+#)
+#from starfix import Sight, SightCollection, get_representation,\
+#                     get_google_map_string, IntersectError, LatLon
 
 starttime = time ()
 

@@ -5,8 +5,20 @@
     Test sample from sextant exercise. This used a Ho observation so I added
     support for this in the code (eliminating refraction and dip calculations)
 '''
-
+# pylint: disable=C0413
 from time import time
+
+import sys
+from pathlib import Path
+file = Path(__file__).resolve()
+parent, root = file.parent, file.parents[1]
+sys.path.append(str(root))
+
+try:
+    sys.path.remove(str(parent))
+except ValueError:
+    pass
+
 from starfix import Sight, SightCollection, get_representation,\
      get_google_map_string, IntersectError
 

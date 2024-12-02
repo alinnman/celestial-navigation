@@ -26,8 +26,20 @@ C GP     = -57.1067,-122.9567
 Map output: 
 https://www.mapdevelopers.com/draw-circle-tool.php?circles=%5B%5B5563500%2C-62.7633%2C39.3583%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B7790800%2C-51.2983%2C-51.5033%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%2C%5B4450600%2C-56.8933%2C-122.9567%2C%22%23AAAAAA%22%2C%22%23000000%22%2C0.4%5D%5D 
 '''
-
+# pylint: disable=C0413
 from time import time
+
+import sys
+from pathlib import Path
+file = Path(__file__).resolve()
+parent, root = file.parent, file.parents[1]
+sys.path.append(str(root))
+
+try:
+    sys.path.remove(str(parent))
+except ValueError:
+    pass
+
 from starfix import Sight, SightCollection, get_representation,\
      get_google_map_string, IntersectError
 
