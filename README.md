@@ -441,8 +441,8 @@ needs to be considered. For other planets and the Sun the correction will almost
 always be obscured by sextant reading errors.
 
 You may also use the supplied Jupyter Notebook scripts
-[notebook.stat.1.ipynb](notebook.stat.1.ipynb) and
-[notebook.stat.2.ipynb](notebook.stat.2.ipynb).
+[notebook.stat.1.ipynb](notebook_stat_1.ipynb) and
+[notebook.stat.2.ipynb](notebook_stat_2.ipynb).
 
 ### 3.iv. Azimuth Calculation<a name="azimuth"></a>
 
@@ -580,7 +580,7 @@ you have the coordinates here.
     Ending   point GM = 58.4364,18.0583
 
 You may also use the supplied Jupyter Notebook script
-[notebook.sea.ipynb](notebook.sea.ipynb).
+[notebook.sea.ipynb](notebook_sea.ipynb).
 
 ## 5. A real-life example<a name="real-life"></a>
 
@@ -615,7 +615,7 @@ The red arrow points towards the calculated correct position (intersection).
 ![Navigation towards three lighthouses](pics/lighthouses.png "Terrestrial Navigation")
 
 You may also use the supplied Jupyter Notebook script
-[notebook.terrestrial.ipynb](notebook.terrestrial.ipynb).
+[notebook.terrestrial.ipynb](notebook_terrestrial.ipynb).
 
 ## 7. Sextant Calibration <a name="calibration"></a>
 
