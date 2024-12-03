@@ -212,7 +212,7 @@ Using two star fixes a sight reduction can be done in the following way:
     
     collection = SightCollection ([a, b])
     try:
-        intersections, fitness, diag_output = collection.get_intersections ()
+        intersections, _, _ = collection.get_intersections ()
         print (get_representation(intersections,1))
     except IntersectError as ve:
         print ("Cannot get perform a sight reduction. Bad sight data.\n" + str(ve))
@@ -346,7 +346,7 @@ Using three (or more) sights a sight reduction can be done in the following way
     
     collection = SightCollection ([a, b, c]) # Add more sights if needed
     try:
-        intersections, fitness, diag_output = collection.getIntersections \
+        intersections, fitness, _ = collection.getIntersections \
         (estimated_position (LatLon(23,45))) ## DRP can be entered if suitable
         print (getRepresentation(intersections,1))
     except IntersectError as ve:
