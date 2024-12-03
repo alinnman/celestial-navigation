@@ -32,7 +32,7 @@ class LatLon:
 
 # Utility routines (algrebraic, spheric geometry)
 
-def add_vecs (vec1 : list[int | float], vec2 : list[int | float]) -> list[int | float]:
+def add_vecs (vec1 : list[float], vec2 : list[float]) -> list[float]:
     ''' Performs addition of two cartesian vectors '''
     assert len (vec1) == len (vec2)
     retval = []
@@ -40,32 +40,32 @@ def add_vecs (vec1 : list[int | float], vec2 : list[int | float]) -> list[int | 
         retval.append (v + vec2[i])
     return retval
 
-def subtract_vecs (vec1 : list[int | float], vec2 : list[int | float]) -> list [int | float]:
+def subtract_vecs (vec1 : list[float], vec2 : list[float]) -> list [float]:
     ''' Performs subtraction of two cartesian vectors '''
     assert len (vec1) == len (vec2)
     return add_vecs (vec1, mult_scalar_vect(-1, vec2))
 
-def mult_scalar_vect (scalar : int | float, vec : list [int | float]) -> list [int | float]:
+def mult_scalar_vect (scalar : int | float, vec : list [float]) -> list [float]:
     ''' Performs multiplication of a cartesian vector with a scalar '''
     retval = []
     for v in vec:
         retval.append (scalar*v)
     return retval
 
-def length_of_vect (vec : list [int | float]) -> float:
+def length_of_vect (vec : list [float]) -> float:
     ''' Returns the absolute value (length) of a vector '''
     s = 0
     for v in vec:
         s += v*v
     return sqrt (s)
 
-def normalize_vect (vec : list [int | float]) -> list [int | float]:
+def normalize_vect (vec : list [float]) -> list [float]:
     ''' Computes |vec| '''
     len_v = length_of_vect (vec)
     assert len_v > 0
     return mult_scalar_vect (1/len_v, vec)
 
-def cross_product (vec1 : list [int | float], vec2 : list [int | float]) -> list [int | float]:
+def cross_product (vec1 : list [float], vec2 : list [float]) -> list [float]:
     ''' Computes vec1 x vec2 (cross product) '''
     assert len (vec1) == len (vec2) == 3
     retval = [0.0, 0.0, 0.0]
@@ -74,7 +74,7 @@ def cross_product (vec1 : list [int | float], vec2 : list [int | float]) -> list
     retval [2] = vec1 [0]*vec2[1] - vec1[1]*vec2[0]
     return retval
 
-def dot_product (vec1 : list [int | float], vec2 : list [int | float]) -> float:
+def dot_product (vec1 : list [float], vec2 : list [float]) -> float:
     ''' Computes vec1 * vec2 (dot product) '''
     assert len (vec1) == len (vec2)
     s = 0.0
@@ -97,7 +97,7 @@ def rad_to_deg (rad : int | float) -> float:
     ''' Convert radians to degrees '''
     return rad*(180.0/pi)
 
-def to_latlon (vec : list [int | float]) -> LatLon:
+def to_latlon (vec : list [float]) -> LatLon:
     ''' Convert cartesian coordinate to LatLon (spherical) '''
     assert len (vec) == 3
     vec = normalize_vect (vec)
