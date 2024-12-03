@@ -504,7 +504,7 @@ See above for how to create a sight object
 
 Now you can calculate the coordinates for this trip.
 
-    intersections, fitness, diag_output = st.get_intersections ()
+    intersections, _, _ = st.get_intersections ()
     print ("Starting point = " + str(get_representation(intersections[0],1)))
     print ("End point = " + str(get_representation(intersections[1],1)))
 
