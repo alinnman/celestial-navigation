@@ -10,7 +10,7 @@
 Try out an 
 [online demo](https://colab.research.google.com/drive/1bZt35-P6aiPlKWktyXgU3he6Di_N-PpA)
 of this toolkit!<br/> 
-*Opens in [Google Colab](https://colab.research.google.com). You need a Google/Gmail account*.
+*Opens in [Google Colab](https://colab.research.google.com). You need a Google/Gmail account to run the code in the notebook.*.
 
 ## Table of contents
 
