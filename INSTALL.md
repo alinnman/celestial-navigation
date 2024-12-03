@@ -3,7 +3,7 @@
 ## Quick Demo
 
 A
-[demo](https://colab.research.google.com/github/alinnman/celestial-navigation/blob/main/starfix_colab_demo.ipynb)
+[demo](https://colab.research.google.com/drive/1bZt35-P6aiPlKWktyXgU3he6Di_N-PpA)
 of the code can be run in Google Colab. You can use it to run a standard
 three-star fix. A Google account is necessary.
 
