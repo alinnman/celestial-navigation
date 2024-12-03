@@ -7,10 +7,11 @@
 
 ## Online Demo
 
-Try out an 
+Try out an
 [online demo](https://colab.research.google.com/drive/1bZt35-P6aiPlKWktyXgU3he6Di_N-PpA)
-of this toolkit!<br/> 
-*Opens in [Google Colab](https://colab.research.google.com). You need a Google/Gmail account to run the code in the notebook.*.
+of this toolkit!<br/>
+*Opens in [Google Colab](https://colab.research.google.com).
+You need a Google/Gmail account to run the code in the notebook*.
 
 ## Table of contents
 
@@ -589,7 +590,7 @@ sextant (Davis Mark III), a standard watch and an artificial horizon.
 
 ![Simple celestial navigation gear](pics/celnav-gear.jpg "Simple celestial navigation gear")
 
-The sample can be found [here](xtras/starfixdata_xtra_home.py)
+The sample can be found [here](xtras/starfixdata_xtra_home.py).
 The resulting position is just 1.45 nautical miles away from my real position,
 which I consider being an excellent result given the simple equipment and my
 modest level of training.

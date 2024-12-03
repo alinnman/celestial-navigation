@@ -32,7 +32,7 @@ class LatLon:
 
 # Utility routines (algrebraic, spheric geometry)
 
-def add_vecs (vec1 : list, vec2 : list) -> list:
+def add_vecs (vec1 : list[int | float], vec2 : list[int | float]) -> list[int | float]:
     ''' Performs addition of two cartesian vectors '''
     assert len (vec1) == len (vec2)
     retval = []
@@ -40,41 +40,41 @@ def add_vecs (vec1 : list, vec2 : list) -> list:
         retval.append (v + vec2[i])
     return retval
 
-def subtract_vecs (vec1 : list, vec2 : list) -> list:
+def subtract_vecs (vec1 : list[int | float], vec2 : list[int | float]) -> list [int | float]:
     ''' Performs subtraction of two cartesian vectors '''
     assert len (vec1) == len (vec2)
     return add_vecs (vec1, mult_scalar_vect(-1, vec2))
 
-def mult_scalar_vect (scalar : int | float, vec : list) -> list:
+def mult_scalar_vect (scalar : int | float, vec : list [int | float]) -> list [int | float]:
     ''' Performs multiplication of a cartesian vector with a scalar '''
     retval = []
     for v in vec:
         retval.append (scalar*v)
     return retval
 
-def length_of_vect (vec : list) -> float:
+def length_of_vect (vec : list [int | float]) -> float:
     ''' Returns the absolute value (length) of a vector '''
     s = 0
     for v in vec:
         s += v*v
     return sqrt (s)
 
-def normalize_vect (vec : list) -> list:
+def normalize_vect (vec : list [int | float]) -> list [int | float]:
     ''' Computes |vec| '''
     len_v = length_of_vect (vec)
     assert len_v > 0
     return mult_scalar_vect (1/len_v, vec)
 
-def cross_product (vec1 : list, vec2 : list) -> list:
+def cross_product (vec1 : list [int | float], vec2 : list [int | float]) -> list [int | float]:
     ''' Computes vec1 x vec2 (cross product) '''
     assert len (vec1) == len (vec2) == 3
-    retval = [0, 0, 0]
+    retval = [0.0, 0.0, 0.0]
     retval [0] = vec1 [1]*vec2[2] - vec1[2]*vec2[1]
     retval [1] = vec1 [2]*vec2[0] - vec1[0]*vec2[2]
     retval [2] = vec1 [0]*vec2[1] - vec1[1]*vec2[0]
     return retval
 
-def dot_product (vec1 : list, vec2 : list) -> float:
+def dot_product (vec1 : list [int | float], vec2 : list [int | float]) -> float:
     ''' Computes vec1 * vec2 (dot product) '''
     assert len (vec1) == len (vec2)
     s = 0.0
@@ -97,7 +97,7 @@ def rad_to_deg (rad : int | float) -> float:
     ''' Convert radians to degrees '''
     return rad*(180.0/pi)
 
-def to_latlon (vec : list) -> LatLon:
+def to_latlon (vec : list [int | float]) -> LatLon:
     ''' Convert cartesian coordinate to LatLon (spherical) '''
     assert len (vec) == 3
     vec = normalize_vect (vec)
@@ -109,7 +109,7 @@ def to_latlon (vec : list) -> LatLon:
 
     return LatLon (lat, mod_lon(lon))
 
-def to_rectangular (latlon : LatLon) -> list:
+def to_rectangular (latlon : LatLon) -> list [float]:
     ''' Convert LatLon (spherical) coordinate to cartesian '''
     phi = deg_to_rad (90 - latlon.lat)
     theta = deg_to_rad (latlon.lon)
@@ -139,7 +139,8 @@ def get_decimal_degrees_from_tuple (t : tuple) -> float:
     ''' Return decimal value for an angle, represented as a tuple (degrees, minutes, seconds)'''
     return get_decimal_degrees (t[0], t[1], t[2])
 
-def rotate_vector (vec : list, rot_vec : list, angle_radians : int | float) -> list:
+def rotate_vector\
+    (vec : list [float], rot_vec : list [float], angle_radians : int | float) -> list [float]:
     '''
     Rotate a vector around a rotation vector. Based on Rodrigues formula. 
     https://en.wikipedia.org/wiki/Rodrigues%27_formula
@@ -480,7 +481,7 @@ def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
     else:
         a = to_rectangular (to_pos)
         b = to_rectangular (from_pos)
-        north_pole = [0, 0, 1] # to_rectangular (LatLon (90, 0))
+        north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
         east_tangent = normalize_vect(cross_product (north_pole, b))
         north_tangent = normalize_vect (cross_product (b, east_tangent))
         direction = normalize_vect(subtract_vecs (a,b))
@@ -910,7 +911,7 @@ class SightCollection:
                                 ("Cannot sort multiple intersections to find"+\
                                  "a reasonable set of coordinates")
 
-            summation_vec = [0,0,0]
+            summation_vec = [0.0,0.0,0.0]
             # Make a mean value on the best intersections.
             fitness_sum = 0
             for cp in chosen_points:
