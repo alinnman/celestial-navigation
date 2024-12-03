@@ -9,7 +9,8 @@
 
 Try out an 
 [online demo](https://drive.google.com/file/d/1bZt35-P6aiPlKWktyXgU3he6Di_N-PpA/view?usp=sharing)
-of this toolkit!
+of this toolkit!<br/> 
+*Open in Google Colab, you need a Google/Gmail account*
 
 ## Table of contents
 
