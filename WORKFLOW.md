@@ -31,7 +31,10 @@ for the two measurements.<br><br>
 1. Look up geographic positions (GP) in the **Nautical Almanac**
 <br><br>
 *You find digital (PDF) Nautical Almanacs bundled in this repository and you can buy hard-copies (for 2024) [here](https://www.amazon.com/Nautical-Almanac-2024-Year/dp/1951116690/ref=sr_1_1?crid=2TIHPIQYLTMSP&dib=eyJ2IjoiMSJ9.d3xFA2pQJx8dny0H5kmiZLliYeANWFYB9BZ8He317-o6bo-502TzFBFZ53Z-urSD2yU0G4GWMfNzJGBe_H332Fm4m7P1csqConMxBzK2PrFKKlWK4lgfJQg6yz6ChRGMazwrBs_sFjCPsPZO70yoju7daDJEfIkEnapIbSINaxPVotcCFWwCbsUZykR9a41qx7pt6f_BF3H2phdzmDyQc91EzxYspG6EUhy4rKSDV84._yKQxdQUbiOyz16NzLeFG1_ZmjRXS9ZH1Cf_qHssoTE&dib_tag=se&keywords=nautical+almanac+2024&qid=1722754135&sprefix=nautical+almanac+2024%2Caps%2C243&sr=8-1).*<br><br>
-You will now need the timestamps $t_1$ and $t_2$ from the step above.<br><br>
+You will now need the timestamps $t_1$ and $t_2$ from the step above.
+Since the Nautical Almanac lists hourly values you will need to perform
+[linear interpolation](https://en.wikipedia.org/wiki/Linear_interpolation).
+<br><br>
 The GP:s are represented by two vectors $a$ and $b$.<br><br>
 *NOTE: The coordinates from the Nautical Almanac must be converted from
 spherical to cartesian before you start.*<br>
