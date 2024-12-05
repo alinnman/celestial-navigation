@@ -463,25 +463,25 @@ def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
     # From the poles we need to calculate azimuths differently
     if from_pos.lat == 90:
         return (-to_pos.lon) % 360
-    elif from_pos.lat == -90:
+    if from_pos.lat == -90:
         return to_pos.lon % 360
     # Antipodes has to be handled
-    elif (to_pos.lat == -from_pos.lat) and (((to_pos.lon - from_pos.lon) % 180) == 0):
+    if (to_pos.lat == -from_pos.lat) and (((to_pos.lon - from_pos.lon) % 180) == 0):
         return 0
     # Same coordinate?
-    elif (to_pos.lat == from_pos.lat) and (to_pos.lon == from_pos.lon):
+    if (to_pos.lat == from_pos.lat) and (to_pos.lon == from_pos.lon):
         return 0
-    else:
-        a = to_rectangular (to_pos)
-        b = to_rectangular (from_pos)
-        north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
-        east_tangent = normalize_vect(cross_product (north_pole, b))
-        north_tangent = normalize_vect (cross_product (b, east_tangent))
-        direction = normalize_vect(subtract_vecs (a,b))
-        fac1 = dot_product (direction, north_tangent)
-        fac2 = dot_product (direction, east_tangent)
-        r = rad_to_deg (atan2 (fac2, fac1))
-        return r % 360
+    
+    a = to_rectangular (to_pos)
+    b = to_rectangular (from_pos)
+    north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
+    east_tangent = normalize_vect(cross_product (north_pole, b))
+    north_tangent = normalize_vect (cross_product (b, east_tangent))
+    direction = normalize_vect(subtract_vecs (a,b))
+    fac1 = dot_product (direction, north_tangent)
+    fac2 = dot_product (direction, east_tangent)
+    r = rad_to_deg (atan2 (fac2, fac1))
+    return r % 360
 
 # Atmospheric refraction
 
@@ -508,7 +508,7 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
     if isinstance (intersections, LatLon):
         return str(round(intersections.lat,num_decimals)) + "," +\
                str(round(intersections.lon,num_decimals))
-    elif isinstance (intersections, tuple):
+    if isinstance (intersections, tuple):
         assert len (intersections) == 2
         return get_google_map_string (intersections[0], num_decimals) + ";" + \
                get_google_map_string (intersections[1], num_decimals)
@@ -807,116 +807,115 @@ class SightCollection:
                               self.sf_list[1]).get_intersections\
                                          (estimated_position, diagnostics = diagnostics)
         #elif nr_of_fixes >= 3:
-        else:
-            # For >= 3 star fixes perform pairwise calculation on every pair of fixes
-            # and then run a sorting algorithm
-            coords = list[tuple[LatLon, float]]()
-            # Perform pairwise sight reductions
-            intersection_count = 0
-            for i in range (nr_of_fixes):
-                for j in range (i+1, nr_of_fixes):
-                    p = SightPair (self.sf_list [i], self.sf_list [j])
-                    intersection_count += 1
-                    p_int, fitness, dia =\
-                        p.get_intersections (estimated_position, diagnostics = diagnostics,\
-                                             intersection_number = intersection_count)
-                    diag_output += dia
-                    if p_int is not None:
-                        if isinstance (p_int, (list, tuple)):
-                            for pix in p_int:
-                                coords.append ((pix, fitness))
-                        elif isinstance (p_int, LatLon):
-                            coords.append ((p_int, fitness))
-                        else:
-                            assert False
-            nr_of_coords = len (coords)
-            dists = dict ()
-            # Collect all distance values between intersections
-            if diagnostics:
-                diag_output += "## Distance table\n\n"
-                diag_output += "Intersections\n"
-                diag_output += "| Id | Coordinate |\n"
-                diag_output += "|----|------------|\n"
-                for i in range (nr_of_coords):
-                    diag_output += "|**"+str(i)+"**|"+str(coords[i][0])+"|\n"
-                diag_output += "\n\nDistances\n"
-
-            if diagnostics:
-                diag_output += "|"
-                for i in range (nr_of_coords):
-                    diag_output += "|" + str(i)
-                diag_output += "|\n"
-                diag_output += "|----"
-                for i in range (nr_of_coords):
-                    diag_output += "|----"
-                diag_output += "|\n"
-            for i in range (nr_of_coords):
-                diag_output += "|**" + str(i) + "**"
-                if diag_output:
-                    for _ in range (0, i):
-                        diag_output += "|-"
-                for j in range (i, nr_of_coords):
-                    if i != j:
-                        dist = distance_between_points (coords[i][0], coords[j][0])
-                        dists [i,j] = dist
-                        if diagnostics:
-                            diag_output += "|" + str(round(dist,1)) + " km"
+        # For >= 3 star fixes perform pairwise calculation on every pair of fixes
+        # and then run a sorting algorithm
+        coords = list[tuple[LatLon, float]]()
+        # Perform pairwise sight reductions
+        intersection_count = 0
+        for i in range (nr_of_fixes):
+            for j in range (i+1, nr_of_fixes):
+                p = SightPair (self.sf_list [i], self.sf_list [j])
+                intersection_count += 1
+                p_int, fitness, dia =\
+                    p.get_intersections (estimated_position, diagnostics = diagnostics,\
+                                            intersection_number = intersection_count)
+                diag_output += dia
+                if p_int is not None:
+                    if isinstance (p_int, (list, tuple)):
+                        for pix in p_int:
+                            coords.append ((pix, fitness))
+                    elif isinstance (p_int, LatLon):
+                        coords.append ((p_int, fitness))
                     else:
-                        if diagnostics:
-                            diag_output += "|/"
-                if diagnostics:
-                    diag_output += "|\n"
-            if diagnostics:
-                diag_output += "\n\n"
-            # Sort the distances, with lower distances first
-            sorted_dists = dict(sorted(dists.items(), key=lambda item: item[1]))
-            chosen_points = set ()
-            cp_limit = int((nr_of_fixes**2 - nr_of_fixes) / 2)
-            # Find the points which are located close to other points
-            for sd in sorted_dists:
-                the_distance = sorted_dists [sd]
-                if the_distance < limit:
-                    chosen_points.add (sd[0])
-                    chosen_points.add (sd[1])
+                        assert False
+        nr_of_coords = len (coords)
+        dists = dict ()
+        # Collect all distance values between intersections
+        if diagnostics:
+            diag_output += "## Distance table\n\n"
+            diag_output += "Intersections\n"
+            diag_output += "| Id | Coordinate |\n"
+            diag_output += "|----|------------|\n"
+            for i in range (nr_of_coords):
+                diag_output += "|**"+str(i)+"**|"+str(coords[i][0])+"|\n"
+            diag_output += "\n\nDistances\n"
+
+        if diagnostics:
+            diag_output += "|"
+            for i in range (nr_of_coords):
+                diag_output += "|" + str(i)
+            diag_output += "|\n"
+            diag_output += "|----"
+            for i in range (nr_of_coords):
+                diag_output += "|----"
+            diag_output += "|\n"
+        for i in range (nr_of_coords):
+            diag_output += "|**" + str(i) + "**"
+            if diag_output:
+                for _ in range (0, i):
+                    diag_output += "|-"
+            for j in range (i, nr_of_coords):
+                if i != j:
+                    dist = distance_between_points (coords[i][0], coords[j][0])
+                    dists [i,j] = dist
+                    if diagnostics:
+                        diag_output += "|" + str(round(dist,1)) + " km"
                 else:
-                    break
-                if len (chosen_points) > cp_limit:
-                    break
+                    if diagnostics:
+                        diag_output += "|/"
+            if diagnostics:
+                diag_output += "|\n"
+        if diagnostics:
+            diag_output += "\n\n"
+        # Sort the distances, with lower distances first
+        sorted_dists = dict(sorted(dists.items(), key=lambda item: item[1]))
+        chosen_points = set ()
+        cp_limit = int((nr_of_fixes**2 - nr_of_fixes) / 2)
+        # Find the points which are located close to other points
+        for sd in sorted_dists:
+            the_distance = sorted_dists [sd]
+            if the_distance < limit:
+                chosen_points.add (sd[0])
+                chosen_points.add (sd[1])
+            else:
+                break
+            if len (chosen_points) > cp_limit:
+                break
 
-            nr_of_chosen_points = len (chosen_points)
-            if nr_of_chosen_points == 0:
-                # No points found. Bad star fixes. Throw exception.
-                raise IntersectError ("Bad sight data.")
+        nr_of_chosen_points = len (chosen_points)
+        if nr_of_chosen_points == 0:
+            # No points found. Bad star fixes. Throw exception.
+            raise IntersectError ("Bad sight data.")
 
-            # Make sure the chosen points are nearby each other
-            fine_sorting = False # This code is disabled for now
-            if fine_sorting:
-                for cp1 in chosen_points:
-                    print (get_representation (coords[0][cp1],1))
-                    for cp2 in chosen_points:
-                        if cp1 != cp2:
-                            dist = distance_between_points (coords[0][cp1], coords[0][cp2])
-                            if dist > limit:
-                                # Probably multiple possible observation points.
-                                # Best option is to perform sight reduction on 2 sights
-                                # and select the correct point manually.
-                                raise IntersectError\
-                                ("Cannot sort multiple intersections to find"+\
-                                 "a reasonable set of coordinates")
+        # Make sure the chosen points are nearby each other
+        fine_sorting = False # This code is disabled for now
+        if fine_sorting:
+            for cp1 in chosen_points:
+                print (get_representation (coords[0][cp1],1))
+                for cp2 in chosen_points:
+                    if cp1 != cp2:
+                        dist = distance_between_points (coords[0][cp1], coords[0][cp2])
+                        if dist > limit:
+                            # Probably multiple possible observation points.
+                            # Best option is to perform sight reduction on 2 sights
+                            # and select the correct point manually.
+                            raise IntersectError\
+                            ("Cannot sort multiple intersections to find"+\
+                                "a reasonable set of coordinates")
 
-            summation_vec = [0.0,0.0,0.0]
-            # Make a mean value on the best intersections.
-            fitness_sum = 0
-            for cp in chosen_points:
-                selected_coord = coords [cp][0]
-                fitness_here   = coords [cp][1]
-                fitness_sum += fitness_here
-                rect_vec = to_rectangular (selected_coord)
-                summation_vec =\
-                  add_vecs (summation_vec,\
-                  mult_scalar_vect ((1/nr_of_chosen_points)*fitness_here, rect_vec))
-            summation_vec = normalize_vect (summation_vec)
-            return to_latlon (summation_vec), fitness_sum, diag_output
+        summation_vec = [0.0,0.0,0.0]
+        # Make a mean value on the best intersections.
+        fitness_sum = 0
+        for cp in chosen_points:
+            selected_coord = coords [cp][0]
+            fitness_here   = coords [cp][1]
+            fitness_sum += fitness_here
+            rect_vec = to_rectangular (selected_coord)
+            summation_vec =\
+                add_vecs (summation_vec,\
+                mult_scalar_vect ((1/nr_of_chosen_points)*fitness_here, rect_vec))
+        summation_vec = normalize_vect (summation_vec)
+        return to_latlon (summation_vec), fitness_sum, diag_output
 
     def get_map_developers_string (self) -> str:
         '''
@@ -1000,10 +999,9 @@ class SightTrip:
             iter_count += 1
         if iter_count >= iter_limit:
             raise IntersectError ("Cannot calculate a trip vector")
-        else:
-            assert taken_out is not None
-            assert rotated is not None
-            return (taken_out, rotated), fitness, diag_output
+        assert taken_out is not None
+        assert rotated is not None
+        return (taken_out, rotated), fitness, diag_output
 
     def get_map_developers_string (self) -> str:
         '''
