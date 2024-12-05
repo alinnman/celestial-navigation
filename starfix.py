@@ -189,10 +189,12 @@ def nm_to_km (nm : int | float) -> float:
 
 # Sextant calibration
 
+#pylint: disable=R0903
 class Sextant:
     ''' This class represents a physical sextant, with various errors '''
     def __init__  (self, graduation_error : float):
         self.graduation_error = graduation_error
+#pylint: enable=R0903
 
 def angle_between_points (origin : LatLon, point1 : LatLon, point2 : LatLon) -> float:
     ''' Return the angle in degrees between two terrestrial targets (point1 and point2) 
@@ -248,6 +250,10 @@ class IntersectError (ValueError):
     def __init__ (self, info : str):
         super().__init__ (info)
 
+#pylint: disable=R0912
+#pylint: disable=R0913
+#pylint: disable=R0914
+#pylint: disable=R0915
 def get_intersections (latlon1 : LatLon, latlon2 : LatLon,\
                        angle1 : int | float, angle2 : int | float,\
                        estimated_position : NoneType | LatLon = None,\
@@ -456,6 +462,10 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
                 best_intersection = ints
         assert best_intersection is not None
         return best_intersection, fitness, diag_output
+#pylint: enable=R0912
+#pylint: enable=R0913
+#pylint: enable=R0914
+#pylint: enable=R0915
 
 def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
     ''' Return the azimuth of the to_pos sight from from_pos sight
@@ -471,7 +481,7 @@ def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
     # Same coordinate?
     if (to_pos.lat == from_pos.lat) and (to_pos.lon == from_pos.lon):
         return 0
-    
+
     a = to_rectangular (to_pos)
     b = to_rectangular (from_pos)
     north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
@@ -503,6 +513,7 @@ def get_refraction (apparent_angle : int | float, temperature : float, pressure 
 
 # Data formatting
 
+#pylint: disable=R1710
 def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -> str :
     ''' Return a coordinate which can be used in Google Maps '''
     if isinstance (intersections, LatLon):
@@ -512,6 +523,7 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
         assert len (intersections) == 2
         return get_google_map_string (intersections[0], num_decimals) + ";" + \
                get_google_map_string (intersections[1], num_decimals)
+#pylint: enable=R1710
 
 def get_representation\
     (ins : LatLon | tuple | list | float | int, num_decimals : int, lat=False) -> str:
@@ -602,6 +614,7 @@ def get_circle_for_angle (point1 : LatLon, point2 : LatLon, angle : int | float)
     radius = rad_to_deg(angle_b_points (to_latlon(rot_center), point1))
     return to_latlon(rot_center), radius
 
+#pylint: disable=R0913
 def get_terrestrial_position (point_a1 : LatLon,\
                               point_a2 : LatLon,\
                               angle_a : int | float,\
@@ -614,6 +627,7 @@ def get_terrestrial_position (point_a1 : LatLon,\
     '''
     Given two pairs of terrestial observations (pos + angle) determine the observer's position 
     '''
+
     a = get_circle_for_angle (point_a1, point_a2, angle_a)
     b = get_circle_for_angle (point_b1, point_b2, angle_b)
     # Finally compute the intersection.
@@ -621,11 +635,16 @@ def get_terrestrial_position (point_a1 : LatLon,\
     intersection, fitness, diag_output =\
         get_intersections (a[0], b[0], a[1], b[1], estimated_position, diagnostics)
     return intersection, a[0], a[1], b[0], b[1], fitness, diag_output
+#pylint: enable=R0913
 
 # Celestial Navigation
 
+#pylint: disable=R0902
 class Sight :
     '''  Object representing a sight (star fix) '''
+#pylint: disable=R0912
+#pylint: disable=R0913
+#pylint: disable=R0914
     def __init__ (self, \
                   object_name              : str, \
                   set_time                 : str, \
@@ -692,6 +711,9 @@ class Sight :
             self.__correct_for_refraction ()
             self.__correct_dip_of_horizon ()
         self.gp = self.__calculate_gp ()
+#pylint: enable=R0912
+#pylint: enable=R0913
+#pylint: enable=R0914
 
     def __correct_set_time (self, chronometer : Chronometer):
         dt1 = self.set_time_dt
@@ -764,7 +786,9 @@ class Sight :
         ''' Return the azimuth of this sight (to the GP) from a particular point on Earth 
             Returns the azimuth in degrees (0-360)'''
         return get_azimuth (self.gp, from_pos)
+#pylint: enable=R0902
 
+#pylint: disable=R0903
 class SightPair:
     ''' Represents a pair of sights, needed for making a sight reduction '''
     def __init__ (self, sf1 : Sight, sf2 : Sight):
@@ -782,6 +806,7 @@ class SightPair:
                                   self.sf1.get_angle(), self.sf2.get_angle(),\
                                   estimated_position, diagnostics = diagnostics,\
                                   intersection_number = intersection_number)
+#pylint: enable=R0903
 
 class SightCollection:
     ''' Represents a collection of >= 2 sights '''
@@ -791,6 +816,9 @@ class SightCollection:
             raise ValueError ("SightCollection should have at least two sights")
         self.sf_list = sf_list
 
+#pylint: disable=R0912
+#pylint: disable=R0914
+#pylint: disable=R0915
     def get_intersections\
         (self, limit : int | float = 100,\
           estimated_position : NoneType | LatLon = None,\
@@ -916,6 +944,9 @@ class SightCollection:
                 mult_scalar_vect ((1/nr_of_chosen_points)*fitness_here, rect_vec))
         summation_vec = normalize_vect (summation_vec)
         return to_latlon (summation_vec), fitness_sum, diag_output
+#pylint: enable=R0912
+#pylint: enable=R0914
+#pylint: enable=R0915
 
     def get_map_developers_string (self) -> str:
         '''
@@ -935,6 +966,7 @@ class SightCollection:
 class SightTrip:
     ''' Object used for dead-reckoning. Sights are taken on different times
         Course and speed are estimated input parameters.  '''
+#pylint: disable=R0913
     def __init__ (self, \
                        sight_start : Sight,\
                        sight_end : Sight,\
@@ -947,6 +979,7 @@ class SightTrip:
         self.course_degrees           = course_degrees
         self.speed_knots              = speed_knots
         self.__calculate_time_hours ()
+#pylint: enable=R0913
 
     def __calculate_time_hours (self):
         dt1 = self.sight_start.set_time_dt
@@ -966,6 +999,7 @@ class SightTrip:
         dbp = distance_between_points (taken_out, self.sight_end.gp) - self.sight_end.get_radius()
         return dbp, taken_out, rotated_latlon
 
+#pylint: disable=R0914
     def get_intersections (self, diagnostics : bool = False) ->\
             tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Get the intersections for this sight trip object '''
@@ -1002,6 +1036,7 @@ class SightTrip:
         assert taken_out is not None
         assert rotated is not None
         return (taken_out, rotated), fitness, diag_output
+#pylint: enable=R0914
 
     def get_map_developers_string (self) -> str:
         '''
