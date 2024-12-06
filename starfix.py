@@ -226,6 +226,7 @@ class Chronometer: # pylint: disable=R0903
         drift = diff_days * self.drift_sec_per_day
         mt_corr = mt1 - drift
         return datetime.fromtimestamp (mt_corr)
+# pylint: enable=R0903
 
 # Horizon
 
