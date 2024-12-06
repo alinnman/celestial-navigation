@@ -233,8 +233,10 @@ class Chronometer: # pylint: disable=R0903
 def get_dip_of_horizon (hm : int | float, temperature : float, dt_dh : float, pressure : float)\
       -> float:
     ''' Calculate dip of horizon in arc minutes 
-    Parameter:
+    Parameters:
         hm : height in meters
+        temperature : temperature in degrees Celsius
+        dt_th : temperature gradient in degrees Celsius / meter
     '''
     k_factor = 503*(pressure*10)*(1/((temperature+273)**2))*(0.0343 + dt_dh)
     h = hm / 1000
@@ -265,6 +267,15 @@ def get_intersections (latlon1 : LatLon, latlon2 : LatLon,\
     Get intersection of two circles on a spheric surface. 
     At least one of the circles must be a small circle. 
 https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere 
+    Parameters:
+        latlon1 : GP nr 1 location
+        latlon2 : GP nr 2 location
+        angle1 : Angle from zenith of star fix 1 (in radians)
+        angle2 : Angle from zenith of star fix 2 (in radians)
+        estimated_position : A DRP position, if available. Set to None if unknown. 
+        use_fitness : Set to True if fitness calculation is requested.
+        diagnostics : Set to True if diagnostics is required. Diagnostics is returned as the third item in return value tuple. 
+        intersection_number : Used for diagnostics to label output. 
     '''
     assert angle1 >= 0 and angle2 >= 0
     assert angle1 < 90 or angle2 < 90  # Make sure one of the circles is a small circle
@@ -470,7 +481,13 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 
 def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
     ''' Return the azimuth of the to_pos sight from from_pos sight
-        Returns the azimuth in degrees (0-360)'''
+        Returns the azimuth in degrees (0-360)
+        Parameters:
+            to_pos : LatLon of the observed position
+            from_pos : LatLon of the observing positio
+        Returns: 
+            The aziumuth angle (degrees 0-360)
+    '''
     # From the poles we need to calculate azimuths differently
     if from_pos.lat == 90:
         return (-to_pos.lon) % 360
