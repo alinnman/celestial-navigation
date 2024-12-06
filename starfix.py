@@ -274,7 +274,8 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         angle2 : Angle from zenith of star fix 2 (in radians)
         estimated_position : A DRP position, if available. Set to None if unknown. 
         use_fitness : Set to True if fitness calculation is requested.
-        diagnostics : Set to True if diagnostics is required. Diagnostics is returned as the third item in return value tuple. 
+        diagnostics : Set to True if diagnostics is required. 
+                      Diagnostics is returned as the third item in return value tuple. 
         intersection_number : Used for diagnostics to label output. 
     '''
     assert angle1 >= 0 and angle2 >= 0
