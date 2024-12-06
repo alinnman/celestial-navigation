@@ -519,10 +519,12 @@ def get_refraction (apparent_angle : int | float, temperature : float, pressure 
     Calculate an estimation of the effect of atmospheric refraction using Bennett's formula
     See: https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction 
     
-    Parameter:
-        apparent_angle: The apparent (measured) altitude in degrees
-    Returns:
-        The refraction in arc minutes
+        Parameters:
+            apparent_angle : The apparent (measured) altitude in degrees.
+            temperature : Temperature in degrees celsius.
+            pressure : Pressure in kPa.
+        Returns:
+            The refraction in arc minutes
     '''
     q = pi/180
     h = apparent_angle
@@ -534,7 +536,14 @@ def get_refraction (apparent_angle : int | float, temperature : float, pressure 
 
 #pylint: disable=R1710
 def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -> str :
-    ''' Return a coordinate which can be used in Google Maps '''
+    ''' Return a coordinate which can be used in Google Maps 
+    
+        Parameters:
+            intersections : A data set of intersection points
+            num_decimals : Required precision
+        Returns: 
+            A string usable as a Google Maps coordinate
+    '''
     if isinstance (intersections, LatLon):
         return str(round(intersections.lat,num_decimals)) + "," +\
                str(round(intersections.lon,num_decimals))
@@ -546,7 +555,14 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
 
 def get_representation\
     (ins : LatLon | tuple | list | float | int, num_decimals : int, lat=False) -> str:
-    ''' Converts coordinate(s) to a string representation '''
+    ''' Converts coordinate(s) to a string representation 
+    
+        Parameters: 
+            ins : A set of coordinates
+            lat : True if latitude, False if longitude
+        Returns:
+            A representation string. 
+    '''
     assert num_decimals >= 0
     if isinstance (ins, LatLon):
         ins = ins.get_tuple ()
@@ -583,7 +599,13 @@ def get_representation\
 def parse_angle_string (angle_string : str) -> float:
     ''' Read a string "DD:MM:SS" and return a decimal degree value.
         Minute and second specifications are optional. 
-        Decimal values can be used. '''
+        Decimal values can be used. 
+
+        Parameters:
+            angle_string : A string in the DD[:MM[:SS]]] format.
+        Returns
+            An angle in decimal degrees. 
+    '''
     splitted = angle_string.split (":")
     degrees = minutes = seconds = None
     if len (splitted) == 0 or len (splitted) > 3:
