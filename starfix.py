@@ -594,7 +594,6 @@ def get_representation\
                 ret_val = ret_val + ";"
         ret_val = ret_val + ")"
         return ret_val
-    raise ValueError ("Incorrect types for representation.")
 
 def parse_angle_string (angle_string : str) -> float:
     ''' Read a string "DD:MM:SS" and return a decimal degree value.
