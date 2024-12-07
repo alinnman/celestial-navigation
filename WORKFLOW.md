@@ -40,7 +40,7 @@ The GP:s are represented by two vectors $a$ and $b$.<br><br>
 spherical to cartesian before you start.*<br>
 *NOTE: You will also need to take care of atmospheric refraction and horizon
 dip.*<br>
-*NOTE: [The toolkit](starfix.py) will take care of the GP calculation, atmospheric refraction and horizon dip.
+*NOTE: [The toolkit](starfix.py) will take care of the GP calculation (with linear interpolation), atmospheric refraction and horizon dip.
 You just have to extract the tabular data for the current and next hour
 if you use the code in the toolkit.*<br><br>
 For more info see the [Readme File](README.md).
