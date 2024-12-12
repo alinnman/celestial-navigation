@@ -267,7 +267,7 @@ class IntersectError (ValueError):
 def get_intersections (latlon1 : LatLon, latlon2 : LatLon,\
                        angle1 : int | float, angle2 : int | float,\
                        estimated_position : NoneType | LatLon = None,\
-                       use_fitness : bool = True, diagnostics : bool = False,
+                       use_fitness : bool = True, diagnostics : bool = False,\
                        intersection_number : int = 0)\
                           -> tuple[LatLon | tuple[LatLon, LatLon], float, str]:
     '''
@@ -1054,7 +1054,7 @@ class SightTrip:
         pair = SightPair (self.sight_start, self.sight_end)
         best_intersection, fitness, diag_output = pair.get_intersections\
               (estimated_position = self.estimated_starting_point, diagnostics = diagnostics)
-        # Determine angle of the intersection point on sightStart small circle
+        # Determine angle of the intersection point on sight_start small circle
         a_vec = to_rectangular (self.sight_start.gp)
         assert isinstance (best_intersection, LatLon)
         b_vec = to_rectangular (best_intersection)
