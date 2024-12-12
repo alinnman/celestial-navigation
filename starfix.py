@@ -120,6 +120,13 @@ def to_rectangular (latlon : LatLon) -> list [float]:
     a_vec = normalize_vect (a_vec)
     return a_vec
 
+def get_dms (angle : int | float) -> tuple[int, int, int | float]:
+    ''' Convert an angle (in degrees) to a tuple of degrees, arc minutes and arc seconds '''
+    degrees = int (angle)
+    minutes = int ((angle-degrees)*60)
+    seconds = (angle-degrees-minutes/60)*3600
+    return degrees, minutes, seconds
+
 def get_decimal_degrees (degrees : int | float, minutes : int | float, seconds : int | float)\
       -> float:
     ''' Return decimal value for an angle (from degrees+minutes+seconds) '''
