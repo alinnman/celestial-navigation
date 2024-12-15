@@ -1015,7 +1015,7 @@ class SightTrip:
         Course and speed are estimated input parameters.  '''
 #pylint: disable=R0913
     def __init__ (self, \
-                       sight_start : Sight,\
+                       sight_start : Sight | datetime,\
                        sight_end : Sight,\
                        estimated_starting_point : LatLon,\
                        course_degrees : int | float,\
@@ -1029,7 +1029,10 @@ class SightTrip:
 #pylint: enable=R0913
 
     def __calculate_time_hours (self):
-        dt1 = self.sight_start.set_time_dt
+        if isinstance (self.sight_start, Sight):
+            dt1 = self.sight_start.set_time_dt
+        else:
+            dt1 = self.sight_start
         it1 = int(dt1.timestamp())
         dt2 = self.sight_end.set_time_dt
         it2 = int(dt2.timestamp())
@@ -1049,45 +1052,63 @@ class SightTrip:
 #pylint: disable=R0914
     def get_intersections (self, diagnostics : bool = False) ->\
             tuple[LatLon | tuple[LatLon, LatLon], float, str]:
-        ''' Get the intersections for this sight trip object '''
-        # Calculate intersections
-        pair = SightPair (self.sight_start, self.sight_end)
-        best_intersection, fitness, diag_output = pair.get_intersections\
-              (estimated_position = self.estimated_starting_point, diagnostics = diagnostics)
-        # Determine angle of the intersection point on sight_start small circle
-        a_vec = to_rectangular (self.sight_start.gp)
-        assert isinstance (best_intersection, LatLon)
-        b_vec = to_rectangular (best_intersection)
+        ''' Get the intersections for this sight trip object '''            
 
-        # Apply Newtons method to find the location
-        current_rotation = 0
-        delta = 0.0001
-        limit = 0.001
-        iter_limit = 100
-        iter_count = 0
-        # ready = False
-        taken_out = None
-        rotated  = None
-        while iter_count < iter_limit:
-            distance_result, taken_out, rotated =\
-                  self.__calculate_distance_to_target (current_rotation, a_vec, b_vec)
-            if abs (distance_result) < limit:
-                break
-            distance_result2, taken_out, rotated =\
-                  self.__calculate_distance_to_target (current_rotation+delta, a_vec, b_vec)
-            derivative = (distance_result2 - distance_result) / delta
-            current_rotation = current_rotation - (distance_result)/derivative
-            iter_count += 1
-        if iter_count >= iter_limit:
-            raise IntersectError ("Cannot calculate a trip vector")
-        assert taken_out is not None
-        assert rotated is not None
-        return (taken_out, rotated), fitness, diag_output
+        if isinstance (self.sight_start, Sight):
+
+            # Calculate intersections
+            pair = SightPair (self.sight_start, self.sight_end)
+            best_intersection, fitness, diag_output = pair.get_intersections\
+                (estimated_position = self.estimated_starting_point, diagnostics = diagnostics)
+            # Determine angle of the intersection point on sight_start small circle
+            a_vec = to_rectangular (self.sight_start.gp)
+            assert isinstance (best_intersection, LatLon)
+            b_vec = to_rectangular (best_intersection)
+
+            # Apply Newtons method to find the location
+            current_rotation = 0
+            delta = 0.0001
+            limit = 0.001
+            iter_limit = 100
+            iter_count = 0
+            # ready = False
+            taken_out = None
+            rotated  = None
+            while iter_count < iter_limit:
+                distance_result, taken_out, rotated =\
+                    self.__calculate_distance_to_target (current_rotation, a_vec, b_vec)
+                if abs (distance_result) < limit:
+                    break
+                distance_result2, taken_out, rotated =\
+                    self.__calculate_distance_to_target (current_rotation+delta, a_vec, b_vec)
+                derivative = (distance_result2 - distance_result) / delta
+                current_rotation = current_rotation - (distance_result)/derivative
+                iter_count += 1
+            if iter_count >= iter_limit:
+                raise IntersectError ("Cannot calculate a trip vector")
+            assert taken_out is not None
+            assert rotated is not None
+            return (taken_out, rotated), fitness, diag_output
+
+        # isinstance (self.sight_start, datetime) == True
+        taken_out = takeout_course (self.estimated_starting_point,\
+                                    self.course_degrees,\
+                                    self.speed_knots, self.time_hours)
+        t1 = to_rectangular (taken_out)
+        t2 = to_rectangular (self.sight_end.gp)
+        t3 = normalize_vect(cross_product (t1,t2))
+        t4 = to_latlon (t3)
+        gi, fitness, diag = get_intersections (self.sight_end.gp, t4,\
+                           deg_to_rad(self.sight_end.get_angle()),\
+                           pi/2, estimated_position=taken_out)
+        return (gi, fitness, diag)
 #pylint: enable=R0914
 
     def get_map_developers_string (self) -> str:
         '''
         Return URL for https://mapdevelopers.com circle plotting service
         '''
-        s_c = SightCollection ([self.sight_start, self.sight_end])
-        return s_c.get_map_developers_string ()
+        if isinstance (self.sight_start, Sight):
+            s_c = SightCollection ([self.sight_start, self.sight_end])
+            return s_c.get_map_developers_string ()
+        raise NotImplementedError ("Not yet implemented")
