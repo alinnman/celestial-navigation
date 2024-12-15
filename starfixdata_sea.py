@@ -7,14 +7,13 @@
 
 from time import time
 from starfix import Sight, SightTrip, get_representation, get_google_map_string,\
-     LatLon, IntersectError
+     LatLon, IntersectError, distance_between_points, km_to_nm
 
 def main ():
     ''' Main body of script '''
 
     starttime = time ()
 
-    # We are sailing from point s1 to point s2, in the Baltic Sea.
     # We are sailing from point s1 to point s2, in the Baltic Sea.
     # We have a rough estimate of an initial position of 59N;18E to start with
     # This estimate is used for selecting the correct intersection point on Earth.
@@ -66,6 +65,7 @@ def main ():
     assert isinstance (intersections, tuple)
     print ("Starting point = " + str(get_representation(intersections[1],1)))
     print ("End point = " + str(get_representation(intersections[0],1)))
+    print ("Distance = " + str(km_to_nm(distance_between_points(intersections[0], intersections[1]))) + " nm")
 
     # Diagnostics for map rendering etc.
 

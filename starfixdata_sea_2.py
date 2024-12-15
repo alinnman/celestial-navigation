@@ -8,7 +8,7 @@
 from datetime import datetime
 from time import time
 from starfix import Sight, SightTrip, get_representation, get_google_map_string,\
-     LatLon, IntersectError
+     LatLon, IntersectError, distance_between_points, km_to_nm
 
 def main ():
     ''' Main body of script '''
@@ -16,10 +16,8 @@ def main ():
     starttime = time ()
 
     # We are sailing from point s1 to point s2, in the Baltic Sea.
-    # We are sailing from point s1 to point s2, in the Baltic Sea.
-    # We have a rough estimate of an initial position of 59N;18E to start with
-    # This estimate is used for selecting the correct intersection point on Earth.
-    s1_latlon = LatLon (59, 18)
+    # We have a good estimate of an initial position. (A previous fix)
+    s1_latlon = LatLon (58.2267,17.9113)
 
     #This is the starting time
 
@@ -40,7 +38,7 @@ def main ():
     # We reach s2 by applying about 175 degrees for 1 hour with a speed of 20 knots.
     c_course = 175
     speed = 20
-    st = SightTrip (sight_start               = s1,\
+    st = SightTrip (sight_start              = s1,\
                     sight_end                = s2,\
                     estimated_starting_point = s1_latlon,\
                     course_degrees           = c_course,\
@@ -57,22 +55,16 @@ def main ():
     taken_ms = round((endtime-starttime)*1000,2)
 
     print ("MD = " + st.get_map_developers_string ())
-    assert isinstance (intersections, tuple)
-    print ("Starting point = " + str(get_representation(intersections[1],1)))
-    print ("End point = " + str(get_representation(intersections[0],1)))
+    print (type(intersections))
 
     # Diagnostics for map rendering etc.
 
-    print ("S1 radius = " + str(round(s1.get_radius (),1)))
-    print ("S1 GP     = " + get_google_map_string(s1.gp,4))
-
-    print ("S2 radius = " + str(round(s2.get_radius (),1)))
-    print ("S2 GP     = " + get_google_map_string(s2.gp,4))
-
-    print ("Starting point GM = " + get_google_map_string (intersections[1],4))
-    print ("Ending   point GM = " + get_google_map_string (intersections[0],4))
-
-
+    assert isinstance (intersections, LatLon)
+    print (get_representation (intersections,3))
+    print (get_google_map_string (intersections, 3))
+    print ("Starting point = " + str(get_representation(s1_latlon,1)))
+    print ("End point = " + str(get_representation(intersections,1)))
+    print ("Distance = " + str(km_to_nm(distance_between_points(s1_latlon, intersections))) + " nm")
 
     print ("Time taken = " +str(taken_ms)+" ms")
 

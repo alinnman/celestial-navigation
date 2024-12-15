@@ -560,6 +560,17 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
                get_google_map_string (intersections[1], num_decimals)
 #pylint: enable=R1710
 
+def get_map_developers_string (r : float, latlon : LatLon) -> str:
+    '''
+    Return URL segment for https://mapdevelopers.com circle plotting service
+    '''
+    result = "["
+    result = result + str (round(r*1000)) + ","
+    result = result + str(round(latlon.lat,4)) + ","
+    result = result + str(round(latlon.lon,4)) + ","
+    result = result + "\"#AAAAAA\",\"#000000\",0.4]"
+    return result
+
 def get_representation\
     (ins : LatLon | tuple | list | float | int, num_decimals : int, lat=False) -> str:
     ''' Converts coordinate(s) to a string representation 
@@ -808,11 +819,7 @@ class Sight :
         '''
         Return URL segment for https://mapdevelopers.com circle plotting service
         '''
-        result = "["
-        result = result + str (round(self.get_radius ()*1000)) + ","
-        result = result + str(round(self.gp.lat,4)) + ","
-        result = result + str(round(self.gp.lon,4)) + ","
-        result = result + "\"#AAAAAA\",\"#000000\",0.4]"
+        result = get_map_developers_string (self.get_radius(), self.gp)
         return result
 
     def get_angle (self) -> float:
@@ -1026,6 +1033,7 @@ class SightTrip:
         self.course_degrees           = course_degrees
         self.speed_knots              = speed_knots
         self.__calculate_time_hours ()
+        self.movement_vec             = None
 #pylint: enable=R0913
 
     def __calculate_time_hours (self):
@@ -1098,10 +1106,14 @@ class SightTrip:
         t2 = to_rectangular (self.sight_end.gp)
         t3 = normalize_vect(cross_product (t1,t2))
         t4 = to_latlon (t3)
-        gi, fitness, diag = get_intersections (self.sight_end.gp, t4,\
-                           deg_to_rad(self.sight_end.get_angle()),\
-                           pi/2, estimated_position=taken_out)
-        return (gi, fitness, diag)
+        self.movement_vec = t4
+        gi, fitness, diag = get_intersections \
+                           (self.sight_end.gp,\
+                            t4,\
+                            self.sight_end.get_angle(),\
+                            90,\
+                            estimated_position=taken_out)
+        return gi, fitness, diag
 #pylint: enable=R0914
 
     def get_map_developers_string (self) -> str:
@@ -1111,4 +1123,18 @@ class SightTrip:
         if isinstance (self.sight_start, Sight):
             s_c = SightCollection ([self.sight_start, self.sight_end])
             return s_c.get_map_developers_string ()
-        raise NotImplementedError ("Not yet implemented")
+
+        # isinstance (self.sight_start, LatLon) == True
+        assert isinstance (self.movement_vec, LatLon)
+        str1 = self.sight_end.get_map_developers_string ()
+        str2 = get_map_developers_string (EARTH_CIRCUMFERENCE/4, self.movement_vec)
+        url_start = "https://www.mapdevelopers.com/draw-circle-tool.php?circles="
+        result = "["
+        result += str1
+        result += ","
+        result += str2
+        result += "]"
+        result = quote_plus (result)
+        return url_start + result
+        #str2 = self.sight_end.get_map_developers_string ()
+        # raise NotImplementedError ("Not yet implemented")
