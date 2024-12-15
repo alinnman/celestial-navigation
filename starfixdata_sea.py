@@ -65,7 +65,9 @@ def main ():
     assert isinstance (intersections, tuple)
     print ("Starting point = " + str(get_representation(intersections[1],1)))
     print ("End point = " + str(get_representation(intersections[0],1)))
-    print ("Distance = " + str(km_to_nm(distance_between_points(intersections[0], intersections[1]))) + " nm")
+    print ("Distance = " +\
+           str(round(km_to_nm(distance_between_points(intersections[0], intersections[1])),2)) +\
+              " nm")    
 
     # Diagnostics for map rendering etc.
 

@@ -7,7 +7,7 @@
 
 from datetime import datetime
 from time import time
-from starfix import Sight, SightTrip, get_representation, get_google_map_string,\
+from starfix import Sight, SightTrip, get_representation,\
      LatLon, IntersectError, distance_between_points, km_to_nm
 
 def main ():
@@ -17,7 +17,7 @@ def main ():
 
     # We are sailing from point s1 to point s2, in the Baltic Sea.
     # We have a good estimate of an initial position. (A previous fix)
-    s1_latlon = LatLon (58.2267,17.9113)
+    s1_latlon = LatLon (58.23,17.91)
 
     #This is the starting time
 
@@ -55,16 +55,16 @@ def main ():
     taken_ms = round((endtime-starttime)*1000,2)
 
     print ("MD = " + st.get_map_developers_string ())
-    print (type(intersections))
 
     # Diagnostics for map rendering etc.
 
     assert isinstance (intersections, LatLon)
-    print (get_representation (intersections,3))
-    print (get_google_map_string (intersections, 3))
+    #print (get_representation (intersections,3))
+    #print (get_google_map_string (intersections, 3))
     print ("Starting point = " + str(get_representation(s1_latlon,1)))
     print ("End point = " + str(get_representation(intersections,1)))
-    print ("Distance = " + str(km_to_nm(distance_between_points(s1_latlon, intersections))) + " nm")
+    print ("Distance = " +\
+            str(round(km_to_nm(distance_between_points(s1_latlon, intersections)),2)) + " nm")
 
     print ("Time taken = " +str(taken_ms)+" ms")
 

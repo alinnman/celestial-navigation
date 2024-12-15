@@ -25,7 +25,7 @@ You need a Google/Gmail account to run the code in the notebook*.
     1. [Using three or more sights](#using-three-or-more-sights)
     1. [Running the chicago script](#run-chicago-script)
     1. [Azimuth calculation](#azimuth)
-1. [Dead Reckoning](#dead-reckoning)
+1. [Dead Reckoning (Moving ships)](#dead-reckoning)
     1. [Running the sea script](#run-sea-script)
 1. [A real-life example](#real-life)
 1. [Terrestrial Navigation](#terrestrial)
@@ -473,7 +473,7 @@ $\phi_{\text{azimuth}} = \arctan(\frac{d \cdot e}{d \cdot n})$
 This [sample](starfixdata_stat_1.py) contains an example of calculation of the
 azimuth for sights.
 
-## 4. Dead Reckoning<a name="dead-reckoning"></a>
+## 4. Dead Reckoning (Moving ships)<a name="dead-reckoning"></a>
 
 When sailing (or moving on the ground) you can use this technique to support
 dead reckoning where repeated sights (typically of the Sun) will give extra
