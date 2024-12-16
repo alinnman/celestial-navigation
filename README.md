@@ -418,9 +418,6 @@ This picture shows the small circles defined in the
 When we move in closer we can clearly see a precise intersection.
 ![Locating from Chicago (detail)](pics/chicago-intersection-2.png "Locating from Chicago (detail)")
 
-*Note: The mapping software used in the images above is not precise, and the
-actual intersections are even "tighter" than shown above.*
-
 The output of the script will be like this:
 First we show the two intersection points from two small circles. The second one
 is within Chicago.
