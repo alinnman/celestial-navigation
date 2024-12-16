@@ -414,7 +414,7 @@ extracted intersection points.
 ### 3.iii. Running the Chicago script<a name="run-chicago-script"></a>
 
 This picture shows the small circles defined in the
-[starfixdata.stat.1.py](starfixdata_stat_1.py) sample
+[starfixdata_stat_1.py](starfixdata_stat_1.py) sample
 ![Locating from Chicago](pics/chicago-intersection-1.png "Locating from Chicago")
 
 When we move in closer we can clearly see a precise intersection.
@@ -440,8 +440,8 @@ needs to be considered. For other planets and the Sun the correction will almost
 always be obscured by sextant reading errors.
 
 You may also use the supplied Jupyter Notebook scripts
-[notebook.stat.1.ipynb](notebook_stat_1.ipynb) and
-[notebook.stat.2.ipynb](notebook_stat_2.ipynb).
+[notebook_stat_1.ipynb](notebook_stat_1.ipynb) and
+[notebook_stat_2.ipynb](notebook_stat_2.ipynb).
 
 ### 3.iv. Azimuth Calculation<a name="azimuth"></a>
 
@@ -578,7 +578,7 @@ you have the coordinates here.
     Ending   point GM = 58.4364,18.0583
 
 You may also use the supplied Jupyter Notebook script
-[notebook.sea.ipynb](notebook_sea.ipynb).
+[notebook_sea_ipynb](notebook_sea.ipynb).
 
 <a name="run-sea-script-2"></a>
 
@@ -702,7 +702,7 @@ The red arrow points towards the calculated correct position (intersection).
 ![Navigation towards three lighthouses](pics/lighthouses.png "Terrestrial Navigation")
 
 You may also use the supplied Jupyter Notebook script
-[notebook.terrestrial.ipynb](notebook_terrestrial.ipynb).
+[notebook_terrestrial.ipynb](notebook_terrestrial.ipynb).
 
 ## 7. Sextant Calibration <a name="calibration"></a>
 
