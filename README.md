@@ -26,7 +26,8 @@ You need a Google/Gmail account to run the code in the notebook*.
     1. [Running the chicago script](#run-chicago-script)
     1. [Azimuth calculation](#azimuth)
 1. [Dead Reckoning (Moving ships)](#dead-reckoning)
-    1. [Running the sea script](#run-sea-script)
+    1. [Running the sea script, from Sight to Sight](#run-sea-script)
+    1. [Running the sea script, from LatLon to Sight](#run-sea-script-2)
 1. [A real-life example](#real-life)
 1. [Terrestrial Navigation](#terrestrial)
 1. [Sextant Calibration](#calibration)
@@ -540,18 +541,15 @@ The smaller circle is the final observation with a higher Sun altitude.
 ![Sailing in the Baltic Sea](pics/baltic-intersection-1.png "Sailing in the Baltic Sea")
 
 When we move in closer we can clearly see the intersection $p_i$.
-
-![Sailing in the Baltic Sea (closeup)](pics/baltic-intersection-2.png "Sailing in the Baltic Sea (closeup)")
-
 And the course (with our positions) can easily be found using a paralellogram
 adjustment where we "squeeze in" a route of 20 NM, course 175 degrees, starting
 at the first small circle and ending at the final circle. The classical method
 of doing this is of course using a chart and proper plotting equipment and
 assume linearity of the circle segments.
 
-![Sailing in the Baltic Sea (closeup)](pics/baltic-intersection-2-edit.png "Sailing in the Baltic Sea (closeup)")
+![Sailing in the Baltic Sea (closeup)](pics/baltic-intersection-2.png "Sailing in the Baltic Sea (closeup)")
 
-### 4.i. Running the Sea script<a name="run-sea-script"></a>
+### 4.i. Running the Sea script, from Sight to Sight<a name="run-sea-script"></a>
 
 The script outputs the estimated starting and ending points for our trip segment
 (see the red arrow in the map above)
@@ -578,6 +576,62 @@ you have the coordinates here.
 
 You may also use the supplied Jupyter Notebook script
 [notebook.sea.ipynb](notebook_sea.ipynb).
+
+### 4.ii. Running the Sea script, from LatLon to Sight<a name="run-sea-script-2"></a>
+
+You may also write a script where the starting point is a known position (LatLon)
+and the target point is defined by a Sight.
+
+    # This is the starting position
+    s1_latlon = LatLon (58.23,17.91)
+
+    #This is the starting time
+    s1 = datetime.fromisoformat ("2024-06-20 06:14:38+00:00")
+
+    # This is the Sight we take at finish
+    s2 = Sight (  object_name          = "Sun", \
+                set_time             = "2024-06-20 07:13:38+00:00", \
+                gha_time_0           = "284:35.1", \
+                gha_time_1           = "299:35.0", \
+                decl_time_0          = "23:26.2", \
+                measured_alt         = "38:34:21.6" \
+                )
+
+    # We reach s2 by applying about 175 degrees for 1 hour with a speed of 20 knots.
+    c_course = 175
+    speed = 20
+    st = SightTrip (sight_start              = s1,\
+                    sight_end                = s2,\
+                    estimated_starting_point = s1_latlon,\
+                    course_degrees           = c_course,\
+                    speed_knots              = speed)
+
+    try:
+        intersections, _, _ = st.get_intersections ()
+    except IntersectError as ve:
+        print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
+        print ("Check the circles! " + st.get_map_developers_string())
+        exit ()
+    print ("MD = " + st.get_map_developers_string ())
+
+    # Diagnostics for map rendering etc.
+
+    assert isinstance (intersections, LatLon)
+    print ("Starting point = " + str(get_representation(s1_latlon,1)))
+    print ("End point = " + str(get_representation(intersections,1)))
+    print ("Distance = " +\
+            str(round(km_to_nm(distance_between_points(s1_latlon, intersections)),2)) + " nm")
+
+The algorithm used here is based on two steps.
+
+* Performing a straight segment of the dead-reckoning leg.
+* Calculating the great circle towards the GP of the Sight and
+deduce the intersection point.
+
+![Sailing in the Baltic Sea (closeup)](pics/baltic-intersection-3.png "Sailing in the Baltic Sea (closeup)")
+
+The supplied script sample [starfixdata_sea_2.py](starfixdata_sea.py) contains
+a demo for this.
 
 ## 5. A real-life example<a name="real-life"></a>
 
