@@ -35,7 +35,7 @@ def main ():
                 measured_alt         = "38:34:21.6" \
                 )
 
-    # We reach s2 by applying about 175 degrees for 1 hour with a speed of 20 knots.
+    # We reach s2 by applying about 175 degrees with a speed of 20 knots.
     c_course = 175
     speed = 20
     st = SightTrip (sight_start              = s1,\

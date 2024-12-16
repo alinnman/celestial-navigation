@@ -28,6 +28,7 @@ You need a Google/Gmail account to run the code in the notebook*.
 1. [Dead Reckoning (Moving ships)](#dead-reckoning)
     1. [Running the sea script, from Sight to Sight](#run-sea-script)
     1. [Running the sea script, from LatLon to Sight](#run-sea-script-2)
+    1. [Pure dead reckoning](#pure_dr)
 1. [A real-life example](#real-life)
 1. [Terrestrial Navigation](#terrestrial)
 1. [Sextant Calibration](#calibration)
@@ -586,6 +587,10 @@ You may also use the supplied Jupyter Notebook script
 You may also write a script where the starting point is a known position
 (<tt>LatLon</tt>) and the target point is defined by a <tt>Sight</tt>.
 
+    from datetime import datetime
+    from starfix import Sight, SightTrip, get_representation,\
+         LatLon, IntersectError, distance_between_points, km_to_nm
+
     # This is the starting position
     s1_latlon = LatLon (58.23,17.91)
 
@@ -635,6 +640,33 @@ deduce the intersection point.
 ![Sailing in the Baltic Sea (closeup)](pics/baltic-intersection-3.png "Sailing in the Baltic Sea (closeup)")
 
 The supplied script sample [starfixdata_sea_2.py](starfixdata_sea_2.py) contains
+a demo for this.
+
+### 4.iii. Pure dead reckoning<a name="pure_dr"></a>
+
+You can also use a simple script for pure dead reckoning, where you only
+know your initial position (<tt>LatLon</tt>), your course, your speed
+and time elapsed.
+
+    from datetime import datetime
+    from starfix import takeout_course, LatLon, calculate_time_hours, get_representation
+
+    # We are sailing from point s1 to point s2, in the Baltic Sea.
+    # We have a good estimate of an initial position. (A previous fix)
+    s1 = LatLon (58.23,17.91)
+    s1_time = datetime.fromisoformat ("2024-06-20 06:14:38+00:00")
+
+    # We reach s2 by applying about 175 degrees with a speed of 20 knots.
+    c_course = 175
+    speed = 20
+    s2_time = datetime.fromisoformat ("2024-06-20 07:13:38+00:00")
+    s1_s2_time = calculate_time_hours (s1_time, s2_time)
+    s2 = takeout_course (s1, c_course, speed, s1_s2_time)
+
+    # Print coord of destination
+    print (get_representation(s2,1))
+
+The supplied script sample [starfixdata_sea_3.py](starfixdata_sea_3.py) contains
 a demo for this.
 
 ## 5. A real-life example<a name="real-life"></a>

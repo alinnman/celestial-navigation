@@ -519,6 +519,16 @@ def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
     r = rad_to_deg (atan2 (fac2, fac1))
     return r % 360
 
+# Time management
+
+def calculate_time_hours (dt1 : datetime, dt2 : datetime):
+    '''
+    Return the difference between two timestamps in hours
+    '''
+    it1 = int(dt1.timestamp())
+    it2 = int(dt2.timestamp())
+    return (it2 - it1) / 3600
+
 # Atmospheric refraction
 
 def get_refraction (apparent_angle : int | float, temperature : float, pressure : float) -> float:
@@ -1055,10 +1065,8 @@ class SightTrip:
             dt1 = self.sight_start.set_time_dt
         else:
             dt1 = self.sight_start
-        it1 = int(dt1.timestamp())
         dt2 = self.sight_end.set_time_dt
-        it2 = int(dt2.timestamp())
-        self.time_hours = (it2 - it1) / 3600
+        self.time_hours = calculate_time_hours (dt1, dt2)
 
     def __calculate_distance_to_target (self, angle : int | float, a_vec : list, b_vec : list)\
           -> tuple [float, LatLon, LatLon]:
@@ -1162,5 +1170,3 @@ class SightTrip:
         result += "]"
         result = quote_plus (result)
         return url_start + result
-        #str2 = self.sight_end.get_map_developers_string ()
-        # raise NotImplementedError ("Not yet implemented")
