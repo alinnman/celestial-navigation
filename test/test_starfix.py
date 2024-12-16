@@ -15,7 +15,7 @@ except ValueError:
 
 from starfixdata_stat_1 import main as main_1
 from starfixdata_stat_2 import main as main_2
-from starfixdata_sea    import main as main_sea
+from starfixdata_sea_1    import main as main_sea
 from terrestrial        import main as main_terrestrial
 
 class TestStringMethods(unittest.TestCase):
