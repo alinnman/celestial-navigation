@@ -143,8 +143,8 @@ Arguments in *italics* are optional.
 
 ### 2.i. Atmospheric refraction<a name="atmospheric-refraction"></a>
 
-The measured altitude value (parameter *measured_alt*) is corrected for atmospheric
-refraction using
+The measured altitude value (parameter *measured_alt*)
+is corrected for atmospheric refraction using
 [Bennett's empirical formula](https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction)
 with adjustments for temperature and pressure.
 

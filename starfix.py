@@ -564,6 +564,9 @@ def get_map_developers_string (r : float, latlon : LatLon) -> str:
     '''
     Return URL segment for https://mapdevelopers.com circle plotting service
     '''
+    # Compensate for a bug in mapdevelopers.com. Circles have to be drawn wider
+    scale_factor = 1.00092
+    r = r * scale_factor
     result = "["
     result = result + str (round(r*1000)) + ","
     result = result + str(round(latlon.lat,4)) + ","
@@ -1002,16 +1005,25 @@ class SightCollection:
 #pylint: enable=R0914
 #pylint: enable=R0915
 
-    def get_map_developers_string (self) -> str:
+    def get_map_developers_string (self, markers : list[LatLon] | NoneType = None) -> str:
         '''
         Return URL for https://mapdevelopers.com circle plotting service
         '''
         url_start = "https://www.mapdevelopers.com/draw-circle-tool.php?circles="
         result = "["
         nr_of_fixes = len(self.sf_list)
-        for i in range(nr_of_fixes):
-            result = result + self.sf_list [i].get_map_developers_string()
-            if i < nr_of_fixes-1:
+        nr_of_markers = 0
+        if markers is not None:
+            nr_of_markers = len (markers)
+        total_items = nr_of_fixes + nr_of_markers
+        for i in range(total_items):
+            if i < nr_of_fixes:
+                result = result + self.sf_list [i].get_map_developers_string()
+            else:
+                assert isinstance (markers, list)
+                str2 = get_map_developers_string (1, markers[i-nr_of_fixes])
+                result += str2
+            if i < total_items-1:
                 result = result + ","
         result = result+"]"
         result = quote_plus (result)
@@ -1034,6 +1046,8 @@ class SightTrip:
         self.speed_knots              = speed_knots
         self.__calculate_time_hours ()
         self.movement_vec             = None
+        self.start_pos                = None
+        self.end_pos                  = None
 #pylint: enable=R0913
 
     def __calculate_time_hours (self):
@@ -1096,6 +1110,8 @@ class SightTrip:
                 raise IntersectError ("Cannot calculate a trip vector")
             assert taken_out is not None
             assert rotated is not None
+            self.start_pos = rotated
+            self.end_pos   = taken_out
             return (taken_out, rotated), fitness, diag_output
 
         # isinstance (self.sight_start, datetime) == True
@@ -1113,6 +1129,8 @@ class SightTrip:
                             self.sight_end.get_angle(),\
                             90,\
                             estimated_position=taken_out)
+        self.start_pos = self.estimated_starting_point
+        self.end_pos = gi
         return gi, fitness, diag
 #pylint: enable=R0914
 
@@ -1122,7 +1140,10 @@ class SightTrip:
         '''
         if isinstance (self.sight_start, Sight):
             s_c = SightCollection ([self.sight_start, self.sight_end])
-            return s_c.get_map_developers_string ()
+            if isinstance (self.start_pos, LatLon) and isinstance (self.end_pos, LatLon):
+                return s_c.get_map_developers_string ([self.start_pos, self.end_pos])
+            else:
+                return s_c.get_map_developers_string ()
 
         # isinstance (self.sight_start, LatLon) == True
         assert isinstance (self.movement_vec, LatLon)
@@ -1133,6 +1154,11 @@ class SightTrip:
         result += str1
         result += ","
         result += str2
+        if isinstance (self.start_pos, LatLon) and isinstance (self.end_pos, LatLon):
+            result += ","
+            result += get_map_developers_string (1, self.start_pos)
+            result += ","
+            result += get_map_developers_string (1, self.end_pos)
         result += "]"
         result = quote_plus (result)
         return url_start + result
