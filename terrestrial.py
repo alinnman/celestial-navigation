@@ -22,7 +22,7 @@ def main ():
     angle_1 = 20
     angle_2 = 45
 
-    p, c1, r1, c2, r2, _, _  =\
+    p, c1, c2, _, _  =\
       get_terrestrial_position (p3, p2, angle_1, p2, p1, angle_2)
     assert isinstance (p, tuple)
     print ("Your location 1 = " + get_google_map_string(p[0],4))
@@ -30,10 +30,10 @@ def main ():
 
 
     print ("========================")
-    print ("Centerpoint 1 = " + get_google_map_string (c1, 4))
-    print ("Radius 1 = " + str(deg_to_rad(r1)*EARTH_RADIUS))
-    print ("Centerpoint 2 = " + get_google_map_string (c2, 4))
-    print ("Radius 2 = " + str(deg_to_rad(r2)*EARTH_RADIUS))
+    print ("Centerpoint 1 = " + get_google_map_string (c1.latlon, 4))
+    print ("Radius 1 = " + str(deg_to_rad(c1.angle)*EARTH_RADIUS))
+    print ("Centerpoint 2 = " + get_google_map_string (c2.latlon, 4))
+    print ("Radius 2 = " + str(deg_to_rad(c2.angle)*EARTH_RADIUS))
 
     endtime = time ()
     taken_ms = round((endtime-starttime)*1000,2)

@@ -254,21 +254,36 @@ def get_dip_of_horizon (hm : int | float, temperature : float, dt_dh : float, pr
 
 # Intersections
 
+class Circle:
+    ''' Helper class for circles '''
+
+    def __init__ (self, latlon : LatLon, angle : int | float):
+        self.latlon = latlon
+        self.angle = angle
+
 class IntersectError (ValueError):
     ''' Exception used for failed intersections '''
 
     def __init__ (self, info : str):
         super().__init__ (info)
 
+def get_great_circle_route (start : LatLon, direction : LatLon):
+    ''' Calculates a great circle starting in 'start' and passing 'direction' '''
+    t1 = to_rectangular (start)
+    t2 = to_rectangular (direction)
+    t3 = normalize_vect(cross_product (t1,t2))
+    t4 = to_latlon (t3)
+    #self.movement_vec = t4
+    return Circle (t4, 90)
+
 #pylint: disable=R0912
 #pylint: disable=R0913
 #pylint: disable=R0914
 #pylint: disable=R0915
-def get_intersections (latlon1 : LatLon, latlon2 : LatLon,\
-                       angle1 : int | float, angle2 : int | float,\
-                       estimated_position : NoneType | LatLon = None,\
-                       use_fitness : bool = True, diagnostics : bool = False,\
-                       intersection_number : int = 0)\
+def get_intersections (circle1 : Circle, circle2 : Circle,
+                       estimated_position : NoneType | LatLon = None,
+                       use_fitness : bool = True, diagnostics : bool = False,
+                       intersection_number : int = 0) \
                           -> tuple[LatLon | tuple[LatLon, LatLon], float, str]:
     '''
     Get intersection of two circles on a spheric surface. 
@@ -285,8 +300,9 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
                       Diagnostics is returned as the third item in return value tuple. 
         intersection_number : Used for diagnostics to label output. 
     '''
-    assert angle1 >= 0 and angle2 >= 0
-    assert angle1 < 90 or angle2 < 90  # Make sure one of the circles is a small circle
+    assert circle1.angle >= 0 and circle2.angle >= 0
+    assert circle1.angle < 90 or  circle2.angle < 90
+    # Make sure one of the circles is a small circle
     diag_output = ""
     # Get cartesian vectors a and b (from ground points)
     if diagnostics:
@@ -296,20 +312,22 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             diag_output += "\n## Performing an intersection\n\n"
         diag_output += "### **Input parameters**\n"
         diag_output +=\
-        "$\\textbf{latlon1}=("+str(round(latlon1.lat,4))+","+str(round(latlon1.lon,4))+")$<br/>"
+        "$\\textbf{latlon1}=("+str(round(circle1.latlon.lat,4))+","+\
+            str(round(circle1.latlon.lon,4))+")$<br/>"
         diag_output +=\
-        "$\\textbf{angle1}=("+str(round(angle1,4))+")$<br/>"        
+        "$\\textbf{angle1}=("+str(round(circle1.angle,4))+")$<br/>"        
         diag_output +=\
-        "$\\textbf{latlon2}=("+str(round(latlon2.lat,4))+","+str(round(latlon2.lon,4))+")$<br/>"        
+        "$\\textbf{latlon2}=("+str(round(circle2.latlon.lat,4))+","+\
+            str(round(circle2.latlon.lon,4))+")$<br/>"
         diag_output +=\
-        "$\\textbf{angle2}=("+str(round(angle2,4))+")$<br/>"
+        "$\\textbf{angle2}=("+str(round(circle2.angle,4))+")$<br/>"
         if estimated_position is not None:
             diag_output +=\
             "$\\textbf{EstimatedPosition}=("+\
                 str(round(estimated_position.lat,4))+","+\
                 str(round(estimated_position.lon,4))+")$<br/>"
-    a_vec = to_rectangular (latlon1)
-    b_vec = to_rectangular (latlon2)
+    a_vec = to_rectangular (circle1.latlon)
+    b_vec = to_rectangular (circle2.latlon)
     if diagnostics:
         diag_output += "\n### **Converting positions to cartesisans**\n"
         diag_output += " * $\\text{latlon1}$ converted to cartesians $=("+\
@@ -342,7 +360,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         diag_output +=\
         "\n### **Now we compute the vector $\\text{q}$, being at the midpoint between" +\
          " $\\text{aVec}$ and $\\text{bVec}$**\n"
-    p1 = mult_scalar_vect (cos(deg_to_rad(angle2)), a_vec)
+    p1 = mult_scalar_vect (cos(deg_to_rad(circle2.angle)), a_vec)
     if diagnostics:
         diag_output +=\
         "* We compute $\\text{p1}$\n"
@@ -351,7 +369,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             str(round(p1[1],4))+","+\
             str(round(p1[2],4))+")\\text{ ==> }\\textbf{p1}"+\
             "$\n"
-    p2 = mult_scalar_vect (-cos(deg_to_rad(angle1)), b_vec)
+    p2 = mult_scalar_vect (-cos(deg_to_rad(circle1.angle)), b_vec)
     if diagnostics:
         diag_output +=\
         "* We compute $\\text{p2}$\n"
@@ -394,14 +412,14 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         "\n### **Calculating the rotation angle and vector to find the "+\
         "intersections from $\\text{q}$**\n"
     try:
-        if angle1 < angle2:
-            rho = acos (cos (deg_to_rad(angle1)) / (dot_product (a_vec, q)))
+        if circle1.angle < circle2.angle:
+            rho = acos (cos (deg_to_rad(circle1.angle)) / (dot_product (a_vec, q)))
             if diagnostics:
                 diag_output +=\
                 "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle1}\\right)}}"+\
                 "{\\text{aVec}\\cdot\\text{q}}\\right)}"
         else:
-            rho = acos (cos (deg_to_rad(angle2)) / (dot_product (b_vec, q)))
+            rho = acos (cos (deg_to_rad(circle2.angle)) / (dot_product (b_vec, q)))
             if diagnostics:
                 diag_output +=\
                 "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle2}\\right)}}"+\
@@ -663,7 +681,8 @@ def parse_angle_string (angle_string : str) -> float:
 # Terrestrial Navigation
 
 def get_circle_for_angle (point1 : LatLon, point2 : LatLon, angle : int | float)\
-      -> tuple [LatLon, float] :
+      -> Circle :
+      #-> tuple [LatLon, float] :
     '''
     Calculate the circumscribed circle for two observed points with a specified angle, 
     giving a circle to use for determining terrestrial position 
@@ -683,7 +702,8 @@ def get_circle_for_angle (point1 : LatLon, point2 : LatLon, angle : int | float)
     rot_center = rotate_vector (mid_point,\
                                normalize_vect(subtract_vecs (point2_v, point1_v)), rotation_angle)
     radius = rad_to_deg(angle_b_points (to_latlon(rot_center), point1))
-    return to_latlon(rot_center), radius
+    return Circle (to_latlon(rot_center), radius)
+    #return to_latlon(rot_center), radius
 
 #pylint: disable=R0913
 def get_terrestrial_position (point_a1 : LatLon,\
@@ -694,7 +714,7 @@ def get_terrestrial_position (point_a1 : LatLon,\
                               angle_b : int | float,
                               estimated_position : LatLon | NoneType = None,\
                               diagnostics : bool = False)\
-            -> tuple [LatLon | tuple, LatLon, float, LatLon, float, float, str] :
+            -> tuple [LatLon | tuple, Circle, Circle, float, str] :
     '''
     Given two pairs of terrestial observations (pos + angle) determine the observer's position 
     '''
@@ -703,9 +723,11 @@ def get_terrestrial_position (point_a1 : LatLon,\
     b = get_circle_for_angle (point_b1, point_b2, angle_b)
     # Finally compute the intersection.
     # Since we require an estimated position we will eliminate the false intersection.
+    #circle1 = Circle (a[0], a[1])
+    #circle2 = Circle (b[0], b[1])
     intersection, fitness, diag_output =\
-        get_intersections (a[0], b[0], a[1], b[1], estimated_position, diagnostics)
-    return intersection, a[0], a[1], b[0], b[1], fitness, diag_output
+        get_intersections (a, b, estimated_position, diagnostics)
+    return intersection, a, b, fitness, diag_output
 #pylint: enable=R0913
 
 # Celestial Navigation
@@ -868,10 +890,10 @@ class SightPair:
                            tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Return the two intersections for this sight pair. 
             The parameter estimated_position can be used to eliminate the false intersection '''
-        return get_intersections (self.sf1.gp,\
-                                  self.sf2.gp,\
-                                  self.sf1.get_angle(), self.sf2.get_angle(),\
-                                  estimated_position, diagnostics = diagnostics,\
+        circle1 = Circle (self.sf1.gp, self.sf1.get_angle())
+        circle2 = Circle (self.sf2.gp, self.sf2.get_angle())
+        return get_intersections (circle1, circle2,
+                                  estimated_position, diagnostics = diagnostics,
                                   intersection_number = intersection_number)
 #pylint: enable=R0903
 
@@ -1126,16 +1148,11 @@ class SightTrip:
         taken_out = takeout_course (self.estimated_starting_point,\
                                     self.course_degrees,\
                                     self.speed_knots, self.time_hours)
-        t1 = to_rectangular (taken_out)
-        t2 = to_rectangular (self.sight_end.gp)
-        t3 = normalize_vect(cross_product (t1,t2))
-        t4 = to_latlon (t3)
-        self.movement_vec = t4
+        circle1 = Circle (self.sight_end.gp, self.sight_end.get_angle())
+        circle2 = get_great_circle_route (taken_out, self.sight_end.gp)
+        self.movement_vec = circle2.latlon
         gi, fitness, diag = get_intersections \
-                           (self.sight_end.gp,\
-                            t4,\
-                            self.sight_end.get_angle(),\
-                            90,\
+                           (circle1, circle2,
                             estimated_position=taken_out)
         self.start_pos = self.estimated_starting_point
         self.end_pos = gi
