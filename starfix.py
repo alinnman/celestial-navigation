@@ -254,18 +254,14 @@ def get_dip_of_horizon (hm : int | float, temperature : float, dt_dh : float, pr
 
 # Intersections
 
+#pylint: disable=R0903
 class Circle:
     ''' Helper class for circles '''
 
     def __init__ (self, latlon : LatLon, angle : int | float):
         self.latlon = latlon
         self.angle = angle
-
-class IntersectError (ValueError):
-    ''' Exception used for failed intersections '''
-
-    def __init__ (self, info : str):
-        super().__init__ (info)
+#pylint: enable=R0903
 
 def get_great_circle_route (start : LatLon, direction : LatLon):
     ''' Calculates a great circle starting in 'start' and passing 'direction' '''
@@ -273,8 +269,13 @@ def get_great_circle_route (start : LatLon, direction : LatLon):
     t2 = to_rectangular (direction)
     t3 = normalize_vect(cross_product (t1,t2))
     t4 = to_latlon (t3)
-    #self.movement_vec = t4
     return Circle (t4, 90)
+
+class IntersectError (ValueError):
+    ''' Exception used for failed intersections '''
+
+    def __init__ (self, info : str):
+        super().__init__ (info)
 
 #pylint: disable=R0912
 #pylint: disable=R0913
@@ -723,8 +724,6 @@ def get_terrestrial_position (point_a1 : LatLon,\
     b = get_circle_for_angle (point_b1, point_b2, angle_b)
     # Finally compute the intersection.
     # Since we require an estimated position we will eliminate the false intersection.
-    #circle1 = Circle (a[0], a[1])
-    #circle2 = Circle (b[0], b[1])
     intersection, fitness, diag_output =\
         get_intersections (a, b, estimated_position, diagnostics)
     return intersection, a, b, fitness, diag_output
