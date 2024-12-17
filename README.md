@@ -20,14 +20,14 @@ You need a Google/Gmail account to run the code in the notebook*.
     1. [Atmospheric Refraction](#atmospheric-refraction)
     1. [Dip of Horizon](#dip-of-horizon)
     1. [Ignored Corrections](#ignored-corrections)
-1. [Sight Reduction](#sight-reduction)
+1. [Sight Reduction (Stationary observer)](#sight-reduction)
     1. [Using two sights](#using-two-sights)
     1. [Using three or more sights](#using-three-or-more-sights)
     1. [Running the chicago script](#run-chicago-script)
     1. [Azimuth calculation](#azimuth)
-1. [Dead Reckoning (Moving ships)](#dead-reckoning)
-    1. [Running the sea script, from Sight to Sight](#run-sea-script)
-    1. [Running the sea script, from LatLon to Sight](#run-sea-script-2)
+1. [Dead Reckoning (Moving observer)](#dead-reckoning)
+    1. [From <tt>Sight</tt> to <tt>Sight</tt>](#run-sea-script)
+    1. [From <tt>LatLon</tt> to <tt>Sight</tt>](#run-sea-script-2)
     1. [Pure dead reckoning](#pure_dr)
 1. [A real-life example](#real-life)
 1. [Terrestrial Navigation](#terrestrial)
@@ -200,7 +200,7 @@ basic celestial navigation.
 Future implementations may contain more precise corrections though.
 See [more about future plans](CONTRIBUTING.md).
 
-## 3. Sight reduction<a name="sight-reduction"></a>
+## 3. Sight reduction (Stationary observer)<a name="sight-reduction"></a>
 
 ### 3.i. Using two sights<a name="using-two-sights"></a>
 
@@ -472,7 +472,11 @@ $\phi_{\text{azimuth}} = \arctan(\frac{d \cdot e}{d \cdot n})$
 This [sample](starfixdata_stat_1.py) contains an example of calculation of the
 azimuth for sights.
 
-## 4. Dead Reckoning (Moving ships)<a name="dead-reckoning"></a>
+## 4. Dead Reckoning (Moving observer)<a name="dead-reckoning"></a>
+
+<a name="run-sea-script"></a>
+
+### 4.i. From <tt>Sight</tt> to <tt>Sight</tt>
 
 When sailing (or moving on the ground) you can use this technique to support
 dead reckoning where repeated sights (typically of the Sun) will give extra
@@ -550,10 +554,6 @@ assume linearity of the circle segments.
 
 ![Sailing in the Baltic Sea (closeup)](pics/baltic-intersection-2.png "Sailing in the Baltic Sea (closeup)")
 
-<a name="run-sea-script"></a>
-
-### 4.i. Running the Sea script, from Sight to Sight
-
 The script outputs the estimated starting and ending points for our trip segment
 (see the red arrow in the map above)
 
@@ -582,7 +582,7 @@ You may also use the supplied Jupyter Notebook script
 
 <a name="run-sea-script-2"></a>
 
-### 4.ii. Running the Sea script, from LatLon to Sight
+### 4.ii. From <tt>LatLon</tt> to <tt>Sight</tt>
 
 You may also write a script where the starting point is a known position
 (<tt>LatLon</tt>) and the target point is defined by a <tt>Sight</tt>.
