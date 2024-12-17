@@ -635,11 +635,13 @@ The algorithm used here is based on two steps.
 
 First perform a straight segment of the dead-reckoning leg.
 
-$p_{start} \underset{M}{\longrightarrow} p_{end}$ ;
+$p_{start} \underset{M}{\longrightarrow} p_{trip}$ ;
    M is 2D (spherical) movement with specified time, speed and course
 
-Secondly, calculate the great circle $C$ from $p_{end}$ towards the GP of the
+Secondly, calculate the great circle $C$ from $p_{truo}$ towards the GP of the
 Sight $S$ and deduce the intersection point between $C$ and $S$.
+The intersection point is the end of the trip ($p_{end}$), and marked in the
+image below.
 
 ![Sailing in the Baltic Sea (closeup)](pics/baltic-intersection-3.png "Sailing in the Baltic Sea (closeup)")
 
