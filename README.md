@@ -633,9 +633,13 @@ You may also write a script where the starting point is a known position
 
 The algorithm used here is based on two steps.
 
-* Performing a straight segment of the dead-reckoning leg.
-* Calculating the great circle towards the GP of the Sight and
-deduce the intersection point.
+First perform a straight segment of the dead-reckoning leg.
+
+$p_{start} \underset{M}{\longrightarrow} p_{end}$ ;
+   M is 2D (spherical) movement with specified time, speed and course
+
+Secondly, calculate the great circle $C$ from $p_{end}$ towards the GP of the
+Sight $S$ and deduce the intersection point between $C$ and $S$.
 
 ![Sailing in the Baltic Sea (closeup)](pics/baltic-intersection-3.png "Sailing in the Baltic Sea (closeup)")
 
