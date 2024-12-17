@@ -37,11 +37,11 @@ class TestStringMethods(unittest.TestCase):
 
     def test_sea_2 (self):
         ''' Test suite for DR/Moving '''
-        main_sea_2 ()       
+        main_sea_2 ()
 
     def test_sea_3 (self):
         ''' Test suite for DR/Moving '''
-        main_sea_3 ()                
+        main_sea_3 ()
 
     def test_terrestrial (self):
         ''' Test suite for Terrestrial '''
