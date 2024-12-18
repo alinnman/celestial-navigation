@@ -160,7 +160,7 @@ def mod_course (lon : int | float) -> float:
     x = lon % 360
     return x
 
-def takeout_course (latlon : LatLon, course : int | float, speed_knots : int | float,\
+def takeout_course (latlon : LatLon, course : int | float, speed_knots : int | float,
                     time_hours : int | float) -> LatLon:
     ''' Calculates a trip movement. Simplified formula, not using great circles '''
     distance = speed_knots * time_hours
@@ -219,7 +219,7 @@ def angle_between_points (origin : LatLon, point1 : LatLon, point2 : LatLon) -> 
 
 class Chronometer: # pylint: disable=R0903
     ''' This class represents a chronometer (clock) with known error/drift '''
-    def __init__ (self, set_time : str, set_time_deviation_seconds : int | float, \
+    def __init__ (self, set_time : str, set_time_deviation_seconds : int | float,
                   drift_sec_per_day : int | float):
         self.set_time = datetime.fromisoformat(set_time)
         self.set_time_deviation_seconds = set_time_deviation_seconds
@@ -261,15 +261,42 @@ class Circle:
     def __init__ (self, latlon : LatLon, angle : int | float):
         self.latlon = latlon
         self.angle = angle
+
+    def __str__(self) -> str:
+        return "LATLON = [" + str(self.latlon) + "]; ANGLE = " + str(round(self.angle,4))
+
+    def get_map_developers_string (self) -> str:
+        ''' Get MD string for this circle '''
+        url_start = MAP_DEV_URL
+        result = "["
+        result += get_map_developers_string (self.get_radius(), self.latlon)
+        result += "]"
+        result = quote_plus (result)
+        return url_start + result
+
+    def get_radius (self) -> float:
+        ''' Returns the radius of the sight (in kilometers) '''
+        return (self.angle/360)*EARTH_CIRCUMFERENCE
 #pylint: enable=R0903
 
-def get_great_circle_route (start : LatLon, direction : LatLon):
-    ''' Calculates a great circle starting in 'start' and passing 'direction' '''
-    t1 = to_rectangular (start)
-    t2 = to_rectangular (direction)
-    t3 = normalize_vect(cross_product (t1,t2))
-    t4 = to_latlon (t3)
-    return Circle (t4, 90)
+def get_great_circle_route (start : LatLon, direction : LatLon | float | int) -> Circle:
+    ''' Calculates a great circle starting in 'start' 
+        and passing 'direction' coordinate (if LatLon) 
+        or with direction 'direction' degrees (if float)    
+    '''
+    if isinstance (direction, LatLon):
+        t1 = to_rectangular (start)
+        t2 = to_rectangular (direction)
+        t3 = normalize_vect(cross_product (t1,t2))
+        t4 = to_latlon (t3)
+        return Circle (t4, 90)
+    # isinstance (direction, float) or isinstance (direction, int) == True
+    north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
+    b = to_rectangular (start)
+    east_tangent = normalize_vect(cross_product (b, north_pole))
+    rotated = rotate_vector (east_tangent, b, deg_to_rad(90 - direction))
+    cp = normalize_vect(cross_product (b, rotated))
+    return Circle (to_latlon (cp), 90)
 
 class IntersectError (ValueError):
     ''' Exception used for failed intersections '''
@@ -589,6 +616,8 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
                get_google_map_string (intersections[1], num_decimals)
 #pylint: enable=R1710
 
+MAP_DEV_URL = "https://www.mapdevelopers.com/draw-circle-tool.php?circles="
+
 def get_map_developers_string (r : float, latlon : LatLon) -> str:
     '''
     Return URL segment for https://mapdevelopers.com circle plotting service
@@ -707,13 +736,13 @@ def get_circle_for_angle (point1 : LatLon, point2 : LatLon, angle : int | float)
     #return to_latlon(rot_center), radius
 
 #pylint: disable=R0913
-def get_terrestrial_position (point_a1 : LatLon,\
-                              point_a2 : LatLon,\
-                              angle_a : int | float,\
-                              point_b1 : LatLon,\
-                              point_b2 : LatLon,\
+def get_terrestrial_position (point_a1 : LatLon,
+                              point_a2 : LatLon,
+                              angle_a : int | float,
+                              point_b1 : LatLon,
+                              point_b2 : LatLon,
                               angle_b : int | float,
-                              estimated_position : LatLon | NoneType = None,\
+                              estimated_position : LatLon | NoneType = None,
                               diagnostics : bool = False)\
             -> tuple [LatLon | tuple, Circle, Circle, float, str] :
     '''
@@ -1040,7 +1069,7 @@ class SightCollection:
         '''
         Return URL for https://mapdevelopers.com circle plotting service
         '''
-        url_start = "https://www.mapdevelopers.com/draw-circle-tool.php?circles="
+        url_start = MAP_DEV_URL
         result = "["
         nr_of_fixes = len(self.sf_list)
         nr_of_markers = 0
@@ -1149,6 +1178,7 @@ class SightTrip:
                                     self.speed_knots, self.time_hours)
         circle1 = Circle (self.sight_end.gp, self.sight_end.get_angle())
         circle2 = get_great_circle_route (taken_out, self.sight_end.gp)
+        assert isinstance (circle2, Circle)
         self.movement_vec = circle2.latlon
         gi, fitness, diag = get_intersections \
                            (circle1, circle2,
@@ -1173,7 +1203,7 @@ class SightTrip:
         assert isinstance (self.movement_vec, LatLon)
         str1 = self.sight_end.get_map_developers_string ()
         str2 = get_map_developers_string (EARTH_CIRCUMFERENCE/4, self.movement_vec)
-        url_start = "https://www.mapdevelopers.com/draw-circle-tool.php?circles="
+        url_start = MAP_DEV_URL
         result = "["
         result += str1
         result += ","
