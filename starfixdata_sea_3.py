@@ -21,7 +21,7 @@ def main ():
     course_gc = get_great_circle_route (s1, c_course)
 
     # This is lighthouse with estimated visibility 10 nautical miles
-    light_house = LatLon (58.739439, 17.865486)
+    light_house = LatLon (58.739, 17.865)
     light_house_circle = Circle (light_house, 10/60)
 
     # Get the intersections
