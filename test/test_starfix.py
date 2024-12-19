@@ -18,6 +18,7 @@ from starfixdata_stat_2 import main as main_2
 from starfixdata_sea_1  import main as main_sea_1
 from starfixdata_sea_2  import main as main_sea_2
 from starfixdata_sea_3  import main as main_sea_3
+from starfixdata_sea_4  import main as main_sea_4
 from terrestrial        import main as main_terrestrial
 
 class TestStringMethods(unittest.TestCase):
@@ -42,6 +43,10 @@ class TestStringMethods(unittest.TestCase):
     def test_sea_3 (self):
         ''' Test suite for DR/Moving '''
         main_sea_3 ()
+
+    def test_sea_4 (self):
+        ''' Test suite for DR/Moving '''
+        main_sea_4 ()
 
     def test_terrestrial (self):
         ''' Test suite for Terrestrial '''
