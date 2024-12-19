@@ -672,7 +672,7 @@ and time elapsed.
     # Print coord of destination
     print (get_representation(s2,1))
 
-The supplied script sample [starfixdata_sea_3.py](starfixdata_sea_3.py) contains
+The supplied script sample [starfixdata_sea_4.py](starfixdata_sea_4.py) contains
 a demo for this.
 
 ## 5. A real-life example<a name="real-life"></a>
