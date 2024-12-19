@@ -653,7 +653,7 @@ a demo for this.
 
 If you start from a specified position (<tt>LatLon</tt>) with a specified course
 expecting to intercept a specific circle, such as the first visibility of a
-light house you can use a script like this one.
+lighthouse you can use a script like this one.
 
     from starfix import LatLon, get_representation,\
                         get_great_circle_route, Circle, get_intersections
@@ -673,6 +673,10 @@ light house you can use a script like this one.
     intersections = get_intersections (course_gc, light_house_circle)
     assert isinstance (intersections, tuple)
     print (get_representation(intersections[0],1))
+
+The picture below illustrates the result
+
+![Intercepting a lighthouse](pics/intercept.png "Intercepting a lighthouse")
 
 The supplied script sample [starfixdata_sea_3.py](starfixdata_sea_3.py) contains
 a demo for this.

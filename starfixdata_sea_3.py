@@ -7,7 +7,7 @@
 
 from time import time
 from starfix import LatLon, get_representation,\
-                    get_great_circle_route, Circle, get_intersections
+                    get_great_circle_route, Circle, CircleCollection, get_intersections
 def main ():
     ''' Main body of script '''
 
@@ -29,6 +29,10 @@ def main ():
     endtime = time ()
     assert isinstance (intersections, tuple)
     print (get_representation(intersections[0],1))
+
+    # Check the circles
+    c_c = CircleCollection ([course_gc, light_house_circle, Circle(s1, 1/60)])
+    print ("MD = " + c_c.get_map_developers_string())
 
     taken_ms = round((endtime-starttime)*1000,2)
 

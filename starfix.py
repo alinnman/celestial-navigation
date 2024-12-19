@@ -35,7 +35,7 @@ class LatLon:
 def add_vecs (vec1 : list[float], vec2 : list[float]) -> list[float]:
     ''' Performs addition of two cartesian vectors '''
     assert len (vec1) == len (vec2)
-    retval = []
+    retval = list [float] ()
     for i, v in enumerate(vec1):
         retval.append (v + vec2[i])
     return retval
@@ -47,7 +47,7 @@ def subtract_vecs (vec1 : list[float], vec2 : list[float]) -> list [float]:
 
 def mult_scalar_vect (scalar : int | float, vec : list [float]) -> list [float]:
     ''' Performs multiplication of a cartesian vector with a scalar '''
-    retval = []
+    retval = list [float] ()
     for v in vec:
         retval.append (scalar*v)
     return retval
@@ -113,7 +113,7 @@ def to_rectangular (latlon : LatLon) -> list [float]:
     ''' Convert LatLon (spherical) coordinate to cartesian '''
     phi = deg_to_rad (90 - latlon.lat)
     theta = deg_to_rad (latlon.lon)
-    a_vec = []
+    a_vec = list [float] ()
     a_vec.append (cos (theta) * sin (phi))
     a_vec.append (sin (theta) * sin (phi))
     a_vec.append (cos (phi))
@@ -282,6 +282,25 @@ class Circle:
     def get_radius (self) -> float:
         ''' Returns the radius of the sight (in kilometers) '''
         return (self.angle/360)*EARTH_CIRCUMFERENCE
+
+class CircleCollection:
+    ''' Simple collection of circles '''
+    def __init__ (self, coll : list[Circle]):
+        self.c_list = coll
+
+    def get_map_developers_string (self) -> str:
+        ''' Return the MD string '''
+        url_start = MAP_DEV_URL
+        result = "["
+        clen = len(self.c_list)
+        for i in range (clen):
+            result += self.c_list[i].get_map_developers_string (include_url_start=False)
+            if i < clen - 1:
+                result += ","
+        result += "]"
+        result = quote_plus (result)
+        return url_start + result
+
 #pylint: enable=R0903
 
 def get_great_circle_route (start : LatLon, direction : LatLon | float | int) -> Circle:
@@ -1078,26 +1097,13 @@ class SightCollection:
         '''
         Return URL for https://mapdevelopers.com circle plotting service
         '''
-        url_start = MAP_DEV_URL
-        result = "["
-        nr_of_fixes = len(self.sf_list)
-        nr_of_markers = 0
-        if markers is not None:
-            nr_of_markers = len (markers)
-        total_items = nr_of_fixes + nr_of_markers
-        for i in range(total_items):
-            if i < nr_of_fixes:
-                result = result +\
-                         self.sf_list [i].get_map_developers_string(include_url_start=False)
-            else:
-                assert isinstance (markers, list)
-                str2 = get_map_developers_string (1, markers[i-nr_of_fixes])
-                result += str2
-            if i < total_items-1:
-                result = result + ","
-        result = result+"]"
-        result = quote_plus (result)
-        return url_start + result
+        c_l = list [Circle] ()
+        for s in self.sf_list:
+            c_l.append (s.get_circle())
+        if isinstance (markers, list):
+            for m in markers:
+                c_l.append (Circle (m, 1/60))
+        return CircleCollection (c_l).get_map_developers_string ()
 
 class SightTrip:
     ''' Object used for dead-reckoning. Sights are taken on different times
