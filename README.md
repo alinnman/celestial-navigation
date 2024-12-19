@@ -28,6 +28,7 @@ You need a Google/Gmail account to run the code in the notebook*.
 1. [Dead Reckoning (Moving observer)](#dead-reckoning)
     1. [From <tt>Sight</tt> to <tt>Sight</tt>](#run-sea-script)
     1. [From <tt>LatLon</tt> to <tt>Sight</tt>](#run-sea-script-2)
+    1. [Intercept a circle](#intercept-dr)
     1. [Pure dead reckoning](#pure_dr)
 1. [A real-life example](#real-life)
 1. [Terrestrial Navigation](#terrestrial)
@@ -648,7 +649,36 @@ the image below.
 The supplied script sample [starfixdata_sea_2.py](starfixdata_sea_2.py) contains
 a demo for this.
 
-### 4.iii. Pure dead reckoning<a name="pure_dr"></a>
+### 4.iii. Intercepting a circle<a name="intercept-dr"></a>
+
+If you start from a specified position (<tt>LatLon</tt>) with a specified course
+expecting to intercept a specific circle, such as the first visibility of a
+light house you can use a script like this one.
+
+    from starfix import LatLon, get_representation,\
+                        get_great_circle_route, Circle, get_intersections
+
+    # We are sailing from point s1
+    # We have a good estimate of an initial position. (A previous fix)
+    s1 = LatLon (57.662, 18.263)
+    # We start out at a course of 350 degrees
+    c_course = 350
+    course_gc = get_great_circle_route (s1, c_course)
+
+    # This is lighthouse with estimated visibility 10 nautical miles
+    light_house = LatLon (58.739439, 17.865486)
+    light_house_circle = Circle (light_house, 10/60)
+
+    # Get the intersections
+    intersections = get_intersections (course_gc, light_house_circle)
+    endtime = time ()
+    assert isinstance (intersections, tuple)
+    print (get_representation(intersections[0],1))
+
+The supplied script sample [starfixdata_sea_3.py](starfixdata_sea_3.py) contains
+a demo for this.
+
+### 4.iv. Pure dead reckoning<a name="pure_dr"></a>
 
 You can also use a simple script for pure dead reckoning, where you only
 know your initial position (<tt>LatLon</tt>), your course, your speed
