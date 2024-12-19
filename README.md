@@ -671,7 +671,6 @@ light house you can use a script like this one.
 
     # Get the intersections
     intersections = get_intersections (course_gc, light_house_circle)
-    endtime = time ()
     assert isinstance (intersections, tuple)
     print (get_representation(intersections[0],1))
 
