@@ -265,13 +265,18 @@ class Circle:
     def __str__(self) -> str:
         return "LATLON = [" + str(self.latlon) + "]; ANGLE = " + str(round(self.angle,4))
 
-    def get_map_developers_string (self) -> str:
+    def get_map_developers_string (self, include_url_start : bool) -> str:
         ''' Get MD string for this circle '''
-        url_start = MAP_DEV_URL
-        result = "["
+        if include_url_start:
+            url_start = MAP_DEV_URL
+            result = "["
+        else:
+            url_start = ""
+            result = ""
         result += get_map_developers_string (self.get_radius(), self.latlon)
-        result += "]"
-        result = quote_plus (result)
+        if include_url_start:
+            result += "]"
+            result = quote_plus (result)
         return url_start + result
 
     def get_radius (self) -> float:
@@ -282,7 +287,7 @@ class Circle:
 def get_great_circle_route (start : LatLon, direction : LatLon | float | int) -> Circle:
     ''' Calculates a great circle starting in 'start' 
         and passing 'direction' coordinate (if LatLon) 
-        or with direction 'direction' degrees (if float)    
+        or with direction 'direction' degrees (if float or int)    
     '''
     if isinstance (direction, LatLon):
         t1 = to_rectangular (start)
@@ -878,13 +883,6 @@ class Sight :
 
         return LatLon (result_lat, result_lon)
 
-    def get_map_developers_string (self) -> str:
-        '''
-        Return URL segment for https://mapdevelopers.com circle plotting service
-        '''
-        result = get_map_developers_string (self.get_radius(), self.gp)
-        return result
-
     def get_angle (self) -> float:
         ''' Returns the (Earth-based) angle of the sight '''
         return 90-self.measured_alt
@@ -892,6 +890,10 @@ class Sight :
     def get_radius (self) -> float:
         ''' Returns the radius of the sight (in kilometers) '''
         return (self.get_angle()/360)*EARTH_CIRCUMFERENCE
+
+    def get_circle (self) -> Circle:
+        ''' Return a circle object corresponding to this Sight '''
+        return Circle (self.gp, self.get_angle())
 
     def get_distance_from (self, p : LatLon) -> float:
         ''' Return the distance from point (p) to the sight circle of equal altitude '''
@@ -903,6 +905,13 @@ class Sight :
         ''' Return the azimuth of this sight (to the GP) from a particular point on Earth 
             Returns the azimuth in degrees (0-360)'''
         return get_azimuth (self.gp, from_pos)
+
+    def get_map_developers_string (self, include_url_start : bool) -> str:
+        '''
+        Return URL segment for https://mapdevelopers.com circle plotting service
+        '''
+        result = self.get_circle().get_map_developers_string(include_url_start = include_url_start)
+        return result
 #pylint: enable=R0902
 
 #pylint: disable=R0903
@@ -1078,7 +1087,8 @@ class SightCollection:
         total_items = nr_of_fixes + nr_of_markers
         for i in range(total_items):
             if i < nr_of_fixes:
-                result = result + self.sf_list [i].get_map_developers_string()
+                result = result +\
+                         self.sf_list [i].get_map_developers_string(include_url_start=False)
             else:
                 assert isinstance (markers, list)
                 str2 = get_map_developers_string (1, markers[i-nr_of_fixes])
@@ -1201,7 +1211,7 @@ class SightTrip:
 
         # isinstance (self.sight_start, LatLon) == True
         assert isinstance (self.movement_vec, LatLon)
-        str1 = self.sight_end.get_map_developers_string ()
+        str1 = self.sight_end.get_map_developers_string (include_url_start=False)
         str2 = get_map_developers_string (EARTH_CIRCUMFERENCE/4, self.movement_vec)
         url_start = MAP_DEV_URL
         result = "["
