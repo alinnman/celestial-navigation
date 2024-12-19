@@ -13,6 +13,7 @@ try:
 except ValueError:
     pass
 
+#pylint: disable=E0401
 from starfixdata_stat_1 import main as main_1
 from starfixdata_stat_2 import main as main_2
 from starfixdata_sea_1  import main as main_sea_1
@@ -20,6 +21,7 @@ from starfixdata_sea_2  import main as main_sea_2
 from starfixdata_sea_3  import main as main_sea_3
 from starfixdata_sea_4  import main as main_sea_4
 from terrestrial        import main as main_terrestrial
+#pylint: enable=E0401
 
 class TestStringMethods(unittest.TestCase):
     ''' Test class'''
