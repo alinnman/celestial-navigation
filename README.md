@@ -357,7 +357,7 @@ Using three (or more) sights a sight reduction can be done in the following way
         print ("Check the circles! " + collection.get_map_developers_string())
 
 A *sight* is defined as a collection of data as described in the
-[parameters section](#parameters) above, i.e. recorded data for a celestial 
+[parameters section](#parameters) above, i.e. recorded data for a celestial
 object for a specific time.
 
 A collection contains of a set of sights (star fixes) $S$
