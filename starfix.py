@@ -657,7 +657,8 @@ def get_map_developers_string (r : float, latlon : LatLon) -> str:
     return result
 
 def get_representation\
-    (ins : LatLon | tuple | list | float | int, num_decimals : int, lat=False) -> str:
+    (ins : LatLon | tuple | list [float] | float | int, num_decimals : int,
+     lat : bool =False) -> str:
     ''' Converts coordinate(s) to a string representation 
     
         Parameters: 
@@ -791,23 +792,23 @@ class Sight :
 #pylint: disable=R0913
 #pylint: disable=R0914
     def __init__ (self, \
-                  object_name              : str, \
-                  set_time                 : str, \
-                  gha_time_0               : str,\
-                  gha_time_1               : str,\
-                  decl_time_0              : str, \
-                  measured_alt             : str,\
-                  decl_time_1              : NoneType | str = None, \
-                  sha_diff                 : NoneType | str = None, \
-                  observer_height          : int | float = 0, \
-                  artificial_horizon       : bool = False, \
-                  index_error_minutes      : int = 0, \
-                  semi_diameter_correction : int | float = 0,\
-                  horizontal_parallax      : int | float = 0,\
-                  sextant                  : NoneType | Sextant = None,\
-                  chronometer              : NoneType | Chronometer = None,\
-                  temperature              : float = 10.0,\
-                  dt_dh                    : float = -0.01,\
+                  object_name              : str,
+                  set_time                 : str,
+                  gha_time_0               : str,
+                  gha_time_1               : str,
+                  decl_time_0              : str,
+                  measured_alt             : str,
+                  decl_time_1              : NoneType | str = None,
+                  sha_diff                 : NoneType | str = None,
+                  observer_height          : int | float = 0,
+                  artificial_horizon       : bool = False,
+                  index_error_minutes      : int = 0,
+                  semi_diameter_correction : int | float = 0,
+                  horizontal_parallax      : int | float = 0,
+                  sextant                  : NoneType | Sextant = None,
+                  chronometer              : NoneType | Chronometer = None,
+                  temperature              : float = 10.0,
+                  dt_dh                    : float = -0.01,
                   pressure                 : float = 101.0,
                   ho_obs                   : bool = False):
         self.temperature          = temperature
@@ -940,8 +941,8 @@ class SightPair:
         self.sf1 = sf1
         self.sf2 = sf2
 
-    def get_intersections (self, estimated_position : NoneType | LatLon = None,\
-                           diagnostics : bool = False,\
+    def get_intersections (self, estimated_position : NoneType | LatLon = None,
+                           diagnostics : bool = False,
                            intersection_number : int = 0) ->\
                            tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Return the two intersections for this sight pair. 
@@ -965,8 +966,8 @@ class SightCollection:
 #pylint: disable=R0914
 #pylint: disable=R0915
     def get_intersections\
-        (self, limit : int | float = 100,\
-          estimated_position : NoneType | LatLon = None,\
+        (self, limit : int | float = 100,
+          estimated_position : NoneType | LatLon = None,
           diagnostics : bool = False) \
             -> tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Get an intersection from the collection of sights. 
@@ -1110,10 +1111,10 @@ class SightTrip:
         Course and speed are estimated input parameters.  '''
 #pylint: disable=R0913
     def __init__ (self, \
-                       sight_start : Sight | datetime,\
-                       sight_end : Sight,\
-                       estimated_starting_point : LatLon,\
-                       course_degrees : int | float,\
+                       sight_start : Sight | datetime,
+                       sight_end : Sight,
+                       estimated_starting_point : LatLon,
+                       course_degrees : int | float,
                        speed_knots : int | float):
         self.sight_start              = sight_start
         self.sight_end                = sight_end
@@ -1134,7 +1135,8 @@ class SightTrip:
         dt2 = self.sight_end.set_time_dt
         self.time_hours = calculate_time_hours (dt1, dt2)
 
-    def __calculate_distance_to_target (self, angle : int | float, a_vec : list, b_vec : list)\
+    def __calculate_distance_to_target (self, angle : int | float,
+                                        a_vec : list [float], b_vec : list [float])\
           -> tuple [float, LatLon, LatLon]:
         rotation_angle = deg_to_rad (angle)
         rotated_vec = rotate_vector (b_vec, a_vec, rotation_angle)
