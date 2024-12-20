@@ -42,6 +42,10 @@ You need a Google/Gmail account to run the code in the notebook*.
 This project contains a toolkit (written in Python) to be used for
 [celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation)
 together with some demos and documentation.
+You can use the toolkit on a mobile phone without internet connection.
+If you also have access to a solar powered battery (powerbank) you have a tool
+useful while traveling in remote places or on the ocean.
+
 Sights (altitude measurements) have to be obtained using a sextant,
 a nautical almanac and an accurate chronometer.
 The toolkit takes care of the **sight reduction**
@@ -52,9 +56,6 @@ Using a calculator can speed up this manual task, and also reduce possible
 (human) errors.
 A **computer** can do it even quicker, and this toolkit will typically perform
 a sight reduction in less than one millisecond.  
-You can use the toolkit on a mobile phone without internet connection.
-If you also have access to a solar powered battery (powerbank) you have a tool
-useful while traveling in remote places or on the ocean.
 
 * The toolkit supports **stationary** observations, i.e. when observations are
   made from a single position,
