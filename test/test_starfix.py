@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.11
+
 ''' Test suite for the toolkit '''
 # pylint: disable=C0413
 import unittest
