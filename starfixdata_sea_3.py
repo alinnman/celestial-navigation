@@ -1,8 +1,6 @@
-''' Simple sample representing a trip at sea where celestial navigation is supporting
-    celestial navigation
+''' Simple sample representing a trip at sea with supporting celestial navigation
     © August Linnman, 2024, email: august@linnman.net
-    MIT License (see LICENSE file)    
-    
+    MIT License (see LICENSE file)       
 '''
 
 from time import time
