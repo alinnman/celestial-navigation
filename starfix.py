@@ -237,7 +237,17 @@ class Chronometer: # pylint: disable=R0903
 
 # Horizon
 
-def get_dip_of_horizon (hm : int | float, temperature : float, dt_dh : float, pressure : float)\
+def get_adjusted_earth_radius (temperature : float = 10,
+                               dt_dh : float = -0.01, pressure : float = 101) -> float:
+    ''' Calculate the modified earth radius as a result of refraction 
+        Returns : The adjusted radius in km
+    '''
+    k_factor = 503*(pressure*10)*(1/((temperature+273)**2))*(0.0343 + dt_dh)
+    r = EARTH_RADIUS
+    return r / (1 - k_factor)
+
+def get_dip_of_horizon (hm : int | float, temperature : float = 10,
+                        dt_dh : float = -0.01, pressure : float = 101)\
       -> float:
     ''' Calculate dip of horizon in arc minutes 
     Parameters:
@@ -245,20 +255,37 @@ def get_dip_of_horizon (hm : int | float, temperature : float, dt_dh : float, pr
         temperature : temperature in degrees Celsius
         dt_th : temperature gradient in degrees Celsius / meter
     '''
-    k_factor = 503*(pressure*10)*(1/((temperature+273)**2))*(0.0343 + dt_dh)
+    #k_factor = 503*(pressure*10)*(1/((temperature+273)**2))*(0.0343 + dt_dh)
+    #r = EARTH_RADIUS
+    #rr = r / (1 - k_factor)
+    rr = get_adjusted_earth_radius (temperature, dt_dh, pressure)
     h = hm / 1000
-    r = EARTH_RADIUS
-    rr = r / (1 - k_factor)
     the_dip = (acos (rr/(rr+h)))*(180/pi)*60
     return the_dip
+
+def get_line_of_sight (h1 : float, h2 : float, temperature : float = 10,
+                       dt_dh : float = -0.01, pressure : float = 101) -> float:
+    ''' Geometry for line-of-sight '''
+    rr = get_adjusted_earth_radius (temperature, dt_dh, pressure) * 1000
+    x1a = sqrt (((rr + h1)**2) - rr**2)
+    x1r = atan2 (x1a, rr)
+    x1 = x1r * rr
+    x2a = sqrt (((rr + h2)**2) - rr**2)
+    x2r = atan2 (x2a, rr)
+    x2 = x2r * rr
+    return x1 + x2
 
 # Intersections
 
 #pylint: disable=R0903
 class Circle:
-    ''' Helper class for circles '''
+    ''' Helper class for circles (great or small circles) '''
 
     def __init__ (self, latlon : LatLon, angle : int | float):
+        ''' Parameters:
+                latlon : centerpoint
+                angle  : angle of circle in degrees, for a great circle set to 90
+        '''
         self.latlon = latlon
         self.angle = angle
 
