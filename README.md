@@ -357,7 +357,8 @@ Using three (or more) sights a sight reduction can be done in the following way
         print ("Check the circles! " + collection.get_map_developers_string())
 
 A *sight* is defined as a collection of data as described in the
-section 1 above, i.e. recorded data for a celestial object for a specific time.
+[parameters section](#parameters) above, i.e. recorded data for a celestial 
+object for a specific time.
 
 A collection contains of a set of sights (star fixes) $S$
 
@@ -373,7 +374,8 @@ calculated like this
 $\left|S_p\right| = \frac{n^2 + n}{2} $
 
 For each sight pair we now collect the two corresponding intersection points
-($L$ = left, $R$ = right) using the algorithm described in 2.1 above.
+($L$ = left, $R$ = right) using the algorithm described
+[above](#3i-using-two-sights).
 
 $S_{p,i,j} \to \lbrace I_{p,i,j,L},I_{p,i,j,R} \rbrace$
 
