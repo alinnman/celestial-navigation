@@ -29,27 +29,27 @@ class TestStringMethods(unittest.TestCase):
     ''' Test class'''
 
     def test_starfix_1(self):
-        ''' Test suite 1 '''
+        ''' Test suite 1, Stationary '''
         main_1 ()
 
     def test_starfix_2(self):
-        ''' Test suite 2 '''
+        ''' Test suite 2, Stationary '''
         main_2 ()
 
     def test_sea_1 (self):
-        ''' Test suite for DR/Moving '''
+        ''' Test suite 1, for DR/Moving '''
         main_sea_1 ()
 
     def test_sea_2 (self):
-        ''' Test suite for DR/Moving '''
+        ''' Test suite 2, for DR/Moving '''
         main_sea_2 ()
 
     def test_sea_3 (self):
-        ''' Test suite for DR/Moving '''
+        ''' Test suite 3, for DR/Moving '''
         main_sea_3 ()
 
     def test_sea_4 (self):
-        ''' Test suite for DR/Moving '''
+        ''' Test suite 4, for DR/Moving '''
         main_sea_4 ()
 
     def test_terrestrial (self):
