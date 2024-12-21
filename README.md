@@ -653,7 +653,7 @@ the image below.
 The supplied script sample [starfixdata_sea_2.py](starfixdata_sea_2.py) contains
 a demo for this.
 
-### 4.iii. Intercepting a circle<a name="intercept-dr"></a>
+### 4.iii. Intercept a circle<a name="intercept-dr"></a>
 
 If you start from a specified position (<tt>LatLon</tt>) with a specified course
 expecting to intercept a specific circle, such as the first visibility of a
