@@ -342,6 +342,8 @@ def get_great_circle_route (start : LatLon, direction : LatLon | float | int) ->
         t4 = to_latlon (t3)
         return Circle (t4, 90)
     # isinstance (direction, float) or isinstance (direction, int) == True
+    if start.lat in (90,-90):
+        raise ValueError ("Cannot take a course from any of the poles")
     north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
     b = to_rectangular (start)
     east_tangent = normalize_vect(cross_product (b, north_pole))
@@ -380,8 +382,25 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         intersection_number : Used for diagnostics to label output. 
     '''
     assert circle1.angle >= 0 and circle2.angle >= 0
-    assert circle1.angle < 90 or  circle2.angle < 90
-    # Make sure one of the circles is a small circle
+
+    # Handle intersection of great circles
+    if circle1.angle == 90 and circle2.angle == 90:
+        a_vec = to_rectangular (circle1.latlon)
+        b_vec = to_rectangular (circle2.latlon)
+        c1_vec = cross_product (a_vec, b_vec)
+        c1_vec_n = normalize_vect (c1_vec)
+        c2_vec = cross_product (b_vec, a_vec)
+        c2_vec_n = normalize_vect (c2_vec)
+        c1_latlon = to_latlon (c1_vec_n)
+        c2_latlon = to_latlon (c2_vec_n)
+        ret_tuple = (c1_latlon, c2_latlon)
+        diag_output = ""
+        fitness = 1
+        if use_fitness:
+            fitness = length_of_vect (c1_vec)
+        return ret_tuple, fitness, diag_output
+
+    # Handle intersection of two circles, of which at least one is a small circle
     diag_output = ""
     # Get cartesian vectors a and b (from ground points)
     if diagnostics:
