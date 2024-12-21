@@ -693,8 +693,8 @@ def get_map_developers_string (r : float, latlon : LatLon) -> str:
     Return URL segment for https://mapdevelopers.com circle plotting service
     '''
     # Compensate for a bug in mapdevelopers.com. Circles have to be drawn wider
-    # scale_factor = 1.00093 TODO Review
-    scale_factor = 1.00085
+    # Maybe this discrepancy is caused by Earth oblateness corrections.... 
+    scale_factor = 1.00093
     r = r * scale_factor
     result = "["
     result = result + str (round(r*1000)) + ","
