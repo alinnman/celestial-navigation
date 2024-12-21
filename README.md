@@ -29,6 +29,7 @@ You need a Google/Gmail account to run the code in the notebook*.
     1. [From <tt>Sight</tt> to <tt>Sight</tt>](#run-sea-script)
     1. [From <tt>LatLon</tt> to <tt>Sight</tt>](#run-sea-script-2)
     1. [Intercept a circle](#intercept-dr)
+    1. [Intercept a bearing](#intercept)
     1. [Pure dead reckoning](#pure_dr)
 1. [A real-life example](#real-life)
 1. [Terrestrial Navigation](#terrestrial)
@@ -702,7 +703,43 @@ The picture below illustrates the result
 The supplied script sample [starfixdata_sea_3.py](starfixdata_sea_3.py) contains
 a demo for this.
 
-### 4.iv. Pure dead reckoning<a name="pure_dr"></a>
+### 4.iv. Intercept a bearing<a name="intercept"></a>
+
+If you are moving on a straight course and expect to intercept a specific
+bearing of a lighthouse you can use the following script.
+
+    from starfix import LatLon, get_representation,\
+                    get_great_circle_route, Circle, CircleCollection, get_intersections
+
+    # We are sailing from point s1
+    # We have a good estimate of an initial position. (A previous fix)
+    s1 = LatLon (57.662, 18.263)
+    # We start out at a course of 355 degrees
+    c_course = 355
+    course_gc = get_great_circle_route (s1, c_course)
+
+    # This is a position of a lighthouse
+    light_house = LatLon (58.739, 17.865)
+    # The intercept angle for the lighthouse is 300 degrees
+    light_house_intercept = 300
+    light_house_gc = get_great_circle_route (light_house, light_house_intercept)
+
+    # Get the intersections
+    intersections = get_intersections (course_gc, light_house_gc)
+    assert isinstance (intersections[0], tuple)
+    print (get_representation(intersections[0],1))
+
+    intersection1 = Circle (intersections[0][0],1/60)
+    start         = Circle (s1, 1/60)
+
+    # Check the circles
+    c_c = CircleCollection ([course_gc, light_house_gc, intersection1, start])
+    print ("MD = " + c_c.get_map_developers_string())
+
+The supplied script sample [starfixdata_sea_4.py](starfixdata_sea_4.py) contains
+a demo for this.
+
+### 4.v. Pure dead reckoning<a name="pure_dr"></a>
 
 You can also use a simple script for pure dead reckoning, where you only
 know your initial position (<tt>LatLon</tt>), your course, your speed
@@ -726,7 +763,7 @@ and time elapsed.
     # Print coord of destination
     print (get_representation(s2,1))
 
-The supplied script sample [starfixdata_sea_4.py](starfixdata_sea_4.py) contains
+The supplied script sample [starfixdata_sea_5.py](starfixdata_sea_5.py) contains
 a demo for this.
 
 ## 5. A real-life example<a name="real-life"></a>

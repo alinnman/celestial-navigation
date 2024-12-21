@@ -22,6 +22,7 @@ from starfixdata_sea_1  import main as main_sea_1
 from starfixdata_sea_2  import main as main_sea_2
 from starfixdata_sea_3  import main as main_sea_3
 from starfixdata_sea_4  import main as main_sea_4
+from starfixdata_sea_5  import main as main_sea_5
 from terrestrial        import main as main_terrestrial
 #pylint: enable=E0401
 
@@ -51,6 +52,10 @@ class TestStringMethods(unittest.TestCase):
     def test_sea_4 (self):
         ''' Test suite 4, for DR/Moving '''
         main_sea_4 ()
+
+    def test_sea_5 (self):
+        ''' Test suite 4, for DR/Moving '''
+        main_sea_5 ()
 
     def test_terrestrial (self):
         ''' Test suite for Terrestrial '''

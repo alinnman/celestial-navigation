@@ -1,32 +1,42 @@
-''' Simple sample representing a trip at sea with dead reckoning calculation
+''' Simple sample representing a trip at sea with supporting celestial navigation
     © August Linnman, 2024, email: august@linnman.net
     MIT License (see LICENSE file)       
 '''
 
-from datetime import datetime
 from time import time
-from starfix import takeout_course, LatLon, calculate_time_hours, get_representation
+from starfix import LatLon, get_representation,\
+                    get_great_circle_route, Circle, CircleCollection, get_intersections
 def main ():
     ''' Main body of script '''
 
     starttime = time ()
 
-    # We are sailing from point s1 to point s2, in the Baltic Sea.
+    # We are sailing from point s1
     # We have a good estimate of an initial position. (A previous fix)
-    s1 = LatLon (58.23,17.91)
-    s1_time = datetime.fromisoformat ("2024-06-20 06:14:38+00:00")
+    s1 = LatLon (57.662, 18.263)
+    # We start out at a course of 355 degrees
+    c_course = 355
+    course_gc = get_great_circle_route (s1, c_course)
 
-    # We reach s2 by applying about 175 degrees with a speed of 20 knots.
-    c_course = 175
-    speed = 20
-    s2_time = datetime.fromisoformat ("2024-06-20 07:13:38+00:00")
-    s1_s2_time = calculate_time_hours (s1_time, s2_time)
-    s2 = takeout_course (s1, c_course, speed, s1_s2_time)
+    # This is a position of a lighthouse
+    light_house = LatLon (58.739, 17.865)
+    # The intercept angle for the lighthouse is 300 degrees
+    light_house_intercept = 300
+    light_house_gc = get_great_circle_route (light_house, light_house_intercept)
 
-    # Print coord of destination
-    print (get_representation(s2,1))
-
+    # Get the intersections
+    intersections = get_intersections (course_gc, light_house_gc)
     endtime = time ()
+    assert isinstance (intersections[0], tuple)
+    print (get_representation(intersections[0],1))
+
+    intersection1 = Circle (intersections[0][0],1/60)
+    start         = Circle (s1, 1/60)
+
+    # Check the circles
+    c_c = CircleCollection ([course_gc, light_house_gc, intersection1, start])
+    print ("MD = " + c_c.get_map_developers_string())
+
     taken_ms = round((endtime-starttime)*1000,2)
 
     print ("Time taken = " +str(taken_ms)+" ms")

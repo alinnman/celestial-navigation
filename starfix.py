@@ -383,7 +383,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     '''
     assert circle1.angle >= 0 and circle2.angle >= 0
 
-    # Handle intersection of great circles
+    # Handle intersection of two great circles
     if circle1.angle == 90 and circle2.angle == 90:
         a_vec = to_rectangular (circle1.latlon)
         b_vec = to_rectangular (circle2.latlon)
@@ -693,7 +693,8 @@ def get_map_developers_string (r : float, latlon : LatLon) -> str:
     Return URL segment for https://mapdevelopers.com circle plotting service
     '''
     # Compensate for a bug in mapdevelopers.com. Circles have to be drawn wider
-    scale_factor = 1.00092
+    # scale_factor = 1.00093 TODO Review
+    scale_factor = 1.00085
     r = r * scale_factor
     result = "["
     result = result + str (round(r*1000)) + ","
