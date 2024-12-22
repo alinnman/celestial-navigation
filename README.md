@@ -269,8 +269,9 @@ which we will come back to later.
 i.e. $\lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$,
 i.e. the Earth is a three-dimensional sphere and its surface has "radius = 1")
 
-We aim for finding the intersections $p_1$ and $p_2$ for the circles $A$ and $B$
-and the point $q$ being the midpoint between $p_1$ and $p_2$.
+We aim for finding the intersections $p_1$ and $p_2$ for the circles $A$ and
+$B$ ($A \bigcap B$) and the point $q$ being the midpoint
+between $p_1$ and $p_2$.
 
 Using the
 [Pythagorean Theorem for a Sphere](https://en.wikipedia.org/wiki/Spherical_law_of_cosines)
@@ -346,7 +347,8 @@ p \perp a \land \left|p\right| = 1 \rbrace$ <br/>
 $B = \lbrace p \in \mathbb{R}^3 \mid
 p \perp b \land \left|p\right| = 1 \rbrace$
 
-From this it is easy to identify the two intersection points as the cross-products.
+From this it is easy to identify the two intersection points ($A \bigcap B$)
+as the cross-products.
 
 $p_1 = N(a \times b)$<br>
 $p_2 = N(b \times a)$
