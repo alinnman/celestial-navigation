@@ -25,6 +25,7 @@ You need a Google/Gmail account to run the code in the notebook*.
     1. [Using three or more sights](#using-three-or-more-sights)
     1. [Running the chicago script](#run-chicago-script)
     1. [Azimuth calculation](#azimuth)
+    1. [Terrestrial Navigation](#terrestrial)
 1. [Dead Reckoning (Moving observer)](#dead-reckoning)
     1. [From <tt>Sight</tt> to <tt>Sight</tt>](#run-sea-script)
     1. [From <tt>LatLon</tt> to <tt>Sight</tt>](#run-sea-script-2)
@@ -32,7 +33,6 @@ You need a Google/Gmail account to run the code in the notebook*.
     1. [Intercept a bearing](#intercept)
     1. [Pure dead reckoning](#pure_dr)
 1. [A real-life example](#real-life)
-1. [Terrestrial Navigation](#terrestrial)
 1. [Sextant Calibration](#calibration)
 1. [Chronometer Handling](#chronometer)
 
@@ -68,9 +68,9 @@ a sight reduction in less than one millisecond.
 * There is also support for **dead reckoning** observations,
   typically at sea on a moving ship. This also needs a working compass and a
   chip log or similar.
-  See [section 4](#dead-reckoning) below for more information.
+  See [below](#dead-reckoning) for more information.
 * As a bonus there is also support for **terrestial navigation**.
-  See [Section 6](#terrestrial) below for more information.
+  See [below](#terrestrial) for more information.
 
 For more information on installation and usage of the Python scripts see
 [here](INSTALL.md).
@@ -326,10 +326,6 @@ From this we calculate the fitness factor $\phi$:
 
 $\phi = |d_1 \times d_2|$  ;  $0<=\phi<=1$
 
-Note: The sight reduction algorithm described in this section will only work if
-at least one of the circles is a small circle.
-It cannot be used for calculating intersections of two great circles.
-
 Note: I have chosen to use an algorithm based on 3D cartesian vectors.
 Standard literature on sight reduction typically uses 2D spherical coordinates,
 such as **Longhand haversine sight reduction** as described
@@ -337,6 +333,27 @@ such as **Longhand haversine sight reduction** as described
 Such calculations in 2D are easier to carry out by hand but results in more
 complex computer software. The 3D/cartesian approach is more structurally
 simple and easier to convert to well-functioning software.
+
+Note: The sight reduction algorithm described in this section will only work if
+at least one of the circles is a small circle.
+It cannot be used for calculating intersections of two great circles.
+
+For **two great circles** there is a much simpler algorithm.
+We now get these circles
+
+$A = \lbrace p \in \mathbb{R}^3 \mid
+p \perp a \land \left|p\right| = 1 \rbrace$ <br/>
+$B = \lbrace p \in \mathbb{R}^3 \mid
+p \perp b \land \left|p\right| = 1 \rbrace$
+
+From this it is easy to identify the two intersection points as the cross-products.
+
+$p_1 = N(a \times b)$
+$p_2 = N(b \times a)$
+
+The fitness factor $\phi_{\text{gc}} $ is computed using angles and we get
+
+$\phi_{\text{gc}} = \left| p_1 \right| = \left| p_2 \right| $
 
 ### 3.ii. Using three or more sights<a name="using-three-or-more-sights"></a>
 
@@ -476,6 +493,27 @@ $\phi_{\text{azimuth}} = \arctan(\frac{d \cdot e}{d \cdot n})$
 
 This [sample](starfixdata_stat_1.py) contains an example of calculation of the
 azimuth for sights.
+
+### 3.v Terrestrial Navigation <a name="terrestrial"></a>
+
+A sextant can be used for terrestrial navigation too,
+if you orient it horizontally. Typically you take sights of lighthouses when
+performing a landfall towards a coast.
+[This sample](terrestrial.py) shows an example of this.
+The underlying maths are quite similar to sight reduction of star fixes.
+You need to find the intersection of two
+circles representing equal angle to two terrestrial points.
+
+The following picture shows how the sample results
+in two circles of equal angle.
+The three small circles are centered on three lighthouses and you have measured
+the observed angle between them from your observation point with a sextant.
+The red arrow points towards the calculated correct position (intersection).
+
+![Navigation towards three lighthouses](pics/lighthouses.png "Terrestrial Navigation")
+
+You may also use the supplied Jupyter Notebook script
+[notebook_terrestrial.ipynb](notebook_terrestrial.ipynb).
 
 ## 4. Dead Reckoning (Moving observer)<a name="dead-reckoning"></a>
 
@@ -780,28 +818,7 @@ modest level of training.
 But there are some question marks about this accuracy, and I will have to make
 more sights since I need to get more training.
 
-## 6. Terrestrial Navigation <a name="terrestrial"></a>
-
-A sextant can be used for terrestrial navigation too,
-if you orient it horizontally. Typically you take sights of lighthouses when
-performing a landfall towards a coast.
-[This sample](terrestrial.py) shows an example of this.
-The underlying maths are quite similar to sight reduction of star fixes.
-You need to find the intersection of two
-circles representing equal angle to two terrestrial points.
-
-The following picture shows how the sample results
-in two circles of equal angle.
-The three small circles are centered on three lighthouses and you have measured
-the observed angle between them from your observation point with a sextant.
-The red arrow points towards the calculated correct position (intersection).
-
-![Navigation towards three lighthouses](pics/lighthouses.png "Terrestrial Navigation")
-
-You may also use the supplied Jupyter Notebook script
-[notebook_terrestrial.ipynb](notebook_terrestrial.ipynb).
-
-## 7. Sextant Calibration <a name="calibration"></a>
+## 6. Sextant Calibration <a name="calibration"></a>
 
 There are many technical aspects of handling and calibrating a sextant and we
 will not mention all these things here, with one exception.
@@ -816,7 +833,7 @@ measurement of a local view is used as input to a calibration parameter of the
 used sextant.
 See the <tt>Sextant</tt> class.
 
-## 8. Chronometer Handling <a name="chronometer"></a>
+## 7. Chronometer Handling <a name="chronometer"></a>
 
 Your chronometer may have a **drift** to take care of,
 typically if it is mechanical or digital with no auto-setting.
