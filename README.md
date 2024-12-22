@@ -348,10 +348,10 @@ p \perp b \land \left|p\right| = 1 \rbrace$
 
 From this it is easy to identify the two intersection points as the cross-products.
 
-$p_1 = N(a \times b)$
+$p_1 = N(a \times b)$<br>
 $p_2 = N(b \times a)$
 
-The fitness factor $\phi_{\text{gc}} $ is computed using angles and we get
+The fitness factor $\phi_{\text{gc}}$ is computed using angles and we get
 
 $\phi_{\text{gc}} = \left| p_1 \right| = \left| p_2 \right| $
 
