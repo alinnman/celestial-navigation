@@ -255,6 +255,11 @@ $\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
 From the Nautical Almanac, using the timestamps $t_1$ and $t_2$,
 get the geographic position vectors (GP:s) $a$ and $b$.
 
+The GP:s $a$ and $b$ are located on the unit sphere
+
+$a \in \lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$<br>
+$b \in \lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$
+
 Now we can define two circles of equal altitude, $A$ and $B$.
 
 $A = \lbrace p \in \mathbb{R}^3 \mid
@@ -340,6 +345,12 @@ at least one of the circles is a small circle.
 It cannot be used for calculating intersections of two great circles.
 
 For **two great circles** there is a much simpler algorithm.
+
+The GP:s $a$ and $b$ are still located on the unit sphere.
+
+$a \in \lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$<br>
+$b \in \lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$
+
 We now get these circles
 
 $A = \lbrace p \in \mathbb{R}^3 \mid
@@ -355,7 +366,7 @@ $p_2 = N(b \times a)$
 
 The fitness factor $\phi_{\text{gc}}$ is computed using angles and we get
 
-$\phi_{\text{gc}} = \left| p_1 \right| = \left| p_2 \right| $
+$\phi_{\text{gc}} = \left| a \times b \right| = \left| b \times a \right| $
 
 ### 3.ii. Using three or more sights<a name="using-three-or-more-sights"></a>
 
