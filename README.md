@@ -339,7 +339,7 @@ $d_2 = N((p_1 - b) \times b)$
 
 From this we calculate the fitness factor $\phi$:
 
-$\phi = |d_1 \times d_2|$  ;  $0<=\phi<=1$
+$\phi = \left|\left|d_1 \times d_2\right|\right|$  ;  $0<=\phi<=1$
 
 Note: I have chosen to use an algorithm based on 3D cartesian vectors.
 Standard literature on sight reduction typically uses 2D spherical coordinates,
@@ -349,7 +349,7 @@ Such calculations in 2D are easier to carry out by hand but results in more
 complex computer software. The 3D/cartesian approach is more structurally
 simple and easier to convert to well-functioning software.
 
-Note: The sight reduction algorithm described in this section will only work if
+Note: The sight reduction algorithm described above will only work if
 at least one of the circles is a small circle.
 It cannot be used for calculating intersections of two great circles.
 
