@@ -257,22 +257,30 @@ get the geographic position vectors (GP:s) $a$ and $b$.
 
 The GP:s $a$ and $b$ are located on the unit sphere
 
-$a \in \lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$<br>
-$b \in \lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$
+$a \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
+<br>
+$b \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
 
 Now we can define two circles of equal altitude, $A$ and $B$.
 
 $A = \lbrace p \in \mathbb{R}^3 \mid
-p \cdot a = \cos \alpha \land \left|p\right| = 1 \rbrace$ <br/>
+p \cdot a = \cos \alpha \land \left|\left|p\right|\right| = 1 \rbrace$ <br/>
 $B = \lbrace p \in \mathbb{R}^3 \mid
-p \cdot b = \cos \beta \land \left|p\right| = 1 \rbrace$
+p \cdot b = \cos \beta \land \left|\left|p\right|\right| = 1 \rbrace$
+
+(The symbol $\cdot$ denotes a
+[dot product](https://en.wikipedia.org/wiki/Dot_product).
+The notation $\left|\left|x\right|\right|$ denotes the
+[absolute value](https://en.wikipedia.org/wiki/Absolute_value#Vector_spaces)
+of the vector $x$.)
 
 The circles relate to a *sight pair* $S_{p_{1,2}} = \{s_1, s_2\}$
 which we will come back to later.
 
-(From now on we assume all coordinates/vectors are located on the unity sphere,
-i.e. $\lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$,
-i.e. the Earth is a three-dimensional sphere and its surface has "radius = 1")
+(From now on we assume all coordinates/vectors are located on the
+**unity sphere**, i.e.
+$\lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$,
+i.e. the Earth is a three-dimensional sphere and its surface has radius = 1)
 
 We aim for finding the intersections $p_1$ and $p_2$ for the circles $A$ and
 $B$ ($A \bigcap B$) and the point $q$ being the midpoint
@@ -282,20 +290,21 @@ Using the
 [Pythagorean Theorem for a Sphere](https://en.wikipedia.org/wiki/Spherical_law_of_cosines)
 it is easy to see this:
 
-$\cos aq\cdot \cos pq = \cos \alpha$ <br/>
-$\cos bq\cdot \cos pq = \cos \beta$ <br/>
+$\cos\left(a\cdot q\right)\cos\left(p\cdot q\right) = \cos \alpha$ <br/>
+$\cos\left(b\cdot q\right)\cos\left(p\cdot q\right) = \cos \beta$ <br/>
 
 From which we derive this
 
 $q \cdot (a \cos \beta - b \cos \alpha) = 0$
 
-Applying two cross-products and a normalization we can get the value for $q$
+Applying two [cross products](https://en.wikipedia.org/wiki/Cross_product)
+(symbol $\times$) and a normalization we can get the value for $q$
 
 $q = N \left( (a \times b) \times (a \cos \beta - b \cos \alpha) \right)$
 
 where $N$ is normalization
 
-$N(x) = \frac{x}{\left|x\right|}$
+$N(x) = \frac{x}{\left|\left|x\right|\right|}$
 
 Now we can find the intersection points by rotating $q$ for an angle of $\rho$
 along a rotation axis $r$. <br/>
@@ -348,25 +357,27 @@ For **two great circles** there is a much simpler algorithm.
 
 The GP:s $a$ and $b$ are still located on the unit sphere.
 
-$a \in \lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$<br>
-$b \in \lbrace p \in \mathbb{R}^3 \mid \left|p\right| = 1 \rbrace$
+$a \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
+<br>
+$b \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
 
 We now get these circles
 
 $A = \lbrace p \in \mathbb{R}^3 \mid
-p \perp a \land \left|p\right| = 1 \rbrace$ <br/>
+p \perp a \land \left|\left|p\right|\right| = 1 \rbrace$ <br/>
 $B = \lbrace p \in \mathbb{R}^3 \mid
-p \perp b \land \left|p\right| = 1 \rbrace$
+p \perp b \land \left|\left|p\right|\right| = 1 \rbrace$
 
 From this it is easy to identify the two intersection points ($A \bigcap B$)
 as the cross-products.
 
 $p_1 = N(a \times b)$<br>
-$p_2 = N(b \times a)$
+$p_2 = N(b \times a) = -p_1$
 
 The fitness factor $\phi_{\text{gc}}$ is computed using angles and we get
 
-$\phi_{\text{gc}} = \left| a \times b \right| = \left| b \times a \right| $
+$\phi_{\text{gc}} = \left|\left| a \times b \right|\right| =
+\left|\left| b \times a\right|\right| $
 
 ### 3.ii. Using three or more sights<a name="using-three-or-more-sights"></a>
 
