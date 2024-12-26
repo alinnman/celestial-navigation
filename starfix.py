@@ -199,8 +199,16 @@ def nm_to_km (nm : int | float) -> float:
 #pylint: disable=R0903
 class Sextant:
     ''' This class represents a physical sextant, with various errors '''
-    def __init__  (self, graduation_error : float):
+    def __init__  (self,
+                   graduation_error : float = 1.0,
+                   index_error : int | float = 0):
+        """ Parameters
+                graduation_error : ratio between read and actual altitude. (Linear relation)
+                                   Use 1.0 for the same values.
+                index_error : Error in arcminutes. (Fixed error)
+        """
         self.graduation_error = graduation_error
+        self.index_error = index_error
 #pylint: enable=R0903
 
 def angle_between_points (origin : LatLon, point1 : LatLon, point2 : LatLon) -> float:
@@ -368,7 +376,6 @@ def get_intersections (circle1 : Circle, circle2 : Circle,
                           -> tuple[LatLon | tuple[LatLon, LatLon], float, str]:
     '''
     Get intersection of two circles on a spheric surface. 
-    At least one of the circles must be a small circle. 
 https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere 
     Parameters:
         latlon1 : GP nr 1 location
@@ -388,13 +395,16 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         a_vec = to_rectangular (circle1.latlon)
         b_vec = to_rectangular (circle2.latlon)
         c1_vec = cross_product (a_vec, b_vec)
+        if length_of_vect (c1_vec) == 0:
+            raise IntersectError ("GP:s are the same or antipodal (Two great circles)")
         c1_vec_n = normalize_vect (c1_vec)
-        c2_vec = cross_product (b_vec, a_vec)
-        c2_vec_n = normalize_vect (c2_vec)
+        c2_vec_n = mult_scalar_vect (-1, c1_vec_n)
         c1_latlon = to_latlon (c1_vec_n)
         c2_latlon = to_latlon (c2_vec_n)
         ret_tuple = (c1_latlon, c2_latlon)
         diag_output = ""
+        if diagnostics:
+            diag_output = "Handling two great circles with standard cross-product formula"
         fitness = 1
         if use_fitness:
             fitness = length_of_vect (c1_vec)
@@ -887,7 +897,7 @@ class Sight :
         if self.observer_height < 0:
             raise ValueError ("Observer_height should be >= 0")
         if sextant is not None:
-            self.__correct_for_graduation_error (sextant)
+            self.__correct_for_error (sextant)
         if chronometer is not None:
             self.__correct_set_time (chronometer)
         if index_error_minutes != 0:
@@ -913,8 +923,9 @@ class Sight :
         dt2 = chronometer.get_corrected_time (dt1)
         self.set_time_dt = dt2
 
-    def __correct_for_graduation_error (self, sextant : Sextant):
+    def __correct_for_error (self, sextant : Sextant):
         self.measured_alt /= sextant.graduation_error
+        self.measured_alt -= sextant.index_error/60
 
     def __correct_semi_diameter (self, sd : int | float):
         self.measured_alt += sd/60

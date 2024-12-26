@@ -30,8 +30,10 @@ starttime = time ()
 # I used a simple plastic sextant (Davis Mk III) and an artificial horizon.
 
 # Defining the Sextant object, using the calculated gradation error as parameter.
-mySextant = Sextant (get_decimal_degrees_from_tuple (calibrationMeasuredValue) / \
-                     get_decimal_degrees_from_tuple (calibrationRealValue))
+mySextant = Sextant (graduation_error=\
+                     get_decimal_degrees_from_tuple (calibrationMeasuredValue) / \
+                     get_decimal_degrees_from_tuple (calibrationRealValue),\
+                     index_error=0)
 
 # Defining the Chronometer object
 myChronometer = Chronometer\
