@@ -69,7 +69,7 @@ a sight reduction in less than one millisecond.
   typically at sea on a moving ship. This also needs a working compass and a
   chip log or similar.
   See [below](#dead-reckoning) for more information.
-* As a bonus there is also support for **terrestial navigation**.
+* As a bonus there is also support for **terrestrial navigation**.
   See [below](#terrestrial) for more information.
 
 For more information on installation and usage of the Python scripts see
