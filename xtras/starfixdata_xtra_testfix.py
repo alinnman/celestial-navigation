@@ -29,51 +29,40 @@ starttime = time ()
 
 TEMPERATURE = 18
 
-a = Sight (   object_name          = "Sabik", \
-              set_time             = "2024-10-01 17:13:00+00:00", \
-              gha_time_0           = "265:55.1", \
-              gha_time_1           = "280:57.5", \
-              decl_time_0          = "-15:45.3", \
-              sha_diff             = "102:3.2", \
-              measured_alt         = "57:36.8", \
-              observer_height      = 2.5, \
-              temperature          = TEMPERATURE, \
-              ho_obs               = True \
+a = Sight (   object_name          = "Sabik",
+              set_time             = "2024-10-01 17:13:00+00:00",
+              gha_time_0           = "265:55.1",
+              gha_time_1           = "280:57.5",
+              decl_time_0          = "-15:45.3",
+              sha_diff             = "102:3.2",
+              measured_alt         = "57:36.8",
+              observer_height      = 2.5,
+              temperature          = TEMPERATURE,
+              ho_obs               = True
               )
 
-b = Sight (   object_name          = "Venus", \
-              set_time             = "2024-10-01 17:13:00+00:00", \
-              gha_time_0           = "47:57.8", \
-              gha_time_1           = "62:57.3", \
-              decl_time_0          = "-15:14.8", \
-              decl_time_1          = "-15:15.9", \
-              measured_alt         = "25:8.4", \
-              observer_height      = 2.5, \
-              temperature          = TEMPERATURE, \
-              ho_obs               = True \
+b = Sight (   object_name          = "Venus",
+              set_time             = "2024-10-01 17:13:00+00:00",
+              gha_time_0           = "47:57.8",
+              gha_time_1           = "62:57.3",
+              decl_time_0          = "-15:14.8",
+              decl_time_1          = "-15:15.9",
+              measured_alt         = "25:8.4",
+              observer_height      = 2.5,
+              temperature          = TEMPERATURE,
+              ho_obs               = True
               )
 
-c = Sight (   object_name          = "Saturn",\
-              set_time             = "2024-10-01 17:13:00+00:00", \
-              gha_time_0           = "279:30.9", \
-              gha_time_1           = "294:33.5", \
-              decl_time_0          = "-8:11.8", \
-              measured_alt         = "30:20.2", \
-              observer_height      = 2.5, \
-              temperature          = TEMPERATURE, \
-              ho_obs               = True \
+c = Sight (   object_name          = "Saturn",
+              set_time             = "2024-10-01 17:13:00+00:00",
+              gha_time_0           = "279:30.9",
+              gha_time_1           = "294:33.5",
+              decl_time_0          = "-8:11.8",
+              measured_alt         = "30:20.2",
+              observer_height      = 2.5,
+              temperature          = TEMPERATURE,
+              ho_obs               = True
               )
-
-
-#collection = SightCollection ([a, b])
-#intersections, fitness, diag_output = collection.get_intersections (limit = 100)
-#print ("GM = " + get_google_map_string(intersections,4))
-#collection = SightCollection ([a, c])
-#intersections, fitness, diag_output = collection.get_intersections (limit = 100)
-#print ("GM = " + get_google_map_string(intersections,4))
-#collection = SightCollection ([b, c])
-#intersections, fitness, diag_output = collection.get_intersections (limit = 100)
-#print ("GM = " + get_google_map_string(intersections,4))
 
 collection = SightCollection ([a, b, c])
 try:
@@ -81,6 +70,7 @@ try:
         collection.get_intersections (limit=100)
 except IntersectError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
+    print ("Check the circles! " + collection.get_map_developers_string())
     exit ()
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)

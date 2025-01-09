@@ -673,7 +673,8 @@ def get_refraction (apparent_angle : int | float, temperature : float, pressure 
     h = apparent_angle
     d = h + 7.31 / (h + 4.4)
     d2 = d*q
-    return (1 / tan (d2))*(pressure / 101.1)*(283.0/(273.0 + temperature))
+    retval = (1 / tan (d2))*(pressure / 101.1)*(283.0/(273.0 + temperature))
+    return retval
 
 # Data formatting
 
@@ -840,6 +841,12 @@ def get_terrestrial_position (point_a1 : LatLon,
     return intersection, a, b, fitness, diag_output
 #pylint: enable=R0913
 
+# Geodesics
+
+def get_geocentric_alt (estimated_position : LatLon, geodesic_alt : float, gp : LatLon) -> float:
+    return 0.0
+    # TODO
+
 # Celestial Navigation
 
 #pylint: disable=R0902
@@ -855,11 +862,14 @@ class Sight :
                   gha_time_1               : str,
                   decl_time_0              : str,
                   measured_alt             : str,
+                  estimated_position       : LatLon | NoneType = None,
+                  # If estimated_position <> None then measured_alt represents a geodesic reading
+                  # TODO Document this in README.md
                   decl_time_1              : NoneType | str = None,
                   sha_diff                 : NoneType | str = None,
                   observer_height          : int | float = 0,
                   artificial_horizon       : bool = False,
-                  index_error_minutes      : int = 0,
+                  index_error_minutes      : int | float = 0,
                   semi_diameter_correction : int | float = 0,
                   horizontal_parallax      : int | float = 0,
                   sextant                  : NoneType | Sextant = None,
@@ -867,7 +877,8 @@ class Sight :
                   temperature              : float = 10.0,
                   dt_dh                    : float = -0.01,
                   pressure                 : float = 101.0,
-                  ho_obs                   : bool = False):
+                  ho_obs                   : bool = False,
+                  no_dip                   : bool = False):
         self.temperature          = temperature
         self.dt_dh                = dt_dh
         self.pressure             = pressure
@@ -879,12 +890,12 @@ class Sight :
             self.gha_time_1 += 360
         if decl_time_1 is None:
             decl_time_1 = decl_time_0
-        self.decl_time_0           = parse_angle_string (decl_time_0)
-        self.decl_time_1           = parse_angle_string (decl_time_1)
+        self.decl_time_0          = parse_angle_string (decl_time_0)
+        self.decl_time_1          = parse_angle_string (decl_time_1)
         if self.decl_time_0 < -90 or self.decl_time_0 > 90 or \
            self.decl_time_1 < -90 or self.decl_time_1 > 90:
             raise ValueError ("Declination values must be within [-90,90]")
-        self.measured_alt          = parse_angle_string (measured_alt)
+        self.measured_alt         = parse_angle_string (measured_alt)
         if sha_diff is not None:
             self.sha_diff         = parse_angle_string (sha_diff)
         else:
@@ -912,8 +923,13 @@ class Sight :
             self.__correct_for_horizontal_parallax (horizontal_parallax)
         if not ho_obs:
             self.__correct_for_refraction ()
-            self.__correct_dip_of_horizon ()
+            if not no_dip:
+                self.__correct_dip_of_horizon ()
         self.gp = self.__calculate_gp ()
+        if estimated_position is not None:
+            # We have a geodesic reading and need to adjust it to a geocentric position
+            # TODO
+            self.measured_alt = get_geocentric_alt (estimated_position, self.measured_alt, self.gp)
 #pylint: enable=R0912
 #pylint: enable=R0913
 #pylint: enable=R0914
@@ -1140,7 +1156,7 @@ class SightCollection:
         fitness_sum = 0
         for cp in chosen_points:
             selected_coord = coords [cp][0]
-            fitness_here   = coords [cp][1]
+            fitness_here   = (coords [cp][1])**3
             fitness_sum += fitness_here
             rect_vec = to_rectangular (selected_coord)
             summation_vec =\

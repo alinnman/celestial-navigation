@@ -48,31 +48,31 @@ starttime = time ()
 
 # Our starfix data
 
-a = Sight (   object_name          = "Acrux", \
-              set_time             = "2024-08-31 11:10+00:00" ,\
-              gha_time_0           = "145:7", \
-              gha_time_1           = "160:9.4", \
-              decl_time_0          = "-63:14.2", \
-              measured_alt         = "40", \
-              sha_diff             = "173:1.1" \
+a = Sight (   object_name          = "Acrux",
+              set_time             = "2024-08-31 11:10+00:00",
+              gha_time_0           = "145:7",
+              gha_time_1           = "160:9.4",
+              decl_time_0          = "-63:14.2",
+              measured_alt         = "40",
+              sha_diff             = "173:1.1"
               )
 
-b = Sight (   object_name          = "Canopus", \
-              set_time             = "2024-08-31 11:10+00:00" ,\
-              gha_time_0           = "145:7", \
-              gha_time_1           = "160:9.4", \
-              decl_time_0          = "-52:42.1", \
-              measured_alt         = "20", \
-              sha_diff             = "263:52.8" \
+b = Sight (   object_name          = "Canopus",
+              set_time             = "2024-08-31 11:10+00:00",
+              gha_time_0           = "145:7",
+              gha_time_1           = "160:9.4",
+              decl_time_0          = "-52:42.1",
+              measured_alt         = "20",
+              sha_diff             = "263:52.8"
               )
 
-c = Sight (   object_name          = "Achernar", \
-              set_time             = "2024-08-31 11:10+00:00" ,\
-              gha_time_0           = "145:7", \
-              gha_time_1           = "160:9.4", \
-              decl_time_0          = "-57:6.4", \
-              measured_alt         = "50", \
-              sha_diff             = "335:20" \
+c = Sight (   object_name          = "Achernar",
+              set_time             = "2024-08-31 11:10+00:00",
+              gha_time_0           = "145:7",
+              gha_time_1           = "160:9.4",
+              decl_time_0          = "-57:6.4",
+              measured_alt         = "50",
+              sha_diff             = "335:20"
               )
 
 
@@ -81,6 +81,7 @@ try:
     intersections, fitness, diag_output = collection.get_intersections (limit=500)
 except IntersectError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
+    print ("Check the circles! " + collection.get_map_developers_string())
     exit ()
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)

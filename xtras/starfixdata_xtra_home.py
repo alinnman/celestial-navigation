@@ -41,30 +41,30 @@ myChronometer = Chronometer\
      set_time_deviation_seconds = 0,\
      drift_sec_per_day          = 0.3)
 
-S1 = Sight (   object_name          = "Sun", \
-              set_time             = "2024-06-14 05:57:50+00:00", \
-              gha_time_0           = "254:54.8", \
-              gha_time_1           = "269:54.7", \
-              decl_time_0          = "23:17.1", \
-              decl_time_1          = "23:17.3", \
-              measured_alt         = "57:8", \
-              artificial_horizon   = True,\
-              index_error_minutes  = 0,\
-              semi_diameter_correction = 15.7,\
-              sextant = mySextant,\
+S1 = Sight (   object_name          = "Sun",
+              set_time             = "2024-06-14 05:57:50+00:00",
+              gha_time_0           = "254:54.8",
+              gha_time_1           = "269:54.7",
+              decl_time_0          = "23:17.1",
+              decl_time_1          = "23:17.3",
+              measured_alt         = "57:8",
+              artificial_horizon   = True,
+              index_error_minutes  = 0,
+              semi_diameter_correction = 15.7,
+              sextant = mySextant,
               chronometer = myChronometer
               )
 
-S2 = Sight (   object_name          = "Sun", \
-              set_time             = "2024-06-15 14:49:07+00:00", \
-              gha_time_0           = "29:50.4", \
-              gha_time_1           = "44:50.2", \
-              decl_time_0          = "23:20.5", \
-              decl_time_1          = "23:20.6", \
-              measured_alt         = "70:17", \
-              artificial_horizon   = True,\
-              index_error_minutes  = 0,\
-              sextant = mySextant,\
+S2 = Sight (   object_name          = "Sun",
+              set_time             = "2024-06-15 14:49:07+00:00",
+              gha_time_0           = "29:50.4",
+              gha_time_1           = "44:50.2",
+              decl_time_0          = "23:20.5",
+              decl_time_1          = "23:20.6",
+              measured_alt         = "70:17",
+              artificial_horizon   = True,
+              index_error_minutes  = 0,
+              sextant = mySextant,
               chronometer = myChronometer
               )
 
@@ -78,6 +78,7 @@ try:
         collection.get_intersections (estimated_position = LatLon(59,19))
 except IntersectError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
+    print ("Check the circles! " + collection.get_map_developers_string())
     exit ()
 
 endtime = time ()
