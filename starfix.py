@@ -15,6 +15,13 @@ EARTH_CIRCUMFERENCE_MERIDIONAL = 40007.86
 EARTH_CIRCUMFERENCE = (EARTH_CIRCUMFERENCE_EQUATORIAL + EARTH_CIRCUMFERENCE_MERIDIONAL) / 2
 EARTH_RADIUS = EARTH_CIRCUMFERENCE / (2 * pi)
 
+
+EARTH_RADIUS_GEODETIC_EQUATORIAL = 6378
+EARTH_RADIUS_GEODETIC_POLAR      = 6357
+EARTH_FLATTENING =\
+    (EARTH_RADIUS_GEODETIC_EQUATORIAL - EARTH_RADIUS_GEODETIC_POLAR) / \
+     EARTH_RADIUS_GEODETIC_EQUATORIAL
+
 # Data types
 
 class LatLon:
@@ -843,7 +850,39 @@ def get_terrestrial_position (point_a1 : LatLon,
 
 # Geodesics
 
+class LatLonGeodetic (LatLon):
+    def __init__ (self, lat : float | int, lon : float | int):
+        print ("HEJ")
+        super().__init__ (lat, lon)
+        # TODO
+
+def get_latlon_from_geodetic (llg : LatLonGeodetic, height : float = 0) -> LatLon:
+    ''' Transforms a geodetic coordinate into geocentric 
+        See: https://www.mathworks.com/help/aeroblks/geodetictogeocentriclatitude.html?s_tid=doc_ta
+    '''
+    f = EARTH_FLATTENING
+    a = EARTH_RADIUS_GEODETIC_EQUATORIAL / (2*pi)
+    mu = deg_to_rad(llg.lat)
+    e2 = f*(2-f)
+    h = height
+    n = a / sqrt(1 - e2*(sin(mu))**2)
+    rho = (n + h) * cos(mu)
+    z = (n*(1 - e2) + h)*sin(mu)
+    lam_bda = atan2 (z, rho)
+    return LatLon (rad_to_deg(lam_bda), llg.lon)
+
+def get_geodetic_from_latlon (ll : LatLon) -> LatLonGeodetic:
+    return LatLonGeodetic (ll.lat, ll.lon)
+    # TODO
+
+def get_vertical_parallax (lat : float) -> float:
+    # TODO
+
+    return 0.0
+
 def get_geocentric_alt (estimated_position : LatLon, geodesic_alt : float, gp : LatLon) -> float:
+    # Calculate vertical parallax
+    parallax = get_vertical_parallax (estimated_position.lat)
     return 0.0
     # TODO
 
