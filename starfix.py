@@ -848,43 +848,101 @@ def get_terrestrial_position (point_a1 : LatLon,
     return intersection, a, b, fitness, diag_output
 #pylint: enable=R0913
 
-# Geodesics
+# Geodetics
 
 class LatLonGeodetic (LatLon):
-    def __init__ (self, lat : float | int, lon : float | int):
-        print ("HEJ")
-        super().__init__ (lat, lon)
-        # TODO
+    ''' Represents a geodetic coordinate in an ellipsoid model (WGS-84) '''
+    def __init__ (self,
+                  lat : float | int | NoneType = None,
+                  lon : float | int | NoneType = None,
+                  ll : LatLon | NoneType = None):
+        if ll is None:
+            assert lat is not None
+            assert lon is not None
+            #self.lat = lat
+            #self.lon = lon
+            print ("NISSE = " + str(lon))
+            super().__init__ (lat, lon)
+            return
 
-def get_latlon_from_geodetic (llg : LatLonGeodetic, height : float = 0) -> LatLon:
-    ''' Transforms a geodetic coordinate into geocentric 
-        See: https://www.mathworks.com/help/aeroblks/geodetictogeocentriclatitude.html?s_tid=doc_ta
+        #Transforms a geocentric coordinate into geodetic
+        #    See: https://www.mathworks.com/help/aeroblks/geocentrictogeodeticlatitude.html
+        lam_bda = deg_to_rad (ll.lat)
+        a       = EARTH_RADIUS_GEODETIC_EQUATORIAL
+        b       = EARTH_RADIUS_GEODETIC_POLAR
+        f       = EARTH_FLATTENING
+        r       = EARTH_RADIUS
+        rho     = r * cos(lam_bda)
+        z       = r * sin(lam_bda)
+        e2      = f*(2-f)
+        r       = a
+        eprim2  = e2 / (1 - e2)
+        iter_ready = False
+        iter_count = 0
+        iter_limit = 10
+        diff_limit = 10**-8
+        mu = pi/4
+        while not iter_ready:
+            beta = atan2 ((1-f)*sin(mu), cos(mu))
+            new_mu = atan2 (z + b*eprim2*(sin(beta)**3),\
+                            rho-a*e2*((cos(beta)**3)))
+            if abs(new_mu - mu) < diff_limit:
+                iter_ready = True
+            else:
+                mu = new_mu
+            iter_count += 1
+            if iter_count > iter_limit:
+                iter_ready = True
+
+        # return LatLonGeodetic (ll.lat, ll.lon)
+        #self.lat = rad_to_deg (mu)
+        #self.lon = ll.lon
+        super().__init__(rad_to_deg(mu), ll.lon)
+
+    def get_latlon (self, height : float = 0) -> LatLon:
+        ''' Transforms a geodetic coordinate into geocentric 
+            See: https://www.mathworks.com/help/aeroblks/geodetictogeocentriclatitude.html
+        '''
+        f = EARTH_FLATTENING
+        a = EARTH_RADIUS_GEODETIC_EQUATORIAL / (2*pi)
+        assert self.lat is not None
+        mu = deg_to_rad(self.lat)
+        e2 = f*(2-f)
+        h = height
+        n = a / sqrt(1 - e2*(sin(mu))**2)
+        rho = (n + h) * cos(mu)
+        z = (n*(1 - e2) + h)*sin(mu)
+        lam_bda = atan2 (z, rho)
+        assert self.lon is not None
+        return LatLon (rad_to_deg(lam_bda), self.lon)
+
+    def __str__(self):
+        return "Geodetic coordinate. LAT = " + str(round(self.lat,4)) +\
+               "; LON = " + str(round(self.lon,4))
+
+
+def get_vertical_parallax (llg : LatLonGeodetic) -> tuple [float, LatLon]:
+    ''' Calculate the vertical parallax 
+    (difference between geocentric and geodetic latitude)
     '''
-    f = EARTH_FLATTENING
-    a = EARTH_RADIUS_GEODETIC_EQUATORIAL / (2*pi)
-    mu = deg_to_rad(llg.lat)
-    e2 = f*(2-f)
-    h = height
-    n = a / sqrt(1 - e2*(sin(mu))**2)
-    rho = (n + h) * cos(mu)
-    z = (n*(1 - e2) + h)*sin(mu)
-    lam_bda = atan2 (z, rho)
-    return LatLon (rad_to_deg(lam_bda), llg.lon)
+    ll  = llg.get_latlon ()
+    llg_rect = to_rectangular (llg)
+    ll_rect  = to_rectangular (ll)
+    angle    = dot_product (ll_rect, llg_rect)
+    return rad_to_deg(acos (angle)), ll
 
-def get_geodetic_from_latlon (ll : LatLon) -> LatLonGeodetic:
-    return LatLonGeodetic (ll.lat, ll.lon)
-    # TODO
-
-def get_vertical_parallax (lat : float) -> float:
-    # TODO
-
-    return 0.0
-
-def get_geocentric_alt (estimated_position : LatLon, geodesic_alt : float, gp : LatLon) -> float:
+def get_geocentric_alt (estimated_position : LatLonGeodetic, geodesic_alt : float, gp : LatLon) -> float:
     # Calculate vertical parallax
-    parallax = get_vertical_parallax (estimated_position.lat)
-    return 0.0
-    # TODO
+
+    parallax, ll = get_vertical_parallax (estimated_position)
+    est_rect = to_rectangular (estimated_position)
+    ll_rect  = to_rectangular (ll)
+    rot_vec = cross_product (est_rect, ll_rect)
+    gp_rect = to_rectangular (gp)
+    rotated = normalize_vect(rotate_vector (gp_rect, rot_vec, deg_to_rad(parallax)))
+    dot_p = dot_product (rotated, ll_rect)
+    return rad_to_deg((pi/2) - acos(dot_p))
+    # TODO Not ready
 
 # Celestial Navigation
 
@@ -901,7 +959,7 @@ class Sight :
                   gha_time_1               : str,
                   decl_time_0              : str,
                   measured_alt             : str,
-                  estimated_position       : LatLon | NoneType = None,
+                  estimated_position       : LatLonGeodetic | NoneType = None,
                   # If estimated_position <> None then measured_alt represents a geodesic reading
                   # TODO Document this in README.md
                   decl_time_1              : NoneType | str = None,
@@ -968,7 +1026,11 @@ class Sight :
         if estimated_position is not None:
             # We have a geodesic reading and need to adjust it to a geocentric position
             # TODO
-            self.measured_alt = get_geocentric_alt (estimated_position, self.measured_alt, self.gp)
+            print ("The uncorrected altitude is " + str(self.measured_alt))
+            self.measured_alt =\
+                  get_geocentric_alt (estimated_position,\
+                                      self.measured_alt, self.gp)
+            print ("The corrected altitude is " + str(self.measured_alt))
 #pylint: enable=R0912
 #pylint: enable=R0913
 #pylint: enable=R0914
