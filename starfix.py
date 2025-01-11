@@ -932,17 +932,21 @@ def get_vertical_parallax (llg : LatLonGeodetic) -> tuple [float, LatLon]:
     return rad_to_deg(acos (angle)), ll
 
 def get_geocentric_alt (estimated_position : LatLonGeodetic, geodesic_alt : float, gp : LatLon) -> float:
-    # Calculate vertical parallax
-
-    parallax, ll = get_vertical_parallax (estimated_position)
-    est_rect = to_rectangular (estimated_position)
-    ll_rect  = to_rectangular (ll)
-    rot_vec = cross_product (est_rect, ll_rect)
-    gp_rect = to_rectangular (gp)
-    rotated = normalize_vect(rotate_vector (gp_rect, rot_vec, deg_to_rad(parallax)))
-    dot_p = dot_product (rotated, ll_rect)
-    return rad_to_deg((pi/2) - acos(dot_p))
-    # TODO Not ready
+    ''' Convert an estimated geodetic altitude (observation from sextant) to a geocentric value '''
+    #if False:
+    #    parallax, ll = get_vertical_parallax (estimated_position)
+    #    est_rect = to_rectangular (estimated_position)
+    #    ll_rect  = to_rectangular (ll)
+    #    rot_vec = cross_product (est_rect, ll_rect)
+    #    gp_rect = to_rectangular (gp)
+    #    rotated = normalize_vect(rotate_vector (gp_rect, rot_vec, deg_to_rad(parallax)))
+    #    dot_p = dot_product (rotated, ll_rect)
+    #    return rad_to_deg((pi/2) - acos(dot_p))
+    ang_1 = (pi/2) - acos(dot_product (to_rectangular(estimated_position), to_rectangular(gp)))
+    epgc = estimated_position.get_latlon()
+    ang_2 = (pi/2) - acos(dot_product (to_rectangular(epgc),               to_rectangular(gp)))
+    diff = rad_to_deg(ang_2 - ang_1)
+    return geodesic_alt + diff
 
 # Celestial Navigation
 
@@ -1252,14 +1256,25 @@ class SightCollection:
                             ("Cannot sort multiple intersections to find"+\
                                 "a reasonable set of coordinates")
 
+        # Now make a conversion of all coords to geodetic
+        #for cp in chosen_points:
+        #    selected_coord = coords [cp][0]
+        #    print (selected_coord)
+        #    coords [cp][0] = LatLonGeodetic (ll = selected_coord)
+
         summation_vec = [0.0,0.0,0.0]
         # Make a mean value on the best intersections.
         fitness_sum = 0
         for cp in chosen_points:
             selected_coord = coords [cp][0]
+            do_geodetic = True # TODO Review
+            if do_geodetic:
+                selected_coord_x = LatLonGeodetic (ll = selected_coord)
+            else:
+                selected_coord_x = selected_coord
             fitness_here   = (coords [cp][1])**3
             fitness_sum += fitness_here
-            rect_vec = to_rectangular (selected_coord)
+            rect_vec = to_rectangular (selected_coord_x)
             summation_vec =\
                 add_vecs (summation_vec,\
                 mult_scalar_vect ((1/nr_of_chosen_points)*fitness_here, rect_vec))
