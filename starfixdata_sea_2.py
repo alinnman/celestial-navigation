@@ -25,12 +25,13 @@ def main ():
 
     # We take a sight here and get this.
 
-    s2 = Sight (  object_name          = "Sun", \
-                set_time             = "2024-06-20 07:13:38+00:00", \
-                gha_time_0           = "284:35.1", \
-                gha_time_1           = "299:35.0", \
-                decl_time_0          = "23:26.2", \
-                measured_alt         = "38:34:21.6" \
+    s2 = Sight (  object_name          = "Sun",
+                set_time             = "2024-06-20 07:13:38+00:00",
+                gha_time_0           = "284:35.1",
+                gha_time_1           = "299:35.0",
+                decl_time_0          = "23:26.2",
+                measured_alt         = "38:34:21.6",
+                estimated_position   = s1_latlon
                 )
 
     # We reach s2 by applying about 175 degrees with a speed of 20 knots.
@@ -46,13 +47,13 @@ def main ():
         intersections, _, _ = st.get_intersections ()
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
-        print ("Check the circles! " + st.get_map_developers_string())
+        print ("Check the circles! " + st.get_map_developers_string(geodetic=True))
         exit ()
 
     endtime = time ()
     taken_ms = round((endtime-starttime)*1000,2)
 
-    print ("MD = " + st.get_map_developers_string ())
+    print ("MD = " + st.get_map_developers_string (geodetic=True))
 
     # Diagnostics for map rendering etc.
 

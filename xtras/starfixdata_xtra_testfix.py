@@ -20,7 +20,7 @@ except ValueError:
     pass
 
 from starfix import Sight, SightCollection, get_representation,\
-     get_google_map_string, IntersectError
+     get_google_map_string, IntersectError, LatLonGeodetic
 
 
 starttime = time ()
@@ -28,6 +28,8 @@ starttime = time ()
 # Our starfix data
 
 TEMPERATURE = 18
+
+THE_POS = LatLonGeodetic (-34, 18)
 
 a = Sight (   object_name          = "Sabik",
               set_time             = "2024-10-01 17:13:00+00:00",
@@ -38,7 +40,8 @@ a = Sight (   object_name          = "Sabik",
               measured_alt         = "57:36.8",
               observer_height      = 2.5,
               temperature          = TEMPERATURE,
-              ho_obs               = True
+              ho_obs               = True,
+              estimated_position   = THE_POS
               )
 
 b = Sight (   object_name          = "Venus",
@@ -50,7 +53,8 @@ b = Sight (   object_name          = "Venus",
               measured_alt         = "25:8.4",
               observer_height      = 2.5,
               temperature          = TEMPERATURE,
-              ho_obs               = True
+              ho_obs               = True,
+              estimated_position   = THE_POS
               )
 
 c = Sight (   object_name          = "Saturn",
@@ -61,32 +65,33 @@ c = Sight (   object_name          = "Saturn",
               measured_alt         = "30:20.2",
               observer_height      = 2.5,
               temperature          = TEMPERATURE,
-              ho_obs               = True
+              ho_obs               = True,
+              estimated_position   = THE_POS
               )
 
 collection = SightCollection ([a, b, c])
 try:
     intersections, fitness, diag_output =\
-        collection.get_intersections (limit=100)
+        collection.get_intersections (limit=100, return_geodetic=True)
 except IntersectError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
-    print ("Check the circles! " + collection.get_map_developers_string())
+    print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
     exit ()
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)
 print (get_representation(intersections,1))
-print ("MD = " + collection.get_map_developers_string())
+print ("MD = " + collection.get_map_developers_string(geodetic=True))
 print ("GM = " + get_google_map_string(intersections,4))
 
 #Diagnostics for map rendering etc.
 print ("Some useful data follows")
-print ("A radius = " + str(round(a.get_radius (),1)))
+print ("A radius = " + str(round(a.get_radius (geodetic=True),1)))
 print ("A GP     = " + get_google_map_string(a.gp,4))
 
-print ("B radius = " + str(round(b.get_radius (),1)))
+print ("B radius = " + str(round(b.get_radius (geodetic=True),1)))
 print ("B GP     = " + get_google_map_string(b.gp,4))
 
-print ("C radius = " + str(round(c.get_radius (),1)))
+print ("C radius = " + str(round(c.get_radius (geodetic=True),1)))
 print ("C GP     = " + get_google_map_string(c.gp,4))
 
 print ("Time taken = " +str(takenMs)+" ms")

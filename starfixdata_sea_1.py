@@ -19,12 +19,13 @@ def main ():
 
     #This is the star fix for s1, the starting point
 
-    s1 = Sight (  object_name          = "Sun", \
-                set_time             = "2024-06-20 06:14:38+00:00", \
-                gha_time_0           = "269:35.2", \
-                gha_time_1           = "284:35.1", \
-                decl_time_0          = "23:26.2", \
-                measured_alt         = "30:51:27.1" \
+    s1 = Sight (  object_name          = "Sun",
+                set_time             = "2024-06-20 06:14:38+00:00",
+                gha_time_0           = "269:35.2",
+                gha_time_1           = "284:35.1",
+                decl_time_0          = "23:26.2",
+                measured_alt         = "30:51:27.1",
+                geodetic_alt         = False
                 )
 
 
@@ -32,12 +33,13 @@ def main ():
 
     # We take a sight here and get this.
 
-    s2 = Sight (  object_name          = "Sun", \
-                set_time             = "2024-06-20 07:13:38+00:00", \
-                gha_time_0           = "284:35.1", \
-                gha_time_1           = "299:35.0", \
-                decl_time_0          = "23:26.2", \
-                measured_alt         = "38:34:21.6" \
+    s2 = Sight (  object_name          = "Sun",
+                set_time             = "2024-06-20 07:13:38+00:00",
+                gha_time_0           = "284:35.1",
+                gha_time_1           = "299:35.0",
+                decl_time_0          = "23:26.2",
+                measured_alt         = "38:34:21.6",
+                geodetic_alt         =False
                 )
 
     # We reach s2 by applying about 175 degrees with a speed of 20 knots.

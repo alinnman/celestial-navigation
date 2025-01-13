@@ -408,6 +408,9 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         c2_vec_n = mult_scalar_vect (-1, c1_vec_n)
         c1_latlon = to_latlon (c1_vec_n)
         c2_latlon = to_latlon (c2_vec_n)
+        #if return_geodetic:
+        #    c1_latlon = LatLonGeodetic (ll = c1_latlon)
+        #    c2_latlon = LatLonGeodetic (ll = c2_latlon)
         ret_tuple = (c1_latlon, c2_latlon)
         diag_output = ""
         if diagnostics:
@@ -592,6 +595,9 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 
     int1_latlon = to_latlon (int1)
     int2_latlon = to_latlon (int2)
+    #if return_geodetic: # TODO Review
+    #    int1_latlon = LatLonGeodetic (ll = int1_latlon)
+    #    int2_latlon = LatLonGeodetic (ll = int2_latlon)
     if diagnostics:
         diag_output += "* Converting the intersections to LatLon\n"
         diag_output += "    * $\\text{int1}$ converts to $("+\
@@ -712,12 +718,16 @@ def get_map_developers_string (r : float, latlon : LatLon) -> str:
     '''
     # Compensate for a bug in mapdevelopers.com. Circles have to be drawn wider
     # Maybe this discrepancy is caused by Earth oblateness corrections....
-    scale_factor = 1.00093
+    # scale_factor = 1.00093
+    scale_factor = 1
+
+    # latlon_2 = LatLonGeodetic (ll=latlon) # TODO Review
+    #scale_factor = 1 # TODO Review
     r = r * scale_factor
     result = "["
     result = result + str (round(r*1000)) + ","
-    result = result + str(round(latlon.lat,4)) + ","
-    result = result + str(round(latlon.lon,4)) + ","
+    result = result + str(round(latlon.lat,6)) + ","
+    result = result + str(round(latlon.lon,6)) + ","
     result = result + "\"#AAAAAA\",\"#000000\",0.4]"
     return result
 
@@ -844,7 +854,8 @@ def get_terrestrial_position (point_a1 : LatLon,
     # Finally compute the intersection.
     # Since we require an estimated position we will eliminate the false intersection.
     intersection, fitness, diag_output =\
-        get_intersections (a, b, estimated_position, diagnostics)
+        get_intersections (a, b, estimated_position=estimated_position,\
+                           diagnostics=diagnostics)
     return intersection, a, b, fitness, diag_output
 #pylint: enable=R0913
 
@@ -931,7 +942,7 @@ def get_vertical_parallax (llg : LatLonGeodetic) -> tuple [float, LatLon]:
     angle    = dot_product (ll_rect, llg_rect)
     return rad_to_deg(acos (angle)), ll
 
-def get_geocentric_alt (estimated_position : LatLonGeodetic, geodesic_alt : float, gp : LatLon) -> float:
+def get_geocentric_alt (position : LatLonGeodetic, geodesic_alt : float, gp : LatLon) -> float:
     ''' Convert an estimated geodetic altitude (observation from sextant) to a geocentric value '''
     #if False:
     #    parallax, ll = get_vertical_parallax (estimated_position)
@@ -942,11 +953,18 @@ def get_geocentric_alt (estimated_position : LatLonGeodetic, geodesic_alt : floa
     #    rotated = normalize_vect(rotate_vector (gp_rect, rot_vec, deg_to_rad(parallax)))
     #    dot_p = dot_product (rotated, ll_rect)
     #    return rad_to_deg((pi/2) - acos(dot_p))
-    ang_1 = (pi/2) - acos(dot_product (to_rectangular(estimated_position), to_rectangular(gp)))
-    epgc = estimated_position.get_latlon()
-    ang_2 = (pi/2) - acos(dot_product (to_rectangular(epgc),               to_rectangular(gp)))
+    ang_1 = (pi/2) - acos(dot_product (to_rectangular(position), to_rectangular(gp)))
+    epgc = position.get_latlon()
+    ang_2 = (pi/2) - acos(dot_product (to_rectangular(epgc),     to_rectangular(gp)))
     diff = rad_to_deg(ang_2 - ang_1)
     return geodesic_alt + diff
+
+def get_geodetic_alt (position : LatLon, geocentric_alt : float, gp : LatLon) -> float:
+    ang_1 = (pi/2) - acos(dot_product (to_rectangular(position), to_rectangular(gp)))
+    epgc = LatLonGeodetic(ll = position)
+    ang_2 = (pi/2) - acos(dot_product (to_rectangular(epgc),     to_rectangular(gp)))
+    diff = rad_to_deg(ang_2 - ang_1)
+    return geocentric_alt + diff
 
 # Celestial Navigation
 
@@ -963,7 +981,8 @@ class Sight :
                   gha_time_1               : str,
                   decl_time_0              : str,
                   measured_alt             : str,
-                  estimated_position       : LatLonGeodetic | NoneType = None,
+                  # geodetic_alt             : bool,                   
+                  estimated_position       : LatLon,
                   # If estimated_position <> None then measured_alt represents a geodesic reading
                   # TODO Document this in README.md
                   decl_time_1              : NoneType | str = None,
@@ -1027,14 +1046,14 @@ class Sight :
             if not no_dip:
                 self.__correct_dip_of_horizon ()
         self.gp = self.__calculate_gp ()
-        if estimated_position is not None:
-            # We have a geodesic reading and need to adjust it to a geocentric position
-            # TODO
-            print ("The uncorrected altitude is " + str(self.measured_alt))
+        self.estimated_position = estimated_position
+        self.raw_measured_alt = self.measured_alt
+        if isinstance (self.estimated_position, LatLonGeodetic):
+            print ("The geodetic altitude is " + str(self.measured_alt)) # TODO Remove
             self.measured_alt =\
-                  get_geocentric_alt (estimated_position,\
-                                      self.measured_alt, self.gp)
-            print ("The corrected altitude is " + str(self.measured_alt))
+                get_geocentric_alt (self.estimated_position,\
+                                    self.measured_alt, self.gp)
+            print ("The geocentrical altitude is " + str(self.measured_alt)) # TODO Remove
 #pylint: enable=R0912
 #pylint: enable=R0913
 #pylint: enable=R0914
@@ -1082,22 +1101,32 @@ class Sight :
 
         return LatLon (result_lat, result_lon)
 
-    def get_angle (self) -> float:
+    def get_angle (self, geodetic : bool) -> float:
         ''' Returns the (Earth-based) angle of the sight '''
-        return 90-self.measured_alt
+        if geodetic:
+            return 90-self.raw_measured_alt
+        else:
+            return 90-self.measured_alt
 
-    def get_radius (self) -> float:
+    def get_radius (self, geodetic : bool) -> float:
         ''' Returns the radius of the sight (in kilometers) '''
-        return (self.get_angle()/360)*EARTH_CIRCUMFERENCE
+        # TODO This function needs to be smarter regarding earth circumference for geodetic input
+        return (self.get_angle(geodetic = geodetic)/360)*EARTH_CIRCUMFERENCE
 
-    def get_circle (self) -> Circle:
+    def get_circle (self, geodetic : bool) -> Circle:
         ''' Return a circle object corresponding to this Sight '''
-        return Circle (self.gp, self.get_angle())
+ 
+        if geodetic:
+            gp_x = LatLonGeodetic (ll = self.gp)
+        else:
+            gp_x = self.gp
+        # TODO The Circle class should use a meter based radius, instead of an angle
+        return Circle (gp_x, self.get_angle(geodetic=geodetic))
 
-    def get_distance_from (self, p : LatLon) -> float:
+    def get_distance_from (self, p : LatLon, geodetic : bool) -> float:
         ''' Return the distance from point (p) to the sight circle of equal altitude '''
         p_distance = distance_between_points (p, self.gp)
-        the_radius = self.get_radius ()
+        the_radius = self.get_radius (geodetic=geodetic)
         return p_distance - the_radius
 
     def get_azimuth (self, from_pos : LatLon) -> float:
@@ -1105,11 +1134,12 @@ class Sight :
             Returns the azimuth in degrees (0-360)'''
         return get_azimuth (self.gp, from_pos)
 
-    def get_map_developers_string (self, include_url_start : bool) -> str:
+    def get_map_developers_string (self, include_url_start : bool, geodetic : bool) -> str:
         '''
         Return URL segment for https://mapdevelopers.com circle plotting service
         '''
-        result = self.get_circle().get_map_developers_string(include_url_start = include_url_start)
+        result = self.get_circle(geodetic).get_map_developers_string\
+            (include_url_start = include_url_start)
         return result
 #pylint: enable=R0902
 
@@ -1126,11 +1156,14 @@ class SightPair:
                            tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Return the two intersections for this sight pair. 
             The parameter estimated_position can be used to eliminate the false intersection '''
-        circle1 = Circle (self.sf1.gp, self.sf1.get_angle())
-        circle2 = Circle (self.sf2.gp, self.sf2.get_angle())
+ 
+        circle1 = self.sf1.get_circle (geodetic = False)
+        circle2 = self.sf2.get_circle (geodetic = False)
         return get_intersections (circle1, circle2,
-                                  estimated_position, diagnostics = diagnostics,
-                                  intersection_number = intersection_number)
+                                estimated_position=estimated_position,\
+                                diagnostics = diagnostics,
+                                intersection_number = intersection_number)
+
 #pylint: enable=R0903
 
 class SightCollection:
@@ -1145,23 +1178,39 @@ class SightCollection:
 #pylint: disable=R0914
 #pylint: disable=R0915
     def get_intersections\
-        (self, limit : int | float = 100,
+        (self, return_geodetic : bool, limit : int | float = 100,
           estimated_position : NoneType | LatLon = None,
           diagnostics : bool = False) \
             -> tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Get an intersection from the collection of sights. 
             A mean value and sorting algorithm is applied. '''
+        print ("KALLE ANKA ANKA") # TODO Remove
         diag_output = ""
         nr_of_fixes = len(self.sf_list)
         assert nr_of_fixes >= 2
         if nr_of_fixes == 2:
             # For two star fixes just use the algorithm of SightPair.getIntersections
-            return SightPair (self.sf_list[0],\
+            print ("MUSSE PIGG = " + str(return_geodetic)) # TODO Remove
+            intersections, fitness, diag_output =\
+                   SightPair (self.sf_list[0],\
                               self.sf_list[1]).get_intersections\
-                                         (estimated_position, diagnostics = diagnostics)
+                                         (estimated_position=estimated_position,\
+                                          diagnostics = diagnostics) # TODO Review
+            #print ("BALOO " + str(type(intersections))) # TODO Remove
+            #assert isinstance (intersections, tuple)
+            if return_geodetic:
+                if isinstance (intersections, tuple):
+                    ret_intersections = LatLonGeodetic (ll=intersections[0]),\
+                                        LatLonGeodetic (ll=intersections[1])
+                else:
+                    ret_intersections = LatLonGeodetic (ll=intersections)
+            else:
+                ret_intersections = intersections
+            return ret_intersections, fitness, diag_output
         #elif nr_of_fixes >= 3:
         # For >= 3 star fixes perform pairwise calculation on every pair of fixes
         # and then run a sorting algorithm
+        print ("KAJSA ANKA ANKA") # TODO Remove
         coords = list[tuple[LatLon, float]]()
         # Perform pairwise sight reductions
         intersection_count = 0
@@ -1170,8 +1219,9 @@ class SightCollection:
                 p = SightPair (self.sf_list [i], self.sf_list [j])
                 intersection_count += 1
                 p_int, fitness, dia =\
-                    p.get_intersections (estimated_position, diagnostics = diagnostics,\
-                                            intersection_number = intersection_count)
+                    p.get_intersections (estimated_position=estimated_position,\
+                                         diagnostics = diagnostics,\
+                                         intersection_number = intersection_count)
                 diag_output += dia
                 if p_int is not None:
                     if isinstance (p_int, (list, tuple)):
@@ -1267,12 +1317,15 @@ class SightCollection:
         fitness_sum = 0
         for cp in chosen_points:
             selected_coord = coords [cp][0]
-            do_geodetic = True # TODO Review
-            if do_geodetic:
+            #do_geodetic = return_geodetic #TODO Review
+            if return_geodetic:
                 selected_coord_x = LatLonGeodetic (ll = selected_coord)
+                print ("Chosen intersection = " +\
+                        get_google_map_string(selected_coord_x,4)) # TODO Remove
             else:
+                print ("NOT doing geodetic!") # TODO Remove
                 selected_coord_x = selected_coord
-            fitness_here   = (coords [cp][1])**3
+            fitness_here = coords [cp][1]**3 # TODO Review
             fitness_sum += fitness_here
             rect_vec = to_rectangular (selected_coord_x)
             summation_vec =\
@@ -1284,13 +1337,14 @@ class SightCollection:
 #pylint: enable=R0914
 #pylint: enable=R0915
 
-    def get_map_developers_string (self, markers : list[LatLon] | NoneType = None) -> str:
+    def get_map_developers_string \
+        (self, geodetic : bool, markers : list[LatLonGeodetic] | NoneType = None) -> str:
         '''
         Return URL for https://mapdevelopers.com circle plotting service
         '''
         c_l = list [Circle] ()
         for s in self.sf_list:
-            c_l.append (s.get_circle())
+            c_l.append (s.get_circle(geodetic = geodetic))
         if isinstance (markers, list):
             for m in markers:
                 c_l.append (Circle (m, 1/60))
@@ -1334,7 +1388,7 @@ class SightTrip:
         taken_out = takeout_course (rotated_latlon, self.course_degrees,\
                                    self.speed_knots, self.time_hours)
 
-        dbp = distance_between_points (taken_out, self.sight_end.gp) - self.sight_end.get_radius()
+        dbp = distance_between_points (taken_out, self.sight_end.gp) - self.sight_end.get_radius(geodetic=False)
         return dbp, taken_out, rotated_latlon
 
 #pylint: disable=R0914
@@ -1347,7 +1401,8 @@ class SightTrip:
             # Calculate intersections
             pair = SightPair (self.sight_start, self.sight_end)
             best_intersection, fitness, diag_output = pair.get_intersections\
-                (estimated_position = self.estimated_starting_point, diagnostics = diagnostics)
+                (estimated_position = self.estimated_starting_point,\
+                 diagnostics = diagnostics)
             # Determine angle of the intersection point on sight_start small circle
             a_vec = to_rectangular (self.sight_start.gp)
             assert isinstance (best_intersection, LatLon)
@@ -1384,7 +1439,7 @@ class SightTrip:
         taken_out = takeout_course (self.estimated_starting_point,\
                                     self.course_degrees,\
                                     self.speed_knots, self.time_hours)
-        circle1 = Circle (self.sight_end.gp, self.sight_end.get_angle())
+        circle1 = Circle (self.sight_end.gp, self.sight_end.get_angle(geodetic = False))
         circle2 = get_great_circle_route (taken_out, self.sight_end.gp)
         assert isinstance (circle2, Circle)
         self.movement_vec = circle2.latlon
@@ -1396,20 +1451,24 @@ class SightTrip:
         return gi, fitness, diag
 #pylint: enable=R0914
 
-    def get_map_developers_string (self) -> str:
+    def get_map_developers_string (self, geodetic : bool) -> str:
         '''
         Return URL for https://mapdevelopers.com circle plotting service
         '''
         if isinstance (self.sight_start, Sight):
             s_c = SightCollection ([self.sight_start, self.sight_end])
             if isinstance (self.start_pos, LatLon) and isinstance (self.end_pos, LatLon):
-                return s_c.get_map_developers_string ([self.start_pos, self.end_pos])
+                return s_c.get_map_developers_string\
+                       (geodetic = geodetic, \
+                        markers = \
+                        [LatLonGeodetic(ll = self.start_pos), \
+                         LatLonGeodetic(ll = self.end_pos)])
             else:
-                return s_c.get_map_developers_string ()
+                return s_c.get_map_developers_string (geodetic=geodetic)
 
         # isinstance (self.sight_start, LatLon) == True
         assert isinstance (self.movement_vec, LatLon)
-        str1 = self.sight_end.get_map_developers_string (include_url_start=False)
+        str1 = self.sight_end.get_map_developers_string (include_url_start=False, geodetic = True)
         str2 = get_map_developers_string (EARTH_CIRCUMFERENCE/4, self.movement_vec)
         url_start = MAP_DEV_URL
         result = "["
