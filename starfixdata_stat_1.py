@@ -71,7 +71,6 @@ def main ():
     endtime = time ()
     taken_ms = round((endtime-starttime)*1000,3)
     print (get_representation(intersections,1))
-    print (type(intersections)) # TODO Remove
     assert isinstance (intersections, LatLon)
     print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
     print ("GM = " + get_google_map_string(intersections,4))
