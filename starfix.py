@@ -975,7 +975,7 @@ def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
     lat1  = deg_to_rad(pt1.lat)
     long1 = deg_to_rad(pt1.lon)
     lat2  = deg_to_rad(pt2.lat)
-    long2 = deg_to_rad(pt2.lon)    
+    long2 = deg_to_rad(pt2.lon)
 
     phi1, phi2 = lat1, lat2
     U1 = atan2((1-f)*tan(phi1),1)
@@ -991,7 +991,7 @@ def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
         t += (cos(U1)*sin(U2) - sin(U1)*cos(U2)*cos(lambda_old))**2
         sin_sigma = t**0.5
         cos_sigma = sin(U1)*sin(U2) + cos(U1)*cos(U2)*cos(lambda_old)
-        sigma = atan2(sin_sigma, cos_sigma) 
+        sigma = atan2(sin_sigma, cos_sigma)
 
         sin_alpha = cos(U1)*cos(U2)*sin(lambda_old) / sin_sigma
         cos_sq_alpha = 1 - sin_alpha**2
@@ -1434,7 +1434,8 @@ class SightTrip:
                                    self.speed_knots, self.time_hours)
 
         dbp = spherical_distance\
-              (taken_out, self.sight_end.gp) - self.sight_end.get_circle(geodetic=False).get_radius()
+              (taken_out, self.sight_end.gp)\
+                  - self.sight_end.get_circle(geodetic=False).get_radius()
         return dbp, taken_out, rotated_latlon
 
 #pylint: disable=R0914

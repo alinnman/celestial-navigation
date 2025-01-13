@@ -6,7 +6,7 @@
 from datetime import datetime
 from time import time
 from starfix import Sight, SightTrip, get_representation,\
-     LatLon, IntersectError, km_to_nm
+     LatLon, IntersectError
 
 def main ():
     ''' Main body of script '''

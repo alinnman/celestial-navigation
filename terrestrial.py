@@ -25,7 +25,7 @@ def main ():
 
     p, c1, c2, _, _  =\
       get_terrestrial_position (p3, p2, angle_1, p2, p1, angle_2)
-    endtime = time ()    
+    endtime = time ()
     assert isinstance (p, tuple)
     print ("Your location 1 = " + get_google_map_string(p[0],4))
     print ("Your location 2 = " + get_google_map_string(p[1],4))

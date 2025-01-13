@@ -17,7 +17,7 @@ def main ():
 
     # Our starfix data
 
-    THE_POS = LatLonGeodetic (37, 10)
+    the_pos = LatLonGeodetic (37, 10)
 
     a = Sight (   object_name          = "Capella",
                 set_time             = "2024-09-17 23:36:13+00:00",
@@ -26,7 +26,7 @@ def main ():
                 decl_time_0          = "46 :1.2",
                 sha_diff             = "280:22.3",
                 measured_alt         = "33 :9    :34",
-                estimated_position   = THE_POS
+                estimated_position   = the_pos
                 )
 
     b = Sight (   object_name          = "Moon",
@@ -37,7 +37,7 @@ def main ():
                 decl_time_1          = "-3 :25.3",
                 horizontal_parallax  = 61.2,
                 measured_alt         = "48 :22  :5.2",
-                estimated_position   = THE_POS
+                estimated_position   = the_pos
                 )
 
     c = Sight (   object_name          = "Vega",
@@ -47,7 +47,7 @@ def main ():
                 decl_time_0          = "38 :48.6",
                 sha_diff             = "80 :33.3",
                 measured_alt         = "25 :39:4",
-                estimated_position   = THE_POS
+                estimated_position   = the_pos
                 )
 
     collection = SightCollection ([a,b,c])
