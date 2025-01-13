@@ -5,7 +5,7 @@
 
 from time import time
 from starfix import Sight, SightTrip, get_representation, get_google_map_string,\
-     LatLon, IntersectError, distance_between_points, km_to_nm
+     LatLon, IntersectError, km_to_nm
 
 def main ():
     ''' Main body of script '''
@@ -25,7 +25,7 @@ def main ():
                 gha_time_1           = "284:35.1",
                 decl_time_0          = "23:26.2",
                 measured_alt         = "30:51:27.1",
-                geodetic_alt         = False
+                estimated_position   =  s1_latlon
                 )
 
 
@@ -39,7 +39,7 @@ def main ():
                 gha_time_1           = "299:35.0",
                 decl_time_0          = "23:26.2",
                 measured_alt         = "38:34:21.6",
-                geodetic_alt         =False
+                estimated_position   = s1_latlon
                 )
 
     # We reach s2 by applying about 175 degrees with a speed of 20 knots.
@@ -55,26 +55,26 @@ def main ():
         intersections, _, _ = st.get_intersections ()
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
-        print ("Check the circles! " + st.get_map_developers_string())
+        print ("Check the circles! " + st.get_map_developers_string(geodetic=False))
         exit ()
 
     endtime = time ()
     taken_ms = round((endtime-starttime)*1000,2)
 
-    print ("MD = " + st.get_map_developers_string ())
+    print ("MD = " + st.get_map_developers_string (geodetic=False))
     assert isinstance (intersections, tuple)
     print ("Starting point = " + str(get_representation(intersections[1],1)))
     print ("End point = " + str(get_representation(intersections[0],1)))
-    print ("Distance = " +\
-           str(round(km_to_nm(distance_between_points(intersections[0], intersections[1])),2)) +\
-              " nm")    
+    #print ("Distance = " +\
+    #       str(round(km_to_nm(distance_between_points(intersections[0], intersections[1])),2)) +\
+    #          " nm")    
 
     # Diagnostics for map rendering etc.
 
-    print ("S1 radius = " + str(round(s1.get_radius (),1)))
+    print ("S1 radius = " + str(round(s1.get_circle(geodetic=False).get_radius (),1)))
     print ("S1 GP     = " + get_google_map_string(s1.gp,4))
 
-    print ("S2 radius = " + str(round(s2.get_radius (),1)))
+    print ("S2 radius = " + str(round(s2.get_circle(geodetic=False).get_radius (),1)))
     print ("S2 GP     = " + get_google_map_string(s2.gp,4))
 
     print ("Starting point GM = " + get_google_map_string (intersections[1],4))

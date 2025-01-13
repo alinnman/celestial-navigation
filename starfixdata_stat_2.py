@@ -7,7 +7,7 @@
 
 from time import time
 from starfix import Sight, SightCollection, get_representation,\
-                    get_google_map_string, IntersectError, LatLonGeodetic
+                    get_google_map_string, IntersectError, LatLonGeodetic, LatLon
 
 
 def main ():
@@ -60,18 +60,19 @@ def main ():
     endtime = time ()
     taken_ms = round((endtime-starttime)*1000,2)
     print (get_representation(intersections,1))
-    print ("MD = " + collection.get_map_developers_string(geodetic=True))
+    assert isinstance (intersections, LatLon)
+    print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
     print ("GM = " + get_google_map_string(intersections,4))
 
     #Diagnostics for map rendering etc.
     print ("Some useful data follows")
-    print ("A radius = " + str(round(a.get_radius (geodetic=True),1)))
+    print ("A radius = " + str(round(a.get_circle(geodetic=True).get_radius(),1)))
     print ("A GP     = " + get_google_map_string(a.gp,4))
 
-    print ("B radius = " + str(round(b.get_radius (geodetic=True),1)))
+    print ("B radius = " + str(round(b.get_circle(geodetic=True).get_radius(),1)))
     print ("B GP     = " + get_google_map_string(b.gp,4))
 
-    print ("C radius = " + str(round(c.get_radius (geodetic=True),1)))
+    print ("C radius = " + str(round(c.get_circle(geodetic=True).get_radius(),1)))
     print ("C GP     = " + get_google_map_string(c.gp,4))
 
     print ("Time taken = " +str(taken_ms)+" ms")

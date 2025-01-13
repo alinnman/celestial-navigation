@@ -6,7 +6,7 @@
 from time import time
 from starfix import get_terrestrial_position, LatLon,\
       get_google_map_string, deg_to_rad, EARTH_RADIUS,\
-      Circle, CircleCollection
+      Circle, CircleCollection, EARTH_CIRCUMFERENCE
 
 def main ():
     ''' Main body of script '''
@@ -38,11 +38,11 @@ def main ():
     print ("Radius 2 = " + str(deg_to_rad(c2.angle)*EARTH_RADIUS))
 
     # Draw a map
-    circ1 = Circle (p1, 1/120)
-    circ2 = Circle (p2, 1/120)
-    circ3 = Circle (p3, 1/120)
-    circ4 = Circle (c1.latlon, c1.angle)
-    circ5 = Circle (c2.latlon, c2.angle)
+    circ1 = Circle (p1, 1/120, circumference=EARTH_CIRCUMFERENCE)
+    circ2 = Circle (p2, 1/120, circumference=EARTH_CIRCUMFERENCE)
+    circ3 = Circle (p3, 1/120, circumference=EARTH_CIRCUMFERENCE)
+    circ4 = Circle (c1.latlon, c1.angle, circumference=EARTH_CIRCUMFERENCE)
+    circ5 = Circle (c2.latlon, c2.angle, circumference=EARTH_CIRCUMFERENCE)
     circ_coll = CircleCollection ([circ1, circ2, circ3, circ4, circ5])
     print ("MD = " + circ_coll.get_map_developers_string())
 

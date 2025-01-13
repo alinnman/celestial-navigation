@@ -6,7 +6,7 @@
 from time import time
 from starfix import LatLon, get_representation,\
                     get_great_circle_route, Circle, CircleCollection, get_intersections,\
-                    get_line_of_sight, nm_to_km, km_to_nm
+                    get_line_of_sight, nm_to_km, km_to_nm, EARTH_CIRCUMFERENCE
 def main ():
     ''' Main body of script '''
 
@@ -34,7 +34,8 @@ def main ():
     actual_line_of_sight = min (line_of_sight, light_house_max_visibility_m)
     actual_line_of_sight_nm = km_to_nm (actual_line_of_sight/1000)
 
-    light_house_circle = Circle (light_house, actual_line_of_sight_nm/60)
+    light_house_circle = Circle\
+          (light_house, actual_line_of_sight_nm/60, circumference=EARTH_CIRCUMFERENCE)
 
     # Get the intersections
     intersections = get_intersections (course_gc, light_house_circle)
@@ -43,7 +44,8 @@ def main ():
     print (get_representation(intersections[0],1))
 
     # Check the circles
-    c_c = CircleCollection ([course_gc, light_house_circle, Circle(s1, 1/60)])
+    c_c = CircleCollection ([course_gc, light_house_circle,\
+                              Circle(s1, 1/60, circumference=EARTH_CIRCUMFERENCE)])
     print ("MD = " + c_c.get_map_developers_string())
 
     taken_ms = round((endtime-starttime)*1000,2)

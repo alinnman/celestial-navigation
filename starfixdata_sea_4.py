@@ -5,7 +5,8 @@
 
 from time import time
 from starfix import LatLon, get_representation,\
-                    get_great_circle_route, Circle, CircleCollection, get_intersections
+                    get_great_circle_route, Circle, CircleCollection, get_intersections,\
+                    EARTH_CIRCUMFERENCE
 def main ():
     ''' Main body of script '''
 
@@ -30,8 +31,8 @@ def main ():
     assert isinstance (intersections[0], tuple)
     print (get_representation(intersections[0],1))
 
-    intersection1 = Circle (intersections[0][0],1/60)
-    start         = Circle (s1, 1/60)
+    intersection1 = Circle (intersections[0][0],1/60,circumference=EARTH_CIRCUMFERENCE)
+    start         = Circle (s1, 1/60,                circumference=EARTH_CIRCUMFERENCE)
 
     # Check the circles
     c_c = CircleCollection ([course_gc, light_house_gc, intersection1, start])
