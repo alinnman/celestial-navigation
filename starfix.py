@@ -395,6 +395,10 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         diagnostics : Set to True if diagnostics is required. 
                       Diagnostics is returned as the third item in return value tuple. 
         intersection_number : Used for diagnostics to label output. 
+
+    This algorithm seems to work very well for geocentric data, but not for 
+    geodetic (ellipsoidal) data. A general design decision is to make all intersection
+    work in the geocentrical system, and convert/transform to/from geodetical when needed. 
     '''
     assert circle1.angle >= 0 and circle2.angle >= 0
 
@@ -1032,9 +1036,7 @@ class Sight :
                   gha_time_1               : str,
                   decl_time_0              : str,
                   measured_alt             : str,
-                  estimated_position       : LatLon,
-                  # If estimated_position <> None then measured_alt represents a geodesic reading
-                  # TODO Document this in README.md
+                  estimated_position       : LatLonGeodetic,
                   decl_time_1              : NoneType | str = None,
                   sha_diff                 : NoneType | str = None,
                   observer_height          : int | float = 0,
@@ -1102,6 +1104,14 @@ class Sight :
             self.measured_alt =\
                 get_geocentric_alt (self.estimated_position,\
                                     self.measured_alt, self.gp)
+        # At this point the altitude values are saved
+        # self.measured_alt     = A corrected *geocentrical* altitude
+        #      This value is used for all intersection work
+        # self.raw_measured_alt = A corrected *geodetical* altitude
+        #      This value is used for all mapping work
+        # self.gp               = The geographical point in *geocentrical* system
+        #      The gp must be converted to geodetical wherever needed.
+
 #pylint: enable=R0912
 #pylint: enable=R0913
 #pylint: enable=R0914
@@ -1167,8 +1177,19 @@ class Sight :
         if geodetic:
             gp_x = LatLonGeodetic (ll = self.gp)
             circumference = EARTH_CIRCUMFERENCE
-            # TODO Consider adding code here to modify the circumference....
+            # The code below is EXPERIMENTAL
+            # Currently used only for mapping
+            if viewpoint is not None:
+                vp_rect = to_rectangular (viewpoint)
+                gp_rect = to_rectangular (gp_x)
+                cp = cross_product (vp_rect, gp_rect)
+                north_pole = [0.0, 0.0, 1.0]
+                dp = dot_product (cp, north_pole)
+                circumference =\
+                      EARTH_CIRCUMFERENCE_MERIDIONAL +\
+                      (EARTH_CIRCUMFERENCE_EQUATORIAL - EARTH_CIRCUMFERENCE_MERIDIONAL)*dp
         else:
+            # Geocentrical circle
             gp_x = self.gp
             circumference = EARTH_CIRCUMFERENCE
         return Circle (gp_x, self.get_angle(geodetic=geodetic,viewpoint=viewpoint),\
@@ -1354,12 +1375,6 @@ class SightCollection:
                             ("Cannot sort multiple intersections to find"+\
                                 "a reasonable set of coordinates")
 
-        # Now make a conversion of all coords to geodetic
-        #for cp in chosen_points:
-        #    selected_coord = coords [cp][0]
-        #    print (selected_coord)
-        #    coords [cp][0] = LatLonGeodetic (ll = selected_coord)
-
         summation_vec = [0.0,0.0,0.0]
         # Make a mean value on the best intersections.
         fitness_sum = 0
@@ -1532,3 +1547,6 @@ class SightTrip:
         result += "]"
         result = quote_plus (result)
         return url_start + result
+
+#TODO Make a general review of parameters to sight reduction functions. Introduce defaults
+#and simplify.

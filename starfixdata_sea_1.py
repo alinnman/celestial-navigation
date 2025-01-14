@@ -5,7 +5,7 @@
 
 from time import time
 from starfix import Sight, SightTrip, get_representation, get_google_map_string,\
-     LatLon, IntersectError
+     LatLonGeodetic, IntersectError
 
 def main ():
     ''' Main body of script '''
@@ -15,7 +15,7 @@ def main ():
     # We are sailing from point s1 to point s2, in the Baltic Sea.
     # We have a rough estimate of an initial position of 59N;18E to start with
     # This estimate is used for selecting the correct intersection point on Earth.
-    s1_latlon = LatLon (59, 18)
+    s1_latlon = LatLonGeodetic (59, 18)
 
     #This is the star fix for s1, the starting point
 

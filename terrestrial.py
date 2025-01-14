@@ -4,7 +4,7 @@
 
 '''
 from time import time
-from starfix import get_terrestrial_position, LatLon,\
+from starfix import get_terrestrial_position, LatLonGeodetic,\
       get_google_map_string, deg_to_rad, EARTH_RADIUS,\
       Circle, CircleCollection, EARTH_CIRCUMFERENCE
 
@@ -16,9 +16,9 @@ def main ():
     # Simple sample of terrestrial navigation on three lighthouses.
 
     # Our three lighthouses
-    p1 = LatLon (58.739439, 17.865486)
-    p2 = LatLon (58.594091, 17.467489)
-    p3 = LatLon (58.60355, 17.316041)
+    p1 = LatLonGeodetic (58.739439, 17.865486)
+    p2 = LatLonGeodetic (58.594091, 17.467489)
+    p3 = LatLonGeodetic (58.60355, 17.316041)
 
     angle_1 = 20
     angle_2 = 45

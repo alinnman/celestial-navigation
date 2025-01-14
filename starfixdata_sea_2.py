@@ -6,7 +6,7 @@
 from datetime import datetime
 from time import time
 from starfix import Sight, SightTrip, get_representation,\
-     LatLon, IntersectError
+     LatLon, LatLonGeodetic, IntersectError
 
 def main ():
     ''' Main body of script '''
@@ -15,7 +15,7 @@ def main ():
 
     # We are sailing from point s1 to point s2, in the Baltic Sea.
     # We have a good estimate of an initial position. (A previous fix)
-    s1_latlon = LatLon (58.23,17.91)
+    s1_latlon = LatLonGeodetic (58.23,17.91)
 
     #This is the starting time
 

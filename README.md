@@ -21,6 +21,7 @@ You need a Google/Gmail account to run the code in the notebook*.
     1. [Dip of Horizon](#dip-of-horizon)
     1. [Ignored Corrections](#ignored-corrections)
 1. [Sight Reduction (Stationary observer)](#sight-reduction)
+    1. [Short note Earth oblateness](#ellipsoid)
     1. [Using two sights](#using-two-sights)
     1. [Using three or more sights](#using-three-or-more-sights)
     1. [Running the chicago script](#run-chicago-script)
@@ -198,14 +199,27 @@ corrections are eliminated.
 
 * Refraction correction is simple (see above), but probably good enough for
 basic celestial navigation.
-* Earth oblateness is ignored.
 
 Future implementations may contain more precise corrections though.
 See [more about future plans](CONTRIBUTING.md).
 
 ## 3. Sight reduction (Stationary observer)<a name="sight-reduction"></a>
 
-### 3.i. Using two sights<a name="using-two-sights"></a>
+### 3.i. Short note Earth oblateness<a name="ellipsoid"></a>
+
+The code contains corrections for Earth oblateness, and intersection work uses
+algorithms adpoted to the WGS-84 ellipsoid.
+These adjustments are not described here.
+The following description only concerns calculations related to a
+perfect sphere.
+See code for how adjustments and corrections are made to take
+real-world Earth oblateness into account.
+
+The current implementation seems to work well for deducing intersections and
+sight reduction, but currently the mapping features
+(using the MapDevelopers service) are not yet fully accurate.
+
+### 3.ii. Using two sights<a name="using-two-sights"></a>
 
 Using two star fixes a sight reduction can be done in the following way:
 
@@ -379,7 +393,7 @@ The fitness factor $\phi_{\text{gc}}$ is computed using angles and we get
 $\phi_{\text{gc}} = \left|\left| a \times b \right|\right| =
 \left|\left| b \times a\right|\right| $
 
-### 3.ii. Using three or more sights<a name="using-three-or-more-sights"></a>
+### 3.iii. Using three or more sights<a name="using-three-or-more-sights"></a>
 
 Using three (or more) sights a sight reduction can be done in the following way
 
@@ -418,7 +432,7 @@ $\left|S_p\right| = \frac{n^2 + n}{2} $
 
 For each sight pair we now collect the two corresponding intersection points
 ($L$ = left, $R$ = right) using the algorithm described
-[above](#3i-using-two-sights).
+[above](using-two-sights).
 
 $S_{p,i,j} \to \lbrace I_{p,i,j,L},I_{p,i,j,R} \rbrace$
 
@@ -457,7 +471,7 @@ giving priority (weighting) for intersections with a larger angle.
 The final result will be a **single** mean value of the
 extracted intersection points.
 
-### 3.iii. Running the Chicago script<a name="run-chicago-script"></a>
+### 3.iv. Running the Chicago script<a name="run-chicago-script"></a>
 
 This picture shows the small circles defined in the
 [starfixdata_stat_1.py](starfixdata_stat_1.py) sample
@@ -489,12 +503,12 @@ You may also use the supplied Jupyter Notebook scripts
 [notebook_stat_1.ipynb](notebook_stat_1.ipynb) and
 [notebook_stat_2.ipynb](notebook_stat_2.ipynb).
 
-### 3.iv. Azimuth Calculation<a name="azimuth"></a>
+### 3.v. Azimuth Calculation<a name="azimuth"></a>
 
 The azimuth (compass angle) to a celestial object is normally **not** used as
 an input parameter to celestial navigation. But it is an important piece of
 information since it can be used to select the correct intersection from a sight
-pair (see [above](#3i-using-two-sights))
+pair (see [above](using-two-sights))
 or for just double-checking a sight reduction.
 
 The azimuth of an observed celestial object is computed using this algorithm.
