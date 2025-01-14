@@ -42,8 +42,7 @@ b = Sight (   object_name          = "Sun",
               gha_time_1           = "14:6.6",
               decl_time_0          = "23:11.1",
               decl_time_1          = "23:10.8",
-              measured_alt         = "49:18",
-              estimated_position   = THE_POS
+              measured_alt         = "49:18"
               )
 
 c = Sight (   object_name          = "Sun",
@@ -52,8 +51,7 @@ c = Sight (   object_name          = "Sun",
               gha_time_1           = "59:5.6",
               decl_time_0          = "23:10.5",
               decl_time_1          = "23:10.4",
-              measured_alt         = "29:20",
-              estimated_position   = THE_POS
+              measured_alt         = "29:20"
               )
 
 

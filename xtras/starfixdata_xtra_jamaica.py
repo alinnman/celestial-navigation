@@ -61,8 +61,7 @@ b = Sight (   object_name          = "Jupiter",
               index_error_minutes  = -5.4,
               no_dip               = True,
               temperature          = TEMPERATURE,
-              pressure             = 101.2,
-              estimated_position   = THE_POS
+              pressure             = 101.2
               )
 
 c = Sight (   object_name          = "Rigel",
@@ -75,8 +74,7 @@ c = Sight (   object_name          = "Rigel",
               observer_height      = HEIGHT_IN_FEET * METER_PER_FEET,
               sextant              = mySextant,
               temperature          = TEMPERATURE,
-              pressure             = 101.2,
-              estimated_position   = THE_POS
+              pressure             = 101.2
               )
 
 d = Sight (   object_name          = "Achernar",
@@ -89,8 +87,7 @@ d = Sight (   object_name          = "Achernar",
               observer_height      = HEIGHT_IN_FEET * METER_PER_FEET,
               sextant              = mySextant,
               temperature          = TEMPERATURE,
-              pressure             = 101.2,
-              estimated_position   = THE_POS
+              pressure             = 101.2
               )
 
 e = Sight (   object_name          = "Saturn",
@@ -103,8 +100,7 @@ e = Sight (   object_name          = "Saturn",
               observer_height      = HEIGHT_IN_FEET * METER_PER_FEET,
               sextant              = mySextant,
               temperature          = TEMPERATURE,
-              pressure             = 101.2,
-              estimated_position   = THE_POS
+              pressure             = 101.2
               )
 
 f = Sight (   object_name          = "Polaris",
@@ -119,8 +115,7 @@ f = Sight (   object_name          = "Polaris",
               index_error_minutes  = -7.1,
               no_dip               = True,
               temperature          = TEMPERATURE,
-              pressure             = 101.2,
-              estimated_position   = THE_POS
+              pressure             = 101.2
               )
 
 

@@ -68,8 +68,7 @@ S2 = Sight (   object_name             = "Sun",
               artificial_horizon       = True,
               index_error_minutes      = 0,
               sextant                  = mySextant,
-              chronometer              = myChronometer,
-              estimated_position       = THE_POS
+              chronometer              = myChronometer
               )
 
 collection = SightCollection ([S1, S2])
@@ -79,7 +78,7 @@ home = LatLon (59.318659676810654, 18.04959717835501)
 
 try:
     intersections, fitness, diag_output =\
-        collection.get_intersections (estimated_position = THE_POS, return_geodetic=True)
+        collection.get_intersections (return_geodetic=True)
 except IntersectError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
     print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
