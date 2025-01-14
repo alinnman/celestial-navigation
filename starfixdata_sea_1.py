@@ -38,8 +38,7 @@ def main ():
                 gha_time_0           = "284:35.1",
                 gha_time_1           = "299:35.0",
                 decl_time_0          = "23:26.2",
-                measured_alt         = "38:34:21.6",
-                estimated_position   = s1_latlon
+                measured_alt         = "38:34:21.6"
                 )
 
     # We reach s2 by applying about 175 degrees with a speed of 20 knots.

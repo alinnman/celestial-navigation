@@ -20,7 +20,7 @@ except ValueError:
 from starfix import Sight, SightCollection, LatLon, Sextant, Chronometer,\
                     get_decimal_degrees_from_tuple,\
                     get_representation, \
-                    get_google_map_string, distance_between_points,\
+                    get_google_map_string,\
                     IntersectError, LatLonGeodetic
 from calibration import calibrationRealValue, calibrationMeasuredValue
 
@@ -91,17 +91,17 @@ assert isinstance (intersections, LatLon)
 print (get_representation(intersections,1))
 print ("MD = " + collection.get_map_developers_string(geodetic=True))
 print ("GM = " + get_google_map_string(intersections,4))
-print ("Intersection distance from home = " + str(distance_between_points(intersections, home)))
+# print ("Intersection distance from home = " + str(distance_between_points(intersections, home)))
 
 #Diagnostics for map rendering etc.
 print ("Some useful data follows")
 
-print ("S1 radius = " + str(round(S1.get_radius (geodetic=True),1)))
+print ("S1 radius = " + str(round(S1.get_circle(geodetic=True).get_radius (),1)))
 print ("S1 GP     = " + get_google_map_string(S1.gp,4))
 print ("Diff     = " + str(S1.get_distance_from (home, geodetic=True)))
 print ("--")
 
-print ("S2 radius = " + str(round(S2.get_radius (geodetic=True),1)))
+print ("S2 radius = " + str(round(S2.get_circle(geodetic=True).get_radius (),1)))
 print ("S2 GP     = " + get_google_map_string(S2.gp,4))
 print ("Diff     = " + str(S2.get_distance_from (home, geodetic=True)))
 print ("--")

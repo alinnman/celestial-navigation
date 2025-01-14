@@ -121,14 +121,16 @@ In other words: No sextant readings were made and the accuracy is very good.
 (Running this sample will give you an accuracy of just some 100 meters).
 
 <a name="parameters"></a>
-The data is picked from your chronometer (clock),
-sextant and the Nautical Almanac in the following way.
+The data is picked from your chronometer (clock), dead reckoning (navigation),
+weather information, sextant and the Nautical Almanac in the following way.
+
 Arguments in *italics* are optional.
 
 | Argument | Description | Remark | Collected From |
 | :------------- | :------------- | :------------- | :------------- |
 | object | Name of celestial object. | Only mnemonic. | N/A |
 | set_time | Time for observation | [Use ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601) | Chronometer |
+| *estimated_position* | An estimation (DR) of the current position. Used for getting better precision regarding oblateness (ellipsoid) calculations and for better elimination of false intersections. NOTE: This position will be re-used for all subsequent <tt>Sight</tt> objects if not re-specified. | A <tt>LatLonGeodetic</tt>. Default = <tt>None</tt> | Dead reckoning / Navigation |
 | gha_time_0   | GHA reading for this hour. | String with format "DD:MM:SS". For stars use GHA of Aries. | Nautical Almanac |
 | gha_time_1   | GHA reading for next hour. | String with format "DD:MM:SS". For stars use GHA of Aries. | Nautical Almanac |
 | decl_time_0  | Declination reading for this hour. | String with format "DD:MM:SS".|  Nautical Almanac |
@@ -138,14 +140,15 @@ Arguments in *italics* are optional.
 | *horizontal_parallax* | Correction for horizontal parallax.  | Used for the Moon. *HP* value. Default = 0. | Nautical Almanac |
 | measured_alt | Altitude of object in degrees. | String with format "DD:MM:SS". | Sextant |
 | *index_error_minutes*    | Specify known index error of sextant. | Default = 0. | Sextant |
-| *artficial_horizon*    | Indicates if you use an artificial horizon. True or False. | All sextant readings will be divided by 2. Default = False.          | N/A |
+| *artficial_horizon*    | Indicates if you use an artificial horizon. True or False. | All sextant readings will be divided by 2. Default = <tt>False</tt>.          | N/A |
+| *no_dip* | Use this to eliminate dip of horizon calculation. <tt>True</tt> or <tt>False</tt> | Default = <tt>False</tt> | N/A |
 | *observer_height*    | Height of observer above sea level or ground in meters (>= 0). | Only relevant for observations using natural horizon. Default = 0.          | Height Measurement |
-| *sextant*            | An object defining a specific used sextant.        | See [this code sample](xtras/starfixdata_xtra_home.py) for details. Default = None.       | Sextant Calibration |
-| *chronometer*            | An object defining a specific used chronometer.        | See [this code sample](xtras/starfixdata_xtra_home.py) for details. Default = None.       | Chronometer Calibration |
+| *sextant*            | An object defining a specific used sextant.        | See [this code sample](xtras/starfixdata_xtra_home.py) for details. Default = <tt>None</tt>.       | Sextant Calibration |
+| *chronometer*            | An object defining a specific used chronometer.        | See [this code sample](xtras/starfixdata_xtra_home.py) for details. Default = <tt>None</tt>.       | Chronometer Calibration |
 | *temperature*            | Measured temperature at observing point. (degrees celsius)        |  Default = 10    | Observations or meteorology information |
 | *dt_dh* | Temperature gradient (degrees celsius / meter) | default = -0.01 | Observations or meteorology information |
 | *pressure* | Measured pressure at observing point. (kPa) | Default = 101 | Observations or meteorology information |
-| *ho_obs* | Set to True if dip and refraction corrections should be omitted | Default = False | N/A |
+| *ho_obs* | Set to True if dip and refraction corrections should be omitted | Default = <tt>False</tt> | N/A |
 
 ### 2.i. Atmospheric refraction<a name="atmospheric-refraction"></a>
 

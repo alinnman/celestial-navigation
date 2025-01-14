@@ -1026,6 +1026,8 @@ def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
 #pylint: disable=R0902
 class Sight :
     '''  Object representing a sight (star fix) '''
+
+    estimated_position_hold = None
 #pylint: disable=R0912
 #pylint: disable=R0913
 #pylint: disable=R0914
@@ -1036,7 +1038,7 @@ class Sight :
                   gha_time_1               : str,
                   decl_time_0              : str,
                   measured_alt             : str,
-                  estimated_position       : LatLonGeodetic,
+                  estimated_position       : LatLonGeodetic | NoneType = None,
                   decl_time_1              : NoneType | str = None,
                   sha_diff                 : NoneType | str = None,
                   observer_height          : int | float = 0,
@@ -1098,6 +1100,8 @@ class Sight :
             if not no_dip:
                 self.__correct_dip_of_horizon ()
         self.gp = self.__calculate_gp ()
+        if estimated_position is None:
+            self.estimated_position = self.estimated_position_hold
         self.estimated_position = estimated_position
         self.raw_measured_alt = self.measured_alt
         if isinstance (self.estimated_position, LatLonGeodetic):
@@ -1115,6 +1119,7 @@ class Sight :
 #pylint: enable=R0912
 #pylint: enable=R0913
 #pylint: enable=R0914
+
 
     def __correct_set_time (self, chronometer : Chronometer):
         dt1 = self.set_time_dt
@@ -1258,6 +1263,8 @@ class SightCollection:
             -> tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Get an intersection from the collection of sights. 
             A mean value and sorting algorithm is applied. '''
+        if estimated_position is None:
+            estimated_position = Sight.estimated_position_hold
         diag_output = ""
         nr_of_fixes = len(self.sf_list)
         assert nr_of_fixes >= 2

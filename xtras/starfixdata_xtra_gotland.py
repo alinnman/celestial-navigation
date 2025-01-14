@@ -82,13 +82,13 @@ print ("Azimuth C = " + str(round(az,2)))
 
 #Diagnostics for map rendering etc.
 print ("Some useful data follows")
-print ("A radius = " + str(round(a.get_radius (geodetic=True),1)))
+print ("A radius = " + str(round(a.get_circle(geodetic=True).get_radius (),1)))
 print ("A GP     = " + get_google_map_string(a.gp,4))
 
-print ("B radius = " + str(round(b.get_radius (geodetic=True),1)))
+print ("B radius = " + str(round(b.get_circle(geodetic=True).get_radius (),1)))
 print ("B GP     = " + get_google_map_string(b.gp,4))
 
-print ("C radius = " + str(round(c.get_radius (geodetic=True),1)))
+print ("C radius = " + str(round(c.get_circle(geodetic=True).get_radius (),1)))
 print ("C GP     = " + get_google_map_string(c.gp,4))
 
 print ("Time taken = " +str(takenMs)+" ms")

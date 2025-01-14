@@ -33,7 +33,6 @@ def main ():
                 decl_time_0          = "16:36.2",
                 decl_time_1          = "16:36.9",
                 measured_alt         = "19:28:19",
-                estimated_position   = the_pos
                 )
 
     c = Sight (   object_name          = "Vega",
@@ -43,14 +42,13 @@ def main ():
                 decl_time_0          = "38:48.1",
                 measured_alt         = "30:16:23.7",
                 sha_diff             = "80:33.4",
-                estimated_position   = the_pos
                 )
 
     print ("Two daytime observations of the sun")
     collection = SightCollection ([a, b])
     try:
         intersections, _, _ =\
-              collection.get_intersections (estimated_position=the_pos, return_geodetic=True)
+              collection.get_intersections (return_geodetic=True)
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
         print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
@@ -63,7 +61,7 @@ def main ():
     collection = SightCollection ([a, b, c])
     try:
         intersections, _, _ =\
-              collection.get_intersections (estimated_position=the_pos, return_geodetic=True)
+              collection.get_intersections (return_geodetic=True)
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
         print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))

@@ -53,8 +53,7 @@ b = Sight (   object_name          = "Venus",
               measured_alt         = "25:8.4",
               observer_height      = 2.5,
               temperature          = TEMPERATURE,
-              ho_obs               = True,
-              estimated_position   = THE_POS
+              ho_obs               = True
               )
 
 c = Sight (   object_name          = "Saturn",
@@ -65,8 +64,7 @@ c = Sight (   object_name          = "Saturn",
               measured_alt         = "30:20.2",
               observer_height      = 2.5,
               temperature          = TEMPERATURE,
-              ho_obs               = True,
-              estimated_position   = THE_POS
+              ho_obs               = True
               )
 
 collection = SightCollection ([a, b, c])
@@ -85,13 +83,13 @@ print ("GM = " + get_google_map_string(intersections,4))
 
 #Diagnostics for map rendering etc.
 print ("Some useful data follows")
-print ("A radius = " + str(round(a.get_radius (geodetic=True),1)))
+print ("A radius = " + str(round(a.get_circle(geodetic=True).get_radius(),1)))
 print ("A GP     = " + get_google_map_string(a.gp,4))
 
-print ("B radius = " + str(round(b.get_radius (geodetic=True),1)))
+print ("B radius = " + str(round(b.get_circle(geodetic=True).get_radius(),1)))
 print ("B GP     = " + get_google_map_string(b.gp,4))
 
-print ("C radius = " + str(round(c.get_radius (geodetic=True),1)))
+print ("C radius = " + str(round(c.get_circle(geodetic=True).get_radius(),1)))
 print ("C GP     = " + get_google_map_string(c.gp,4))
 
 print ("Time taken = " +str(takenMs)+" ms")

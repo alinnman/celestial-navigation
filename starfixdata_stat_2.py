@@ -36,8 +36,7 @@ def main ():
                 decl_time_0          = "-3 :43.5",
                 decl_time_1          = "-3 :25.3",
                 horizontal_parallax  = 61.2,
-                measured_alt         = "48 :22  :5.2",
-                estimated_position   = the_pos
+                measured_alt         = "48 :22  :5.2"
                 )
 
     c = Sight (   object_name          = "Vega",
@@ -46,8 +45,7 @@ def main ():
                 gha_time_1           = "357:24.4",
                 decl_time_0          = "38 :48.6",
                 sha_diff             = "80 :33.3",
-                measured_alt         = "25 :39:4",
-                estimated_position   = the_pos
+                measured_alt         = "25 :39:4"
                 )
 
     collection = SightCollection ([a,b,c])
