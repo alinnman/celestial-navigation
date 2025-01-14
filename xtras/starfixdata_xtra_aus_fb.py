@@ -56,7 +56,7 @@ a = Sight (   object_name          = "Acrux",
               gha_time_1           = "160:9.4",
               decl_time_0          = "-63:14.2",
               measured_alt         = "40",
-              sha_diff             = "173:1.1", 
+              sha_diff             = "173:1.1",
               estimated_position   = THE_POS
               )
 
@@ -75,13 +75,14 @@ c = Sight (   object_name          = "Achernar",
               gha_time_1           = "160:9.4",
               decl_time_0          = "-57:6.4",
               measured_alt         = "50",
-              sha_diff             = "335:20" 
+              sha_diff             = "335:20"
               )
 
 
 collection = SightCollection ([a, b, c])
 try:
-    intersections, fitness, diag_output = collection.get_intersections (limit=500, return_geodetic=True)
+    intersections, fitness, diag_output =\
+          collection.get_intersections (limit=500, return_geodetic=True)
 except IntersectError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
     print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))

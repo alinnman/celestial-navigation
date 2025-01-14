@@ -27,7 +27,8 @@ starttime = time ()
 mySextant = Sextant (index_error=0.5)
 
 # Our starfix data
-# Sample found in https://www.facebook.com/groups/148521952310126/permalink/1966017207227249/?rdid=ndpn9CqTjIZ8wsmT&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2Fp%2F1B3UXbuZTS%2F
+# Sample found in
+# https://www.facebook.com/groups/148521952310126/permalink/1966017207227249/?rdid=ndpn9CqTjIZ8wsmT&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2Fp%2F1B3UXbuZTS%2F
 
 METER_PER_FEET = 0.3048
 HEIGHT_IN_FEET = 16

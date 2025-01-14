@@ -1554,6 +1554,3 @@ class SightTrip:
         result += "]"
         result = quote_plus (result)
         return url_start + result
-
-#TODO Make a general review of parameters to sight reduction functions. Introduce defaults
-#and simplify.
