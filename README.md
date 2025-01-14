@@ -21,7 +21,7 @@ You need a Google/Gmail account to run the code in the notebook*.
     1. [Dip of Horizon](#dip-of-horizon)
     1. [Ignored Corrections](#ignored-corrections)
 1. [Sight Reduction (Stationary observer)](#sight-reduction)
-    1. [Short note Earth oblateness](#ellipsoid)
+    1. [Short note on Earth oblateness](#ellipsoid)
     1. [Using two sights](#using-two-sights)
     1. [Using three or more sights](#using-three-or-more-sights)
     1. [Running the chicago script](#run-chicago-script)
@@ -205,10 +205,10 @@ See [more about future plans](CONTRIBUTING.md).
 
 ## 3. Sight reduction (Stationary observer)<a name="sight-reduction"></a>
 
-### 3.i. Short note Earth oblateness<a name="ellipsoid"></a>
+### 3.i. Short note on Earth oblateness<a name="ellipsoid"></a>
 
 The code contains corrections for Earth oblateness, and intersection work uses
-algorithms adpoted to the WGS-84 ellipsoid.
+algorithms adpoted to the [WGS-84 ellipsoid](https://en.m.wikipedia.org/wiki/World_Geodetic_System).
 These adjustments are not described here.
 The following description only concerns calculations related to a
 perfect sphere.
