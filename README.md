@@ -148,7 +148,7 @@ Arguments in *italics* are optional.
 | *temperature*            | Measured temperature at observing point. (degrees celsius)        |  Default = 10    | Observations or meteorology information |
 | *dt_dh* | Temperature gradient (degrees celsius / meter) | default = -0.01 | Observations or meteorology information |
 | *pressure* | Measured pressure at observing point. (kPa) | Default = 101 | Observations or meteorology information |
-| *ho_obs* | Set to True if dip and refraction corrections should be omitted | Default = <tt>False</tt> | N/A |
+| *ho_obs* | Set to <tt>True</tt> if dip and refraction corrections should be omitted | Default = <tt>False</tt> | N/A |
 
 ### 2.i. Atmospheric refraction<a name="atmospheric-refraction"></a>
 
