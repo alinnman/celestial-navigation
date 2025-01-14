@@ -16,15 +16,21 @@ where anyone is invited to discuss anything related to celestial navigation.
 Regarding future plans for this project.
 These are some things I may consider doing.
 
+1. Building on WGS-84 ellipsoid model.<br/>
+*Working on this right now. Sight reductions seems to work well but mapping*
+*does not work yet*
+1. Better mapping functions.<br/>
+*Currently using the MapDevelopers circle functions (web-based). Considering*
+*building functionality on GeoPandas or similar framework*
 1. Create machine-readable Nautical Almanac
 1. Create a lightweight web application and/or mobile app. <br/>
-*A collection of simple Jupyter notebooks have been added, and this may be good
-enough for practical work.*
+*A collection of simple Jupyter notebooks have been added, and this may be good*
+*enough for practical work. There are however bugs in current Jupyter*
+*implementations on Android.*
 1. Diagnostic output for describing the underlying maths.
 (Mainly for the notebooks)<br/>
 *Working on this right now*
 1. More elaborate sextant calibration code.
-1. Possibly start using ISO 6709 strings for angle parameters.
 1. Code for Lunar Distance measurements.
 
 But the design goal is **portability and a small footprint**,
