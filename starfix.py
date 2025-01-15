@@ -870,7 +870,6 @@ class LatLonGeodetic (LatLon):
             assert lon is not None
             #self.lat = lat
             #self.lon = lon
-            print ("NISSE = " + str(lon))
             super().__init__ (lat, lon)
             return
 
@@ -1101,10 +1100,14 @@ class Sight :
                 self.__correct_dip_of_horizon ()
         self.gp = self.__calculate_gp ()
         if estimated_position is None:
-            self.estimated_position = self.estimated_position_hold
-        self.estimated_position = estimated_position
+            self.estimated_position = Sight.estimated_position_hold
+        else:
+            self.estimated_position = estimated_position
+
+        Sight.estimated_position_hold = self.estimated_position
         self.raw_measured_alt = self.measured_alt
         if isinstance (self.estimated_position, LatLonGeodetic):
+            # We must convert the sextant altitude (geodetic) to a geocentric value
             self.measured_alt =\
                 get_geocentric_alt (self.estimated_position,\
                                     self.measured_alt, self.gp)
