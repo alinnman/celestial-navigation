@@ -301,37 +301,37 @@ class Circle:
                 latlon : centerpoint
                 angle  : angle of circle in degrees, for a great circle set to 90
         '''
-        self.latlon = latlon
-        self.angle = angle
-        self.circumference = circumference
-        self.accum_distance = None
-        self.distance_count = 0
+        self.latlon                 = latlon
+        self.angle                  = angle
+        self.circumference          = circumference
+        self.accum_mapping_distance = None
+        self.mapping_distance_count = 0
 
     def __str__(self) -> str:
         return "LATLON = [" + str(self.latlon) + "]; ANGLE = " + str(round(self.angle,4))
 
     def accumulate_distance (self, distance : float) :
         ''' TODO '''
-        if self.accum_distance is None:
-            self.accum_distance = distance
-            self.distance_count = 1
+        if self.accum_mapping_distance is None:
+            self.accum_mapping_distance = distance
+            self.mapping_distance_count = 1
         else:
-            self.accum_distance += distance
-            self.distance_count += 1
+            self.accum_mapping_distance += distance
+            self.mapping_distance_count += 1
         print ("NEW DISTANCE VALUE = " + str(distance)) # TODO Remove
-        print ("DISTANCE COUNT for this circle is now " + str(self.distance_count)) # TODO Remove
+        print ("DISTANCE COUNT for this circle is now " + str(self.mapping_distance_count)) # TODO Remove
 
     def get_distance (self) -> float | NoneType:
         ''' TODO '''
-        if self.accum_distance is None:
+        if self.accum_mapping_distance is None:
             return None
         else:
-            return self.accum_distance / self.distance_count
+            return self.accum_mapping_distance / self.mapping_distance_count
         
     def set_distance (self, distance : float | NoneType = None):
         ''' TODO '''
-        self.accum_distance = distance
-        self.distance_count = 1
+        self.mapping_accum_distance = distance
+        self.mapping_distance_count = 1
 
     def get_map_developers_string\
         (self, include_url_start : bool) -> str:
@@ -1146,7 +1146,7 @@ class Sight :
                   pressure                 : float = 101.0,
                   ho_obs                   : bool = False,
                   no_dip                   : bool = False):
-        self.distance             = None
+        self.mapping_distance     = None
         self.temperature          = temperature
         self.dt_dh                = dt_dh
         self.pressure             = pressure
@@ -1304,7 +1304,7 @@ class Sight :
             gp_x = self.gp
         retval = Circle (gp_x, self.get_angle(geodetic=geodetic,viewpoint=viewpoint),\
                        circumference)
-        retval.set_distance (self.distance)
+        retval.set_distance (self.mapping_distance)
         return retval
     
     # TODO Review
@@ -1326,11 +1326,11 @@ class Sight :
             Returns the azimuth in degrees (0-360)'''
         return get_azimuth (self.gp, from_pos)
 
-    def set_distance (self, distance : float | NoneType) :
+    def set_mapping_distance (self, distance : float | NoneType) :
         ''' TODO '''
         print ("Circle:set_distance CALLED") # TODO Remove
         print ("Distance value = " + str(distance))
-        self.distance = distance
+        self.mapping_distance = distance
 
     def get_map_developers_string (self, include_url_start : bool,
                                    geodetic : bool,
@@ -1363,8 +1363,8 @@ class SightPair:
                                 estimated_position=estimated_position,\
                                 diagnostics = diagnostics,
                                 intersection_number = intersection_number)
-        self.sf1.set_distance (circle1.get_distance())
-        self.sf2.set_distance (circle2.get_distance())
+        self.sf1.set_mapping_distance (circle1.get_distance())
+        self.sf2.set_mapping_distance (circle2.get_distance())
         return retval
 
 #pylint: enable=R0903
@@ -1535,7 +1535,7 @@ class SightCollection:
         '''
         c_l = list [Circle] ()
         for s in self.sf_list:
-            print ("The sight distance = " + str(s.distance)) # TODO REMOVE
+            print ("The sight distance = " + str(s.mapping_distance)) # TODO REMOVE
             a_circle = s.get_circle(geodetic=geodetic, viewpoint=viewpoint)
             print ("The circle distance = " + str(a_circle.get_distance())) # TODO Remove
             c_l.append (a_circle)
