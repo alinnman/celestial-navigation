@@ -330,7 +330,7 @@ class Circle:
         
     def set_distance (self, distance : float | NoneType = None):
         ''' TODO '''
-        self.mapping_accum_distance = distance
+        self.accum_mapping_distance = distance
         self.mapping_distance_count = 1
 
     def get_map_developers_string\
