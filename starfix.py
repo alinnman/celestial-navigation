@@ -318,6 +318,8 @@ class Circle:
         else:
             self.accum_distance += distance
             self.distance_count += 1
+        print ("NEW DISTANCE VALUE = " + str(distance)) # TODO Remove
+        print ("DISTANCE COUNT for this circle is now " + str(self.distance_count)) # TODO Remove
 
     def get_distance (self) -> float | NoneType:
         ''' TODO '''
@@ -401,14 +403,6 @@ class IntersectError (ValueError):
     def __init__ (self, info : str):
         super().__init__ (info)
 
-
-#class Intersection:
-#    def __init__ (self, coordinateSpec : list [LatLon],
-#                  fitness_value : float,
-#                  diag_output : str,
-#                  distances : )
-# TODO Review
-
 #pylint: disable=R0912
 #pylint: disable=R0913
 #pylint: disable=R0914
@@ -464,13 +458,13 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         #    c2_latlon = LatLonGeodetic (ll = c2_latlon)
         # TODO Experimental code
         if estimated_position is None: 
-            dist1 = ellipsoidal_distance (LatLonGeodetic(ll=c1_latlon), LatLonGeodetic(ll=circle1.latlon))
+            dist1 = spherical_distance (LatLonGeodetic(ll=c1_latlon), LatLonGeodetic(ll=circle1.latlon))
             circle1.accumulate_distance (dist1)
-            dist2 = ellipsoidal_distance (LatLonGeodetic(ll=c1_latlon), LatLonGeodetic(ll=circle2.latlon))
+            dist2 = spherical_distance (LatLonGeodetic(ll=c1_latlon), LatLonGeodetic(ll=circle2.latlon))
             circle2.accumulate_distance (dist2)
-            dist3 = ellipsoidal_distance (LatLonGeodetic(ll=c2_latlon), LatLonGeodetic(ll=circle1.latlon))
+            dist3 = spherical_distance (LatLonGeodetic(ll=c2_latlon), LatLonGeodetic(ll=circle1.latlon))
             circle1.accumulate_distance (dist3)
-            dist4 = ellipsoidal_distance (LatLonGeodetic(ll=c2_latlon), LatLonGeodetic(ll=circle2.latlon))        
+            dist4 = spherical_distance (LatLonGeodetic(ll=c2_latlon), LatLonGeodetic(ll=circle2.latlon))        
             circle2.accumulate_distance (dist4)
             return ret_tuple, fitness, diag_output
         else:
@@ -483,9 +477,9 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
                     best_distance = the_distance
                     best_intersection = ints
                     # TODO Accumulate ellipsoidal distances
-            dist1 = ellipsoidal_distance (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle1.latlon))
+            dist1 = spherical_distance (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle1.latlon))
             circle1.accumulate_distance (dist1)
-            dist2 = ellipsoidal_distance (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle2.latlon))
+            dist2 = spherical_distance (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle2.latlon))
             circle2.accumulate_distance (dist2)                   
             assert best_intersection is not None
             return best_intersection, fitness, diag_output
@@ -679,13 +673,13 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     ret_tuple = (int1_latlon, int2_latlon)
 
     if estimated_position is None:
-        dist1 = ellipsoidal_distance (LatLonGeodetic(ll=int1_latlon), LatLonGeodetic(ll=circle1.latlon))
+        dist1 = spherical_distance (LatLonGeodetic(ll=int1_latlon), LatLonGeodetic(ll=circle1.latlon))
         circle1.accumulate_distance (dist1)
-        dist2 = ellipsoidal_distance (LatLonGeodetic(ll=int1_latlon), LatLonGeodetic(ll=circle2.latlon))
+        dist2 = spherical_distance (LatLonGeodetic(ll=int1_latlon), LatLonGeodetic(ll=circle2.latlon))
         circle2.accumulate_distance (dist2)
-        dist3 = ellipsoidal_distance (LatLonGeodetic(ll=int2_latlon), LatLonGeodetic(ll=circle1.latlon))
+        dist3 = spherical_distance (LatLonGeodetic(ll=int2_latlon), LatLonGeodetic(ll=circle1.latlon))
         circle1.accumulate_distance (dist3)
-        dist4 = ellipsoidal_distance (LatLonGeodetic(ll=int2_latlon), LatLonGeodetic(ll=circle2.latlon))        
+        dist4 = spherical_distance (LatLonGeodetic(ll=int2_latlon), LatLonGeodetic(ll=circle2.latlon))        
         circle2.accumulate_distance (dist4)
         return ret_tuple, fitness, diag_output
     else:
@@ -698,9 +692,9 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
                 best_distance = the_distance
                 best_intersection = ints
         print ("BEFORE SETTING CIRCLE DISTANCES")  # TODO
-        dist1 = ellipsoidal_distance (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle1.latlon))
+        dist1 = spherical_distance (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle1.latlon))
         circle1.accumulate_distance (dist1)
-        dist2 = ellipsoidal_distance (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle2.latlon))
+        dist2 = spherical_distance (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle2.latlon))
         circle2.accumulate_distance (dist2) 
         assert best_intersection is not None
         return best_intersection, fitness, diag_output
@@ -802,11 +796,14 @@ def get_map_developers_string\
     '''
     # Compensate for a bug in mapdevelopers.com. Circles have to be drawn wider
     # Maybe this discrepancy is caused by Earth oblateness corrections....
-    scale_factor = 1
+
+    scale_factor = 1.0009
     if distance is not None:
+        print ("HEPP! Using distance = " + str(distance)) # TODO REMOVE
+        print (type(latlon)) # TODO Remove
         r = distance
-    else:
-        r = r * scale_factor
+
+    r = r * scale_factor
     result = "["
     result = result + str (round(r*1000)) + ","
     result = result + str(round(latlon.lat,6)) + ","
@@ -1281,24 +1278,30 @@ class Sight :
     # TODO Review
     def get_circle (self, geodetic : bool, viewpoint : LatLon | NoneType = None) -> Circle:
         ''' Return a circle object corresponding to this Sight '''
+        if False:
+            if geodetic:
+                gp_x = LatLonGeodetic (ll = self.gp)
+                circumference = EARTH_CIRCUMFERENCE
+                # The code below is EXPERIMENTAL
+                # Currently used only for mapping
+                if viewpoint is not None:
+                    vp_rect = to_rectangular (viewpoint)
+                    gp_rect = to_rectangular (gp_x)
+                    cp = cross_product (vp_rect, gp_rect)
+                    north_pole = [0.0, 0.0, 1.0]
+                    dp = dot_product (cp, north_pole)
+                    circumference =\
+                        EARTH_CIRCUMFERENCE_MERIDIONAL +\
+                        (EARTH_CIRCUMFERENCE_EQUATORIAL - EARTH_CIRCUMFERENCE_MERIDIONAL)*dp
+            else:
+                # Geocentrical circle
+                gp_x = self.gp
+                circumference = EARTH_CIRCUMFERENCE
+        circumference = EARTH_CIRCUMFERENCE
         if geodetic:
             gp_x = LatLonGeodetic (ll = self.gp)
-            circumference = EARTH_CIRCUMFERENCE
-            # The code below is EXPERIMENTAL
-            # Currently used only for mapping
-            if viewpoint is not None:
-                vp_rect = to_rectangular (viewpoint)
-                gp_rect = to_rectangular (gp_x)
-                cp = cross_product (vp_rect, gp_rect)
-                north_pole = [0.0, 0.0, 1.0]
-                dp = dot_product (cp, north_pole)
-                circumference =\
-                      EARTH_CIRCUMFERENCE_MERIDIONAL +\
-                      (EARTH_CIRCUMFERENCE_EQUATORIAL - EARTH_CIRCUMFERENCE_MERIDIONAL)*dp
         else:
-            # Geocentrical circle
             gp_x = self.gp
-            circumference = EARTH_CIRCUMFERENCE
         retval = Circle (gp_x, self.get_angle(geodetic=geodetic,viewpoint=viewpoint),\
                        circumference)
         retval.set_distance (self.distance)
