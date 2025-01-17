@@ -321,14 +321,14 @@ class Circle:
         print ("NEW DISTANCE VALUE = " + str(distance)) # TODO Remove
         print ("DISTANCE COUNT for this circle is now " + str(self.mapping_distance_count)) # TODO Remove
 
-    def get_distance (self) -> float | NoneType:
+    def get_mapping_distance (self) -> float | NoneType:
         ''' TODO '''
         if self.accum_mapping_distance is None:
             return None
         else:
             return self.accum_mapping_distance / self.mapping_distance_count
         
-    def set_distance (self, distance : float | NoneType = None):
+    def set_mapping_distance (self, distance : float | NoneType = None):
         ''' TODO '''
         self.accum_mapping_distance = distance
         self.mapping_distance_count = 1
@@ -342,9 +342,10 @@ class Circle:
         else:
             url_start = ""
             result = ""
-        if self.get_distance() is not None:
-            print ("HEUREKA = " + str(self.get_distance())) # TODO Remove
-        result += get_map_developers_string (self.get_radius(), self.latlon, self.get_distance())
+        if self.get_mapping_distance() is not None:
+            print ("HEUREKA = " + str(self.get_mapping_distance())) # TODO Remove
+        result += get_map_developers_string\
+              (self.get_radius(), self.latlon, self.get_mapping_distance())
         if include_url_start:
             result += "]"
             result = quote_plus (result)
@@ -366,7 +367,7 @@ class CircleCollection:
         clen = len(self.c_list)
         for i in range (clen):
             the_circle = self.c_list[i]
-            print ("VAD HITTAR VI HÄR? = " + str(the_circle.get_distance()))
+            print ("VAD HITTAR VI HÄR? = " + str(the_circle.get_mapping_distance()))
             result += self.c_list[i].get_map_developers_string (include_url_start=False)
             if i < clen - 1:
                 result += ","
@@ -386,7 +387,13 @@ def get_great_circle_route (start : LatLon, direction : LatLon | float | int) ->
         t2 = to_rectangular (direction)
         t3 = normalize_vect(cross_product (t1,t2))
         t4 = to_latlon (t3)
-        return Circle (t4, 90, EARTH_CIRCUMFERENCE)
+        d1 = spherical_distance (LatLonGeodetic (ll=start), LatLonGeodetic(ll=t4))
+        d2 = spherical_distance (LatLonGeodetic (ll=direction), LatLonGeodetic (ll=t4))
+        d = (d1 + d2) / 2
+        c = Circle (t4, 90, EARTH_CIRCUMFERENCE) 
+        print ("HALLELUJA = " + str(d))
+        c.set_mapping_distance (d)
+        return c # TODO Introduce mapping distance handling below too... 
     # isinstance (direction, float) or isinstance (direction, int) == True
     if start.lat in (90,-90):
         raise ValueError ("Cannot take a course from any of the poles")
@@ -794,9 +801,7 @@ def get_map_developers_string\
     '''
     Return URL segment for https://mapdevelopers.com circle plotting service
     '''
-    # Compensate for a bug in mapdevelopers.com. Circles have to be drawn wider
-    # Maybe this discrepancy is caused by Earth oblateness corrections....
-
+    # Compensate for the behaviour in mapdevelopers.com. Circles have to be drawn slightly wider
     scale_factor = 1.0009
     if distance is not None:
         print ("HEPP! Using distance = " + str(distance)) # TODO REMOVE
@@ -1304,7 +1309,7 @@ class Sight :
             gp_x = self.gp
         retval = Circle (gp_x, self.get_angle(geodetic=geodetic,viewpoint=viewpoint),\
                        circumference)
-        retval.set_distance (self.mapping_distance)
+        retval.set_mapping_distance (self.mapping_distance)
         return retval
     
     # TODO Review
@@ -1363,8 +1368,12 @@ class SightPair:
                                 estimated_position=estimated_position,\
                                 diagnostics = diagnostics,
                                 intersection_number = intersection_number)
-        self.sf1.set_mapping_distance (circle1.get_distance())
-        self.sf2.set_mapping_distance (circle2.get_distance())
+        dist1 = circle1.get_distance ()
+        self.sf1.set_mapping_distance (dist1)
+        print ("URBAN 1 = " + str(dist1)) # TODO Remove
+        dist2 = circle2.get_distance ()
+        self.sf2.set_mapping_distance (dist2)
+        print ("URBAN 2 = " + str(dist2)) # TODO Remove        
         return retval
 
 #pylint: enable=R0903
@@ -1564,6 +1573,7 @@ class SightTrip:
         self.movement_vec             = None
         self.start_pos                = None
         self.end_pos                  = None
+        self.mapping_distance         = None
 #pylint: enable=R0913
 
     def __calculate_time_hours (self):
@@ -1587,6 +1597,14 @@ class SightTrip:
               (taken_out, self.sight_end.gp)\
                   - self.sight_end.get_circle(geodetic=False).get_radius()
         return dbp, taken_out, rotated_latlon
+    
+    def set_mapping_distance (self, distance : float | NoneType):
+        ''' TODO '''
+        self.mapping_distance = distance
+
+    def get_mapping_distance (self) -> float | NoneType:
+        ''' TODO '''
+        return self.mapping_distance
 
 #pylint: disable=R0914
     def get_intersections (self, diagnostics : bool = False) ->\
@@ -1595,6 +1613,7 @@ class SightTrip:
 
         if isinstance (self.sight_start, Sight):
 
+            print ("BUDDHA") # TODO REMOVE
             # Calculate intersections
             pair = SightPair (self.sight_start, self.sight_end)
             best_intersection, fitness, diag_output = pair.get_intersections\
@@ -1633,13 +1652,19 @@ class SightTrip:
             return (taken_out, rotated), fitness, diag_output
 
         # isinstance (self.sight_start, datetime) == True
+        print ("BANANAS") # TODO Remove
         taken_out = takeout_course (self.estimated_starting_point,\
                                     self.course_degrees,\
                                     self.speed_knots, self.time_hours)
         circle1 = Circle (self.sight_end.gp,
                           self.sight_end.get_angle(geodetic = False),
                           EARTH_CIRCUMFERENCE)
+        #d = spherical_distance (self.sight_end.gp, taken_out)
+        #self.set_mapping_distance (d)
         circle2 = get_great_circle_route (taken_out, self.sight_end.gp)
+        #se = self.end_pos
+        #assert isinstance (se, Sight)
+        self.set_mapping_distance (circle2.get_mapping_distance())
         assert isinstance (circle2, Circle)
         self.movement_vec = circle2.latlon
         gi, fitness, diag = get_intersections \
@@ -1650,7 +1675,7 @@ class SightTrip:
         return gi, fitness, diag
 #pylint: enable=R0914
 
-    def get_map_developers_string (self, geodetic : bool) -> str:
+    def get_map_developers_string (self) -> str:
         '''
         Return URL for https://mapdevelopers.com circle plotting service
         '''
@@ -1658,17 +1683,20 @@ class SightTrip:
             s_c = SightCollection ([self.sight_start, self.sight_end])
             if isinstance (self.start_pos, LatLon) and isinstance (self.end_pos, LatLon):
                 return s_c.get_map_developers_string\
-                       (geodetic = geodetic, \
-                        markers = \
+                        (geodetic = True,\
+                         markers = \
                         [LatLonGeodetic(ll = self.start_pos), \
                          LatLonGeodetic(ll = self.end_pos)])
+                # TODO Review statement above, and the geodetic parameter.
             else:
-                return s_c.get_map_developers_string (geodetic=geodetic)
+                return s_c.get_map_developers_string (geodetic=True)
 
         # isinstance (self.sight_start, LatLon) == True
         assert isinstance (self.movement_vec, LatLon)
         str1 = self.sight_end.get_map_developers_string (include_url_start=False, geodetic = True)
-        str2 = get_map_developers_string (EARTH_CIRCUMFERENCE/4, self.movement_vec)
+        print ("ORVAR") #TODO Remove
+        str2 = get_map_developers_string\
+              (EARTH_CIRCUMFERENCE/4, self.movement_vec)
         url_start = MAP_DEV_URL
         result = "["
         result += str1

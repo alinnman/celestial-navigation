@@ -54,13 +54,13 @@ def main ():
         intersections, _, _ = st.get_intersections ()
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
-        print ("Check the circles! " + st.get_map_developers_string(geodetic=False))
+        print ("Check the circles! " + st.get_map_developers_string())
         exit ()
 
     endtime = time ()
     taken_ms = round((endtime-starttime)*1000,2)
 
-    print ("MD = " + st.get_map_developers_string (geodetic=False))
+    print ("MD = " + st.get_map_developers_string ())
     assert isinstance (intersections, tuple)
     print ("Starting point = " + str(get_representation(intersections[1],1)))
     print ("End point = " + str(get_representation(intersections[0],1)))
