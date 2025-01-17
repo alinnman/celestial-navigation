@@ -1368,10 +1368,10 @@ class SightPair:
                                 estimated_position=estimated_position,\
                                 diagnostics = diagnostics,
                                 intersection_number = intersection_number)
-        dist1 = circle1.get_distance ()
+        dist1 = circle1.get_mapping_distance ()
         self.sf1.set_mapping_distance (dist1)
         print ("URBAN 1 = " + str(dist1)) # TODO Remove
-        dist2 = circle2.get_distance ()
+        dist2 = circle2.get_mapping_distance ()
         self.sf2.set_mapping_distance (dist2)
         print ("URBAN 2 = " + str(dist2)) # TODO Remove        
         return retval
@@ -1546,7 +1546,7 @@ class SightCollection:
         for s in self.sf_list:
             print ("The sight distance = " + str(s.mapping_distance)) # TODO REMOVE
             a_circle = s.get_circle(geodetic=geodetic, viewpoint=viewpoint)
-            print ("The circle distance = " + str(a_circle.get_distance())) # TODO Remove
+            print ("The circle distance = " + str(a_circle.get_mapping_distance())) # TODO Remove
             c_l.append (a_circle)
             #c_l.append (s.get_circle(geodetic=geodetic, viewpoint=viewpoint))
         if isinstance (markers, list):
