@@ -1561,19 +1561,19 @@ class SightTrip:
     def __init__ (self, \
                        sight_start : Sight | datetime,
                        sight_end : Sight,
-                       estimated_starting_point : LatLon,
+                       estimated_starting_point : LatLonGeodetic,
                        course_degrees : int | float,
                        speed_knots : int | float):
         self.sight_start              = sight_start
         self.sight_end                = sight_end
-        self.estimated_starting_point = estimated_starting_point
+        self.estimated_starting_point = estimated_starting_point.get_latlon()
         self.course_degrees           = course_degrees
         self.speed_knots              = speed_knots
         self.__calculate_time_hours ()
         self.movement_vec             = None
         self.start_pos                = None
         self.end_pos                  = None
-        self.mapping_distance         = None
+        self.mapping_distance       = None
 #pylint: enable=R0913
 
     def __calculate_time_hours (self):
@@ -1611,6 +1611,7 @@ class SightTrip:
             tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Get the intersections for this sight trip object '''            
 
+        ### Calculate a trip from Sight to Sight
         if isinstance (self.sight_start, Sight):
 
             print ("BUDDHA") # TODO REMOVE
@@ -1651,6 +1652,7 @@ class SightTrip:
             self.end_pos   = taken_out
             return (taken_out, rotated), fitness, diag_output
 
+        ### Calculate a trip from a timestamp (with estimated position) to Sight
         # isinstance (self.sight_start, datetime) == True
         print ("BANANAS") # TODO Remove
         taken_out = takeout_course (self.estimated_starting_point,\
@@ -1659,17 +1661,20 @@ class SightTrip:
         circle1 = Circle (self.sight_end.gp,
                           self.sight_end.get_angle(geodetic = False),
                           EARTH_CIRCUMFERENCE)
-        #d = spherical_distance (self.sight_end.gp, taken_out)
-        #self.set_mapping_distance (d)
+        #d1 = spherical_distance (LatLonGeodetic(ll=self.sight_end.gp), LatLonGeodetic(ll=self.start_pos))
+        #self.sight_end.mapping_distance = d1
         circle2 = get_great_circle_route (taken_out, self.sight_end.gp)
+        #d2 = spherical_distance (LatLonGeodetic(ll=circle2.latlon), LatLonGeodetic(ll=taken_out))
         #se = self.end_pos
         #assert isinstance (se, Sight)
-        self.set_mapping_distance (circle2.get_mapping_distance())
+        #self.set_mapping_distance_2 (d2)
         assert isinstance (circle2, Circle)
         self.movement_vec = circle2.latlon
         gi, fitness, diag = get_intersections \
                            (circle1, circle2,
                             estimated_position=taken_out)
+        self.set_mapping_distance (circle2.get_mapping_distance ())
+        self.sight_end.set_mapping_distance (circle1.get_mapping_distance())
         self.start_pos = self.estimated_starting_point
         self.end_pos = gi
         return gi, fitness, diag
@@ -1693,20 +1698,26 @@ class SightTrip:
 
         # isinstance (self.sight_start, LatLon) == True
         assert isinstance (self.movement_vec, LatLon)
+        
+        # Plot the end sight
         str1 = self.sight_end.get_map_developers_string (include_url_start=False, geodetic = True)
         print ("ORVAR") #TODO Remove
+        # d3 = self.get_mapping_distance_2()
+        assert isinstance (self.end_pos, LatLon)
+ 
+        # Plot the great circle
         str2 = get_map_developers_string\
-              (EARTH_CIRCUMFERENCE/4, self.movement_vec)
+              (EARTH_CIRCUMFERENCE/4, LatLonGeodetic(ll=self.movement_vec), distance=self.get_mapping_distance())
         url_start = MAP_DEV_URL
         result = "["
-        result += str1
+        result += str1 
         result += ","
         result += str2
         if isinstance (self.start_pos, LatLon) and isinstance (self.end_pos, LatLon):
             result += ","
-            result += get_map_developers_string (1, self.start_pos)
+            result += get_map_developers_string (1, LatLonGeodetic(ll=self.start_pos))
             result += ","
-            result += get_map_developers_string (1, self.end_pos)
+            result += get_map_developers_string (1, LatLonGeodetic(ll=self.end_pos))
         result += "]"
         result = quote_plus (result)
         return url_start + result
