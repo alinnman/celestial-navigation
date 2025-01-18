@@ -4,7 +4,7 @@
 '''
 
 from time import time
-from starfix import LatLon, get_representation,\
+from starfix import LatLonGeodetic, get_representation,\
                     get_great_circle_route, Circle, CircleCollection, get_intersections,\
                     get_line_of_sight, nm_to_km, km_to_nm, EARTH_CIRCUMFERENCE
 def main ():
@@ -14,13 +14,14 @@ def main ():
 
     # We are sailing from point s1
     # We have a good estimate of an initial position. (A previous fix)
-    s1 = LatLon (57.662, 18.263)
+    s1 = LatLonGeodetic (57.662, 18.263)
     # We start out at a course of 350 degrees
     c_course = 350
     course_gc = get_great_circle_route (s1, c_course)
+    #course_gc = Circle (LatLonGeodetic (ll=course_gc.latlon), course_gc.angle, EARTH_CIRCUMFERENCE)
 
     # This is a position of a lighthouse
-    light_house = LatLon (58.739, 17.865)
+    light_house = LatLonGeodetic (58.739, 17.865)
     # This is the elevation of the light source (m)
     light_house_elevation = 44.5
     # This is the maximum reach in nm
