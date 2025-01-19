@@ -1741,8 +1741,8 @@ class SightTrip:
         url_start = MAP_DEV_URL
         result = "["
         result += str1
-        result += ","
-        result += str2
+        #result += ","
+        #result += str2
 
         # Handle/plot markers
         if isinstance (self.start_pos, LatLon) and isinstance (self.end_pos, LatLon):
