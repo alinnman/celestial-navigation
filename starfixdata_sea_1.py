@@ -51,7 +51,7 @@ def main ():
                     speed_knots              = speed)
 
     try:
-        intersections, _, _ = st.get_intersections ()
+        intersections, _, _ = st.get_intersections (return_geodetic=True)
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
         print ("Check the circles! " + st.get_map_developers_string())
@@ -78,8 +78,6 @@ def main ():
 
     print ("Starting point GM = " + get_google_map_string (intersections[1],4))
     print ("Ending   point GM = " + get_google_map_string (intersections[0],4))
-
-
 
     print ("Time taken = " +str(taken_ms)+" ms")
 

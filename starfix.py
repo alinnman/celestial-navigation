@@ -6,6 +6,7 @@
 from math import  pi, sin, cos, acos, sqrt, tan, atan2
 from datetime import datetime
 from urllib.parse import quote_plus
+# import logging
 from types import NoneType
 
 # Dimension of Earth
@@ -307,8 +308,13 @@ class Circle:
         self.accum_mapping_distance = None
         self.mapping_distance_count = 0
 
+    def make_geodetic (self) :
+        ''' TODO '''
+        self.latlon = LatLonGeodetic (ll=self.latlon)
+        return self
+
     def __str__(self) -> str:
-        return "LATLON = [" + str(self.latlon) + "]; ANGLE = " + str(round(self.angle,4))
+        return "CIRCLE: LATLON = [" + str(self.latlon) + "]; ANGLE = " + str(round(self.angle,4))
 
     def accumulate_distance (self, distance : float) :
         ''' Accumulates mapping distances, in order to build a mean value '''
@@ -332,7 +338,7 @@ class Circle:
         self.mapping_distance_count = 1
 
     def get_map_developers_string\
-        (self, include_url_start : bool) -> str:
+        (self, include_url_start : bool, color : str = "000000") -> str:
         ''' Get MD string for this circle '''
         if include_url_start:
             url_start = MAP_DEV_URL
@@ -341,7 +347,7 @@ class Circle:
             url_start = ""
             result = ""
         result += get_map_developers_string\
-              (self.get_radius(), self.latlon, self.get_mapping_distance())
+              (self.get_radius(), self.latlon, self.get_mapping_distance(), color=color)
         if include_url_start:
             result += "]"
             result = quote_plus (result)
@@ -356,13 +362,19 @@ class CircleCollection:
     def __init__ (self, coll : list[Circle]):
         self.c_list = coll
 
-    def get_map_developers_string (self) -> str:
+    def make_geodetic (self):
+        ''' TODO '''
+        for c in self.c_list:
+            c.make_geodetic ()
+
+    def get_map_developers_string (self, color : str = "000000") -> str:
         ''' Return the MD string '''
         url_start = MAP_DEV_URL
         result = "["
         clen = len(self.c_list)
         for i in range (clen):
-            result += self.c_list[i].get_map_developers_string (include_url_start=False)
+            result += self.c_list[i].get_map_developers_string\
+                  (include_url_start=False, color = color)
             if i < clen - 1:
                 result += ","
         result += "]"
@@ -394,10 +406,10 @@ def get_great_circle_route (start : LatLon, direction : LatLon | float | int) ->
         t3 = normalize_vect(cross_product (t1,t2))
         t4 = to_latlon (t3)
         distance_ratio = 1
-        distance = EARTH_CIRCUMFERENCE / 4        
+        distance = EARTH_CIRCUMFERENCE / 4
         if converted:
             t4 = LatLonGeodetic (ll=t4)
-            distance = spherical_distance (t4, LatLonGeodetic(ll=start))            
+            distance = spherical_distance (t4, LatLonGeodetic(ll=start))
             distance_ratio = distance / (EARTH_CIRCUMFERENCE/4)
         c = Circle (t4, 90*distance_ratio, EARTH_CIRCUMFERENCE)
         # c.set_mapping_distance (distance)
@@ -807,7 +819,9 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
             A string usable as a Google Maps coordinate
     '''
     if isinstance (intersections, LatLon):
-        return str(round(intersections.lat,num_decimals)) + "," +\
+        type_string = "("+str(type(intersections))+")"
+        return type_string + "," +\
+               str(round(intersections.lat,num_decimals)) + "," +\
                str(round(intersections.lon,num_decimals))
     if isinstance (intersections, tuple):
         assert len (intersections) == 2
@@ -818,12 +832,13 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
 MAP_DEV_URL = "https://www.mapdevelopers.com/draw-circle-tool.php?circles="
 
 def get_map_developers_string\
-     (r : float, latlon : LatLon, distance : float | NoneType = None) -> str:
+     (r : float, latlon : LatLon, distance : float | NoneType = None,
+      color : str = "000000") -> str:
     '''
     Return URL segment for https://mapdevelopers.com circle plotting service
     '''
     # Compensate for the behaviour in mapdevelopers.com. Circles have to be drawn slightly wider
-    scale_factor = 1.0009
+    scale_factor = 1.00083
     if distance is not None:
         r = distance
 
@@ -832,7 +847,7 @@ def get_map_developers_string\
     result = result + str (round(r*1000)) + ","
     result = result + str(round(latlon.lat,6)) + ","
     result = result + str(round(latlon.lon,6)) + ","
-    result = result + "\"#AAAAAA\",\"#000000\",0.4]"
+    result = result + "\"#AAAAAA\",\"#"+color+"\",0.4]"
     return result
 
 def get_representation\
@@ -1344,15 +1359,16 @@ class SightPair:
         self.sf1 = sf1
         self.sf2 = sf2
 
-    def get_intersections (self, estimated_position : NoneType | LatLon = None,
-                           diagnostics : bool = False,
-                           intersection_number : int = 0) ->\
-                           tuple[LatLon | tuple[LatLon, LatLon], float, str]:
+    def get_intersections\
+                      (self, return_geodetic : bool, estimated_position : NoneType | LatLon = None,
+                       diagnostics : bool = False,
+                       intersection_number : int = 0) ->\
+                       tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Return the two intersections for this sight pair. 
             The parameter estimated_position can be used to eliminate the false intersection '''
 
-        circle1 = self.sf1.get_circle (geodetic = False)
-        circle2 = self.sf2.get_circle (geodetic = False)
+        circle1 = self.sf1.get_circle (geodetic = return_geodetic)
+        circle2 = self.sf2.get_circle (geodetic = return_geodetic)
         retval = get_intersections (circle1, circle2,
                                 estimated_position=estimated_position,\
                                 diagnostics = diagnostics,
@@ -1393,7 +1409,8 @@ class SightCollection:
             intersections, fitness, diag_output =\
                    SightPair (self.sf_list[0],\
                               self.sf_list[1]).get_intersections\
-                                         (estimated_position=estimated_position,\
+                                         (return_geodetic=return_geodetic,
+                                          estimated_position=estimated_position,\
                                           diagnostics = diagnostics)
             if return_geodetic:
                 if isinstance (intersections, tuple):
@@ -1415,7 +1432,8 @@ class SightCollection:
                 p = SightPair (self.sf_list [i], self.sf_list [j])
                 intersection_count += 1
                 p_int, fitness, dia =\
-                    p.get_intersections (estimated_position=estimated_position,\
+                    p.get_intersections (return_geodetic=return_geodetic,
+                                         estimated_position=estimated_position,\
                                          diagnostics = diagnostics,\
                                          intersection_number = intersection_count)
                 diag_output += dia
@@ -1591,7 +1609,7 @@ class SightTrip:
         return self.mapping_distance
 
 #pylint: disable=R0914
-    def get_intersections (self, diagnostics : bool = False) ->\
+    def get_intersections (self, return_geodetic : bool, diagnostics : bool = False) ->\
             tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Get the intersections for this sight trip object '''            
 
@@ -1601,7 +1619,8 @@ class SightTrip:
             # Calculate intersections
             pair = SightPair (self.sight_start, self.sight_end)
             best_intersection, fitness, diag_output = pair.get_intersections\
-                (estimated_position = self.estimated_starting_point,\
+                (return_geodetic=False,
+                 estimated_position = self.estimated_starting_point,\
                  diagnostics = diagnostics)
             # Determine angle of the intersection point on sight_start small circle
             a_vec = to_rectangular (self.sight_start.gp)
@@ -1633,6 +1652,9 @@ class SightTrip:
             assert rotated is not None
             self.start_pos = rotated
             self.end_pos   = taken_out
+            if return_geodetic:
+                taken_out = LatLonGeodetic (ll=taken_out)
+                rotated   = LatLonGeodetic (ll=rotated)
             return (taken_out, rotated), fitness, diag_output
 
         ### Calculate a trip from a timestamp (with estimated position) to Sight
@@ -1640,20 +1662,26 @@ class SightTrip:
         taken_out = takeout_course (self.estimated_starting_point,\
                                     self.course_degrees,\
                                     self.speed_knots, self.time_hours)
+        assert isinstance (taken_out, LatLon)
         circle1 = Circle (self.sight_end.gp,
                           self.sight_end.get_angle(geodetic = False),
                           EARTH_CIRCUMFERENCE)
 
         circle2 = get_great_circle_route (taken_out, self.sight_end.gp)
+
         assert isinstance (circle2, Circle)
         self.movement_vec = circle2.latlon
         gi, fitness, diag = get_intersections \
                            (circle1, circle2,
                             estimated_position=taken_out)
+
+        assert isinstance (gi, LatLon)
         self.set_mapping_distance (circle2.get_mapping_distance ())
         self.sight_end.set_mapping_distance (circle1.get_mapping_distance())
         self.start_pos = self.estimated_starting_point
         self.end_pos = gi
+        if return_geodetic:
+            gi = LatLonGeodetic (ll=gi)
         return gi, fitness, diag
 #pylint: enable=R0914
 
@@ -1680,7 +1708,7 @@ class SightTrip:
 
         # Plot the great circle
         d = self.get_mapping_distance()
-        assert isinstance (d, float)
+        assert isinstance (d, float) or d is None
         str2 = get_map_developers_string\
               (EARTH_CIRCUMFERENCE/4, LatLonGeodetic(ll=self.movement_vec), distance=d)
         url_start = MAP_DEV_URL

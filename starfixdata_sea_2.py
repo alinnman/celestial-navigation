@@ -6,7 +6,7 @@
 from datetime import datetime
 from time import time
 from starfix import Sight, SightTrip, get_representation,\
-     LatLon, LatLonGeodetic, IntersectError
+     LatLon, LatLonGeodetic, IntersectError, get_google_map_string
 
 def main ():
     ''' Main body of script '''
@@ -15,7 +15,7 @@ def main ():
 
     # We are sailing from point s1 to point s2, in the Baltic Sea.
     # We have a good estimate of an initial position. (A previous fix)
-    s1_latlon = LatLonGeodetic (58.23,17.91)
+    s1_latlon = LatLonGeodetic (58.2244,17.9136)
 
     #This is the starting time
 
@@ -44,7 +44,7 @@ def main ():
                     speed_knots              = speed)
 
     try:
-        intersections, _, _ = st.get_intersections ()
+        intersections, _, _ = st.get_intersections (return_geodetic=True)
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
         print ("Check the circles! " + st.get_map_developers_string())
@@ -61,7 +61,9 @@ def main ():
     #print (get_representation (intersections,3))
     #print (get_google_map_string (intersections, 3))
     print ("Starting point = " + str(get_representation(s1_latlon,1)))
+    print ("Starting point GM = " + str(get_google_map_string(s1_latlon,4)))
     print ("End point = " + str(get_representation(intersections,1)))
+    print ("End point GM = " + str(get_google_map_string(intersections,4)))
     #print ("Distance = " +\
     #        str(round(km_to_nm(distance_between_points(s1_latlon, intersections)),2)) + " nm")
 

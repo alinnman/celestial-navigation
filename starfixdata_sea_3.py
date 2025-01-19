@@ -4,7 +4,7 @@
 '''
 
 from time import time
-from starfix import LatLonGeodetic, get_representation,\
+from starfix import LatLon, get_representation,\
                     get_great_circle_route, Circle, CircleCollection, get_intersections,\
                     get_line_of_sight, nm_to_km, km_to_nm, EARTH_CIRCUMFERENCE
 def main ():
@@ -14,14 +14,15 @@ def main ():
 
     # We are sailing from point s1
     # We have a good estimate of an initial position. (A previous fix)
-    s1 = LatLonGeodetic (57.662, 18.263)
+    s1 = LatLon (57.662, 18.263)
     # We start out at a course of 350 degrees
     c_course = 350
-    course_gc = get_great_circle_route (s1, c_course)
-    #course_gc = Circle (LatLonGeodetic (ll=course_gc.latlon), course_gc.angle, EARTH_CIRCUMFERENCE)
+    course_gc = get_great_circle_route (s1,
+                                        # NOTE: The s1 coordinate must be converted to geocentrical
+                                        c_course)
 
     # This is a position of a lighthouse
-    light_house = LatLonGeodetic (58.739, 17.865)
+    light_house = LatLon (58.739, 17.865)
     # This is the elevation of the light source (m)
     light_house_elevation = 44.5
     # This is the maximum reach in nm
@@ -39,14 +40,16 @@ def main ():
           (light_house, actual_line_of_sight_nm/60, circumference=EARTH_CIRCUMFERENCE)
 
     # Get the intersections
+    #course_gc.make_geodetic() # TODO Review
     intersections = get_intersections (course_gc, light_house_circle)
     endtime = time ()
     assert isinstance (intersections, tuple)
     print (get_representation(intersections[0],1))
 
-    # Check the circles
+    # Check the circles on the map
     c_c = CircleCollection ([course_gc, light_house_circle,\
                               Circle(s1, 1/60, circumference=EARTH_CIRCUMFERENCE)])
+    # c_c.make_geodetic () # Geodetic coordinates needed here # TODO Review
     print ("MD = " + c_c.get_map_developers_string())
 
     taken_ms = round((endtime-starttime)*1000,2)
