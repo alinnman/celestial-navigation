@@ -413,12 +413,12 @@ def get_great_circle_route (start : LatLon, direction : LatLon | float | int) ->
         t2 = to_rectangular (direction)
         t3 = normalize_vect(cross_product (t1,t2))
         t4 = to_latlon (t3)
-        distance_ratio = 1
+        #distance_ratio = 1
         distance = EARTH_CIRCUMFERENCE / 4
         if converted:
             t4 = LatLonGeodetic (ll=t4)
         distance = spherical_distance (t4, LatLonGeodetic(ll=start))
-        distance_ratio = distance / (EARTH_CIRCUMFERENCE/4)
+        #distance_ratio = distance / (EARTH_CIRCUMFERENCE/4)
         #distance = spherical_distance (t4, LatLonGeodetic(ll=start))
         #distance_ratio = distance / (EARTH_CIRCUMFERENCE/4)        
         # if converted:
@@ -435,15 +435,14 @@ def get_great_circle_route (start : LatLon, direction : LatLon | float | int) ->
     rotated = rotate_vector (east_tangent, b, deg_to_rad(90 - direction))
     cp = normalize_vect(cross_product (b, rotated))
     cp_latlon = to_latlon (cp)
-    distance_ratio = 1
+    #distance_ratio = 1
     distance = EARTH_CIRCUMFERENCE / 4
     #distance = spherical_distance (cp_latlon, LatLonGeodetic(ll=start))
     #distance_ratio = distance / (EARTH_CIRCUMFERENCE / 4)    
     if converted:
-        print ("BLÄÄ") # TODO Remove
         cp_latlon = LatLonGeodetic (ll = cp_latlon)
     distance = spherical_distance (cp_latlon, LatLonGeodetic(ll=start))
-    distance_ratio = distance / (EARTH_CIRCUMFERENCE / 4)
+    #distance_ratio = distance / (EARTH_CIRCUMFERENCE / 4)
     c = Circle (cp_latlon, 90, EARTH_CIRCUMFERENCE)
     c.set_mapping_distance (distance)
     return c
@@ -861,7 +860,6 @@ def get_map_developers_string\
     #scale_factor = 1.00083
     scale_factor = 1.000655
     if distance is not None:
-        print ("USING DISTANCE") # TODO Remove
         r = distance
 
     r = r * scale_factor
@@ -1736,8 +1734,8 @@ class SightTrip:
         # Plot the great circle
         d = self.get_mapping_distance()
         assert isinstance (d, float) or d is None
-        str2 = get_map_developers_string\
-              (EARTH_CIRCUMFERENCE/4, LatLonGeodetic(ll=self.movement_vec), distance=d)
+        #str2 = get_map_developers_string\
+        #      (EARTH_CIRCUMFERENCE/4, LatLonGeodetic(ll=self.movement_vec), distance=d)
         url_start = MAP_DEV_URL
         result = "["
         result += str1
