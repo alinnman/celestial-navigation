@@ -5,7 +5,7 @@
 
 from time import time
 from starfix import Sight, SightTrip, get_representation, get_google_map_string,\
-     LatLonGeodetic, IntersectError
+     LatLonGeodetic, IntersectError, spherical_distance, km_to_nm
 
 def main ():
     ''' Main body of script '''
@@ -64,9 +64,9 @@ def main ():
     assert isinstance (intersections, tuple)
     print ("Starting point = " + str(get_representation(intersections[1],1)))
     print ("End point = " + str(get_representation(intersections[0],1)))
-    #print ("Distance = " +\
-    #       str(round(km_to_nm(distance_between_points(intersections[0], intersections[1])),2)) +\
-    #          " nm")
+    print ("Distance travelled = " +\
+           str(round(km_to_nm(spherical_distance (intersections[0], intersections[1])),2)) +\
+              " nm")
 
     # Diagnostics for map rendering etc.
 

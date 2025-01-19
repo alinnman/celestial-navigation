@@ -15,7 +15,6 @@ def main ():
     # We are sailing from point s1
     # We have a good estimate of an initial position. (A previous fix)
     s1 = LatLonGeodetic (57.662, 18.263)
-    s1_gc = s1.get_latlon()
     # We start out at a course of 355 degrees
     c_course = 355
     course_gc = get_great_circle_route (s1, c_course)
@@ -24,7 +23,7 @@ def main ():
     light_house = LatLonGeodetic (58.7396, 17.8657)
     light_house_gc = light_house.get_latlon()
     # The intercept angle for the lighthouse is 300 degrees
-    light_house_intercept = 260 
+    light_house_intercept = 270
     light_house_gcr = get_great_circle_route (light_house_gc, light_house_intercept)
     print (get_google_map_string(LatLonGeodetic(ll=light_house_gcr.latlon),4))
 
@@ -38,16 +37,14 @@ def main ():
     print (get_google_map_string(intersections_gd,4))
 
     intersection1 = Circle (intersections_gd,1/60,circumference=EARTH_CIRCUMFERENCE)
-    intersection1.make_geodetic()
+    #intersection1.make_geodetic()
     start         = Circle (s1, 1/60, circumference=EARTH_CIRCUMFERENCE)
-    start.make_geodetic()
+    #start.make_geodetic()
     light_house_circle = Circle (light_house, 1/60, circumference=EARTH_CIRCUMFERENCE)
 
     # Check the circles
-    course_gc.make_geodetic()
-    #light_house_gcr.make_geodetic()
+    #course_gc.make_geodetic()
     c_c = CircleCollection ([intersection1, start, light_house_circle])
-    #c_c.make_geodetic()
     print ("MD = " + c_c.get_map_developers_string())
 
     taken_ms = round((endtime-starttime)*1000,2)
