@@ -13,7 +13,7 @@ from types import NoneType
 
 EARTH_CIRCUMFERENCE_EQUATORIAL = 40075.017
 EARTH_CIRCUMFERENCE_MERIDIONAL = 40007.86
-EARTH_CIRCUMFERENCE = (EARTH_CIRCUMFERENCE_EQUATORIAL + EARTH_CIRCUMFERENCE_MERIDIONAL) / 2
+EARTH_CIRCUMFERENCE = (EARTH_CIRCUMFERENCE_EQUATORIAL*2 + EARTH_CIRCUMFERENCE_MERIDIONAL) / 3
 EARTH_RADIUS = EARTH_CIRCUMFERENCE / (2 * pi)
 
 
@@ -310,7 +310,10 @@ class Circle:
 
     def make_geodetic (self) :
         ''' Convert this circle to a geodetic latlon '''
-        self.latlon = LatLonGeodetic (ll=self.latlon)
+        if isinstance (self.latlon, LatLonGeodetic):
+            pass
+        else: 
+            self.latlon = LatLonGeodetic (ll=self.latlon)
         return self
 
     def __str__(self) -> str:
@@ -366,6 +369,7 @@ class CircleCollection:
         ''' Convert this collection to geodetic '''
         for c in self.c_list:
             c.make_geodetic ()
+        return self
 
     def get_map_developers_string (self, color : str = "000000") -> str:
         ''' Return the MD string '''
@@ -391,14 +395,18 @@ def get_great_circle_route (start : LatLon, direction : LatLon | float | int) ->
 #pylint: disable=C0123
     if isinstance (direction, LatLon):
         assert type(start) == type(direction)
+        #assert type(start) == LatLon
+        #assert type(direction) == LatLon
 #pylint: enable=C0123
 
     converted = False
     if isinstance (start, LatLonGeodetic):
         start = start.get_latlon()
         converted = True
+        assert type(start) == LatLon
         if isinstance (direction, LatLonGeodetic):
             direction = direction.get_latlon()
+            assert type(direction) == LatLon
 
     if isinstance (direction, LatLon):
         t1 = to_rectangular (start)
@@ -409,10 +417,14 @@ def get_great_circle_route (start : LatLon, direction : LatLon | float | int) ->
         distance = EARTH_CIRCUMFERENCE / 4
         if converted:
             t4 = LatLonGeodetic (ll=t4)
-            distance = spherical_distance (t4, LatLonGeodetic(ll=start))
-            distance_ratio = distance / (EARTH_CIRCUMFERENCE/4)
-        c = Circle (t4, 90*distance_ratio, EARTH_CIRCUMFERENCE)
-        # c.set_mapping_distance (distance)
+        distance = spherical_distance (t4, LatLonGeodetic(ll=start))
+        distance_ratio = distance / (EARTH_CIRCUMFERENCE/4)
+        #distance = spherical_distance (t4, LatLonGeodetic(ll=start))
+        #distance_ratio = distance / (EARTH_CIRCUMFERENCE/4)        
+        # if converted:
+        #    t4 = LatLonGeodetic (ll=t4)
+        c = Circle (t4, 90, EARTH_CIRCUMFERENCE)
+        c.set_mapping_distance (distance)
         return c
     # isinstance (direction, float) or isinstance (direction, int) == True
     if start.lat in (90,-90):
@@ -425,11 +437,14 @@ def get_great_circle_route (start : LatLon, direction : LatLon | float | int) ->
     cp_latlon = to_latlon (cp)
     distance_ratio = 1
     distance = EARTH_CIRCUMFERENCE / 4
+    #distance = spherical_distance (cp_latlon, LatLonGeodetic(ll=start))
+    #distance_ratio = distance / (EARTH_CIRCUMFERENCE / 4)    
     if converted:
+        print ("BLÄÄ") # TODO Remove
         cp_latlon = LatLonGeodetic (ll = cp_latlon)
-        distance = spherical_distance (cp_latlon, LatLonGeodetic(ll=start))
-        distance_ratio = distance / (EARTH_CIRCUMFERENCE / 4)
-    c = Circle (cp_latlon, 90*distance_ratio, EARTH_CIRCUMFERENCE)
+    distance = spherical_distance (cp_latlon, LatLonGeodetic(ll=start))
+    distance_ratio = distance / (EARTH_CIRCUMFERENCE / 4)
+    c = Circle (cp_latlon, 90, EARTH_CIRCUMFERENCE)
     c.set_mapping_distance (distance)
     return c
 
@@ -819,8 +834,13 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
             A string usable as a Google Maps coordinate
     '''
     if isinstance (intersections, LatLon):
-        type_string = "("+str(type(intersections))+")"
-        return type_string + "," +\
+        type_info = ""
+        if type(intersections) == LatLonGeodetic:
+            type_info = "(Geodetic) "
+        elif type(intersections) == LatLon:
+            type_info = "(Geocentric) "
+        type_string = type_info
+        return type_string +\
                str(round(intersections.lat,num_decimals)) + "," +\
                str(round(intersections.lon,num_decimals))
     if isinstance (intersections, tuple):
@@ -838,8 +858,10 @@ def get_map_developers_string\
     Return URL segment for https://mapdevelopers.com circle plotting service
     '''
     # Compensate for the behaviour in mapdevelopers.com. Circles have to be drawn slightly wider
-    scale_factor = 1.00083
+    #scale_factor = 1.00083
+    scale_factor = 1.000655
     if distance is not None:
+        print ("USING DISTANCE") # TODO Remove
         r = distance
 
     r = r * scale_factor
@@ -862,7 +884,12 @@ def get_representation\
             A representation string. 
     '''
     assert num_decimals >= 0
+    type_info = ""    
     if isinstance (ins, LatLon):
+        if type (ins) == LatLon:
+            type_info = "(Geocentric) "
+        elif type (ins) == LatLonGeodetic:
+            type_info = "(Geodetic) "
         ins = ins.get_tuple ()
     if isinstance (ins, (float, int)):
         degrees = int (ins)
@@ -878,7 +905,7 @@ def get_representation\
                 prefix = "E"
         minutes = float (abs((ins - degrees)*60))
         a_degrees = abs (degrees)
-        return prefix + " " + str(a_degrees) + "°," + str(round(minutes, num_decimals)) + "′"
+        return type_info + prefix + " " + str(a_degrees) + "°," + str(round(minutes, num_decimals)) + "′"
     if isinstance (ins, (tuple, list)):
         pair = isinstance (ins, tuple)
         length = len (ins)
@@ -891,7 +918,7 @@ def get_representation\
             if i > 0:
                 ret_val = ret_val + ";"
         ret_val = ret_val + ")"
-        return ret_val
+        return type_info + ret_val
 
 def parse_angle_string (angle_string : str) -> float:
     ''' Read a string "DD:MM:SS" and return a decimal degree value.
