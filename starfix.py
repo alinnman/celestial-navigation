@@ -309,7 +309,7 @@ class Circle:
         self.mapping_distance_count = 0
 
     def make_geodetic (self) :
-        ''' TODO '''
+        ''' Convert this circle to a geodetic latlon '''
         self.latlon = LatLonGeodetic (ll=self.latlon)
         return self
 
@@ -363,7 +363,7 @@ class CircleCollection:
         self.c_list = coll
 
     def make_geodetic (self):
-        ''' TODO '''
+        ''' Convert this collection to geodetic '''
         for c in self.c_list:
             c.make_geodetic ()
 
