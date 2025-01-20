@@ -60,15 +60,18 @@ def main ():
     endtime = time ()
     taken_ms = round((endtime-starttime)*1000,2)
 
-    print ("MD = " + st.get_map_developers_string ())
+    print ("--------- Sight Reduction  --------- ")
     assert isinstance (intersections, tuple)
     print ("Starting point = " + str(get_representation(intersections[1],1)))
     print ("End point = " + str(get_representation(intersections[0],1)))
     print ("Distance travelled = " +\
            str(round(km_to_nm(spherical_distance (intersections[0], intersections[1])),2)) +\
               " nm")
+    
+    print ("--------- Mapping          --------- ")
+    print ("MD = " + st.get_map_developers_string ())
 
-    # Diagnostics for map rendering etc.
+    print ("--------- Some diagnostics --------- ")
 
     print ("S1 radius = " + str(round(s1.get_circle(geodetic=False).get_radius (),1)))
     print ("S1 GP     = " + get_google_map_string(s1.gp,4))

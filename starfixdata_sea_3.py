@@ -41,24 +41,28 @@ def main ():
     light_house_circle_gc = Circle\
           (light_house_gc, actual_line_of_sight_nm/60, circumference=EARTH_CIRCUMFERENCE)
 
-    # Get the intersections
+    print ("--------- Sight Reduction  --------- ")
     course_gc.make_geodetic()
     intersections = get_intersections (course_gc, light_house_circle_gc) # , estimated_position=s1)
     endtime = time ()
     assert isinstance (intersections, tuple)
-    print (get_representation(intersections[0],1))
+    #print (get_representation(intersections[0],1))
     f = intersections [0]
     assert isinstance (f, tuple)
-    the_coord = f[1]
-    intersection_circle = Circle (the_coord, 1/60, circumference=EARTH_CIRCUMFERENCE)
-    intersection_circle.make_geodetic()
+    intersection_circles = list [Circle] ()    
+    for i in range(2):
+        the_coord = LatLonGeodetic(ll=f[i])
+        print (get_representation(the_coord,1))
+        intersection_circles.append (Circle (the_coord, 1/60, circumference=EARTH_CIRCUMFERENCE))
 
-    # Check the circles on the map
+    print ("--------- Mapping          --------- ")
     origin_circle = Circle(s1, 1/60, circumference=EARTH_CIRCUMFERENCE).make_geodetic()
     light_house_circle = light_house_circle_gc.make_geodetic ()
-    c_c = CircleCollection ([light_house_circle, intersection_circle,\
+    c_c = CircleCollection ([light_house_circle,
+                             intersection_circles[0],
+                             intersection_circles[1],
                              origin_circle])
-    print ("MD = " + c_c.get_map_developers_string())
+    print (c_c.get_map_developers_string())
 
     taken_ms = round((endtime-starttime)*1000,2)
 

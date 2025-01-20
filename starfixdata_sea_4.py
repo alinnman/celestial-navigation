@@ -25,25 +25,24 @@ def main ():
     # The intercept angle for the lighthouse is 300 degrees
     light_house_intercept = 270
     light_house_gcr = get_great_circle_route (light_house_gc, light_house_intercept)
-    print (get_google_map_string(LatLonGeodetic(ll=light_house_gcr.latlon),4))
+
+    print ("--------- Sight Reduction  --------- ")
+    # print (get_google_map_string(LatLonGeodetic(ll=light_house_gcr.latlon),4))
 
     # Get the intersections
     intersections = get_intersections (course_gc, light_house_gcr, estimated_position=s1)
     endtime = time ()
-    #assert isinstance (intersections[0], LatLon)
-    print (get_representation(intersections[0],1))
-    assert isinstance (intersections[0], LatLon)
-    intersections_gd = LatLonGeodetic(ll=intersections[0])
-    print (get_google_map_string(intersections_gd,4))
+    the_coord = intersections [0]
+    assert isinstance (the_coord, LatLon)
+    the_coord = LatLonGeodetic (ll=the_coord)
+    print (get_representation(the_coord,1))
+    print (get_google_map_string(the_coord,4))
 
-    intersection1 = Circle (intersections_gd,1/60,circumference=EARTH_CIRCUMFERENCE)
-    #intersection1.make_geodetic()
+    print ("--------- Mapping          --------- ")
+    intersection1 = Circle (the_coord,1/60,circumference=EARTH_CIRCUMFERENCE)
     start         = Circle (s1, 1/60, circumference=EARTH_CIRCUMFERENCE)
-    #start.make_geodetic()
     light_house_circle = Circle (light_house, 1/60, circumference=EARTH_CIRCUMFERENCE)
 
-    # Check the circles
-    #course_gc.make_geodetic()
     c_c = CircleCollection ([intersection1, start, light_house_circle])
     print ("MD = " + c_c.get_map_developers_string())
 
