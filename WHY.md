@@ -11,7 +11,7 @@ The latter objective might seem strange, but I have followed some
 conspirationist movements during the last year, in particular Flat Earth.
 It is very obvious that celestial navigation provides one of the most solid
 evidence of a spheric Earth you can ever get,
-and this just by staying on the ground (or sail a ship at sea).
+and this just by staying on the ground (or sail a ship at sea) using low-tech eqiuipment.
 No spaceflight is necessary, it can be performed in your backyard
 (using an artificial horizon) and this has been known for many centuries.
 By providing this sample I hope to give some more understanding of the concept.
