@@ -5,7 +5,7 @@ This code project was written with these objectives
 * Provide for a workable positioning tool when GPS is not available.
 * As an exercise for myself in python coding, and elementary maths
 (geometry, vector/linear algebra, numerical methods).
-* As an attempt to give evidence of the shape of the Earth.
+* As an attempt to give evidence of the **spherical** shape of the Earth.
 
 The latter objective might seem strange, but I have followed some
 conspirationist movements during the last year, in particular Flat Earth.
