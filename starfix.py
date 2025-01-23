@@ -1,5 +1,5 @@
 ''' A toolkit for celestial navigation, in particular sight reductions 
-    © August Linnman, 2024, email: august@linnman.net
+    © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
 '''
 
