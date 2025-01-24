@@ -39,7 +39,4 @@ with no dependency on an internet connection.
 Keeping it runnable in a lightweigth Python environment is desirable,
 with the mobile phone as the natural choice of hardware.
 
-I may also consider improving on accuracy by more elaborate work on geodesics
-(Earth oblateness).
-
 Any contributions are welcome!
