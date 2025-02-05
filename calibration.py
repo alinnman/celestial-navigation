@@ -1,4 +1,7 @@
-''' Just a sample showing a simple sextant calibration '''
+''' © August Linnman, 2025, email: august@linnman.net
+    MIT License (see LICENSE file)
+
+    Just a sample showing a simple sextant calibration '''
 
 from starfix import angle_between_points, get_dms, LatLon
 

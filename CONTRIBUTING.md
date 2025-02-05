@@ -1,4 +1,9 @@
 
+<!---
+    © August Linnman, 2025, email: august@linnman.net
+    MIT License (see LICENSE file)
+-->
+
 # Contributing to the project
 
 Anyone is invited to contribute to this project,

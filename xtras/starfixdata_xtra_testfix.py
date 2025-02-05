@@ -1,5 +1,5 @@
 ''' This is a sample for celestial navigation for a stationary observer 
-    © August Linnman, 2024, email: august@linnman.net
+    © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
 
     Test sample from sextant exercise. This used a Ho observation so I added

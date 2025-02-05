@@ -1,3 +1,8 @@
+<!---
+    © August Linnman, 2025, email: august@linnman.net
+    MIT License (see LICENSE file)
+-->
+
 # Why did I write this?
 
 This code project was written with these objectives

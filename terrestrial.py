@@ -1,5 +1,5 @@
 ''' Simple sample for terrestrial navigation (landfall) 
-    © August Linnman, 2024, email: august@linnman.net
+    © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
 
 '''

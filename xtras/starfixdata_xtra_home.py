@@ -1,5 +1,5 @@
 ''' This is a real-world sample. Very basic sextant used 
-    © August Linnman, 2024, email: august@linnman.net
+    © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
 
 '''

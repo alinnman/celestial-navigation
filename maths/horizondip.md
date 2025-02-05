@@ -1,3 +1,8 @@
+<!---
+    © August Linnman, 2025, email: august@linnman.net
+    MIT License (see LICENSE file)
+-->
+
 # Some notes on horizon dip (Al-Biruni)
 
 The dip of the horizon can be calculated with the exact geometric formula
