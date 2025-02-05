@@ -1267,12 +1267,16 @@ class Sight :
             if not no_dip:
                 self.__correct_dip_of_horizon ()
         self.gp = self.__calculate_gp ()
+
         if estimated_position is None:
+            # Use previously used parameter value
             self.estimated_position = Sight.estimated_position_hold
         else:
             self.estimated_position = estimated_position
 
+        # Saving the specified estimated position for later use (calls with no parameter specified)
         Sight.estimated_position_hold = self.estimated_position
+
         self.raw_measured_alt = self.measured_alt
         if isinstance (self.estimated_position, LatLonGeodetic):
             # We must convert the sextant altitude (geodetic) to a geocentric value
@@ -1491,8 +1495,6 @@ class SightCollection:
             for i in range (nr_of_coords):
                 diag_output += "|**"+str(i)+"**|"+str(coords[i][0])+"|\n"
             diag_output += "\n\nDistances\n"
-
-        if diagnostics:
             diag_output += "|"
             for i in range (nr_of_coords):
                 diag_output += "|" + str(i)
@@ -1502,8 +1504,8 @@ class SightCollection:
                 diag_output += "|----"
             diag_output += "|\n"
         for i in range (nr_of_coords):
-            diag_output += "|**" + str(i) + "**"
             if diag_output:
+                diag_output += "|**" + str(i) + "**"                
                 for _ in range (0, i):
                     diag_output += "|-"
             for j in range (i, nr_of_coords):
