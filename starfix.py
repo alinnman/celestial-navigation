@@ -337,8 +337,7 @@ class Circle:
         ''' Retrieve the mean value of mapping distances '''
         if self.accum_mapping_distance is None:
             return None
-        else:
-            return self.accum_mapping_distance / self.mapping_distance_count
+        return self.accum_mapping_distance / self.mapping_distance_count
 
     #def set_mapping_distance (self, distance : float | NoneType = None):
     #    ''' Insert a new mapping distance estimation '''
@@ -509,6 +508,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         fitness = 1
         if use_fitness:
             fitness = length_of_vect (c1_vec)
+
         if estimated_position is None:
             dist1 = spherical_distance\
                   (LatLonGeodetic(ll=c1_latlon), LatLonGeodetic(ll=circle1.latlon))
@@ -523,23 +523,23 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
                   (LatLonGeodetic(ll=c2_latlon), LatLonGeodetic(ll=circle2.latlon))
             circle2.accumulate_distance (dist4)
             return ret_tuple, fitness, diag_output
-        else:
-            # Check which of the intersections is closest to our estimatedCoordinates
-            best_distance = EARTH_CIRCUMFERENCE
-            best_intersection = None
-            for ints in ret_tuple:
-                the_distance = spherical_distance (ints, estimated_position)
-                if the_distance < best_distance:
-                    best_distance = the_distance
-                    best_intersection = ints
-            dist1 = spherical_distance\
-                  (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle1.latlon))
-            circle1.accumulate_mapping_distance (dist1)
-            dist2 = spherical_distance\
-                  (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle2.latlon))
-            circle2.accumulate_mapping_distance (dist2)
-            assert best_intersection is not None
-            return best_intersection, fitness, diag_output
+
+        # Check which of the intersections is closest to our estimatedCoordinates
+        best_distance = EARTH_CIRCUMFERENCE
+        best_intersection = None
+        for ints in ret_tuple:
+            the_distance = spherical_distance (ints, estimated_position)
+            if the_distance < best_distance:
+                best_distance = the_distance
+                best_intersection = ints
+        dist1 = spherical_distance\
+                (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle1.latlon))
+        circle1.accumulate_mapping_distance (dist1)
+        dist2 = spherical_distance\
+                (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle2.latlon))
+        circle2.accumulate_mapping_distance (dist2)
+        assert best_intersection is not None
+        return best_intersection, fitness, diag_output
 
     # Handle intersection of two circles, of which at least one is a small circle
     diag_output = ""
@@ -1134,6 +1134,7 @@ def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
         From: https://www.johndcook.com/blog/2018/11/24/spheroid-distance/   
     '''
 
+    # If coordinates are geocentrical we must convert to geodetic first
     if not isinstance (pt1, LatLonGeodetic):
         pt1_g = LatLonGeodetic (ll = pt1)
         pt1 = pt1_g
