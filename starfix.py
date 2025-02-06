@@ -874,6 +874,7 @@ def get_map_developers_string\
     result = result + "\"#AAAAAA\",\"#"+color+"\",0.4]"
     return result
 
+#pylint: disable=R0912
 def get_representation\
     (ins : LatLon | tuple | list [float] | float | int, num_decimals : int,
      lat : bool =False) -> str:
@@ -924,6 +925,9 @@ def get_representation\
                 ret_val = ret_val + ";"
         ret_val = ret_val + ")"
         return type_info + ret_val
+    # We should never get here
+    raise RuntimeError ("Internal processing error")
+#pylint: enable=R0912
 
 def parse_angle_string (angle_string : str) -> float:
     ''' Read a string "DD:MM:SS" and return a decimal degree value.
@@ -1172,8 +1176,7 @@ def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
         lambda_new = L + (1 - C)*f*sin_alpha*t
         if abs(lambda_new - lambda_old) <= tolerance:
             break
-        else:
-            lambda_old = lambda_new
+        lambda_old = lambda_new
 
     u2 = cos_sq_alpha*((a**2 - b**2)/b**2)
     A = 1 + (u2/16384)*(4096 + u2*(-768+u2*(320 - 175*u2)))
@@ -1193,7 +1196,9 @@ def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
 class Sight :
     '''  Object representing a sight (star fix) '''
 
+    # This is a cached value for the estimated_position parameter
     estimated_position_hold = None
+
 #pylint: disable=R0912
 #pylint: disable=R0913
 #pylint: disable=R0914
@@ -1339,7 +1344,7 @@ class Sight :
 
         return LatLon (result_lat, result_lon)
 
-    def get_angle (self, geodetic : bool, viewpoint : LatLon| NoneType = None) -> float:
+    def get_angle (self, geodetic : bool, viewpoint : LatLon | NoneType = None) -> float:
         ''' Returns the (Earth-based) angle of the sight '''
         if geodetic:
             if viewpoint is not None:
@@ -1505,7 +1510,7 @@ class SightCollection:
             diag_output += "|\n"
         for i in range (nr_of_coords):
             if diag_output:
-                diag_output += "|**" + str(i) + "**"                
+                diag_output += "|**" + str(i) + "**"
                 for _ in range (0, i):
                     diag_output += "|-"
             for j in range (i, nr_of_coords):
