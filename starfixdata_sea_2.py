@@ -6,7 +6,7 @@
 from datetime import datetime
 from time import time
 from starfix import Sight, SightTrip, get_representation,\
-     LatLonBase, LatLonGeodetic, IntersectError, get_google_map_string,\
+     LatLon, LatLonGeodetic, IntersectError, get_google_map_string,\
      km_to_nm, spherical_distance
 
 def main ():
@@ -55,7 +55,7 @@ def main ():
     taken_ms = round((endtime-starttime)*1000,2)
 
     print ("--------- Sight Reduction  --------- ")
-    assert isinstance (intersections, LatLonBase)
+    assert isinstance (intersections, LatLon)
     print ("Starting point = " + str(get_representation(s1_latlon,1)))
     print ("Starting point GM = " + str(get_google_map_string(s1_latlon,4)))
     print ("End point = " + str(get_representation(intersections,1)))
