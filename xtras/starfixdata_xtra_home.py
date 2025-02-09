@@ -17,7 +17,7 @@ try:
 except ValueError:
     pass
 
-from starfix import Sight, SightCollection, LatLon, Sextant, Chronometer,\
+from starfix import Sight, SightCollection, LatLonGeocentric, Sextant, Chronometer,\
                     get_decimal_degrees_from_tuple,\
                     get_representation, \
                     get_google_map_string,\
@@ -74,7 +74,7 @@ S2 = Sight (   object_name             = "Sun",
 collection = SightCollection ([S1, S2])
 
 # This is the exact position of my observation location
-home = LatLon (59.318659676810654, 18.04959717835501)
+home = LatLonGeocentric (59.318659676810654, 18.04959717835501)
 
 try:
     intersections, fitness, diag_output =\
@@ -86,7 +86,7 @@ except IntersectError as ve:
 
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)
-assert isinstance (intersections, LatLon)
+assert isinstance (intersections, LatLonGeocentric)
 print (get_representation(intersections,1))
 print ("MD = " + collection.get_map_developers_string(geodetic=True))
 print ("GM = " + get_google_map_string(intersections,4))

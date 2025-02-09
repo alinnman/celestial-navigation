@@ -38,9 +38,9 @@ class LatLonBase:
         ''' Used to simplify some code where tuples are more practical '''
         return self.lon, self.lat
 
-class LatLon (LatLonBase):
+class LatLonGeocentric (LatLonBase):
     ''' Represents spherical coordinates on Earth '''
-    
+
     def __str__(self):
         return "LAT = " + str(round(self.lat,4)) + "; LON = " + str(round(self.lon,4))
 
@@ -111,7 +111,7 @@ def rad_to_deg (rad : int | float) -> float:
     ''' Convert radians to degrees '''
     return rad*(180.0/pi)
 
-def to_latlon (vec : list [float]) -> LatLon:
+def to_latlon (vec : list [float]) -> LatLonGeocentric:
     ''' Convert cartesian coordinate to LatLon (spherical) '''
     assert len (vec) == 3
     vec = normalize_vect (vec)
@@ -121,7 +121,7 @@ def to_latlon (vec : list [float]) -> LatLon:
     lon = rad_to_deg (theta)
     lat = 90-rad_to_deg (phi)
 
-    return LatLon (lat, mod_lon(lon))
+    return LatLonGeocentric (lat, mod_lon(lon))
 
 def to_rectangular (latlon : LatLonBase) -> list [float]:
     ''' Convert LatLon (spherical) coordinate to cartesian '''
@@ -174,8 +174,8 @@ def mod_course (lon : int | float) -> float:
     x = lon % 360
     return x
 
-def takeout_course (latlon : LatLon, course : int | float, speed_knots : int | float,
-                    time_hours : int | float) -> LatLon:
+def takeout_course (latlon : LatLonGeocentric, course : int | float, speed_knots : int | float,
+                    time_hours : int | float) -> LatLonGeocentric:
     ''' Calculates a trip movement. Simplified formula, not using great circles '''
     distance = speed_knots * time_hours
     distance_degrees = distance / 60
@@ -183,7 +183,7 @@ def takeout_course (latlon : LatLon, course : int | float, speed_knots : int | f
     stretch_at_start = cos (deg_to_rad (latlon.lat))
     diff_lat = cos (deg_to_rad(course))*distance_degrees
     diff_lon = sin (deg_to_rad(course))*distance_degrees/stretch_at_start
-    return LatLon (latlon.lat+diff_lat, latlon.lon+diff_lon)
+    return LatLonGeocentric (latlon.lat+diff_lat, latlon.lon+diff_lon)
 
 def angle_b_points (latlon1 : LatLonBase, latlon2 : LatLonBase) -> float:
     ''' Calculates the angle between two points on Earth 
@@ -225,7 +225,8 @@ class Sextant:
         self.index_error = index_error
 #pylint: enable=R0903
 
-def angle_between_points (origin : LatLon, point1 : LatLon, point2 : LatLon) -> float:
+def angle_between_points (origin : LatLonGeocentric,
+                          point1 : LatLonGeocentric, point2 : LatLonGeocentric) -> float:
     ''' Return the angle in degrees between two terrestrial targets (point1 and point2) 
         as seen from the observation point (origin) '''
     origin_r = to_rectangular (origin)
@@ -398,14 +399,14 @@ class CircleCollection:
 #pylint: enable=R0903
 
 def get_great_circle_route\
-     (start : LatLon, direction : LatLon | float | int,
+     (start : LatLonGeocentric, direction : LatLonGeocentric | float | int,
       convert_to_geocentric : bool = True) -> Circle:
     ''' Calculates a great circle starting in 'start' 
         and passing 'direction' coordinate (if LatLon) 
         or with direction 'direction' degrees (if float or int)    
     '''
 #pylint: disable=C0123
-    if isinstance (direction, LatLon):
+    if isinstance (direction, LatLonGeocentric):
         assert type(start) == type(direction)
         #assert type(start) == LatLon
         #assert type(direction) == LatLon
@@ -416,13 +417,13 @@ def get_great_circle_route\
         start = start.get_latlon()
         converted = True
 #pylint: disable=C0123
-        assert type(start) == LatLon
+        assert type(start) == LatLonGeocentric
         if isinstance (direction, LatLonGeodetic):
             direction = direction.get_latlon()
-            assert type(direction) == LatLon
+            assert type(direction) == LatLonGeocentric
 #pylint: enable=C0123
 
-    if isinstance (direction, LatLon):
+    if isinstance (direction, LatLonGeocentric):
         t1 = to_rectangular (start)
         t2 = to_rectangular (direction)
         t3 = normalize_vect(cross_product (t1,t2))
@@ -470,7 +471,8 @@ def get_intersections (circle1 : Circle, circle2 : Circle,
                        use_fitness : bool = True, diagnostics : bool = False,
                        intersection_number : int = 0) \
                           -> tuple[
-                              LatLon | tuple[LatLon, LatLon], # Coordinate or Coordinate Pair
+                              LatLonGeocentric | tuple[LatLonGeocentric, LatLonGeocentric],
+                              # Coordinate or Coordinate Pair
                               float,                          # Fitness value
                               str]:                           # Diagnostic output
     '''
@@ -765,7 +767,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 #pylint: enable=R0914
 #pylint: enable=R0915
 
-def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
+def get_azimuth (to_pos : LatLonGeocentric, from_pos : LatLonGeocentric) -> float:
     ''' Return the azimuth of the to_pos sight from from_pos sight
         Returns the azimuth in degrees (0-360)
         Parameters:
@@ -845,7 +847,7 @@ def get_google_map_string (intersections : tuple | LatLonBase, num_decimals : in
 #pylint: disable=C0123
         if type(intersections) == LatLonGeodetic:
             type_info = "(Geodetic) "
-        elif type(intersections) == LatLon:
+        elif type(intersections) == LatLonGeocentric:
 #pylint: enable=C0123
             type_info = "(Geocentric) "
         type_string = type_info
@@ -893,7 +895,7 @@ def get_representation\
     type_info = ""
     if isinstance (ins, LatLonBase):
 #pylint: disable=C0123
-        if type (ins) == LatLon:
+        if type (ins) == LatLonGeocentric:
             type_info = "(Geocentric) "
         elif type (ins) == LatLonGeodetic:
 #pylint: enable=C0123
@@ -968,7 +970,8 @@ def parse_angle_string (angle_string : str) -> float:
 
 # Terrestrial Navigation
 
-def get_circle_for_angle (point1 : LatLon, point2 : LatLon, angle : int | float)\
+def get_circle_for_angle (point1 : LatLonGeocentric, point2 : LatLonGeocentric,
+                          angle : int | float)\
       -> Circle :
       #-> tuple [LatLon, float] :
     '''
@@ -994,15 +997,15 @@ def get_circle_for_angle (point1 : LatLon, point2 : LatLon, angle : int | float)
     #return to_latlon(rot_center), radius
 
 #pylint: disable=R0913
-def get_terrestrial_position (point_a1 : LatLon,
-                              point_a2 : LatLon,
+def get_terrestrial_position (point_a1 : LatLonGeocentric,
+                              point_a2 : LatLonGeocentric,
                               angle_a : int | float,
-                              point_b1 : LatLon,
-                              point_b2 : LatLon,
+                              point_b1 : LatLonGeocentric,
+                              point_b2 : LatLonGeocentric,
                               angle_b : int | float,
-                              estimated_position : LatLon | NoneType = None,
+                              estimated_position : LatLonGeocentric | NoneType = None,
                               diagnostics : bool = False)\
-            -> tuple [LatLon | tuple, Circle, Circle, float, str] :
+            -> tuple [LatLonGeocentric | tuple, Circle, Circle, float, str] :
     '''
     Given two pairs of terrestial observations (pos + angle) determine the observer's position 
     '''
@@ -1073,7 +1076,7 @@ class LatLonGeodetic (LatLonBase):
 
         super().__init__(rad_to_deg(mu), ll.lon)
 
-    def get_latlon (self, height : float = 0) -> LatLon:
+    def get_latlon (self, height : float = 0) -> LatLonGeocentric:
         ''' Transforms a geodetic coordinate into geocentric 
             See: https://www.mathworks.com/help/aeroblks/geodetictogeocentriclatitude.html
         '''
@@ -1088,14 +1091,14 @@ class LatLonGeodetic (LatLonBase):
         z = (n*(1 - e2) + h)*sin(mu)
         lam_bda = atan2 (z, rho)
         assert self.lon is not None
-        return LatLon (rad_to_deg(lam_bda), self.lon)
+        return LatLonGeocentric (rad_to_deg(lam_bda), self.lon)
 
     def __str__(self):
         return "Geodetic coordinate. LAT = " + str(round(self.lat,4)) +\
                "; LON = " + str(round(self.lon,4))
 
 
-def get_vertical_parallax (llg : LatLonGeodetic) -> tuple [float, LatLon]:
+def get_vertical_parallax (llg : LatLonGeodetic) -> tuple [float, LatLonGeocentric]:
     ''' Calculate the vertical parallax 
     (difference between geocentric and geodetic latitude)
     '''
@@ -1105,7 +1108,8 @@ def get_vertical_parallax (llg : LatLonGeodetic) -> tuple [float, LatLon]:
     angle    = dot_product (ll_rect, llg_rect)
     return rad_to_deg(acos (angle)), ll
 
-def get_geocentric_alt (position : LatLonGeodetic, geodesic_alt : float, gp : LatLon) -> float:
+def get_geocentric_alt (position : LatLonGeodetic, geodesic_alt : float,
+                        gp : LatLonGeocentric) -> float:
     ''' Convert an estimated geodetic altitude (observation from sextant) to a geocentric value '''
     #if False:
     #    parallax, ll = get_vertical_parallax (estimated_position)
@@ -1122,7 +1126,8 @@ def get_geocentric_alt (position : LatLonGeodetic, geodesic_alt : float, gp : La
     diff = rad_to_deg(ang_2 - ang_1)
     return geodesic_alt + diff
 
-def get_geodetic_alt (position : LatLon, geocentric_alt : float, gp : LatLon) -> float:
+def get_geodetic_alt (position : LatLonGeocentric, geocentric_alt : float,
+                      gp : LatLonGeocentric) -> float:
     ''' Convert an estimated geocentric altitude to a geodetic value '''
     ang_1 = (pi/2) - acos(dot_product (to_rectangular(position), to_rectangular(gp)))
     epgc = LatLonGeodetic(ll = position)
@@ -1335,7 +1340,7 @@ class Sight :
     def __correct_for_refraction (self):
         self.measured_alt -= get_refraction (self.measured_alt, self.temperature, self.pressure)/60
 
-    def __calculate_gp (self) -> LatLon:
+    def __calculate_gp (self) -> LatLonGeocentric:
 
         min_sec_contribution = self.set_time_dt.minute/60 + self.set_time_dt.second/3600
 
@@ -1346,7 +1351,7 @@ class Sight :
         result_lat = \
         self.decl_time_0 + (self.decl_time_1 - self.decl_time_0)*min_sec_contribution
 
-        return LatLon (result_lat, result_lon)
+        return LatLonGeocentric (result_lat, result_lon)
 
     def get_angle (self, geodetic : bool, viewpoint : LatLonBase | NoneType = None) -> float:
         ''' Returns the (Earth-based) angle of the sight '''
@@ -1373,13 +1378,13 @@ class Sight :
         retval.accumulate_mapping_distance (self.mapping_distance)
         return retval
 
-    def get_distance_from (self, p : LatLon, geodetic : bool) -> float:
+    def get_distance_from (self, p : LatLonGeocentric, geodetic : bool) -> float:
         ''' Return the spherical distance from point (p) to the sight circle of equal altitude '''
         p_distance = spherical_distance (p, self.gp)
         the_radius = self.get_circle(geodetic=geodetic).get_radius ()
         return p_distance - the_radius
 
-    def get_azimuth (self, from_pos : LatLon) -> float:
+    def get_azimuth (self, from_pos : LatLonGeocentric) -> float:
         ''' Return the azimuth of this sight (to the GP) from a particular point on Earth 
             Returns the azimuth in degrees (0-360)'''
         return get_azimuth (self.gp, from_pos)
@@ -1412,7 +1417,8 @@ class SightPair:
                        estimated_position : NoneType | LatLonBase = None,
                        diagnostics : bool = False,
                        intersection_number : int = 0) ->\
-                       tuple[LatLon | tuple[LatLon, LatLon], float, str]:
+                       tuple[LatLonGeocentric | tuple[LatLonGeocentric, LatLonGeocentric],
+                             float, str]:
         ''' Return the two intersections for this sight pair. 
             The parameter estimated_position can be used to eliminate the false intersection '''
 
@@ -1473,7 +1479,7 @@ class SightCollection:
         #elif nr_of_fixes >= 3:
         # For >= 3 star fixes perform pairwise calculation on every pair of fixes
         # and then run a sorting algorithm
-        coords = list[tuple[LatLon, float]]()
+        coords = list[tuple[LatLonGeocentric, float]]()
         # Perform pairwise sight reductions
         intersection_count = 0
         for i in range (nr_of_fixes):
@@ -1490,7 +1496,7 @@ class SightCollection:
                     if isinstance (p_int, (list, tuple)):
                         for pix in p_int:
                             coords.append ((pix, fitness))
-                    elif isinstance (p_int, LatLon):
+                    elif isinstance (p_int, LatLonGeocentric):
                         coords.append ((p_int, fitness))
                     else:
                         assert False
@@ -1590,7 +1596,8 @@ class SightCollection:
 
     def get_map_developers_string \
         (self, geodetic : bool, markers : list[LatLonGeodetic] | NoneType = None,
-         viewpoint : LatLon | NoneType = None, scale_factor : float = MAP_SCALE_FACTOR) -> str:
+         viewpoint : LatLonGeocentric | NoneType = None,
+         scale_factor : float = MAP_SCALE_FACTOR) -> str:
         '''
         Return URL for https://mapdevelopers.com circle plotting service
         '''
@@ -1635,7 +1642,7 @@ class SightTrip:
 
     def __calculate_distance_to_target (self, angle : int | float,
                                         a_vec : list [float], b_vec : list [float])\
-          -> tuple [float, LatLon, LatLon]:
+          -> tuple [float, LatLonGeocentric, LatLonGeocentric]:
         rotation_angle = deg_to_rad (angle)
         rotated_vec = rotate_vector (b_vec, a_vec, rotation_angle)
         rotated_latlon = to_latlon (rotated_vec)
@@ -1671,7 +1678,7 @@ class SightTrip:
                  diagnostics = diagnostics)
             # Determine angle of the intersection point on sight_start small circle
             a_vec = to_rectangular (self.sight_start.gp)
-            assert isinstance (best_intersection, LatLon)
+            assert isinstance (best_intersection, LatLonGeocentric)
             b_vec = to_rectangular (best_intersection)
 
             # Apply Newtons method to find the location
@@ -1709,7 +1716,7 @@ class SightTrip:
         taken_out = takeout_course (self.estimated_starting_point,\
                                     self.course_degrees,\
                                     self.speed_knots, self.time_hours)
-        assert isinstance (taken_out, LatLon)
+        assert isinstance (taken_out, LatLonGeocentric)
         circle1 = Circle (self.sight_end.gp,
                           self.sight_end.get_angle(geodetic = False),
                           EARTH_CIRCUMFERENCE)
@@ -1722,7 +1729,7 @@ class SightTrip:
                            (circle1, circle2,
                             estimated_position=taken_out)
 
-        assert isinstance (gi, LatLon)
+        assert isinstance (gi, LatLonGeocentric)
         self.set_mapping_distance (circle2.get_mapping_distance ())
         self.sight_end.set_mapping_distance (circle1.get_mapping_distance())
         self.start_pos = self.estimated_starting_point
@@ -1738,7 +1745,8 @@ class SightTrip:
         '''
         if isinstance (self.sight_start, Sight):
             s_c = SightCollection ([self.sight_start, self.sight_end])
-            if isinstance (self.start_pos, LatLon) and isinstance (self.end_pos, LatLon):
+            if isinstance (self.start_pos, LatLonGeocentric) and \
+               isinstance (self.end_pos, LatLonGeocentric):
                 return s_c.get_map_developers_string\
                         (geodetic = True,\
                          markers = \
@@ -1749,7 +1757,7 @@ class SightTrip:
                 return s_c.get_map_developers_string (geodetic=True)
 
         # isinstance (self.sight_start, LatLon) == True
-        assert isinstance (self.movement_vec, LatLon)
+        assert isinstance (self.movement_vec, LatLonGeocentric)
 
         # Plot the end sight
         str1 = self.sight_end.get_map_developers_string (include_url_start=False, geodetic = True)
@@ -1766,7 +1774,8 @@ class SightTrip:
         #result += str2
 
         # Handle/plot markers
-        if isinstance (self.start_pos, LatLon) and isinstance (self.end_pos, LatLon):
+        if isinstance (self.start_pos, LatLonGeocentric) and \
+           isinstance (self.end_pos, LatLonGeocentric):
             result += ","
             result += get_map_developers_string (1, LatLonGeodetic(ll=self.start_pos))
             result += ","

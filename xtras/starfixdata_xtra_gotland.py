@@ -18,7 +18,7 @@ except ValueError:
     pass
 
 from starfix import Sight, SightCollection, get_representation,\
-     get_google_map_string, IntersectError, LatLon, LatLonGeodetic
+     get_google_map_string, IntersectError, LatLonGeocentric, LatLonGeodetic
 
 starttime = time ()
 
@@ -66,12 +66,12 @@ endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)
 print (get_representation(intersections,1))
 # print ("MD = " + collection.get_map_developers_string(geodetic=True)) TODO Review
-assert isinstance (intersections, LatLon)
+assert isinstance (intersections, LatLonGeocentric)
 print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
 print ("GM = " + get_google_map_string(intersections,4))
 
 # Check azimuth
-assert isinstance (intersections, LatLon)
+assert isinstance (intersections, LatLonGeocentric)
 az = a.get_azimuth (intersections)
 print ("Azimuth A = " + str(round(az,2)))
 az = b.get_azimuth (intersections)

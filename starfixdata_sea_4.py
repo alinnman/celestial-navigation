@@ -4,7 +4,7 @@
 '''
 
 from time import time
-from starfix import LatLonGeodetic, LatLon, get_representation,\
+from starfix import LatLonGeodetic, LatLonGeocentric, get_representation,\
                     get_great_circle_route, Circle, CircleCollection, get_intersections,\
                     EARTH_CIRCUMFERENCE, get_google_map_string
 def main ():
@@ -33,7 +33,7 @@ def main ():
     intersections = get_intersections (course_gc, light_house_gcr, estimated_position=s1)
     endtime = time ()
     the_coord = intersections [0]
-    assert isinstance (the_coord, LatLon)
+    assert isinstance (the_coord, LatLonGeocentric)
     the_coord = LatLonGeodetic (ll=the_coord)
     print (get_representation(the_coord,1))
     print (get_google_map_string(the_coord,4))
