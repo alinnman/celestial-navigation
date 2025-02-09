@@ -28,18 +28,21 @@ MAP_SCALE_FACTOR = 1.000655
 
 # Data types
 
-class LatLon:
-    ''' Represents spherical coordinates on Earth '''
+class LatLonBase:
+    ''' Base class for lat-lon pairs '''
     def __init__ (self, lat : float | int, lon : float | int):
         self.lat = lat
         self.lon = mod_lon(lon)
 
-    def __str__(self):
-        return "LAT = " + str(round(self.lat,4)) + "; LON = " + str(round(self.lon,4))
-
     def get_tuple (self) -> tuple[float | int, float | int] :
         ''' Used to simplify some code where tuples are more practical '''
         return self.lon, self.lat
+
+class LatLon (LatLonBase):
+    ''' Represents spherical coordinates on Earth '''
+    
+    def __str__(self):
+        return "LAT = " + str(round(self.lat,4)) + "; LON = " + str(round(self.lon,4))
 
 # Utility routines (algrebraic, spheric geometry)
 
@@ -120,7 +123,7 @@ def to_latlon (vec : list [float]) -> LatLon:
 
     return LatLon (lat, mod_lon(lon))
 
-def to_rectangular (latlon : LatLon) -> list [float]:
+def to_rectangular (latlon : LatLonBase) -> list [float]:
     ''' Convert LatLon (spherical) coordinate to cartesian '''
     phi = deg_to_rad (90 - latlon.lat)
     theta = deg_to_rad (latlon.lon)
@@ -182,7 +185,7 @@ def takeout_course (latlon : LatLon, course : int | float, speed_knots : int | f
     diff_lon = sin (deg_to_rad(course))*distance_degrees/stretch_at_start
     return LatLon (latlon.lat+diff_lat, latlon.lon+diff_lon)
 
-def angle_b_points (latlon1 : LatLon, latlon2 : LatLon) -> float:
+def angle_b_points (latlon1 : LatLonBase, latlon2 : LatLonBase) -> float:
     ''' Calculates the angle between two points on Earth 
         Return : Angle in radians '''
     normvec1 = to_rectangular (latlon1)
@@ -191,7 +194,7 @@ def angle_b_points (latlon1 : LatLon, latlon2 : LatLon) -> float:
     angle = acos (dp)
     return angle
 
-def spherical_distance (latlon1 : LatLon, latlon2 : LatLon) -> float:
+def spherical_distance (latlon1 : LatLonBase, latlon2 : LatLonBase) -> float:
     ''' Calculate distance between two points in km. Using great circles '''
     angle = angle_b_points (latlon1, latlon2)
     distance = EARTH_RADIUS * angle
@@ -300,7 +303,7 @@ def get_line_of_sight (h1 : float, h2 : float, temperature : float = 10,
 class Circle:
     ''' Helper class for circles (great or small circles) '''
 
-    def __init__ (self, latlon : LatLon, angle : int | float, circumference : float):
+    def __init__ (self, latlon : LatLonBase, angle : int | float, circumference : float):
         ''' Parameters:
                 latlon : centerpoint
                 angle  : angle of circle in degrees, for a great circle set to 90
@@ -463,7 +466,7 @@ class IntersectError (ValueError):
 #pylint: disable=R0914
 #pylint: disable=R0915
 def get_intersections (circle1 : Circle, circle2 : Circle,
-                       estimated_position : NoneType | LatLon = None,
+                       estimated_position : NoneType | LatLonBase = None,
                        use_fitness : bool = True, diagnostics : bool = False,
                        intersection_number : int = 0) \
                           -> tuple[
@@ -828,7 +831,7 @@ def get_refraction (apparent_angle : int | float, temperature : float, pressure 
 # Data formatting
 
 #pylint: disable=R1710
-def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -> str :
+def get_google_map_string (intersections : tuple | LatLonBase, num_decimals : int) -> str :
     ''' Return a coordinate which can be used in Google Maps 
     
         Parameters:
@@ -837,7 +840,7 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
         Returns: 
             A string usable as a Google Maps coordinate
     '''
-    if isinstance (intersections, LatLon):
+    if isinstance (intersections, LatLonBase):
         type_info = ""
 #pylint: disable=C0123
         if type(intersections) == LatLonGeodetic:
@@ -856,7 +859,7 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
 #pylint: enable=R1710
 
 def get_map_developers_string\
-     (r : float, latlon : LatLon, distance : float | NoneType = None,
+     (r : float, latlon : LatLonBase, distance : float | NoneType = None,
       color : str = "000000", scale_factor : float = MAP_SCALE_FACTOR) -> str:
     '''
     Return URL segment for https://mapdevelopers.com circle plotting service
@@ -876,7 +879,7 @@ def get_map_developers_string\
 
 #pylint: disable=R0912
 def get_representation\
-    (ins : LatLon | tuple | list [float] | float | int, num_decimals : int,
+    (ins : LatLonBase | tuple | list [float] | float | int, num_decimals : int,
      lat : bool =False) -> str:
     ''' Converts coordinate(s) to a string representation 
     
@@ -888,7 +891,7 @@ def get_representation\
     '''
     assert num_decimals >= 0
     type_info = ""
-    if isinstance (ins, LatLon):
+    if isinstance (ins, LatLonBase):
 #pylint: disable=C0123
         if type (ins) == LatLon:
             type_info = "(Geocentric) "
@@ -1016,12 +1019,12 @@ def get_terrestrial_position (point_a1 : LatLon,
 
 # Geodetics
 
-class LatLonGeodetic (LatLon):
+class LatLonGeodetic (LatLonBase):
     ''' Represents a geodetic coordinate in an ellipsoid model (WGS-84) '''
     def __init__ (self,
                   lat : float | int | NoneType = None,
                   lon : float | int | NoneType = None,
-                  ll : LatLon | NoneType = None):
+                  ll : LatLonBase | NoneType = None):
         if ll is None:
             # Define the coordinate just from raw lat and lon values
             assert lat is not None
@@ -1129,7 +1132,7 @@ def get_geodetic_alt (position : LatLon, geocentric_alt : float, gp : LatLon) ->
 
 #pylint: disable=C0103
 #pylint: disable=R0914
-def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
+def ellipsoidal_distance(pt1 : LatLonBase, pt2 : LatLonBase) -> float:
     ''' Compute a distance on an path on an ellipsoid
         From: https://www.johndcook.com/blog/2018/11/24/spheroid-distance/   
     '''
@@ -1345,7 +1348,7 @@ class Sight :
 
         return LatLon (result_lat, result_lon)
 
-    def get_angle (self, geodetic : bool, viewpoint : LatLon | NoneType = None) -> float:
+    def get_angle (self, geodetic : bool, viewpoint : LatLonBase | NoneType = None) -> float:
         ''' Returns the (Earth-based) angle of the sight '''
         if geodetic:
             if viewpoint is not None:
@@ -1358,7 +1361,7 @@ class Sight :
 
         return 90-self.measured_alt
 
-    def get_circle (self, geodetic : bool, viewpoint : LatLon | NoneType = None) -> Circle:
+    def get_circle (self, geodetic : bool, viewpoint : LatLonBase | NoneType = None) -> Circle:
         ''' Return a circle object corresponding to this Sight '''
         circumference = EARTH_CIRCUMFERENCE
         if geodetic:
@@ -1405,7 +1408,8 @@ class SightPair:
         self.sf2 = sf2
 
     def get_intersections\
-                      (self, return_geodetic : bool, estimated_position : NoneType | LatLon = None,
+                      (self, return_geodetic : bool,
+                       estimated_position : NoneType | LatLonBase = None,
                        diagnostics : bool = False,
                        intersection_number : int = 0) ->\
                        tuple[LatLon | tuple[LatLon, LatLon], float, str]:
@@ -1439,9 +1443,9 @@ class SightCollection:
 #pylint: disable=R0915
     def get_intersections\
         (self, return_geodetic : bool, limit : int | float = 100,
-          estimated_position : NoneType | LatLon = None,
+          estimated_position : NoneType | LatLonBase = None,
           diagnostics : bool = False) \
-            -> tuple[LatLon | tuple[LatLon, LatLon], float, str]:
+            -> tuple[LatLonBase | tuple[LatLonBase, LatLonBase], float, str]:
         ''' Get an intersection from the collection of sights. 
             A mean value and sorting algorithm is applied. '''
         if estimated_position is None:
@@ -1653,7 +1657,7 @@ class SightTrip:
 
 #pylint: disable=R0914
     def get_intersections (self, return_geodetic : bool, diagnostics : bool = False) ->\
-            tuple[LatLon | tuple[LatLon, LatLon], float, str]:
+            tuple[LatLonBase | tuple[LatLonBase, LatLonBase], float, str]:
         ''' Get the intersections for this sight trip object '''            
 
         ### Calculate a trip from Sight to Sight

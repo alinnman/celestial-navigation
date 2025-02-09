@@ -67,7 +67,7 @@ def main ():
     print ("Distance travelled = " +\
            str(round(km_to_nm(spherical_distance (intersections[0], intersections[1])),2)) +\
               " nm")
-    
+
     print ("--------- Mapping          --------- ")
     print ("MD = " + st.get_map_developers_string ())
 
