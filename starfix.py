@@ -1285,6 +1285,8 @@ class Sight :
 
         if estimated_position is None:
             # Use previously used parameter value
+            if Sight.estimated_position_hold is None:
+                raise ValueError ("A DRP (Estimated position) is needed!")
             self.estimated_position = Sight.estimated_position_hold
         else:
             self.estimated_position = estimated_position
