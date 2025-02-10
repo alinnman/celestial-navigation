@@ -84,12 +84,12 @@ print ("GM = " + get_google_map_string(intersections,4))
 #Diagnostics for map rendering etc.
 print ("Some useful data follows")
 print ("A radius = " + str(round(a.get_circle(geodetic=True).get_radius(),1)))
-print ("A GP     = " + get_google_map_string(a.gp,4))
+print ("A GP     = " + get_google_map_string(LatLonGeodetic(ll=a.gp),4))
 
 print ("B radius = " + str(round(b.get_circle(geodetic=True).get_radius(),1)))
-print ("B GP     = " + get_google_map_string(b.gp,4))
+print ("B GP     = " + get_google_map_string(LatLonGeodetic(ll=b.gp),4))
 
 print ("C radius = " + str(round(c.get_circle(geodetic=True).get_radius(),1)))
-print ("C GP     = " + get_google_map_string(c.gp,4))
+print ("C GP     = " + get_google_map_string(LatLonGeodetic(ll=c.gp),4))
 
 print ("Time taken = " +str(takenMs)+" ms")

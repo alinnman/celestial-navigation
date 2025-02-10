@@ -86,7 +86,7 @@ except IntersectError as ve:
 
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)
-assert isinstance (intersections, LatLonGeocentric)
+assert isinstance (intersections, LatLonGeodetic)
 print (get_representation(intersections,1))
 print ("MD = " + collection.get_map_developers_string(geodetic=True))
 print ("GM = " + get_google_map_string(intersections,4))
@@ -96,12 +96,12 @@ print ("GM = " + get_google_map_string(intersections,4))
 print ("Some useful data follows")
 
 print ("S1 radius = " + str(round(S1.get_circle(geodetic=True).get_radius (),1)))
-print ("S1 GP     = " + get_google_map_string(S1.gp,4))
+print ("S1 GP     = " + get_google_map_string(LatLonGeodetic(ll=S1.gp),4))
 print ("Diff     = " + str(S1.get_distance_from (home, geodetic=True)))
 print ("--")
 
 print ("S2 radius = " + str(round(S2.get_circle(geodetic=True).get_radius (),1)))
-print ("S2 GP     = " + get_google_map_string(S2.gp,4))
+print ("S2 GP     = " + get_google_map_string(LatLonGeodetic(ll=S2.gp),4))
 print ("Diff     = " + str(S2.get_distance_from (home, geodetic=True)))
 print ("--")
 print ("-----------------------------------")

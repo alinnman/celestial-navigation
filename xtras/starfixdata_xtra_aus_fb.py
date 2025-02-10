@@ -99,15 +99,15 @@ print ("Some useful data follows (Small circles of equal altitude). \
        For plotting in map software etc.")
 print ("A celestial body = " + a.object_name)
 print ("A radius = " + str(round(a.get_circle(geodetic=True).get_radius (),1)))
-print ("A GP     = " + get_google_map_string(a.gp,4))
+print ("A GP     = " + get_google_map_string(LatLonGeodetic(ll=a.gp),4))
 print ("")
 print ("B celestial body = " + b.object_name)
 print ("B radius = " + str(round(b.get_circle(geodetic=True).get_radius (),1)))
-print ("B GP     = " + get_google_map_string(b.gp,4))
+print ("B GP     = " + get_google_map_string(LatLonGeodetic(ll=b.gp),4))
 print ("")
 print ("C celestial body = " + c.object_name)
 print ("C radius = " + str(round(c.get_circle(geodetic=True).get_radius (),1)))
-print ("C GP     = " + get_google_map_string(c.gp,4))
+print ("C GP     = " + get_google_map_string(LatLonGeodetic(ll=c.gp),4))
 
 
 
