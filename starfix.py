@@ -971,7 +971,7 @@ def parse_angle_string (angle_string : str) -> float:
 
 # Terrestrial Navigation
 
-def get_circle_for_angle (point1 : LatLonGeocentric, point2 : LatLonGeocentric,
+def get_circle_for_angle (point1 : LatLon, point2 : LatLon,
                           angle : int | float)\
       -> Circle :
       #-> tuple [LatLon, float] :
@@ -998,15 +998,15 @@ def get_circle_for_angle (point1 : LatLonGeocentric, point2 : LatLonGeocentric,
     #return to_latlon(rot_center), radius
 
 #pylint: disable=R0913
-def get_terrestrial_position (point_a1 : LatLonGeocentric,
-                              point_a2 : LatLonGeocentric,
+def get_terrestrial_position (point_a1 : LatLon,
+                              point_a2 : LatLon,
                               angle_a : int | float,
-                              point_b1 : LatLonGeocentric,
-                              point_b2 : LatLonGeocentric,
+                              point_b1 : LatLon,
+                              point_b2 : LatLon,
                               angle_b : int | float,
-                              estimated_position : LatLonGeocentric | NoneType = None,
+                              estimated_position : LatLon | NoneType = None,
                               diagnostics : bool = False)\
-            -> tuple [LatLonGeocentric | tuple, Circle, Circle, float, str] :
+            -> tuple [LatLon | tuple, Circle, Circle, float, str] :
     '''
     Given two pairs of terrestial observations (pos + angle) determine the observer's position 
     '''
