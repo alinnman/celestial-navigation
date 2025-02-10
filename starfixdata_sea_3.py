@@ -49,7 +49,7 @@ def main ():
     #print (get_representation(intersections[0],1))
     f = intersections [0]
     assert isinstance (f, tuple)
-    intersection_circles = list [Circle] ()    
+    intersection_circles = list [Circle] ()
     for i in range(2):
         the_coord = LatLonGeodetic(ll=f[i])
         print (get_representation(the_coord,1))

@@ -43,21 +43,6 @@ def main ():
                 measured_alt         = "30:16:23.7",
                 sha_diff             = "80:33.4",
                 )
-    if False: # TODO Review
-        print ("Two daytime observations of the sun")
-        collection = SightCollection ([a, b])
-        try:
-            intersections, _, _ =\
-                collection.get_intersections (return_geodetic=True)
-        except IntersectError as ve:
-            print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
-            print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
-            exit ()
-        print (get_representation(intersections,1))
-        print ("MD = " + collection.get_map_developers_string(geodetic=True))
-        print ("GM = " + get_google_map_string(intersections,4))
-        print ("-----------------------------------")
-    #print ("We add an additional night time observation of Vega")
     collection = SightCollection ([a, b, c])
     try:
         intersections, _, _ =\
