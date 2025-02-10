@@ -6,7 +6,7 @@
 
 from time import time
 from starfix import Sight, SightCollection, get_representation,\
-                    get_google_map_string, IntersectError, LatLonGeocentric, LatLonGeodetic
+                    get_google_map_string, IntersectError, LatLonGeodetic
 
 def main ():
     ''' Main body of script.'''
@@ -57,7 +57,7 @@ def main ():
         print ("MD = " + collection.get_map_developers_string(geodetic=True))
         print ("GM = " + get_google_map_string(intersections,4))
         print ("-----------------------------------")
-    print ("We add an additional night time observation of Vega")
+    #print ("We add an additional night time observation of Vega")
     collection = SightCollection ([a, b, c])
     try:
         intersections, _, _ =\
@@ -69,12 +69,12 @@ def main ():
     endtime = time ()
     taken_ms = round((endtime-starttime)*1000,3)
     print (get_representation(intersections,1))
-    assert isinstance (intersections, LatLonGeocentric)
+    assert isinstance (intersections, LatLonGeodetic)
     print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
     print ("GM = " + get_google_map_string(intersections,4))
 
     # Check azimuth
-    assert isinstance (intersections, LatLonGeocentric)
+    assert isinstance (intersections, LatLonGeodetic)
     az = a.get_azimuth (intersections)
     print ("Azimuth A = " + str(round(az,2)))
     az = b.get_azimuth (intersections)
@@ -85,13 +85,13 @@ def main ():
     #Diagnostics for map rendering etc.
     print ("Some useful data follows")
     print ("A radius = " + str(round(a.get_circle(geodetic=True).get_radius (),1)))
-    print ("A GP     = " + get_google_map_string(a.gp,4))
+    print ("A GP     = " + get_google_map_string(LatLonGeodetic(ll=a.gp),4))
 
     print ("B radius = " + str(round(b.get_circle(geodetic=True).get_radius (),1)))
-    print ("B GP     = " + get_google_map_string(b.gp,4))
+    print ("B GP     = " + get_google_map_string(LatLonGeodetic(ll=b.gp),4))
 
     print ("C radius = " + str(round(c.get_circle(geodetic=True).get_radius(),1)))
-    print ("C GP     = " + get_google_map_string(c.gp,4))
+    print ("C GP     = " + get_google_map_string(LatLonGeodetic(ll=c.gp),4))
 
     print ("Time taken = " +str(taken_ms)+" ms")
 

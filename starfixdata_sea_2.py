@@ -68,7 +68,7 @@ def main ():
 
     print ("--------- Some diagnostics --------- ")
     print ("S2 radius = " + str(round(s2.get_circle(geodetic=False).get_radius (),1)))
-    print ("S2 GP     = " + get_google_map_string(s2.gp,4))
+    print ("S2 GP     = " + get_google_map_string(LatLonGeodetic(ll=s2.gp),4))
     print ("Time taken = " +str(taken_ms)+" ms")
 
 if __name__ == '__main__':

@@ -399,7 +399,7 @@ class CircleCollection:
 #pylint: enable=R0903
 
 def get_great_circle_route\
-     (start : LatLonGeocentric, direction : LatLonGeocentric | float | int,
+     (start : LatLon, direction : LatLon | float | int,
       convert_to_geocentric : bool = True) -> Circle:
     ''' Calculates a great circle starting in 'start' 
         and passing 'direction' coordinate (if LatLon) 
@@ -438,6 +438,7 @@ def get_great_circle_route\
         c.accumulate_mapping_distance (distance)
         return c
     # isinstance (direction, float) or isinstance (direction, int) == True
+    assert isinstance (direction, float) or isinstance (direction, int)
     if start.lat in (90,-90):
         raise ValueError ("Cannot take a course from any of the poles")
     north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
@@ -767,7 +768,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 #pylint: enable=R0914
 #pylint: enable=R0915
 
-def get_azimuth (to_pos : LatLonGeocentric, from_pos : LatLonGeocentric) -> float:
+def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
     ''' Return the azimuth of the to_pos sight from from_pos sight
         Returns the azimuth in degrees (0-360)
         Parameters:
@@ -1384,7 +1385,7 @@ class Sight :
         the_radius = self.get_circle(geodetic=geodetic).get_radius ()
         return p_distance - the_radius
 
-    def get_azimuth (self, from_pos : LatLonGeocentric) -> float:
+    def get_azimuth (self, from_pos : LatLon) -> float:
         ''' Return the azimuth of this sight (to the GP) from a particular point on Earth 
             Returns the azimuth in degrees (0-360)'''
         return get_azimuth (self.gp, from_pos)
@@ -1464,7 +1465,7 @@ class SightCollection:
             intersections, fitness, diag_output =\
                    SightPair (self.sf_list[0],\
                               self.sf_list[1]).get_intersections\
-                                         (return_geodetic=return_geodetic,
+                                         (return_geodetic=False,
                                           estimated_position=estimated_position,\
                                           diagnostics = diagnostics)
             if return_geodetic:
@@ -1487,7 +1488,7 @@ class SightCollection:
                 p = SightPair (self.sf_list [i], self.sf_list [j])
                 intersection_count += 1
                 p_int, fitness, dia =\
-                    p.get_intersections (return_geodetic=return_geodetic,
+                    p.get_intersections (return_geodetic=False,
                                          estimated_position=estimated_position,\
                                          diagnostics = diagnostics,\
                                          intersection_number = intersection_count)
@@ -1578,25 +1579,29 @@ class SightCollection:
         fitness_sum = 0
         for cp in chosen_points:
             selected_coord = coords [cp][0]
-            if return_geodetic:
-                selected_coord_x = LatLonGeodetic (ll = selected_coord)
-            else:
-                selected_coord_x = selected_coord
+
+            #if return_geodetic:
+            #    selected_coord_x = LatLonGeodetic (ll = selected_coord)
+            #else:
+            #    selected_coord_x = selected_coord
             fitness_here = coords [cp][1]**3 # Penalize bad intersections
             fitness_sum += fitness_here
-            rect_vec = to_rectangular (selected_coord_x)
+            rect_vec = to_rectangular (selected_coord)
             summation_vec =\
                 add_vecs (summation_vec,\
                 mult_scalar_vect ((1/nr_of_chosen_points)*fitness_here, rect_vec))
         summation_vec = normalize_vect (summation_vec)
-        return to_latlon (summation_vec), fitness_sum, diag_output
+        ret_latlon = to_latlon (summation_vec)
+        if return_geodetic:
+            return LatLonGeodetic(ll=ret_latlon), fitness_sum, diag_output
+        return ret_latlon, fitness_sum, diag_output
 #pylint: enable=R0912
 #pylint: enable=R0914
 #pylint: enable=R0915
 
     def get_map_developers_string \
-        (self, geodetic : bool, markers : list[LatLonGeodetic] | NoneType = None,
-         viewpoint : LatLonGeocentric | NoneType = None,
+        (self, geodetic : bool, markers : list[LatLon] | NoneType = None,
+         viewpoint : LatLon | NoneType = None,
          scale_factor : float = MAP_SCALE_FACTOR) -> str:
         '''
         Return URL for https://mapdevelopers.com circle plotting service
