@@ -32,7 +32,8 @@ a = Sight (   object_name          = "Sun",
               gha_time_1           = "314:6.5",
               decl_time_0          = "23:11.6",
               decl_time_1          = "23:11.4",
-              measured_alt         = "46:23",
+              measured_alt         = "92:46",
+              artificial_horizon   = True,
               estimated_position   = THE_POS
               )
 
@@ -42,7 +43,8 @@ b = Sight (   object_name          = "Sun",
               gha_time_1           = "14:6.6",
               decl_time_0          = "23:11.1",
               decl_time_1          = "23:10.8",
-              measured_alt         = "49:18"
+              measured_alt         = "98:36",
+              artificial_horizon   = True
               )
 
 c = Sight (   object_name          = "Sun",
@@ -51,13 +53,15 @@ c = Sight (   object_name          = "Sun",
               gha_time_1           = "59:5.6",
               decl_time_0          = "23:10.5",
               decl_time_1          = "23:10.4",
-              measured_alt         = "29:20"
+              measured_alt         = "58:40",
+              artificial_horizon   = True
               )
 
 
 collection = SightCollection ([a, b, c])
 try:
-    intersections, fitness, diag_output = collection.get_intersections (return_geodetic=True)
+    intersections, fitness, diag_output =\
+          collection.get_intersections (return_geodetic=True)
 except IntersectError as ve:
     print ("Cannot perform a sight reduction. Bad sight data.")
     print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
@@ -65,7 +69,6 @@ except IntersectError as ve:
 endtime = time ()
 takenMs = round((endtime-starttime)*1000,2)
 print (get_representation(intersections,1))
-# print ("MD = " + collection.get_map_developers_string(geodetic=True)) TODO Review
 assert isinstance (intersections, LatLonGeodetic)
 print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
 print ("GM = " + get_google_map_string(intersections,4))
@@ -82,6 +85,7 @@ print ("Azimuth C = " + str(round(az,2)))
 
 #Diagnostics for map rendering etc.
 print ("Some useful data follows")
+
 print ("A radius = " + str(round(a.get_circle(geodetic=True).get_radius (),1)))
 print ("A GP     = " + get_google_map_string(LatLonGeodetic(ll=a.gp),4))
 
