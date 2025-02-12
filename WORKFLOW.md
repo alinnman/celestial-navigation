@@ -82,4 +82,5 @@ of the celestial object, just like Eratosthenes
 ![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
 <br><br>
 For more details, proof of maths used and background see the
-[Readme File](README.md).
+[Readme File](README.md). Also note: The shape of the Earth isn't perfectly
+spheric. The small deviation (oblateness) is taken care of in this toolkit.
