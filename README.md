@@ -495,6 +495,10 @@ mean value of the intersections
 
     (N 41°,51.3′;W 87°,38.6′)
 
+A more accurate script using a successive refinement of the position
+can be found in the [starfixdata_stat_1_conv.py](starfixdata_stat_1_conv.py)
+sample.
+
 There is also another similar test script in the
 [starfixdata_stat_2.py](starfixdata_stat_2.py)
 sample where the Moon is used. **Horizontal parallax** is applied to the Moon
