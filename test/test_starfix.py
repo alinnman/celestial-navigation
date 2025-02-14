@@ -16,14 +16,15 @@ except ValueError:
     pass
 
 #pylint: disable=E0401
-from starfixdata_stat_1 import main as main_1
-from starfixdata_stat_2 import main as main_2
-from starfixdata_sea_1  import main as main_sea_1
-from starfixdata_sea_2  import main as main_sea_2
-from starfixdata_sea_3  import main as main_sea_3
-from starfixdata_sea_4  import main as main_sea_4
-from starfixdata_sea_5  import main as main_sea_5
-from terrestrial        import main as main_terrestrial
+from starfixdata_stat_1      import main as main_1
+from starfixdata_stat_1_conv import main as main_1_conv
+from starfixdata_stat_2      import main as main_2
+from starfixdata_sea_1       import main as main_sea_1
+from starfixdata_sea_2       import main as main_sea_2
+from starfixdata_sea_3       import main as main_sea_3
+from starfixdata_sea_4       import main as main_sea_4
+from starfixdata_sea_5       import main as main_sea_5
+from terrestrial             import main as main_terrestrial
 #pylint: enable=E0401
 
 class TestStringMethods(unittest.TestCase):
@@ -33,13 +34,17 @@ class TestStringMethods(unittest.TestCase):
         ''' Test suite 1, Stationary '''
         main_1 ()
 
+    def test_starfix_1_conv (self):
+        ''' Test suite 1, for DR/Moving '''
+        main_1_conv ()        
+
     def test_starfix_2(self):
         ''' Test suite 2, Stationary '''
         main_2 ()
 
     def test_sea_1 (self):
         ''' Test suite 1, for DR/Moving '''
-        main_sea_1 ()
+        main_sea_1 ()        
 
     def test_sea_2 (self):
         ''' Test suite 2, for DR/Moving '''
