@@ -8,6 +8,7 @@ from datetime import datetime
 from urllib.parse import quote_plus
 # import logging
 from types import NoneType
+from collections.abc import Callable
 
 # Dimension of Earth
 
@@ -460,8 +461,9 @@ def get_great_circle_route\
 class IntersectError (ValueError):
     ''' Exception used for failed intersections '''
 
-    def __init__ (self, info : str):
+    def __init__ (self, info : str, coll : object = None):
         super().__init__ (info)
+        self.coll_object = coll
 
 #pylint: disable=R0912
 #pylint: disable=R0913
@@ -1464,12 +1466,16 @@ class SightCollection:
         assert nr_of_fixes >= 2
         if nr_of_fixes == 2:
             # For two star fixes just use the algorithm of SightPair.getIntersections
-            intersections, fitness, diag_output =\
-                   SightPair (self.sf_list[0],\
-                              self.sf_list[1]).get_intersections\
-                                         (return_geodetic=False,
-                                          estimated_position=estimated_position,\
-                                          diagnostics = diagnostics)
+            try:
+                intersections, fitness, diag_output =\
+                    SightPair (self.sf_list[0],\
+                                self.sf_list[1]).get_intersections\
+                                            (return_geodetic=False,
+                                            estimated_position=estimated_position,\
+                                            diagnostics = diagnostics)
+            except IntersectError as ie:
+                raise IntersectError (str(ie), self) from ie
+
             if return_geodetic:
                 if isinstance (intersections, tuple):
                     ret_intersections = LatLonGeodetic (ll=intersections[0]),\
@@ -1489,11 +1495,14 @@ class SightCollection:
             for j in range (i+1, nr_of_fixes):
                 p = SightPair (self.sf_list [i], self.sf_list [j])
                 intersection_count += 1
-                p_int, fitness, dia =\
-                    p.get_intersections (return_geodetic=False,
-                                         estimated_position=estimated_position,\
-                                         diagnostics = diagnostics,\
-                                         intersection_number = intersection_count)
+                try:
+                    p_int, fitness, dia =\
+                        p.get_intersections (return_geodetic=False,
+                                             estimated_position=estimated_position,\
+                                             diagnostics = diagnostics,\
+                                             intersection_number = intersection_count)
+                except IntersectError as ie:
+                    raise IntersectError (str(ie), self) from ie
                 diag_output += dia
                 if p_int is not None:
                     if isinstance (p_int, (list, tuple)):
@@ -1558,7 +1567,7 @@ class SightCollection:
         nr_of_chosen_points = len (chosen_points)
         if nr_of_chosen_points == 0:
             # No points found. Bad star fixes. Throw exception.
-            raise IntersectError ("Bad sight data.")
+            raise IntersectError ("Bad sight data.", self)
 
         # Make sure the chosen points are nearby each other
         fine_sorting = False # This code is disabled for now
@@ -1574,7 +1583,7 @@ class SightCollection:
                             # and select the correct point manually.
                             raise IntersectError\
                             ("Cannot sort multiple intersections to find"+\
-                                "a reasonable set of coordinates")
+                                "a reasonable set of coordinates", self)
 
         summation_vec = [0.0,0.0,0.0]
         # Make a mean value on the best intersections.
@@ -1600,6 +1609,54 @@ class SightCollection:
 #pylint: enable=R0912
 #pylint: enable=R0914
 #pylint: enable=R0915
+
+#pylint: disable=R0913
+    @staticmethod
+    def get_intersections_conv\
+        (return_geodetic : bool,
+            estimated_position : LatLon,
+            get_starfixes : Callable,
+            limit : int | float = 100,
+            diagnostics : bool = False, max_iter = 10, dist_limit = 0.01) ->\
+            tuple[LatLon | tuple[LatLon, LatLon], float, str, object]:
+        ''' Returns an intersection based on improved algorithm.
+            Successively searches for (iterates) to get the correct
+            position. 
+        '''
+        ready = False
+        intersections = None
+        collection = None
+        fitness = None
+        diag = None
+        counter = 0
+        while not ready:
+            # This loop will repeat the sight reduction with successively more
+            # accurate DR positions
+            collection = get_starfixes (estimated_position)
+            assert isinstance (collection, SightCollection)
+            try:
+                intersections, fitness, diag =\
+                collection.get_intersections (return_geodetic=return_geodetic,
+                                              limit=limit,
+                                              diagnostics=diagnostics)
+            except IntersectError as ve:
+                print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
+                print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
+                exit ()
+            assert isinstance (intersections, LatLon)
+            the_distance = spherical_distance (estimated_position, intersections)
+            if the_distance < dist_limit:
+                ready = True
+            else:
+                estimated_position = intersections
+            counter += 1
+            if counter >= max_iter:
+                raise IntersectError ("Cannot find an intersection. Bad data?")
+        assert intersections is not None
+        assert fitness is not None
+        assert diag is not None
+        return intersections, fitness, diag, collection
+#pylint: enable=R0913
 
     def get_map_developers_string \
         (self, geodetic : bool, markers : list[LatLon] | NoneType = None,

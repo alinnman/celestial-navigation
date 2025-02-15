@@ -8,7 +8,7 @@
 
 from time import time
 from starfix import Sight, SightCollection, get_representation,\
-                    get_google_map_string, IntersectError, LatLonGeodetic, spherical_distance
+                    get_google_map_string, IntersectError, LatLonGeodetic
 
 
 def get_starfixes (drp_pos : LatLonGeodetic) -> SightCollection :
@@ -49,27 +49,18 @@ def main ():
     starttime = time ()
     the_pos = LatLonGeodetic (40, -90) # Rough DRP position
 
-    ready = False
-    limit = 0.01
-    intersections = None
-    collection = None
-    while not ready:
-        # This loop will repeat the sight reduction with successively more
-        # accurate DR positions
-        collection = get_starfixes (the_pos)
-        try:
-            intersections, _, _ =\
-              collection.get_intersections (return_geodetic=True)
-        except IntersectError as ve:
-            print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
-            print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
-            exit ()
-        assert isinstance (intersections, LatLonGeodetic)
-        the_distance = spherical_distance (the_pos, intersections)
-        if the_distance < limit:
-            ready = True
-        else:
-            the_pos = intersections
+    try:
+        intersections, _, _, collection =\
+              SightCollection.get_intersections_conv (return_geodetic=True,
+                                                      estimated_position=the_pos,
+                                                      get_starfixes=get_starfixes)
+    except IntersectError as ve:
+        print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
+        if ve.coll_object is not None:
+            if isinstance (ve.coll_object, SightCollection):
+                print ("Check the circles! " +
+                        ve.coll_object.get_map_developers_string(geodetic=True))
+        exit ()
 
     assert intersections is not None
     assert collection is not None
