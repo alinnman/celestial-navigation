@@ -497,6 +497,17 @@ In order to get better accuracy you can use the static method
 <tt>SightCollection.get_intersections_conv</tt> in order to iterate through
 successively better dead reckoning estimations.
 To get high accuracy you normally only need 3 iterations.
+
+The reason for this is the mapping between geocentric and geodetic coordinates.
+The sight altitude from your sextant is always a geodetical value,
+but the algorithm for intersection of circles of equal altitudes
+(as described above) is operationg on geocentrical (true spherical) coordinates.
+The final result is then transformed back to geodetical coordinates.
+This mapping in two directions, and the uncertainty in the initial
+dead reckoning position used for sight altitude mapping will always result in
+an error, and this error will be greater if the dead reckoning position is
+inaccurate. Successive iterations will handle this.
+
 See code for explanation of this optimization.
 
 ### 3.iv. Running the Chicago script<a name="run-chicago-script"></a>
