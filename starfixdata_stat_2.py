@@ -2,7 +2,8 @@
     © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
 
-    A simple test using Stellarium data. Moon altitude used, and parallax values used. 
+    This sample uses an algorithm for better accuracy using repeated
+    refinements of the DR position. 
 '''
 
 from time import time
@@ -10,14 +11,8 @@ from starfix import Sight, SightCollection, get_representation,\
                     get_google_map_string, IntersectError, LatLonGeodetic
 
 
-def main ():
-    ''' Main body of script '''
-
-    starttime = time ()
-
-    # Our starfix data
-
-    the_pos = LatLonGeodetic (37, 10)
+def get_starfixes (drp_pos : LatLonGeodetic) -> SightCollection :
+    ''' Returns a list of used star fixes (SightCollection) '''
 
     a = Sight (   object_name          = "Capella",
                 set_time             = "2024-09-17 23:36:13+00:00",
@@ -26,7 +21,7 @@ def main ():
                 decl_time_0          = "46 :1.2",
                 sha_diff             = "280:22.3",
                 measured_alt         = "33 :9    :34",
-                estimated_position   = the_pos
+                estimated_position   = drp_pos
                 )
 
     b = Sight (   object_name          = "Moon",
@@ -47,31 +42,53 @@ def main ():
                 sha_diff             = "80 :33.3",
                 measured_alt         = "25 :39:4"
                 )
+    return SightCollection ([a, b, c])
 
-    collection = SightCollection ([a,b,c])
+def main ():
+    ''' Main body of script.'''
+
+    starttime = time ()
+    the_pos = LatLonGeodetic (35, 10) # Rough DRP position
+
     try:
-        intersections, _, _ = collection.get_intersections (return_geodetic=True)
+        intersections, _, _, collection =\
+              SightCollection.get_intersections_conv (return_geodetic=True,
+                                                      estimated_position=the_pos,
+                                                      get_starfixes=get_starfixes)
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
-        print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
+        if ve.coll_object is not None:
+            if isinstance (ve.coll_object, SightCollection):
+                print ("Check the circles! " +
+                        ve.coll_object.get_map_developers_string(geodetic=True))
         exit ()
+
+    assert intersections is not None
+    assert collection is not None
     endtime = time ()
-    taken_ms = round((endtime-starttime)*1000,2)
+    taken_ms = round((endtime-starttime)*1000,3)
     print (get_representation(intersections,1))
     assert isinstance (intersections, LatLonGeodetic)
     print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
     print ("GM = " + get_google_map_string(intersections,4))
 
+    # Check azimuth
+    assert isinstance (intersections, LatLonGeodetic)
+    counter = 0
+    for s in collection.sf_list:
+        counter += 1
+        az = s.get_azimuth (intersections)
+        print ("Azimuth " + str(counter) + " = " + str(round(az,2)))
+
     #Diagnostics for map rendering etc.
     print ("Some useful data follows")
-    print ("A radius = " + str(round(a.get_circle(geodetic=True).get_radius(),1)))
-    print ("A GP     = " + get_google_map_string(LatLonGeodetic(ll=a.gp),4))
-
-    print ("B radius = " + str(round(b.get_circle(geodetic=True).get_radius(),1)))
-    print ("B GP     = " + get_google_map_string(LatLonGeodetic(ll=b.gp),4))
-
-    print ("C radius = " + str(round(c.get_circle(geodetic=True).get_radius(),1)))
-    print ("C GP     = " + get_google_map_string(LatLonGeodetic(ll=c.gp),4))
+    counter = 0
+    for s in collection.sf_list:
+        counter += 1
+        print (str(counter) + " radius = " +\
+                str(round(s.get_circle(geodetic=True).get_radius (),1)))
+        print (str(counter) + " GP     = " +\
+                get_google_map_string(LatLonGeodetic(ll=s.gp),4))
 
     print ("Time taken = " +str(taken_ms)+" ms")
 

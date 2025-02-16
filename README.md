@@ -402,20 +402,38 @@ $\phi_{\text{gc}} = \left|\left| a \times b \right|\right| =
 Using three (or more) sights a sight reduction can be done in the following way
 
     from starfix import Sight, SightCollection, getRepresentation, IntersectError
+
+    def get_starfixes (drp_pos : LatLonGeodetic) -> SightCollection :
+        ''' Returns a list of used star fixes (SightCollection) '''
+        # Write code returning a SightCollection object for a Dead Reckoning position
+        # A SightCollection contains a list of Sight objects
  
-    a = Sight (....Parameters....)
-    b = Sight (....Parameters....)
-    c = Sight (....Parameters....)
-    
-    collection = SightCollection ([a, b, c]) # Add more sights if needed
-    try:
-        intersections, fitness, _ = collection.getIntersections \
-        (estimated_position (LatLon(23,45))) ## DRP can be entered if suitable
-        print (getRepresentation(intersections,1))
-    except IntersectError as ve:
-        print ("Cannot get perform a sight reduction. Bad sight data.\n" + str(ve))
-        ## For debugging: Get a map where you can look at the intersections
-        print ("Check the circles! " + collection.get_map_developers_string())
+ 
+    def main ():   
+        the_pos = LatLonGeodetic (40, -90) # Rough DRP position
+
+        try:
+            intersections, _, _, collection =\
+                SightCollection.get_intersections_conv (return_geodetic=True,
+                                                        estimated_position=the_pos,
+                                                        get_starfixes=get_starfixes)
+        except IntersectError as ve:
+            print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
+            if ve.coll_object is not None:
+                if isinstance (ve.coll_object, SightCollection):
+                    print ("Check the circles! " +
+                            ve.coll_object.get_map_developers_string(geodetic=True))
+            exit ()
+
+        assert intersections is not None
+        assert collection is not None
+        # Print latlon coordinate of intersection
+        print (get_representation(intersections,1))
+        assert isinstance (intersections, LatLonGeodetic)
+        # Print mapping circles
+        print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
+        # Print Google Map coordinate of intersection
+        print ("GM = " + get_google_map_string(intersections,4))
 
 A *sight* is defined as a collection of data as described in the
 [parameters section](#parameters) above, i.e. recorded data for a celestial
@@ -472,8 +490,14 @@ intersection points, and also applying a maximal allowed distance limit
 (which defaults to 100 km). The **fitness** value (see above) is used for
 giving priority (weighting) for intersections with a larger angle.
 
-The final result will be a **single** mean value of the
-extracted intersection points.
+The final result of the intersection algorithm will be a **single** mean value
+of the extracted intersection points.
+
+In order to get better accuracy you can use the static method
+<tt>SightCollection.get_intersections_conv</tt> in order to iterate through
+successively better dead reckoning estimations.
+To get high accuracy you normally only need 3 iterations.
+See code for explanation of this optimization.
 
 ### 3.iv. Running the Chicago script<a name="run-chicago-script"></a>
 
@@ -494,10 +518,6 @@ Then we add another small circle and show the calculated
 mean value of the intersections
 
     (N 41°,51.3′;W 87°,38.6′)
-
-A more accurate script using a successive refinement of the position
-can be found in the [starfixdata_stat_1_conv.py](starfixdata_stat_1_conv.py)
-sample.
 
 There is also another similar test script in the
 [starfixdata_stat_2.py](starfixdata_stat_2.py)
