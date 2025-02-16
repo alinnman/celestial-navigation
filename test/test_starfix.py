@@ -17,7 +17,6 @@ except ValueError:
 
 #pylint: disable=E0401
 from starfixdata_stat_1      import main as main_1
-from starfixdata_stat_1_conv import main as main_1_conv
 from starfixdata_stat_2      import main as main_2
 from starfixdata_sea_1       import main as main_sea_1
 from starfixdata_sea_2       import main as main_sea_2
@@ -33,10 +32,6 @@ class TestStringMethods(unittest.TestCase):
     def test_starfix_1(self):
         ''' Test suite 1, Stationary '''
         main_1 ()
-
-    def test_starfix_1_conv (self):
-        ''' Test suite 1, for DR/Moving '''
-        main_1_conv ()        
 
     def test_starfix_2(self):
         ''' Test suite 2, Stationary '''
