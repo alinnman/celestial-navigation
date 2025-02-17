@@ -501,7 +501,7 @@ To get high accuracy you normally only need 3 iterations.
 The reason for this is the mapping between geocentric and geodetic coordinates.
 The sight altitude from your sextant is always a geodetical value,
 but the algorithm for intersection of circles of equal altitudes
-(as described above) is operationg on geocentrical (true spherical) coordinates.
+(as described above) is operating on geocentrical (true spherical) coordinates.
 The final result is then transformed back to geodetical coordinates.
 This mapping in two directions, and the uncertainty in the initial
 dead reckoning position used for sight altitude mapping will always result in
