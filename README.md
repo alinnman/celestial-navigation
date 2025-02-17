@@ -57,7 +57,7 @@ tables (sight reduction tables), pen, dividers and specialized plotting charts.
 Using a calculator can speed up this manual task, and also reduce possible
 (human) errors.
 A **computer** can do it even quicker, and this toolkit will typically perform
-a sight reduction in less than one millisecond.  
+a sight reduction in 1-2 milliseconds.  
 
 * The toolkit supports **stationary** observations, i.e. when observations are
   made from a single position,
@@ -501,7 +501,7 @@ To get high accuracy you normally only need 3 iterations.
 The reason for this is the mapping between geocentric and geodetic coordinates.
 The sight altitude from your sextant is always a geodetical value,
 but the algorithm for intersection of circles of equal altitudes
-(as described above) is operationg on geocentrical (true spherical) coordinates.
+(as described above) is operating on geocentrical (true spherical) coordinates.
 The final result is then transformed back to geodetical coordinates.
 This mapping in two directions, and the uncertainty in the initial
 dead reckoning position used for sight altitude mapping will always result in
