@@ -43,7 +43,7 @@ class LatLonGeocentric (LatLon):
     ''' Represents spherical coordinates on Earth '''
 
     def __str__(self):
-        return "LAT = " + str(round(self.lat,4)) + "; LON = " + str(round(self.lon,4))
+        return "(Geocentric) LAT = " + str(round(self.lat,4)) + "; LON = " + str(round(self.lon,4))
 
 # Utility routines (algrebraic, spheric geometry)
 
@@ -855,8 +855,9 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
             type_info = "(Geocentric) "
         type_string = type_info
         return type_string +\
-               str(round(intersections.lat,num_decimals)) + "," +\
-               str(round(intersections.lon,num_decimals))
+            str(round(intersections.lat,num_decimals)) + "," +\
+            str(round(intersections.lon,num_decimals))
+
     if isinstance (intersections, tuple):
         assert len (intersections) == 2
         return get_google_map_string (intersections[0], num_decimals) + ";" + \
@@ -1097,7 +1098,7 @@ class LatLonGeodetic (LatLon):
         return LatLonGeocentric (rad_to_deg(lam_bda), self.lon)
 
     def __str__(self):
-        return "Geodetic coordinate. LAT = " + str(round(self.lat,4)) +\
+        return "(Geodetic) LAT = " + str(round(self.lat,4)) +\
                "; LON = " + str(round(self.lon,4))
 
 
