@@ -17,7 +17,7 @@ try:
 except ValueError:
     pass
 
-from starfix import Sight, SightCollection, LatLonGeocentric, Sextant, Chronometer,\
+from starfix import Sight, SightCollection, Sextant, Chronometer,\
                     get_decimal_degrees_from_tuple,\
                     get_representation, \
                     get_google_map_string,\
@@ -43,68 +43,84 @@ myChronometer = Chronometer\
 
 THE_POS = LatLonGeodetic (59, 18)
 
-S1 = Sight (   object_name             = "Sun",
-              set_time                 = "2024-06-14 05:57:50+00:00",
-              gha_time_0               = "254:54.8",
-              gha_time_1               = "269:54.7",
-              decl_time_0              = "23:17.1",
-              decl_time_1              = "23:17.3",
-              measured_alt             = "57:8",
-              artificial_horizon       = True,
-              index_error_minutes      = 0,
-              semi_diameter_correction = 15.7,
-              sextant                  = mySextant,
-              chronometer              = myChronometer,
-              estimated_position       = THE_POS
-              )
+def get_starfixes (drp_pos : LatLonGeodetic):
+    ''' Returns a list of used star fixes (SightCollection) '''
 
-S2 = Sight (   object_name             = "Sun",
-              set_time                 = "2024-06-15 14:49:07+00:00",
-              gha_time_0               = "29:50.4",
-              gha_time_1               = "44:50.2",
-              decl_time_0              = "23:20.5",
-              decl_time_1              = "23:20.6",
-              measured_alt             = "70:17",
-              artificial_horizon       = True,
-              index_error_minutes      = 0,
-              sextant                  = mySextant,
-              chronometer              = myChronometer
-              )
+    s1 = Sight (   object_name             = "Sun",
+                set_time                 = "2024-06-14 05:57:50+00:00",
+                gha_time_0               = "254:54.8",
+                gha_time_1               = "269:54.7",
+                decl_time_0              = "23:17.1",
+                decl_time_1              = "23:17.3",
+                measured_alt             = "57:8",
+                artificial_horizon       = True,
+                index_error_minutes      = 0,
+                semi_diameter_correction = 15.7,
+                sextant                  = mySextant,
+                chronometer              = myChronometer,
+                estimated_position       = drp_pos
+                )
 
-collection = SightCollection ([S1, S2])
+    s2 = Sight (   object_name             = "Sun",
+                set_time                 = "2024-06-15 14:49:07+00:00",
+                gha_time_0               = "29:50.4",
+                gha_time_1               = "44:50.2",
+                decl_time_0              = "23:20.5",
+                decl_time_1              = "23:20.6",
+                measured_alt             = "70:17",
+                artificial_horizon       = True,
+                index_error_minutes      = 0,
+                sextant                  = mySextant,
+                chronometer              = myChronometer
+                )
+    return SightCollection ([s1, s2])
 
-# This is the exact position of my observation location
-home = LatLonGeocentric (59.318659676810654, 18.04959717835501)
+def main ():
+    ''' Main body of script.'''
+    try:
+        intersections, _, _, collection =\
+                SightCollection.get_intersections_conv (return_geodetic=True,
+                                                        estimated_position=THE_POS,
+                                                        get_starfixes=get_starfixes,
+                                                        limit=500)
+    except IntersectError as ve:
 
-try:
-    intersections, fitness, diag_output =\
-        collection.get_intersections (return_geodetic=True)
-except IntersectError as ve:
-    print ("Cannot perform a sight reduction. Bad sight data.")
-    print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
-    exit ()
+        print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
+        if ve.coll_object is not None:
+            if isinstance (ve.coll_object, SightCollection):
+                print ("Check the circles! " +
+                        ve.coll_object.get_map_developers_string(geodetic=True))
+        exit ()
 
-endtime = time ()
-takenMs = round((endtime-starttime)*1000,2)
-assert isinstance (intersections, LatLonGeodetic)
-print (get_representation(intersections,1))
-print ("MD = " + collection.get_map_developers_string(geodetic=True))
-print ("GM = " + get_google_map_string(intersections,4))
-# print ("Intersection distance from home = " + str(distance_between_points(intersections, home)))
+    assert intersections is not None
+    assert collection is not None
+    endtime = time ()
+    taken_ms = round((endtime-starttime)*1000,3)
+    print (get_representation(intersections,1))
+    assert isinstance (intersections, LatLonGeodetic)
+    print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
+    print ("GM = " + get_google_map_string(intersections,4))
 
-#Diagnostics for map rendering etc.
-print ("Some useful data follows")
+    # Check azimuth
+    assert isinstance (intersections, LatLonGeodetic)
+    counter = 0
+    for s in collection.sf_list:
+        counter += 1
+        az = s.get_azimuth (intersections)
+        print ("Azimuth " + str(counter) + " = " + str(round(az,2)))
 
-print ("S1 radius = " + str(round(S1.get_circle(geodetic=True).get_radius (),1)))
-print ("S1 GP     = " + get_google_map_string(LatLonGeodetic(ll=S1.gp),4))
-print ("Diff     = " + str(S1.get_distance_from (home, geodetic=True)))
-print ("--")
+    #Diagnostics for map rendering etc.
+    print ("Some useful data follows")
+    counter = 0
+    for s in collection.sf_list:
+        counter += 1
+        print (str(counter) + " radius = " +\
+                str(round(s.get_circle(geodetic=True).get_radius (),1)))
+        print (str(counter) + " GP     = " +\
+                get_google_map_string(LatLonGeodetic(ll=s.gp),4))
 
-print ("S2 radius = " + str(round(S2.get_circle(geodetic=True).get_radius (),1)))
-print ("S2 GP     = " + get_google_map_string(LatLonGeodetic(ll=S2.gp),4))
-print ("Diff     = " + str(S2.get_distance_from (home, geodetic=True)))
-print ("--")
-print ("-----------------------------------")
+    print ("Time taken = " +str(taken_ms)+" ms")
 
-print ("Time taken = " +str(takenMs)+" ms")
+if __name__ == '__main__':
+    main()
  

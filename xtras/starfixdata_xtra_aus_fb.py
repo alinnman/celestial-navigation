@@ -43,72 +43,90 @@ except ValueError:
 from starfix import Sight, SightCollection, get_representation,\
      get_google_map_string, IntersectError, LatLonGeodetic
 
-
-starttime = time ()
-
 # Our starfix data
 
 THE_POS = LatLonGeodetic (-57, 154)
 
-a = Sight (   object_name          = "Acrux",
-              set_time             = "2024-08-31 11:10+00:00",
-              gha_time_0           = "145:7",
-              gha_time_1           = "160:9.4",
-              decl_time_0          = "-63:14.2",
-              measured_alt         = "40",
-              sha_diff             = "173:1.1",
-              estimated_position   = THE_POS
-              )
+def get_starfixes (drp_pos : LatLonGeodetic) -> SightCollection :
+    ''' Returns a list of used star fixes (SightCollection) '''
 
-b = Sight (   object_name          = "Canopus",
-              set_time             = "2024-08-31 11:10+00:00",
-              gha_time_0           = "145:7",
-              gha_time_1           = "160:9.4",
-              decl_time_0          = "-52:42.1",
-              measured_alt         = "20",
-              sha_diff             = "263:52.8"
-              )
+    a = Sight (   object_name          = "Acrux",
+                set_time             = "2024-08-31 11:10+00:00",
+                gha_time_0           = "145:7",
+                gha_time_1           = "160:9.4",
+                decl_time_0          = "-63:14.2",
+                measured_alt         = "40",
+                sha_diff             = "173:1.1",
+                estimated_position   = drp_pos
+                )
 
-c = Sight (   object_name          = "Achernar",
-              set_time             = "2024-08-31 11:10+00:00",
-              gha_time_0           = "145:7",
-              gha_time_1           = "160:9.4",
-              decl_time_0          = "-57:6.4",
-              measured_alt         = "50",
-              sha_diff             = "335:20"
-              )
+    b = Sight (   object_name          = "Canopus",
+                set_time             = "2024-08-31 11:10+00:00",
+                gha_time_0           = "145:7",
+                gha_time_1           = "160:9.4",
+                decl_time_0          = "-52:42.1",
+                measured_alt         = "20",
+                sha_diff             = "263:52.8"
+                )
 
-
-collection = SightCollection ([a, b, c])
-try:
-    intersections, fitness, diag_output =\
-          collection.get_intersections (limit=500, return_geodetic=True)
-except IntersectError as ve:
-    print ("Cannot perform a sight reduction. Bad sight data.")
-    print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
-    exit ()
-endtime = time ()
-takenMs = round((endtime-starttime)*1000,2)
-print ("Location = " + get_representation(intersections,1))
-print ("GM = " + get_google_map_string (intersections,2))
-print ("MD = " + collection.get_map_developers_string(geodetic=True))
-
-#Diagnostics for map rendering etc.
-print ("")
-print ("Some useful data follows (Small circles of equal altitude). \
-       For plotting in map software etc.")
-print ("A celestial body = " + a.object_name)
-print ("A radius = " + str(round(a.get_circle(geodetic=True).get_radius (),1)))
-print ("A GP     = " + get_google_map_string(LatLonGeodetic(ll=a.gp),4))
-print ("")
-print ("B celestial body = " + b.object_name)
-print ("B radius = " + str(round(b.get_circle(geodetic=True).get_radius (),1)))
-print ("B GP     = " + get_google_map_string(LatLonGeodetic(ll=b.gp),4))
-print ("")
-print ("C celestial body = " + c.object_name)
-print ("C radius = " + str(round(c.get_circle(geodetic=True).get_radius (),1)))
-print ("C GP     = " + get_google_map_string(LatLonGeodetic(ll=c.gp),4))
+    c = Sight (   object_name          = "Achernar",
+                set_time             = "2024-08-31 11:10+00:00",
+                gha_time_0           = "145:7",
+                gha_time_1           = "160:9.4",
+                decl_time_0          = "-57:6.4",
+                measured_alt         = "50",
+                sha_diff             = "335:20"
+                )
+    return SightCollection ([a, b, c])
 
 
+def main ():
+    ''' Main body of script.'''
 
-print ("Time taken = " +str(takenMs)+" ms")
+    starttime = time ()
+
+    try:
+        intersections, _, _, collection =\
+              SightCollection.get_intersections_conv (return_geodetic=True,
+                                                      estimated_position=THE_POS,
+                                                      get_starfixes=get_starfixes,
+                                                      limit=500)
+    except IntersectError as ve:
+        print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
+        if ve.coll_object is not None:
+            if isinstance (ve.coll_object, SightCollection):
+                print ("Check the circles! " +
+                        ve.coll_object.get_map_developers_string(geodetic=True))
+        exit ()
+
+    assert intersections is not None
+    assert collection is not None
+    endtime = time ()
+    taken_ms = round((endtime-starttime)*1000,3)
+    print (get_representation(intersections,1))
+    assert isinstance (intersections, LatLonGeodetic)
+    print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
+    print ("GM = " + get_google_map_string(intersections,4))
+
+    # Check azimuth
+    assert isinstance (intersections, LatLonGeodetic)
+    counter = 0
+    for s in collection.sf_list:
+        counter += 1
+        az = s.get_azimuth (intersections)
+        print ("Azimuth " + str(counter) + " = " + str(round(az,2)))
+
+    #Diagnostics for map rendering etc.
+    print ("Some useful data follows")
+    counter = 0
+    for s in collection.sf_list:
+        counter += 1
+        print (str(counter) + " radius = " +\
+                str(round(s.get_circle(geodetic=True).get_radius (),1)))
+        print (str(counter) + " GP     = " +\
+                get_google_map_string(LatLonGeodetic(ll=s.gp),4))
+
+    print ("Time taken = " +str(taken_ms)+" ms")
+
+if __name__ == '__main__':
+    main()
