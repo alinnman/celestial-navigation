@@ -270,7 +270,7 @@ times $t_1$ and $t_2$ for the two measurements.
 Define angles $\alpha$ and $\beta$ this way:
 $\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
 
-*NOTE: The angles $\alpha$ and $\beta$ are adjusted for refraction,*
+*NOTE: The angles* $\alpha$ *and* $\beta$ *are adjusted for refraction,*
 *horizon dip and Earth oblateness.*
 *The oblateness correction is for allowing all calculations described below*
 *being conducted in a **geocentrical** coordinate system*.
@@ -351,7 +351,7 @@ Apply the formula above for $\rho$ and $-\rho$ and you will get the two
 intersection points $p_1$ and $p_2$.
 **One of these points matches your location**.
 
-*NOTE: The final coordinates $p_1$ and $p_2$ are converted*
+*NOTE: The final coordinates* $p_1$ *and* $p_2$ *are converted*
 *back to **geodetic coordinates**. For more details, see code.*
 
 When performing the calculation above we also deduce the intersection angle for
