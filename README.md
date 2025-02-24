@@ -373,10 +373,8 @@ intersection points $p_1$ and $p_2$.
 **One of these points matches your location**.
 
 NOTE: The final coordinates $p_1$ and $p_2$ are converted
-back to **geodetic coordinates**.<br>
-${p_1}_\text{gd}=\text{C2D}(p_1)$<br>
-${p_2}_\text{gd}=\text{C2D}(p_2)$<br>
-The used function ($\text{C2D}$) is numerical.
+back to **geodetic coordinates**, ${p_1}_d$ and ${p_2}_d$.<br>
+The used function ($\text{C2D}$) for this conversion is numerical.
 For more details, see code and
 [this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion).
 
