@@ -292,6 +292,8 @@ $f_1={\text{corr}_{\text{obl}}\left(p_{\text{dr}},a,\text{corr}_{\text{refr}}\le
 
 $f_2={\text{corr}_{\text{obl}}\left(p_{\text{dr}},b,\text{corr}_{\text{refr}}\left(\text{corr}_{\text{dip}}\left({f_1}_s\right)\right)\right)}$
 
+$f_2={\text{corr}_{\text{obl}}}$
+
 The correction functions for dip and refraction are described above:
 [$\text{corr}_{\text{refr}}(f)$](#2i-atmospheric-refraction) and
 [$\text{corr}_{\text{dip}}(f)$](#2ii-dip-of-horizon)
@@ -299,7 +301,7 @@ The correction functions for dip and refraction are described above:
 The oblateness correction function $\text{corr}_{\text{obl}}(p,a,f)$:<br>
 $a_1=\frac{\pi}{2}-\arccos{(p \cdot f)}$<br>
 $a_2=\frac{\pi}{2}-\arccos{(\text{D2C}(p) \cdot f)}$<br>
-$\textit{retval}:=a+(a_2-a_1)$
+$\text{retval}:=a+(a_2-a_1)$
 
 The symbol $\cdot$ denotes a
 [dot product](https://en.wikipedia.org/wiki/Dot_product).
