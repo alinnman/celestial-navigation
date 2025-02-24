@@ -264,18 +264,14 @@ This is a short outline of the algorithm.
 For both measurements take note of the measured **altitude**
 (from your **sextant**), ${f_1}_s$ and ${f_2}_s$.
 
-You also need an **estimated position** $p_{\text{dr}}$
+You also need an **estimated position** $p_d$
 (dead reckoning position)<br>
 *The accuracy of this position will give precision to the sight reduction,*
 *but even a rather bad estimation can be corrected using an iterative algorithm*
 *discussed further down.*
 
-
-
 Using your **chronometer** (clock) register the corresponding
 times $t_1$ and $t_2$ for the two measurements.
-
-
 
 From the Nautical Almanac, using the timestamps $t_1$ and $t_2$,
 get the geographic position vectors (GP:s) $a$ and $b$.
@@ -292,7 +288,7 @@ $f_1={\text{corr}_{\text{obl}}\left(p_{\text{dr}},a,\text{corr}_{\text{refr}}\le
 
 $f_2={\text{corr}_{\text{obl}}\left(p_{\text{dr}},b,\text{corr}_{\text{refr}}\left(\text{corr}_{\text{dip}}\left({f_1}_s\right)\right)\right)}$
 
-$f_2={\text{corr}_{\text{obl}}\left(p_s;b\right)}$
+$f_2={\text{corr}_{\text{obl}}\left(p_d,b\right)}$
 
 The correction functions for dip and refraction are described above:
 [$\text{corr}_{\text{refr}}(f)$](#2i-atmospheric-refraction) and
