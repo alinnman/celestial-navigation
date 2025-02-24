@@ -292,7 +292,7 @@ $f_1={\text{corr}_{\text{obl}}\left(p_{\text{dr}},a,\text{corr}_{\text{refr}}\le
 
 $f_2={\text{corr}_{\text{obl}}\left(p_{\text{dr}},b,\text{corr}_{\text{refr}}\left(\text{corr}_{\text{dip}}\left({f_1}_s\right)\right)\right)}$
 
-$f_2={\text{corr}_{\text{obl}}}$
+$f_2={\text{corr}_{\text{obl}}\left(x\right)}$
 
 The correction functions for dip and refraction are described above:
 [$\text{corr}_{\text{refr}}(f)$](#2i-atmospheric-refraction) and
