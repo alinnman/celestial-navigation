@@ -261,22 +261,21 @@ This is a short outline of the algorithm.
 
 ![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
 
-For both measurements take note of the measured altitude
-(from your **sextant**), $f_1$ and $f_2$.
+For both measurements take note of the measured **altitude**
+(from your **sextant**), ${f_1}_s$ and ${f_2}_s$.
+
+You also need an **estimated position** $p_{\text{dr}}$
+(dead reckoning position)<br>
+*The accuracy of this position will give precision to the sight reduction,*
+*but even a rather bad estimation can be corrected using an iterative algorithm*
+*discussed further down.*
+
+
 
 Using your **chronometer** (clock) register the corresponding
 times $t_1$ and $t_2$ for the two measurements.
 
-Define angles $\alpha$ and $\beta$ this way:
-$\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
 
-*NOTE: The angles* $\alpha$ *and* $\beta$ *are adjusted for refraction,*
-*horizon dip and Earth oblateness.*
-*The oblateness correction is for allowing all calculations described below*
-*being conducted in a **geocentrical** coordinate system*.
-*In order to facilitate this conversion an **estimated position***
-*(dead reckoning position/**DRP**) is used to get reasonable accuracy.*
-*For more details, see code.*
 
 From the Nautical Almanac, using the timestamps $t_1$ and $t_2$,
 get the geographic position vectors (GP:s) $a$ and $b$.
@@ -287,6 +286,33 @@ $a \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
 <br>
 $b \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
 
+The altitudes are corrected for oblateness, refraction and horizon dip.
+
+$f_1={\text{corr}_{\text{obl}}(p_{\text{dr}},a,\text{corr}_{\text{refr}}
+(\text{corr}_{\text{dip}}({f_1}_s)))}$ <br>
+$f_2={\text{corr}_{\text{obl}}(p_{\text{dr}},b,\text{corr}_{\text{refr}}
+(\text{corr}_{\text{dip}}({f_2}_s)))}$
+
+The correction functions for dip and refraction are described above:
+[$\text{corr}_{\text{refr}}(f)$](#2i-atmospheric-refraction) and
+[$\text{corr}_{\text{dip}}(f)$](#2ii-dip-of-horizon)
+
+The oblateness correction function $\text{corr}_{\text{obl}}(p,a,f)$:<br>
+$a_1=\frac{\pi}{2}-\arccos{(p \cdot f)}$<br>
+$a_2=\frac{\pi}{2}-\arccos{(\text{D2C}(p) \cdot f)}$<br>
+$\textit{retval}:=a+(a_2-a_1)$
+
+The symbol $\cdot$ denotes a
+[dot product](https://en.wikipedia.org/wiki/Dot_product).
+
+The $\text{D2C}()$ function converts from geodetic to geocentrical coordinates.
+See
+[this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion)
+for more information. Also see code.
+
+Define angles $\alpha$ and $\beta$ this way:
+$\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
+
 Now we can define two circles of equal altitude, $A$ and $B$.
 
 $A = \lbrace p \in \mathbb{R}^3 \mid
@@ -294,8 +320,6 @@ p \cdot a = \cos \alpha \land \left|\left|p\right|\right| = 1 \rbrace$ <br/>
 $B = \lbrace p \in \mathbb{R}^3 \mid
 p \cdot b = \cos \beta \land \left|\left|p\right|\right| = 1 \rbrace$
 
-(The symbol $\cdot$ denotes a
-[dot product](https://en.wikipedia.org/wiki/Dot_product).
 The notation $\left|\left|x\right|\right|$ denotes the
 [absolute value](https://en.wikipedia.org/wiki/Absolute_value#Vector_spaces)
 of the vector $x$.)
@@ -351,8 +375,13 @@ Apply the formula above for $\rho$ and $-\rho$ and you will get the two
 intersection points $p_1$ and $p_2$.
 **One of these points matches your location**.
 
-*NOTE: The final coordinates* $p_1$ *and* $p_2$ *are converted*
-*back to **geodetic coordinates**. For more details, see code.*
+NOTE: The final coordinates $p_1$ and $p_2$ are converted
+back to **geodetic coordinates**.<br>
+${p_1}_\text{gd}=\text{C2D}(p_1)$<br>
+${p_2}_\text{gd}=\text{C2D}(p_2)$<br>
+The used function ($\text{C2D}$) is numerical.
+For more details, see code and
+[this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion).
 
 When performing the calculation above we also deduce the intersection angle for
 the two small circles (**fitness**). This angle will be used later on when we

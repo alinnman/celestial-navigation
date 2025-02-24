@@ -1050,6 +1050,7 @@ class LatLonGeodetic (LatLon):
         # ll is a *Geocentrical* coordinate
         # Transforms a geocentric coordinate into geodetic
         #    See: https://www.mathworks.com/help/aeroblks/geocentrictogeodeticlatitude.html
+        # See C2D algorithm in README.md
         assert ll is not None
         lam_bda = deg_to_rad (ll.lat)
         a       = EARTH_RADIUS_GEODETIC_EQUATORIAL
@@ -1081,7 +1082,8 @@ class LatLonGeodetic (LatLon):
         super().__init__(rad_to_deg(mu), ll.lon)
 
     def get_latlon (self, height : float = 0) -> LatLonGeocentric:
-        ''' Transforms a geodetic coordinate into geocentric 
+        ''' Transforms a geodetic coordinate into geocentric
+            See D2C function mentioned in README.md 
             See: https://www.mathworks.com/help/aeroblks/geodetictogeocentriclatitude.html
         '''
         f = EARTH_FLATTENING
