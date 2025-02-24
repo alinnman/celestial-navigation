@@ -282,17 +282,17 @@ $a \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
 <br>
 $b \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
 
-The altitudes are corrected for oblateness, refraction and horizon dip.
-
+The altitudes are successively corrected for oblateness,
+refraction and horizon dip, producing corrected altitudes $f_1$ and $f_2$
+<!--
 $f_1={\text{corr}_{\text{obl}}\left(p_{\text{dr}},a,\text{corr}_{\text{refr}}\left(\text{corr}_{\text{dip}}\left({f_1}_s\right)\right)\right)}$
 
 $f_2={\text{corr}_{\text{obl}}\left(p_{\text{dr}},b,\text{corr}_{\text{refr}}\left(\text{corr}_{\text{dip}}\left({f_1}_s\right)\right)\right)}$
 
 $f_2={\text{corr}_{\text{obl}}\left(p_d,b,\text{corr}_{\text{refr}}\right)}$
-
+-->
 The correction functions for dip and refraction are described above:
-[$\text{corr}_{\text{refr}}(f)$](#2i-atmospheric-refraction) and
-[$\text{corr}_{\text{dip}}(f)$](#2ii-dip-of-horizon)
+See [here](#2i-atmospheric-refraction) and [here](#2ii-dip-of-horizon)
 
 The oblateness correction function $\text{corr}_{\text{obl}}(p,a,f)$:<br>
 $a_1=\frac{\pi}{2}-\arccos{(p \cdot f)}$<br>
