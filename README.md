@@ -288,11 +288,9 @@ $b \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
 
 The altitudes are corrected for oblateness, refraction and horizon dip.
 
-$f_1={\text{corr}_{\text{obl}}(p_{\text{dr}},a,\text{corr}_{\text{refr}}
-(\text{corr}_{\text{dip}}({f_1}_s)))}$
+$f_1={\text{corr}_{\text{obl}}\left(p_{\text{dr}},a,\text{corr}_{\text{refr}}\left(\text{corr}_{\text{dip}}\left({f_1}_s\right)\right)\right)}$
 
-$f_2={\text{corr}_{\text{obl}}(p_{\text{dr}},b,\text{corr}_{\text{refr}}
-(\text{corr}_{\text{dip}}({f_2}_s)))}$
+$f_2={\text{corr}_{\text{obl}}\left(p_{\text{dr}},b,\text{corr}_{\text{refr}}\left(\text{corr}_{\text{dip}}\left({f_1}_s\right)\right)\right)}$
 
 The correction functions for dip and refraction are described above:
 [$\text{corr}_{\text{refr}}(f)$](#2i-atmospheric-refraction) and
