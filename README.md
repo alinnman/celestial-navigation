@@ -258,7 +258,7 @@ This is a short outline of the algorithm.
 ![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
 
 For both measurements take note of the measured **altitude**
-(from your **sextant**), ${f_1}_s$ and ${f_2}_s$. 
+(from your **sextant**), ${f_1}_s$ and ${f_2}_s$.
 Note: these measurements are relative to Earth surface, i.e. they
 refer to a **geodetic** model.
 
@@ -271,8 +271,10 @@ You also need an **estimated position** $p_d$
 Using your **chronometer** (clock) register the corresponding
 times $t_1$ and $t_2$ for the two measurements.
 
-From the Nautical Almanac, using the timestamps $t_1$ and $t_2$,
-get the geographic position vectors (GP:s) $a$ and $b$.
+From the [Nautical Almanac](https://en.wikipedia.org/wiki/Nautical_almanac),
+using the timestamps $t_1$ and $t_2$, get the
+[geographic position](https://www.celestialprogramming.com/snippets/geographicPosition.html)
+vectors (GP:s) $a$ and $b$.
 
 The GP:s $a$ and $b$ are located on the unit sphere
 
@@ -687,7 +689,8 @@ where<br>
 * $r$ is a rotation function (based on Rodrigues formula, see above)
 * $t$ is a straight movement function based on approximate course $\phi$
   with distance $\tau$.
-* $p_{\text{GPs2}}$ is the vector of the *geographic position* of sight $s_2$
+* $p_{\text{GPs2}}$ is the vector of the *geographic position* (GP)
+  of sight $s_2$
 * $\alpha_{s2}$ is the altitude measured for $s_2$ (see above for calculation)
 
 The solution of the equation $K(\rho) = 0$ is computed using
