@@ -213,11 +213,7 @@ See [more about future plans](CONTRIBUTING.md).
 The code contains corrections for Earth oblateness, and intersection work uses
 algorithms adpoted to the
 [WGS-84 ellipsoid](https://en.m.wikipedia.org/wiki/World_Geodetic_System).
-These adjustments are not described here.
-The following description only concerns calculations related to a
-perfect sphere.
-See code for how adjustments and corrections are made to take
-real-world Earth oblateness into account.
+These corrections are briefly explained below.
 
 The current implementation seems to work well for deducing intersections and
 sight reduction, but currently the mapping features
@@ -540,10 +536,10 @@ but the algorithm for intersection of circles of equal altitudes
 (as described above) is operating on geocentrical (true spherical) coordinates.
 The final result is then transformed back to geodetical coordinates.
 This mapping in two directions, and the uncertainty in the initial
-dead reckoning position ($p_d$) used for sight altitude mapping will always result in
-an error, and this error will be greater if the dead reckoning position is
-inaccurate. Successive iterations will handle this and will make the $p_d$
-approximations successively converge to the correct position.
+dead reckoning position ($p_d$) used for sight altitude mapping will always
+result in an error, and this error will be greater if the dead reckoning
+position is inaccurate. Successive iterations will handle this and will make
+the $p_d$ approximations successively converge to the correct position.
 
 See code for explanation of this optimization.
 
