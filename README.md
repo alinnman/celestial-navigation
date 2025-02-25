@@ -258,7 +258,9 @@ This is a short outline of the algorithm.
 ![Intersection of small circles.](pics/globe-intersect.png "Intersection of small circles.")
 
 For both measurements take note of the measured **altitude**
-(from your **sextant**), ${f_1}_s$ and ${f_2}_s$.
+(from your **sextant**), ${f_1}_s$ and ${f_2}_s$. 
+Note: these measurements are relative to Earth surface, i.e. they
+refer to a **geodetic** model.
 
 You also need an **estimated position** $p_d$
 (dead reckoning position)<br>
@@ -285,7 +287,7 @@ and [horizon dip](#2ii-dip-of-horizon) ($C_{\text{dip}}$),
 
 $f_1={C_{\text{obl}}\left(p_d,a,C_{\text{refr}}\left(C_{\text{dip}}\left({f_1}_s\right)\right)\right)}$
 
-$f_2={C_{\text{obl}}\left(p_d,b,C_{\text{refr}}\left(C_{\text{dip}}\left({f_1}_s\right)\right)\right)}$
+$f_2={C_{\text{obl}}\left(p_d,b,C_{\text{refr}}\left(C_{\text{dip}}\left({f_2}_s\right)\right)\right)}$
 
 The oblateness correction function is defined like this: :<br>
 $a_1=\frac{\pi}{2}-\arccos{(p \cdot f)}$<br>
@@ -299,6 +301,9 @@ The $\text{D2C}()$ function converts from geodetic to geocentrical coordinates.
 See
 [this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion)
 for more information. Also see code.
+
+From here we continue all calculations in a **geocentric** (spherical)
+coordinate system.
 
 Define angles $\alpha$ and $\beta$ this way:
 $\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
