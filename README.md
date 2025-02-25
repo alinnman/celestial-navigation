@@ -282,22 +282,19 @@ $a \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
 <br>
 $b \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
 
-The altitudes are successively corrected for oblateness,
-refraction and horizon dip, producing corrected altitudes $f_1$ and $f_2$
-<!--
-$f_1={\text{corr}_{\text{obl}}\left(p_{\text{dr}},a,\text{corr}_{\text{refr}}\left(\text{corr}_{\text{dip}}\left({f_1}_s\right)\right)\right)}$
+The altitudes are successively corrected for oblateness ($C_{\text{obl}}$),
+[refraction](#2i-atmospheric-refraction) ($C_{\text{refr}}$)
+and [horizon dip](#2ii-dip-of-horizon) ($C_{\text{dip}}$),
+ producing corrected altitudes $f_1$ and $f_2$
 
-$f_2={\text{corr}_{\text{obl}}\left(p_{\text{dr}},b,\text{corr}_{\text{refr}}\left(\text{corr}_{\text{dip}}\left({f_1}_s\right)\right)\right)}$
+$f_1={C_{\text{obl}}\left(p_{\text{dr}},a,C_{\text{refr}}\left(C_{\text{dip}}\left({f_1}_s\right)\right)\right)}$
 
-$f_2={\text{corr}_{\text{obl}}\left(p_d,b,\text{corr}_{\text{refr}}\right)}$
--->
-The correction functions for dip and refraction are described above:
-See [here](#2i-atmospheric-refraction) and [here](#2ii-dip-of-horizon)
+$f_2={C_{\text{obl}}\left(p_{\text{dr}},b,C_{\text{refr}}\left(C_{\text{dip}}\left({f_1}_s\right)\right)\right)}$
 
-The oblateness correction function $\text{corr}_{\text{obl}}(p,a,f)$:<br>
+The oblateness correction function is defined like this: :<br>
 $a_1=\frac{\pi}{2}-\arccos{(p \cdot f)}$<br>
 $a_2=\frac{\pi}{2}-\arccos{(\text{D2C}(p) \cdot f)}$<br>
-$\text{retval}:=a+(a_2-a_1)$
+$C_{\text{obl}}(p,a,f):=a+(a_2-a_1)$
 
 The symbol $\cdot$ denotes a
 [dot product](https://en.wikipedia.org/wiki/Dot_product).
@@ -319,7 +316,7 @@ p \cdot b = \cos \beta \land \left|\left|p\right|\right| = 1 \rbrace$
 
 The notation $\left|\left|x\right|\right|$ denotes the
 [absolute value](https://en.wikipedia.org/wiki/Absolute_value#Vector_spaces)
-of the vector $x$.)
+of the vector $x$.
 
 The circles relate to a *sight pair* $S_{p_{1,2}} = \{s_1, s_2\}$
 which we will come back to later.
@@ -374,6 +371,10 @@ intersection points $p_1$ and $p_2$.
 
 NOTE: The final coordinates $p_1$ and $p_2$ are converted
 back to **geodetic coordinates**, ${p_1}_d$ and ${p_2}_d$.<br>
+
+${p_1}_d = C2D(p_1)$<br>
+${p_2}_d = C2D(p_2)$
+
 The used function ($\text{C2D}$) for this conversion is numerical.
 For more details, see code and
 [this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion).
@@ -539,9 +540,10 @@ but the algorithm for intersection of circles of equal altitudes
 (as described above) is operating on geocentrical (true spherical) coordinates.
 The final result is then transformed back to geodetical coordinates.
 This mapping in two directions, and the uncertainty in the initial
-dead reckoning position used for sight altitude mapping will always result in
+dead reckoning position ($p_d$) used for sight altitude mapping will always result in
 an error, and this error will be greater if the dead reckoning position is
-inaccurate. Successive iterations will handle this.
+inaccurate. Successive iterations will handle this and will make the $p_d$
+approximations successively converge to the correct position.
 
 See code for explanation of this optimization.
 
