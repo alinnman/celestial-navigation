@@ -365,7 +365,7 @@ Apply the formula above for $\rho$ and $-\rho$ and you will get the two
 intersection points $p_1$ and $p_2$.
 **One of these points matches your location**.
 
-NOTE: The final coordinates $p_1$ and $p_2$ are converted
+The final coordinates $p_1$ and $p_2$ are converted
 back to **geodetic coordinates**, ${p_1}_d$ and ${p_2}_d$.<br>
 
 ${p_1}_d = C2D(p_1)$<br>
