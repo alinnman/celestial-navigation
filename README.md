@@ -211,7 +211,7 @@ See [more about future plans](CONTRIBUTING.md).
 ### 3.i. Short note on Earth oblateness<a name="ellipsoid"></a>
 
 The code contains corrections for Earth oblateness, and intersection work uses
-algorithms adpoted to the
+algorithms adopted to the
 [WGS-84 ellipsoid](https://en.m.wikipedia.org/wiki/World_Geodetic_System).
 These corrections are briefly explained below.
 
