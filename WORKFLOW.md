@@ -6,7 +6,7 @@
 # Short description of the workflow and maths of celestial navigation
 
 This is a short description of the steps you take when performing
-celestial navigation.
+celestial navigation, and a simplified description of the associated maths.
 
 *Before we start: All symbols below are in vector notation
 and vector algebraic operations are used.
