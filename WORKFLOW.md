@@ -83,4 +83,5 @@ of the celestial object, just like Eratosthenes
 <br><br>
 For more details, proof of maths used and background see the
 [Readme File](README.md). Also note: The shape of the Earth isn't perfectly
-spheric. The small deviation (oblateness) is taken care of in this toolkit.
+spheric. The small deviation (oblateness) together with atmospheric refraction,
+and the dip of the horizon are taken care of in this toolkit.
