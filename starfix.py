@@ -27,7 +27,9 @@ EARTH_FLATTENING =\
 MAP_DEV_URL = "https://www.mapdevelopers.com/draw-circle-tool.php?circles="
 MAP_SCALE_FACTOR = 1.000655
 
+################################################
 # Data types
+################################################
 
 class LatLon:
     ''' Base class for lat-lon pairs '''
@@ -45,7 +47,9 @@ class LatLonGeocentric (LatLon):
     def __str__(self):
         return "(Geocentric) LAT = " + str(round(self.lat,4)) + "; LON = " + str(round(self.lon,4))
 
+################################################
 # Utility routines (algrebraic, spheric geometry)
+################################################
 
 def add_vecs (vec1 : list[float], vec2 : list[float]) -> list[float]:
     ''' Performs addition of two cartesian vectors '''
@@ -168,7 +172,9 @@ def rotate_vector\
     result = add_vecs (v1, add_vecs(v2, v3))
     return result
 
+################################################
 # Course management
+################################################
 
 def mod_course (lon : int | float) -> float:
     ''' Transform a course angle into the compass range of (0,360) '''
@@ -209,7 +215,9 @@ def nm_to_km (nm : int | float) -> float:
     ''' Convert from nautical miles to kilometers '''
     return (nm/(360*60))*EARTH_CIRCUMFERENCE
 
+################################################
 # Sextant calibration
+################################################
 
 #pylint: disable=R0903
 class Sextant:
@@ -239,7 +247,9 @@ def angle_between_points (origin : LatLonGeocentric,
     dp = dot_product (point_1gc, point_2gc)
     return acos (dp) * (180 / pi)
 
+################################################
 # Chronometer
+################################################
 
 class Chronometer: # pylint: disable=R0903
     ''' This class represents a chronometer (clock) with known error/drift '''
@@ -259,7 +269,9 @@ class Chronometer: # pylint: disable=R0903
         return datetime.fromtimestamp (mt_corr)
 # pylint: enable=R0903
 
+################################################
 # Horizon
+################################################
 
 def get_adjusted_earth_radius (temperature : float = 10,
                                dt_dh : float = -0.01, pressure : float = 101) -> float:
@@ -299,7 +311,9 @@ def get_line_of_sight (h1 : float, h2 : float, temperature : float = 10,
     x2 = x2r * rr
     return x1 + x2
 
+################################################
 # Intersections
+################################################
 
 #pylint: disable=R0903
 class Circle:
@@ -456,7 +470,6 @@ def get_great_circle_route\
     c = Circle (cp_latlon, 90, EARTH_CIRCUMFERENCE)
     c.accumulate_mapping_distance (distance)
     return c
-
 
 class IntersectError (ValueError):
     ''' Exception used for failed intersections '''
@@ -802,7 +815,9 @@ def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
     r = rad_to_deg (atan2 (fac2, fac1))
     return r % 360
 
+################################################
 # Time management
+################################################
 
 def calculate_time_hours (dt1 : datetime, dt2 : datetime):
     '''
@@ -812,7 +827,9 @@ def calculate_time_hours (dt1 : datetime, dt2 : datetime):
     it2 = int(dt2.timestamp())
     return (it2 - it1) / 3600
 
+################################################
 # Atmospheric refraction
+################################################
 
 def get_refraction (apparent_angle : int | float, temperature : float, pressure : float) -> float:
     '''
@@ -833,7 +850,9 @@ def get_refraction (apparent_angle : int | float, temperature : float, pressure 
     retval = (1 / tan (d2))*(pressure / 101.1)*(283.0/(273.0 + temperature))
     return retval
 
+################################################
 # Data formatting
+################################################
 
 #pylint: disable=R1710
 def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -> str :
@@ -972,7 +991,9 @@ def parse_angle_string (angle_string : str) -> float:
         ret_val += seconds / 3600
     return ret_val
 
+################################################
 # Terrestrial Navigation
+################################################
 
 def get_circle_for_angle (point1 : LatLon, point2 : LatLon,
                           angle : int | float)\
@@ -1024,7 +1045,9 @@ def get_terrestrial_position (point_a1 : LatLon,
     return intersection, a, b, fitness, diag_output
 #pylint: enable=R0913
 
+################################################
 # Geodetics
+################################################
 
 class LatLonGeodetic (LatLon):
     ''' Represents a geodetic coordinate in an ellipsoid model (WGS-84) '''
