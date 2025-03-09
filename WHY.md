@@ -16,14 +16,18 @@ The latter objective might seem strange, but I have followed some
 conspirationist movements during the last year, in particular Flat Earth.
 It is very obvious that celestial navigation provides one of the most solid
 evidence of a spheric Earth you can ever get,
-and this just by staying on the ground (or sail a ship at sea) using low-tech equipment.
+and this just by staying on the ground (or sail a ship at sea)
+using low-tech equipment.
 No spaceflight is necessary, it can be performed in your backyard
 (using an artificial horizon) and this has been known for many centuries.
 By providing this sample I hope to give some more understanding of the concept.
 An even better way to learn is of course to study the techniques in the
 old-school way, as it has been practitioned on ships for many centuries,
 and a good start is to watch this tutorial on Youtube
-[here](https://www.youtube.com/watch?v=hDd1es5oQto&list=PLWcAZhCRTMByW_XEQ0y0OlGmxO3jp0LyE).
+[here](https://www.youtube.com/watch?v=hDd1es5oQto&list=PLWcAZhCRTMByW_XEQ0y0OlGmxO3jp0LyE)
+(Andy Howe). Another very good resource can be found
+[here](https://reednavigation.com/) (Frank Reed) where you find
+courses, software and more.  
 
 You may also watch a website I wrote dedicated to reasoning and challenging
 questions on Earth geometry [here](https://earthform.linnman.net/),
