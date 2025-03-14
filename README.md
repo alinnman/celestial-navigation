@@ -91,7 +91,8 @@ from His Majestys Stationary Office (UK) can be found
 [here](https://archive.org/details/dli.ernet.211556/mode/2up).
 
 If you wonder why I wrote this in the first place, then see
-[this short explanation](WHY.md).
+[this short explanation](WHY.md), where I also give some tips
+on more sources.
 
 If you want to contribute to the project then see [this page](CONTRIBUTING.md).
 

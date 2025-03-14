@@ -21,6 +21,9 @@ using low-tech equipment.
 No spaceflight is necessary, it can be performed in your backyard
 (using an artificial horizon) and this has been known for many centuries.
 By providing this sample I hope to give some more understanding of the concept.
+
+# Learning more
+
 An even better way to learn is of course to study the techniques in the
 old-school way, as it has been practitioned on ships for many centuries,
 and a good start is to watch this tutorial on Youtube
