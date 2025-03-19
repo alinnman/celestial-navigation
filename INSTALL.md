@@ -31,8 +31,8 @@ To aid in installation a good file browser is recommended
 as described
 [here](https://play.google.com/store/apps/details?id=com.cxinventor.file.explorer&pcampaignid=web_share).
 You are recommended to unzip the file to a specific directory
-(not a root directory),
-on Android you could create a directory in the "Documents" tree,
+(not a root directory).
+On Android you could create a directory in the "Documents" tree,
 e.g. "Documents/work/coding".  
 
 The script [starfix.py](starfix.py) contains the core routines.
