@@ -4,7 +4,8 @@
 '''
 
 from math import  pi, sin, cos, acos, sqrt, tan, atan2
-from datetime import datetime
+from random import gauss
+from datetime import datetime, timedelta
 from urllib.parse import quote_plus
 # import logging
 from types import NoneType
@@ -1261,13 +1262,21 @@ class Sight :
                   dt_dh                    : float = -0.01,
                   pressure                 : float = 101.0,
                   ho_obs                   : bool = False,
-                  no_dip                   : bool = False):
+                  no_dip                   : bool = False,
+                  alt_diff                 : float = 0.0,                # For MC simulation
+                  time_diff                : float = 0.0):               # For MC simulation
         self.mapping_distance     = None
         self.temperature          = temperature
         self.dt_dh                = dt_dh
         self.pressure             = pressure
         self.object_name          = object_name
         self.set_time_dt          = datetime.fromisoformat (set_time)
+        self.set_time_dt_hour     = self.set_time_dt.replace(second=0, microsecond=0, minute=0,
+                                                             hour=self.set_time_dt.hour)
+        if time_diff != 0.0:
+            diff = gauss(0, time_diff)
+            new_time = self.set_time_dt + timedelta(seconds=diff)
+            self.set_time_dt = new_time
         self.gha_time_0           = parse_angle_string (gha_time_0)
         self.gha_time_1           = parse_angle_string (gha_time_1)
         if self.gha_time_1 < self.gha_time_0:
@@ -1280,6 +1289,9 @@ class Sight :
            self.decl_time_1 < -90 or self.decl_time_1 > 90:
             raise ValueError ("Declination values must be within [-90,90]")
         self.measured_alt         = parse_angle_string (measured_alt)
+        if alt_diff != 0.0:
+            diff                  = gauss (0, alt_diff) / 60
+            self.measured_alt     += diff
         if sha_diff is not None:
             self.sha_diff         = parse_angle_string (sha_diff)
         else:
@@ -1373,7 +1385,8 @@ class Sight :
 
     def __calculate_gp (self) -> LatLonGeocentric:
 
-        min_sec_contribution = self.set_time_dt.minute/60 + self.set_time_dt.second/3600
+        # min_sec_contribution = self.set_time_dt.minute/60 + self.set_time_dt.second/3600
+        min_sec_contribution = (self.set_time_dt - self.set_time_dt_hour).total_seconds() / 3600
 
         result_lon = mod_lon (- \
         ((self.gha_time_0 + self.sha_diff) + \
@@ -1637,18 +1650,89 @@ class SightCollection:
 #pylint: enable=R0915
 
 #pylint: disable=R0913
+#pylint: disable=R0914
+#pylint: disable=R0917
+    @staticmethod
+    def get_intersections_mc\
+         (return_geodetic : bool,
+            estimated_position : LatLon,
+            get_starfixes : Callable,
+            limit : int | float = 100,
+            alt_sigma : float = 0.0,
+            time_sigma : float = 0.0,
+            max_mc_iter : int = 1) -> tuple [LatLon, float, int]:
+        '''
+        Calculate intersections based on monte carlo (random)
+        simulations with errors/deviations in measured angle and time
+        '''
+        if alt_sigma < 0.0 or time_sigma < 0.0:
+            raise ValueError ("Sigma parameter must be >= 0.0")
+        if max_mc_iter < 1:
+            raise ValueError ("max_mc_iter must be >= 1")
+        # Perform Monte Carlo Simulation
+        sum_rect = [0.0,0.0,0.0]
+        int_coll = list [LatLon] ()
+        found_intersections = 0
+        for _ in range(max_mc_iter):
+            sc = get_starfixes (estimated_position, alt_sigma, time_sigma)
+            assert isinstance (sc, SightCollection)
+            intersections = None
+            try:
+                intersections, _, _ = \
+                sc.get_intersections (return_geodetic=return_geodetic,
+                                      limit=limit,
+                                      estimated_position=estimated_position,
+                                      diagnostics=False)
+                found_intersections += 1
+            except IntersectError:
+                # Ignore failed intersections
+                pass
+            if intersections is not None:
+                assert isinstance (intersections, LatLon)
+                rect1 = to_rectangular (intersections)
+                sum_rect = add_vecs (sum_rect, rect1)
+                int_coll.append (intersections)
+
+        if found_intersections == 0:
+            # At least ONE intersection should be found
+            raise IntersectError ("Cannot work on intersections for this MC set.")
+
+        sum_rect = mult_scalar_vect (1/found_intersections, sum_rect)
+        intersections = to_latlon (sum_rect)
+        # Convert this latlon to geodetic, since it IS geodetic...
+        intersections = LatLonGeodetic (lat=intersections.lat, lon=intersections.lon)
+
+        square_sum = 0.0
+        for c in int_coll:
+            sd = spherical_distance (intersections, c)
+            sd = sd*sd
+            square_sum += sd
+        square_sum /= found_intersections
+        return intersections, sqrt (square_sum), found_intersections
+#pylint: enable=R0913
+#pylint: enable=R0914
+#pylint: enable=R0917
+
+#pylint: disable=R0913
+#pylint: disable=R0917
+#pylint: disable=R0914
     @staticmethod
     def get_intersections_conv\
         (return_geodetic : bool,
             estimated_position : LatLon,
             get_starfixes : Callable,
             limit : int | float = 100,
-            diagnostics : bool = False, max_iter = 10, dist_limit = 0.01) ->\
+            diagnostics : bool = False,
+            max_iter : int = 10,
+            dist_limit : float = 0.01,
+            alt_sigma : float = 0.0,
+            time_sigma : float = 0.0) ->\
             tuple[LatLon | tuple[LatLon, LatLon], float, str, object]:
         ''' Returns an intersection based on improved algorithm.
             Successively searches for (iterates) to get the correct
             position. 
         '''
+
         ready = False
         intersections = None
         collection = None
@@ -1658,7 +1742,9 @@ class SightCollection:
         while not ready:
             # This loop will repeat the sight reduction with successively more
             # accurate DR positions
-            collection = get_starfixes (estimated_position)
+            collection = get_starfixes (estimated_position,
+                                        time_sigma = time_sigma,
+                                        alt_sigma = alt_sigma)
             assert isinstance (collection, SightCollection)
             try:
                 intersections, fitness, diag =\
@@ -1683,6 +1769,8 @@ class SightCollection:
         assert diag is not None
         return intersections, fitness, diag, collection
 #pylint: enable=R0913
+#pylint: enable=R0917
+#pylint: enable=R0914
 
     def get_map_developers_string \
         (self, geodetic : bool, markers : list[LatLon] | NoneType = None,

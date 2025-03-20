@@ -11,7 +11,9 @@ from starfix import Sight, SightCollection, get_representation,\
                     get_google_map_string, IntersectError, LatLonGeodetic
 
 
-def get_starfixes (drp_pos : LatLonGeodetic) -> SightCollection :
+def get_starfixes (drp_pos : LatLonGeodetic,
+                   time_sigma : float = 0.0,
+                   alt_sigma  : float = 0.0) -> SightCollection :
     ''' Returns a list of used star fixes (SightCollection) '''
 
     a = Sight (   object_name          = "Capella",

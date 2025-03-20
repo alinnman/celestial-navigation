@@ -2,8 +2,10 @@
     © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
 
-    This sample uses an algorithm for better accuracy using repeated
-    refinements of the DR position. 
+    This sample uses an algorithm for testing the accuracy of the 
+    intersection algorithm. It uses a simple Monte Carlo simulation
+    using deviations of altitude and time values. 
+    The "Sigma" result is a measurement of inaccuracy/instability. 
 '''
 
 from time import time
@@ -17,7 +19,7 @@ def get_starfixes (drp_pos : LatLonGeodetic,
                    time_sigma : float = 0.0) -> SightCollection :
     ''' Returns a list of used star fixes (SightCollection) '''
 
-    a = Sight (   object_name          = "Sun",
+    a = Sight ( object_name          = "Sun",
                 set_time             = "2024-05-05 15:55:18+00:00",
                 gha_time_0           = "45:50.4",
                 gha_time_1           = "60:50.4",
@@ -29,7 +31,7 @@ def get_starfixes (drp_pos : LatLonGeodetic,
                 time_diff            = time_sigma
                 )
 
-    b = Sight (   object_name          = "Sun",
+    b = Sight ( object_name          = "Sun",
                 set_time             = "2024-05-05 23:01:19+00:00",
                 gha_time_0           = "165:50.8",
                 gha_time_1           = "180:50.8",
@@ -40,7 +42,7 @@ def get_starfixes (drp_pos : LatLonGeodetic,
                 time_diff            = time_sigma
                 )
 
-    c = Sight (   object_name          = "Vega",
+    c = Sight ( object_name          = "Vega",
                 set_time             = "2024-05-06 04:04:13+00:00",
                 gha_time_0           = "284:30.4",
                 gha_time_1           = "299:32.9",
@@ -56,47 +58,34 @@ def main ():
     ''' Main body of script.'''
 
     starttime = time ()
-    the_pos = LatLonGeodetic (40, -90) # Rough DRP position
+    the_pos = LatLonGeodetic (41, -88) # Rough DRP position
+    max_mc_iter = 100
 
     try:
-        intersections, _, _, collection =\
-              SightCollection.get_intersections_conv (return_geodetic=True,
-                                                      estimated_position=the_pos,
-                                                      get_starfixes=get_starfixes)
+        intersections, sigma, found_intersections =\
+              SightCollection.get_intersections_mc (return_geodetic=True,
+                                                    estimated_position=the_pos,
+                                                    get_starfixes=get_starfixes,
+                                                    max_mc_iter=max_mc_iter,
+                                                    alt_sigma=2,
+                                                    time_sigma=2)
     except IntersectError as ve:
-        print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
+        print ("Cannot perform a sight reduction. Bad sight data?\n" + str(ve))
         if ve.coll_object is not None:
             if isinstance (ve.coll_object, SightCollection):
                 print ("Check the circles! " +
                         ve.coll_object.get_map_developers_string(geodetic=True))
         exit ()
 
+    if found_intersections < max_mc_iter:
+        print ("WARNING : Only " + str(found_intersections) + " intersections could be calculated.")
+
     assert intersections is not None
-    assert collection is not None
     endtime = time ()
     taken_ms = round((endtime-starttime)*1000,3)
     print (get_representation(intersections,1))
-    assert isinstance (intersections, LatLonGeodetic)
-    print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
+    print ("Sigma = " + str(sigma) + " km.")
     print ("GM = " + get_google_map_string(intersections,4))
-
-    # Check azimuth
-    assert isinstance (intersections, LatLonGeodetic)
-    counter = 0
-    for s in collection.sf_list:
-        counter += 1
-        az = s.get_azimuth (intersections)
-        print ("Azimuth " + str(counter) + " = " + str(round(az,2)))
-
-    #Diagnostics for map rendering etc.
-    print ("Some useful data follows")
-    counter = 0
-    for s in collection.sf_list:
-        counter += 1
-        print (str(counter) + " radius = " +\
-                str(round(s.get_circle(geodetic=True).get_radius (),1)))
-        print (str(counter) + " GP     = " +\
-                get_google_map_string(LatLonGeodetic(ll=s.gp),4))
 
     print ("Time taken = " +str(taken_ms)+" ms")
 

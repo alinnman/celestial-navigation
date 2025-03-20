@@ -36,6 +36,7 @@ You need a Google/Gmail account to run the code in the notebook*.
 1. [A real-life example](#real-life)
 1. [Sextant Calibration](#calibration)
 1. [Chronometer Handling](#chronometer)
+1. [Some notes on accuracy](#accuracy)
 
 ## 1. Introduction <a name="introduction"></a>
 
@@ -965,3 +966,28 @@ you may use the method of
 [Lunar Distances](https://en.wikipedia.org/wiki/Lunar_distance_(navigation)).
 For your help Lunar Distance [tables](LDtable(A4)_2024.pdf)
 are bundled in the repository.
+
+## 7. Some notes on accuracy <a name="accuracy"></a>
+
+Celestial Navigation is nowhere as accurate as modern tech solutions like
+[GPS](https://en.wikipedia.org/wiki/Global_Positioning_System).
+And the simple reason is of course the setup with mechanical devices
+(sextant and chronometer), built on centuries-old technology.
+But even with an error of 2-5 nautical miles
+you have a very tool in oceanic navigation. More precise navigation
+can of course start as soon as you make landfall (using triangulations) and
+of course using Dead Reckoning for shorter passages on smaller waters.
+
+An interesting question is how accurate results you could expect from
+Celestial Navigation. In order to answer this you may try
+[this script](starfixdata_stat_1_mc.py). It uses a simple
+[Monte Carlo simulation](https://en.wikipedia.org/wiki/Monte_Carlo_method)
+in order to obtain an approximation of the standard deviation (sigma)
+of position estimations when the sextant and chronometer readings
+are non-precise. See code for more details.
+
+It is easy to see using this script that with a variation of 2 minutes
+of the altitude, and 2 seconds of the chronometer reading you get a
+sigma for the position of about **5 kilometers**.
+This is a humbling fact, and stresses the absolute
+need for precision while doing the practical observational work.
