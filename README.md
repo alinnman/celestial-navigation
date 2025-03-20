@@ -967,7 +967,7 @@ you may use the method of
 For your help Lunar Distance [tables](LDtable(A4)_2024.pdf)
 are bundled in the repository.
 
-## 7. Some notes on accuracy <a name="accuracy"></a>
+## 8. Some notes on accuracy <a name="accuracy"></a>
 
 Celestial Navigation is nowhere as accurate as modern tech solutions like
 [GPS](https://en.wikipedia.org/wiki/Global_Positioning_System).
