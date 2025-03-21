@@ -1663,7 +1663,9 @@ class SightCollection:
             max_mc_iter : int = 1) -> tuple [LatLon, float, int]:
         '''
         Calculate intersections based on monte carlo (random)
-        simulations with errors/deviations in measured angle and time
+        simulations with errors/deviations in measured angle and time.
+        This function can be used to get an approximation of the 
+        inaccuracy of the intersection algorithm. 
         '''
         if alt_sigma < 0.0 or time_sigma < 0.0:
             raise ValueError ("Sigma parameter must be >= 0.0")
@@ -1685,7 +1687,8 @@ class SightCollection:
                                       diagnostics=False)
                 found_intersections += 1
             except IntersectError:
-                # Ignore failed intersections
+                # Ignore failed intersections. Larger deviations will cause
+                # the intersections to fail. 
                 pass
             if intersections is not None:
                 assert isinstance (intersections, LatLon)
@@ -1708,7 +1711,8 @@ class SightCollection:
             sd = sd*sd
             square_sum += sd
         square_sum /= found_intersections
-        return intersections, sqrt (square_sum), found_intersections
+        sigma = sqrt (square_sum)
+        return intersections, sigma, found_intersections
 #pylint: enable=R0913
 #pylint: enable=R0914
 #pylint: enable=R0917
@@ -1730,9 +1734,9 @@ class SightCollection:
             tuple[LatLon | tuple[LatLon, LatLon], float, str, object]:
         ''' Returns an intersection based on improved algorithm.
             Successively searches for (iterates) to get the correct
-            position. 
+            position. Each iteration improves the DRP (using the result
+            of the previous iteration)
         '''
-
         ready = False
         intersections = None
         collection = None

@@ -974,9 +974,9 @@ Celestial Navigation is nowhere as accurate as modern tech solutions like
 And the simple reason is of course the setup with mechanical devices
 (sextant and chronometer), built on centuries-old technology.
 But even with an error of 2-5 nautical miles
-you have a very tool in oceanic navigation. More precise navigation
+you have a very useful tool in oceanic navigation. More precise navigation
 can of course start as soon as you make landfall (using triangulations) and
-of course using Dead Reckoning for shorter passages on smaller waters.
+of course you can use Dead Reckoning for shorter passages on smaller waters.
 
 An interesting question is how accurate results you could expect from
 Celestial Navigation. In order to answer this you may try
