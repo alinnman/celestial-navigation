@@ -1237,6 +1237,23 @@ class Sight :
 
     # This is a cached value for the estimated_position parameter
     estimated_position_hold = None
+    alt_diff_hold           = 0.0
+    time_diff_hold          = 0.0
+
+    @staticmethod
+    def set_estimated_position (drp : LatLon):
+        ''' Set the estimated position value (DRP) '''
+        Sight.estimated_position_hold = drp
+
+    @staticmethod
+    def set_alt_diff (alt_diff : float):
+        ''' Set the alt sigma (used in Monte Carlo simulation) '''
+        Sight.alt_diff_hold = alt_diff
+
+    @staticmethod
+    def set_time_diff (time_diff : float):
+        ''' Set the time sigma (used in Monte Carlo simulations) '''
+        Sight.time_diff_hold = time_diff
 
 #pylint: disable=R0912
 #pylint: disable=R0913
@@ -1262,9 +1279,7 @@ class Sight :
                   dt_dh                    : float = -0.01,
                   pressure                 : float = 101.0,
                   ho_obs                   : bool = False,
-                  no_dip                   : bool = False,
-                  alt_diff                 : float = 0.0,                # For MC simulation
-                  time_diff                : float = 0.0):               # For MC simulation
+                  no_dip                   : bool = False):               # For MC simulation
         self.mapping_distance     = None
         self.temperature          = temperature
         self.dt_dh                = dt_dh
@@ -1273,8 +1288,8 @@ class Sight :
         self.set_time_dt          = datetime.fromisoformat (set_time)
         self.set_time_dt_hour     = self.set_time_dt.replace(second=0, microsecond=0, minute=0,
                                                              hour=self.set_time_dt.hour)
-        if time_diff != 0.0:
-            diff = gauss(0, time_diff)
+        if Sight.time_diff_hold != 0.0:
+            diff = gauss(0, Sight.time_diff_hold)
             new_time = self.set_time_dt + timedelta(seconds=diff)
             self.set_time_dt = new_time
         self.gha_time_0           = parse_angle_string (gha_time_0)
@@ -1289,8 +1304,8 @@ class Sight :
            self.decl_time_1 < -90 or self.decl_time_1 > 90:
             raise ValueError ("Declination values must be within [-90,90]")
         self.measured_alt         = parse_angle_string (measured_alt)
-        if alt_diff != 0.0:
-            diff                  = gauss (0, alt_diff) / 60
+        if Sight.alt_diff_hold != 0.0:
+            diff                  = gauss (0, Sight.alt_diff_hold) / 60
             self.measured_alt     += diff
         if sha_diff is not None:
             self.sha_diff         = parse_angle_string (sha_diff)

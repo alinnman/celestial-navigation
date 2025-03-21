@@ -17,16 +17,17 @@ def get_starfixes (drp_pos : LatLonGeodetic,
                    time_sigma : float = 0.0) -> SightCollection :
     ''' Returns a list of used star fixes (SightCollection) '''
 
+    Sight.set_estimated_position (drp_pos)
+    Sight.set_alt_diff           (alt_sigma)
+    Sight.set_time_diff          (time_sigma)
+
     a = Sight (   object_name          = "Sun",
                 set_time             = "2024-05-05 15:55:18+00:00",
                 gha_time_0           = "45:50.4",
                 gha_time_1           = "60:50.4",
                 decl_time_0          = "16:30.6",
                 decl_time_1          = "16:31.3",
-                measured_alt         = "55:8:1.1",
-                estimated_position   = drp_pos,
-                alt_diff             = alt_sigma,
-                time_diff            = time_sigma
+                measured_alt         = "55:8:1.1"
                 )
 
     b = Sight (   object_name          = "Sun",
@@ -35,9 +36,7 @@ def get_starfixes (drp_pos : LatLonGeodetic,
                 gha_time_1           = "180:50.8",
                 decl_time_0          = "16:36.2",
                 decl_time_1          = "16:36.9",
-                measured_alt         = "19:28:19",
-                alt_diff             = alt_sigma,
-                time_diff            = time_sigma
+                measured_alt         = "19:28:19"
                 )
 
     c = Sight (   object_name          = "Vega",
@@ -46,9 +45,7 @@ def get_starfixes (drp_pos : LatLonGeodetic,
                 gha_time_1           = "299:32.9",
                 decl_time_0          = "38:48.1",
                 measured_alt         = "30:16:23.7",
-                sha_diff             = "80:33.4",
-                alt_diff             = alt_sigma,
-                time_diff            = time_sigma
+                sha_diff             = "80:33.4"
                 )
     return SightCollection ([a, b, c])
 

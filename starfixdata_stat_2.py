@@ -16,14 +16,17 @@ def get_starfixes (drp_pos : LatLonGeodetic,
                    alt_sigma  : float = 0.0) -> SightCollection :
     ''' Returns a list of used star fixes (SightCollection) '''
 
+    Sight.set_estimated_position (drp_pos)
+    Sight.set_alt_diff           (alt_sigma)
+    Sight.set_time_diff          (time_sigma)
+
     a = Sight (   object_name          = "Capella",
                 set_time             = "2024-09-17 23:36:13+00:00",
                 gha_time_0           = "342:21.9",
                 gha_time_1           = "357:24.4",
                 decl_time_0          = "46 :1.2",
                 sha_diff             = "280:22.3",
-                measured_alt         = "33 :9    :34",
-                estimated_position   = drp_pos
+                measured_alt         = "33 :9    :34"
                 )
 
     b = Sight (   object_name          = "Moon",
