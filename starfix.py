@@ -1768,7 +1768,7 @@ class SightCollection:
             except IntersectError as ve:
                 print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
                 print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
-                exit ()
+                raise ve
             assert isinstance (intersections, LatLon)
             the_distance = spherical_distance (estimated_position, intersections)
             if the_distance < dist_limit:
