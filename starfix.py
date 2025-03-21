@@ -1307,6 +1307,11 @@ class Sight :
         if Sight.alt_diff_hold != 0.0:
             diff                  = gauss (0, Sight.alt_diff_hold) / 60
             self.measured_alt     += diff
+            # Take care if the altitude extends outside [0,90]
+            if self.measured_alt < 0:
+                self.measured_alt = 0
+            if self.measured_alt >= 90:
+                self.measured_alt = 89.999999
         if sha_diff is not None:
             self.sha_diff         = parse_angle_string (sha_diff)
         else:
@@ -1326,8 +1331,8 @@ class Sight :
             self.__correct_for_index_error (index_error_minutes)
         if artificial_horizon:
             self.__correct_for_artficial_horizon ()
-        if self.measured_alt < 0 or self.measured_alt > 90:
-            raise ValueError ("Altitude value must be within [0,90]")
+        if self.measured_alt < 0 or self.measured_alt >= 90:
+            raise ValueError ("Altitude value must be within (0,90]")
         if semi_diameter_correction != 0:
             self.__correct_semi_diameter (semi_diameter_correction)
         if horizontal_parallax != 0:
