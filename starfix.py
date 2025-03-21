@@ -11,7 +11,9 @@ from urllib.parse import quote_plus
 from types import NoneType
 from collections.abc import Callable
 
+################################################
 # Dimension of Earth
+################################################
 
 EARTH_CIRCUMFERENCE_EQUATORIAL = 40075.017
 EARTH_CIRCUMFERENCE_MERIDIONAL = 40007.86
