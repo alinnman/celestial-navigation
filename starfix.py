@@ -1384,8 +1384,6 @@ class Sight :
         self.measured_alt -= get_refraction (self.measured_alt, self.temperature, self.pressure)/60
 
     def __calculate_gp (self) -> LatLonGeocentric:
-
-        # min_sec_contribution = self.set_time_dt.minute/60 + self.set_time_dt.second/3600
         min_sec_contribution = (self.set_time_dt - self.set_time_dt_hour).total_seconds() / 3600
 
         result_lon = mod_lon (- \
@@ -1629,11 +1627,6 @@ class SightCollection:
         fitness_sum = 0
         for cp in chosen_points:
             selected_coord = coords [cp][0]
-
-            #if return_geodetic:
-            #    selected_coord_x = LatLonGeodetic (ll = selected_coord)
-            #else:
-            #    selected_coord_x = selected_coord
             fitness_here = coords [cp][1]**3 # Penalize bad intersections
             fitness_sum += fitness_here
             rect_vec = to_rectangular (selected_coord)
@@ -1676,6 +1669,7 @@ class SightCollection:
         int_coll = list [LatLon] ()
         found_intersections = 0
         for _ in range(max_mc_iter):
+            # Perform one perturberated intersection
             sc = get_starfixes (estimated_position, alt_sigma, time_sigma)
             assert isinstance (sc, SightCollection)
             intersections = None
@@ -1688,9 +1682,10 @@ class SightCollection:
                 found_intersections += 1
             except IntersectError:
                 # Ignore failed intersections. Larger deviations will cause
-                # the intersections to fail. 
+                # the intersections to fail.
                 pass
             if intersections is not None:
+                # Collect the data
                 assert isinstance (intersections, LatLon)
                 rect1 = to_rectangular (intersections)
                 sum_rect = add_vecs (sum_rect, rect1)
