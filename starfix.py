@@ -1143,15 +1143,6 @@ def get_vertical_parallax (llg : LatLonGeodetic) -> tuple [float, LatLonGeocentr
 def get_geocentric_alt (position : LatLonGeodetic, geodesic_alt : float,
                         gp : LatLonGeocentric) -> float:
     ''' Convert an estimated geodetic altitude (observation from sextant) to a geocentric value '''
-    #if False:
-    #    parallax, ll = get_vertical_parallax (estimated_position)
-    #    est_rect = to_rectangular (estimated_position)
-    #    ll_rect  = to_rectangular (ll)
-    #    rot_vec = cross_product (est_rect, ll_rect)
-    #    gp_rect = to_rectangular (gp)
-    #    rotated = normalize_vect(rotate_vector (gp_rect, rot_vec, deg_to_rad(parallax)))
-    #    dot_p = dot_product (rotated, ll_rect)
-    #    return rad_to_deg((pi/2) - acos(dot_p))
     ang_1 = (pi/2) - acos(dot_product (to_rectangular(position), to_rectangular(gp)))
     epgc = position.get_latlon()
     ang_2 = (pi/2) - acos(dot_product (to_rectangular(epgc),     to_rectangular(gp)))
@@ -1182,7 +1173,7 @@ def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
         pt2_g = LatLonGeodetic (ll = pt2)
         pt2 = pt2_g
 
-    a = EARTH_RADIUS_GEODETIC_EQUATORIAL # 6378137.0 # equatorial radius in meters
+    a = EARTH_RADIUS_GEODETIC_EQUATORIAL # equatorial radius in meters
     f = EARTH_FLATTENING # ellipsoid flattening
     b = (1 - f)*a
     tolerance = 1e-11 # to stop iteration
@@ -1231,7 +1222,9 @@ def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
 #pylint: enable=R0914
 #pylint: enable=C0103
 
+################################################
 # Celestial Navigation
+################################################
 
 #pylint: disable=R0902
 class Sight :
