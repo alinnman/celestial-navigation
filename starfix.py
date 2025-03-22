@@ -425,8 +425,6 @@ def get_great_circle_route\
 #pylint: disable=C0123
     if isinstance (direction, LatLonGeocentric):
         assert type(start) == type(direction)
-        #assert type(start) == LatLon
-        #assert type(direction) == LatLon
 #pylint: enable=C0123
 
     converted = False
@@ -1312,8 +1310,6 @@ class Sight :
         else:
             self.sha_diff         = 0
         self.observer_height      = observer_height
-        #if not (self.object_name != "Sun" or self.sha_diff == 0):
-        #    raise ValueError ("The Sun should have a sha_diff parameter != 0")
         if self.observer_height != 0 and artificial_horizon is True:
             raise ValueError ("Observer_height should be == 0 when artificial_horizon == True")
         if self.observer_height < 0:
@@ -1817,7 +1813,7 @@ class SightTrip:
         self.movement_vec             = None
         self.start_pos                = None
         self.end_pos                  = None
-        self.mapping_distance       = None
+        self.mapping_distance         = None
 #pylint: enable=R0913
 
     def __calculate_time_hours (self):
@@ -1953,13 +1949,9 @@ class SightTrip:
         # Plot the great circle
         d = self.get_mapping_distance()
         assert isinstance (d, float) or d is None
-        #str2 = get_map_developers_string\
-        #      (EARTH_CIRCUMFERENCE/4, LatLonGeodetic(ll=self.movement_vec), distance=d)
         url_start = MAP_DEV_URL
         result = "["
         result += str1
-        #result += ","
-        #result += str2
 
         # Handle/plot markers
         if isinstance (self.start_pos, LatLonGeocentric) and \
