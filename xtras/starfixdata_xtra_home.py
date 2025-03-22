@@ -57,7 +57,7 @@ def get_starfixes (drp_pos : LatLonGeodetic):
                 index_error_minutes      = 0,
                 semi_diameter_correction = 15.7,
                 sextant                  = mySextant,
-                chronometer              = myChronometer,
+                ##chronometer              = myChronometer,
                 estimated_position       = drp_pos
                 )
 
@@ -71,7 +71,7 @@ def get_starfixes (drp_pos : LatLonGeodetic):
                 artificial_horizon       = True,
                 index_error_minutes      = 0,
                 sextant                  = mySextant,
-                chronometer              = myChronometer
+                ##chronometer              = myChronometer
                 )
     return SightCollection ([s1, s2])
 

@@ -7,7 +7,6 @@ from math import  pi, sin, cos, acos, sqrt, tan, atan2
 from random import gauss
 from datetime import datetime, timedelta
 from urllib.parse import quote_plus
-# import logging
 from types import NoneType
 from collections.abc import Callable
 
@@ -269,7 +268,7 @@ class Chronometer: # pylint: disable=R0903
         diff_days = (mt1 - st1) / (24*3600)
         drift = diff_days * self.drift_sec_per_day
         mt_corr = mt1 - drift
-        return datetime.fromtimestamp (mt_corr)
+        return datetime.fromtimestamp (mt_corr, tz = measured_time.tzinfo)
 # pylint: enable=R0903
 
 ################################################
@@ -1281,8 +1280,9 @@ class Sight :
         self.pressure             = pressure
         self.object_name          = object_name
         self.set_time_dt          = datetime.fromisoformat (set_time)
-        self.set_time_dt_hour     = self.set_time_dt.replace(second=0, microsecond=0, minute=0,
-                                                             hour=self.set_time_dt.hour)
+        self.set_time_dt_hour     = self.set_time_dt.replace\
+                                      (second=0, microsecond=0, minute=0,
+                                       hour=self.set_time_dt.hour, tzinfo=self.set_time_dt.tzinfo)
         if Sight.time_diff_hold != 0.0:
             diff = gauss(0, Sight.time_diff_hold)
             new_time = self.set_time_dt + timedelta(seconds=diff)
@@ -1738,9 +1738,7 @@ class SightCollection:
             limit : int | float = 100,
             diagnostics : bool = False,
             max_iter : int = 10,
-            dist_limit : float = 0.01,
-            alt_sigma : float = 0.0,
-            time_sigma : float = 0.0) ->\
+            dist_limit : float = 0.01) ->\
             tuple[LatLon | tuple[LatLon, LatLon], float, str, object]:
         ''' Returns an intersection based on improved algorithm.
             Successively searches for (iterates) to get the correct
@@ -1756,9 +1754,7 @@ class SightCollection:
         while not ready:
             # This loop will repeat the sight reduction with successively more
             # accurate DR positions
-            collection = get_starfixes (estimated_position,
-                                        time_sigma = time_sigma,
-                                        alt_sigma = alt_sigma)
+            collection = get_starfixes (estimated_position)
             assert isinstance (collection, SightCollection)
             try:
                 intersections, fitness, diag =\

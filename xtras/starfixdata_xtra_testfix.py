@@ -22,9 +22,6 @@ except ValueError:
 from starfix import Sight, SightCollection, get_representation,\
      get_google_map_string, IntersectError, LatLonGeodetic
 
-
-starttime = time ()
-
 # Our starfix data
 
 TEMPERATURE = 18
@@ -33,6 +30,7 @@ THE_POS = LatLonGeodetic (-34, 18)
 
 
 def get_starfixes (drp_pos : LatLonGeodetic):
+    ''' Get a collection of starfixes (sights) '''
     a = Sight (   object_name          = "Sabik",
                 set_time             = "2024-10-01 17:13:00+00:00",
                 gha_time_0           = "265:55.1",
@@ -70,7 +68,8 @@ def get_starfixes (drp_pos : LatLonGeodetic):
                 )
     return SightCollection ([a, b, c])
 
-def main (): 
+def main ():
+    ''' Main function of module. '''
     starttime = time ()
 
     try:
@@ -114,6 +113,6 @@ def main ():
                 get_google_map_string(LatLonGeodetic(ll=s.gp),4))
 
     print ("Time taken = " +str(taken_ms)+" ms")
-    
+
 if __name__ == '__main__':
     main()
