@@ -22,20 +22,24 @@ Regarding future plans for this project.
 These are some things I may consider doing (or have already started)
 
 1. Building on WGS-84 ellipsoid model.<br/>
-*Working on this right now. Sight reductions seems to work well but mapping*
-*does not work yet*
+*Working on this right now. Sight reductions seems to work well but accurate*
+*mapping does not work yet.*
 1. Better mapping functions.<br/>
 *Currently using the*
 *[MapDevelopers circle functions](https://www.mapdevelopers.com/draw-circle-tool.php) (web-based). Considering*
 *building functionality on GeoPandas or similar framework.*
-1. Create machine-readable Nautical Almanac
-1. Create a lightweight web application and/or mobile app. <br/>
+1. Create machine-readable Nautical Almanac<br/>
+*This will greatly improve workflow speed*
+1. Create a lightweight web application and/or mobile app without requiring
+internet access. <br/>
 *A collection of simple Jupyter notebooks have been added, and this may be good*
 *enough for practical work. There are however bugs in current Jupyter*
 *implementations on Android.*
 1. Diagnostic output for describing the underlying maths.
 (Mainly for the notebooks)<br/>
-*Working on this right now*
+*Working on this right now.*
+1. Diagnostic code for measuring accuracy<br/>
+*Working on this right now.*
 1. More elaborate sextant calibration code.
 1. Code for Lunar Distance measurements.
 
