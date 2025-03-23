@@ -3,12 +3,27 @@
     MIT License (see LICENSE file)
 '''
 
+from sys import version_info
 from math import  pi, sin, cos, acos, sqrt, tan, atan2
 from random import gauss
 from datetime import datetime, timedelta
 from urllib.parse import quote_plus
 from types import NoneType
 from collections.abc import Callable
+
+def version_warning ():
+    ''' Simple warning for possible wrong version of Python '''
+    print ("WARNING: You should use Python 3.11 for this toolkit!")
+
+REQUIRED_MAJOR_VERSION = 3
+REQUIRED_MINOR_VERSION = 11
+major_version = version_info[0]
+if major_version < REQUIRED_MAJOR_VERSION:
+    version_warning ()
+elif major_version == REQUIRED_MAJOR_VERSION:
+    minor_version = version_info[1]
+    if minor_version < REQUIRED_MINOR_VERSION:
+        version_warning ()
 
 ################################################
 # Dimension of Earth
