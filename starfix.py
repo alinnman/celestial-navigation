@@ -11,19 +11,23 @@ from urllib.parse import quote_plus
 from types import NoneType
 from collections.abc import Callable
 
-def version_warning ():
-    ''' Simple warning for possible wrong version of Python '''
-    print ("WARNING: You should use Python 3.11 for this toolkit!")
+def version_warning (min_major_ver : int, min_minor_ver : int):
+    ''' Check compatible Python version '''
 
-REQUIRED_MAJOR_VERSION = 3
-REQUIRED_MINOR_VERSION = 11
-major_version = version_info[0]
-if major_version < REQUIRED_MAJOR_VERSION:
-    version_warning ()
-elif major_version == REQUIRED_MAJOR_VERSION:
-    minor_version = version_info[1]
-    if minor_version < REQUIRED_MINOR_VERSION:
-        version_warning ()
+    def output_warning ():
+        print ("WARNING: You should use Python " +\
+            str(min_major_ver) + "." +str (min_minor_ver)+" for this toolkit!")
+
+    major_version = version_info[0]
+    if major_version < min_major_ver:
+        output_warning ()
+    elif major_version == min_major_ver:
+        minor_version = version_info[1]
+        if minor_version < min_minor_ver:
+            output_warning ()
+
+version_warning (3, 11)
+
 
 ################################################
 # Dimension of Earth
