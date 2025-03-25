@@ -379,11 +379,6 @@ class Circle:
             return None
         return self.accum_mapping_distance / self.mapping_distance_count
 
-    #def set_mapping_distance (self, distance : float | NoneType = None):
-    #    ''' Insert a new mapping distance estimation '''
-    #    self.accum_mapping_distance = distance
-    #    self.mapping_distance_count = 1
-
     def get_map_developers_string\
         (self, include_url_start : bool, color : str = "000000",
          scale_factor : float = MAP_SCALE_FACTOR) -> str:
@@ -623,8 +618,6 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         raise IntersectError ("Failed to calculate intersection. Identical source points?")
     ab_cross = normalize_vect (ab_cross)
     if diagnostics:
-        #diag_output +=\
-        #     "$\\text{We compute the normalized cross product of aVec and bVec}$</br>"
         diag_output +=\
         "\n### **We compute the normalized cross product of $\\text{aVec}$ and $\\text{bVec}$**\n"
         diag_output += "* **Definition**: $N$ is vector normalization:"+\
@@ -1038,7 +1031,6 @@ def get_circle_for_angle (point1 : LatLon, point2 : LatLon,
                                normalize_vect(subtract_vecs (point2_v, point1_v)), rotation_angle)
     radius = rad_to_deg(angle_b_points (to_latlon(rot_center), point1))
     return Circle (to_latlon(rot_center), radius, EARTH_CIRCUMFERENCE)
-    #return to_latlon(rot_center), radius
 
 #pylint: disable=R0913
 def get_terrestrial_position (point_a1 : LatLon,
