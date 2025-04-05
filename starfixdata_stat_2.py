@@ -85,7 +85,7 @@ def main ():
         az = s.get_azimuth (intersections)
         print ("Azimuth " + str(counter) + " = " + str(round(az,2)))
 
-    #Diagnostics for map rendering etc.
+    # Diagnostics for map rendering etc.
     print ("Some useful data follows")
     counter = 0
     for s in collection.sf_list:
