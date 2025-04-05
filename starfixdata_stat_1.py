@@ -53,20 +53,24 @@ def main ():
     ''' Main body of script.'''
 
     starttime = time ()
+    # the_pos = LatLonGeodetic (-40, 90) # BAD DRP position
     the_pos = LatLonGeodetic (40, -90) # Rough DRP position
+    assume_good_pos = True
 
     try:
         intersections, _, _, collection =\
               SightCollection.get_intersections_conv (return_geodetic=True,
                                                       estimated_position=the_pos,
-                                                      get_starfixes=get_starfixes)
+                                                      get_starfixes=get_starfixes,
+                                                      assume_good_estimated_position=\
+                                                      assume_good_pos)
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
         if ve.coll_object is not None:
             if isinstance (ve.coll_object, SightCollection):
                 print ("Check the circles! " +
                         ve.coll_object.get_map_developers_string(geodetic=True))
-        exit ()
+        raise ve
 
     assert intersections is not None
     assert collection is not None

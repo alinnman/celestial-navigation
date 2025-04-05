@@ -72,7 +72,7 @@ def main ():
             if isinstance (ve.coll_object, SightCollection):
                 print ("Check the circles! " +
                         ve.coll_object.get_map_developers_string(geodetic=True))
-        exit ()
+        raise ve
 
     if found_intersections < max_mc_iter:
         print ("WARNING : Only " + str(found_intersections) + " intersections could be calculated.")

@@ -66,7 +66,7 @@ def main ():
             if isinstance (ve.coll_object, SightCollection):
                 print ("Check the circles! " +
                         ve.coll_object.get_map_developers_string(geodetic=True))
-        exit ()
+        raise ve
 
     assert intersections is not None
     assert collection is not None

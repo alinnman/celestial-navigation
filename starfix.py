@@ -1514,6 +1514,7 @@ class SightCollection:
     def get_intersections\
         (self, return_geodetic : bool, limit : int | float = 100,
           estimated_position : NoneType | LatLon = None,
+          assume_good_estimated_position = False,
           diagnostics : bool = False) \
             -> tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Get an intersection from the collection of sights. 
@@ -1555,9 +1556,13 @@ class SightCollection:
                 p = SightPair (self.sf_list [i], self.sf_list [j])
                 intersection_count += 1
                 try:
+                    if assume_good_estimated_position:
+                        ep = estimated_position
+                    else:
+                        ep = None
                     p_int, fitness, dia =\
                         p.get_intersections (return_geodetic=False,
-                                             estimated_position=estimated_position,\
+                                             estimated_position=ep,
                                              diagnostics = diagnostics,\
                                              intersection_number = intersection_count)
                 except IntersectError as ie:
@@ -1742,6 +1747,7 @@ class SightCollection:
         (return_geodetic : bool,
             estimated_position : LatLon,
             get_starfixes : Callable,
+            assume_good_estimated_position : bool = False,
             limit : int | float = 100,
             diagnostics : bool = False,
             max_iter : int = 10,
@@ -1763,15 +1769,17 @@ class SightCollection:
             # accurate DR positions
             collection = get_starfixes (estimated_position)
             assert isinstance (collection, SightCollection)
-            try:
-                intersections, fitness, diag =\
-                collection.get_intersections (return_geodetic=return_geodetic,
-                                              limit=limit,
-                                              diagnostics=diagnostics)
-            except IntersectError as ve:
-                print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
-                print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
-                raise ve
+            #try:
+            intersections, fitness, diag =\
+            collection.get_intersections (return_geodetic=return_geodetic,
+                                          limit=limit,
+                                          diagnostics=diagnostics,
+                                          assume_good_estimated_position=\
+                                          assume_good_estimated_position)
+            #except IntersectError as ve:
+                #print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
+                #print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
+            #    raise ve TODO Review
             assert isinstance (intersections, LatLon)
             the_distance = spherical_distance (estimated_position, intersections)
             if the_distance < dist_limit:

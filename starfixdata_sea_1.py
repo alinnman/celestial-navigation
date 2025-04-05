@@ -55,7 +55,7 @@ def main ():
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
         print ("Check the circles! " + st.get_map_developers_string())
-        exit ()
+        raise ve
 
     endtime = time ()
     taken_ms = round((endtime-starttime)*1000,2)
