@@ -219,6 +219,13 @@ def angle_b_points (latlon1 : LatLon, latlon2 : LatLon) -> float:
     normvec1 = to_rectangular (latlon1)
     normvec2 = to_rectangular (latlon2)
     dp = dot_product (normvec1, normvec2)
+    # Taking care of occasional rounding errors.
+    # acos breaks if the |dp| is something like 1.000000000000001
+    # Thanks to https://github.com/0dB for finding this bug.
+    if dp > 1:
+        dp = 1
+    if dp < -1:
+        dp = -1
     angle = acos (dp)
     return angle
 
