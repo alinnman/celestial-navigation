@@ -48,8 +48,8 @@ to support your workflow and observations.
 There are also Jupyter notebooks availabe, see below.
 
 The Nautical Almanac must be used manually to get the GP (ground point) of
-your observations. Currently the almanacs of [2024](NAtrad(A4)_2024.pdf)
-and [2025](NAtrad(A4)_2024.pdf)
+your observations. Currently the almanacs of [2024](NAmod(A4)_2024.pdf)
+and [2025](NAmod(A4)_2024.pdf)
 are bundled in the repository in a digital version.
 But you may of course use a hard-copy of the nautical almanac and
 these can be ordered
