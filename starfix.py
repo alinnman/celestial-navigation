@@ -821,7 +821,7 @@ def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
         return (-to_pos.lon) % 360
     if from_pos.lat == -90:
         return to_pos.lon % 360
-    # Antipodes has to be handled
+    # Antipodes have to be handled
     if (to_pos.lat == -from_pos.lat) and (((to_pos.lon - from_pos.lon) % 180) == 0):
         return 0
     # Same coordinate?
