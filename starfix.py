@@ -193,6 +193,14 @@ def rotate_vector\
     result = add_vecs (v1, add_vecs(v2, v3))
     return result
 
+def squeeze (val : float, min_val : float, max_val : float) -> float : 
+    ''' Used to limit a value in a range/interval '''
+    if val > max_val:
+        return max_val
+    if val < min_val:
+        return min_val
+    return val
+
 ################################################
 # Course management
 ################################################
@@ -222,10 +230,7 @@ def angle_b_points (latlon1 : LatLon, latlon2 : LatLon) -> float:
     # Taking care of occasional rounding errors.
     # acos breaks if the |dp| is something like 1.000000000000001
     # Thanks to https://github.com/0dB for finding this bug.
-    if dp > 1:
-        dp = 1
-    if dp < -1:
-        dp = -1
+    dp = squeeze (dp, -1, 1)
     angle = acos (dp)
     return angle
 
