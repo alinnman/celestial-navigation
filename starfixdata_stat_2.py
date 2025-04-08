@@ -25,6 +25,7 @@ def get_starfixes (drp_pos : LatLonGeodetic,
                 gha_time_0           = "342:21.9",
                 gha_time_1           = "357:24.4",
                 decl_time_0          = "46 :1.2",
+                decl_time_1          = "46 :1.3",
                 sha_diff             = "280:22.3",
                 measured_alt         = "33 :9    :34"
                 )

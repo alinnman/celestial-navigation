@@ -37,6 +37,7 @@ You need a Google/Gmail account to run the code in the notebook*.
 1. [Sextant Calibration](#calibration)
 1. [Chronometer Handling](#chronometer)
 1. [Some notes on accuracy](#accuracy)
+1. [The machine-readable nautical almanac](#mr)
 
 ## 1. Introduction <a name="introduction"></a>
 
@@ -105,20 +106,17 @@ Nautical Almanac. This data is given from the current hour of the observation,
 and the next hour.
 (You don't have to enter linear factors etc. from the almanac).
 
-    a = Sight (   object_name          = "Sun", \
-              set_time             = "2024:05:05 15:55:18+00:00"
-              gha_time_0           = "45:50.4", \
-              gha_time_1           = "60:50.4", \
-              decl_time_0          = "16:30.6", \
-              decl_time_1          = "16:31.3", \
-              measured_alt         = "55:8:0" \
+    a = Sight (object_name          = "Sun", \
+               set_time             = "2024:05:05 15:55:18+00:00" \
+               measured_alt         = "55:8:0" \
               )
 
-You can also see a complete example in [a python script](starfixdata_stat_1.py)
+You can also see a complete example in
+[a python script](starfixdata_stat_mr_1.py)
 and also [a corresponding excel file](chicago.ods).
 This sample is built using altitudes taken from a star atlas Stellarium
-<https://en.wikipedia.org/wiki/Stellarium_(software)> from a point in central
-Chicago on May 5th 2024.
+<https://en.wikipedia.org/wiki/Stellarium_(software)> from a point
+in central Chicago on May 5th 2024.
 In other words: No sextant readings were made and the accuracy is very good.
 (Running this sample will give you an accuracy of just some 100 meters).
 
@@ -130,16 +128,16 @@ Arguments in *italics* are optional.
 
 | Argument | Description | Remark | Collected From |
 | :------------- | :------------- | :------------- | :------------- |
-| object_name | Name of celestial object. | Only mnemonic. | N/A |
+| object_name | Name of celestial object. | Used to collect data from the [machine-readable nautical almanac](#mr) | N/A |
 | set_time | Time for observation | [Use ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601) | Chronometer |
 | *estimated_position* | An estimation (DR) of the current position. Used for getting better precision regarding oblateness (ellipsoid) calculations and for better elimination of false intersections. NOTE: This position will be re-used for all subsequent <tt>Sight</tt> objects if not re-specified. | A <tt>LatLonGeodetic</tt>. Must be specified at least for the first Sight. | Dead reckoning / Navigation |
-| gha_time_0   | GHA reading for this hour. | String with format "DD:MM:SS". For stars use GHA of Aries. | Nautical Almanac |
-| gha_time_1   | GHA reading for next hour. | String with format "DD:MM:SS". For stars use GHA of Aries. | Nautical Almanac |
-| decl_time_0  | Declination reading for this hour. | String with format "DD:MM:SS".|  Nautical Almanac |
+| *gha_time_0*   | GHA reading for this hour. | String with format "DD:MM:SS". For stars use GHA of Aries. If omitted the [machine-readable nautical almanac](#mr) will be used. | Nautical Almanac |
+| *gha_time_1*   | GHA reading for next hour. | String with format "DD:MM:SS". For stars use GHA of Aries. If omitted the [machine-readable nautical almanac](#mr) will be used. | Nautical Almanac |
+| *decl_time_0*  | Declination reading for this hour. | String with format "DD:MM:SS". If omitted the [machine-readable nautical almanac](#mr) almanac will be used. |  Nautical Almanac |
 | *decl_time_1*  | Declination reading for next hour. | String with format "DD:MM:SS". Can be skipped for stars. Default = decl_time_0 | Nautical Almanac |
-| *sha_diff*   | SHA of star vs Aries in degrees. | String with format "DD:MM:SS". Only use for stars. Otherwise skip. Default = "0". | Nautical Almanac |
-| *semidiameter_correction* | Correction for limb measurements.  | Typically used for Moon or Sun. *SD* value (arcminutes), positive (lower limb) or negative (upper limb). Default = 0. | Nautical Almanac |
-| *horizontal_parallax* | Correction for horizontal parallax.  | Used for the Moon. *HP* value. Default = 0. | Nautical Almanac |
+| *sha_diff*   | SHA of star vs Aries in degrees. | String with format "DD:MM:SS". Only use for stars. Otherwise skip. Default = "0". If omitted for a **star** then the [machine-readable nautical almanac](#mr) will be used.| Nautical Almanac.|
+| *semidiameter_correction* | Correction for limb measurements.  | Typically used for Moon or Sun. *SD* value (arcminutes), positive (lower limb) or negative (upper limb). Default = 0. If omitted for the **Sun** or the **Moon** then the [machine-readable nautical almanac](#mr) will be used. | Nautical Almanac |
+| *horizontal_parallax* | Correction for horizontal parallax.  | Used for the Moon. *HP* value. Default = 0. If omitted for the **Moon** then the [machine-readable nautical almanac](#mr) will be used. | Nautical Almanac |
 | measured_alt | Altitude of object in degrees. | String with format "DD:MM:SS". | Sextant |
 | *index_error_minutes*    | Specify known index error of sextant. | Default = 0. | Sextant |
 | *artificial_horizon*    | Indicates if you use an artificial horizon. True or False. | All sextant readings will be divided by 2. Default = <tt>False</tt>.          | N/A |
@@ -763,9 +761,6 @@ You may also write a script where the starting point is a known position
     # This is the Sight we take at finish
     s2 = Sight (  object_name          = "Sun", \
                 set_time             = "2024-06-20 07:13:38+00:00", \
-                gha_time_0           = "284:35.1", \
-                gha_time_1           = "299:35.0", \
-                decl_time_0          = "23:26.2", \
                 measured_alt         = "38:34:21.6" \
                 )
 
@@ -991,3 +986,19 @@ of the altitude, and 2 seconds of the chronometer reading you get a
 sigma for the position of about **5 kilometers**.
 This is a humbling fact, and stresses the absolute
 need for precision while doing the practical observational work.
+
+## 9. The machine-readable nautical almanac <a name="mr">
+
+The toolkit is bundled with a set of .CSV files containing astrometric
+data for the period 2024-2028 (GHA, Declination, SHA, Horizontal Parallax,
+Semi-Diameter). This allows you to eliminate the tedious copying of data
+from a printed nautical almanac. The .CSV files are generated by [this
+package](https://github.com/alinnman/SkyAlmanac-Py3) which in turn is a fork
+of the very useful SkyAlmanac package by
+[aendie](https://github.com/aendie) which in turn uses the
+[Skyfield](https://github.com/skyfielders/python-skyfield) package.
+(This package has also been used to generate the PDF nautical almanacs).
+
+The source data for all numbers in the almanac files is the
+[Hipparcos](https://www.cosmos.esa.int/web/hipparcos)
+service powered by ESA.

@@ -6,10 +6,11 @@
 from sys import version_info
 from math import  pi, sin, cos, acos, sqrt, tan, atan2
 from random import gauss
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta, timezone
 from urllib.parse import quote_plus
 from types import NoneType
 from collections.abc import Callable
+from pandas import read_csv, Series
 
 def version_warning (min_major_ver : int, min_minor_ver : int):
     ''' Check compatible Python version '''
@@ -193,7 +194,7 @@ def rotate_vector\
     result = add_vecs (v1, add_vecs(v2, v3))
     return result
 
-def squeeze (val : float, min_val : float, max_val : float) -> float : 
+def squeeze (val : float, min_val : float, max_val : float) -> float :
     ''' Used to limit a value in a range/interval '''
     if val > max_val:
         return max_val
@@ -1243,6 +1244,270 @@ def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
 #pylint: enable=C0103
 
 ################################################
+# Machine-Readable Nautical Almanac
+################################################
+
+class MrKind:
+    ''' Defines root of cel object taxonomy '''
+    def __init__ (self, s : str):
+        self.kind = s
+        MrKind.kind_dict [self.kind] = self
+    def __str__ (self):
+        return self.kind
+
+    @staticmethod
+    def get_kind (s : str) -> object:
+        ''' Return a corresponding kind representation '''
+        try:
+            retval = MrKind.kind_dict [s]
+        except KeyError as ke:
+            raise ValueError ("Non-existent kind of object") from ke
+        assert isinstance (retval, MrKind)
+        return retval
+
+    kind_dict = dict[str, object] ()
+
+class MrKindAries (MrKind):
+    ''' Used for the position of Aries'''
+
+class MrKindCentral (MrKind):
+    ''' Used for Sun and Moon '''
+
+class MrKindPlanet (MrKind):
+    ''' Navigational planets '''
+
+class MrKindStar (MrKind):
+    ''' Navigational stars '''
+
+    def __init__ (self,s):
+        self.index = MrKindStar.star_index
+        MrKindStar.star_index += 1
+        super().__init__(s)
+        MrKindStar.stars [s] = self
+
+    def get_index (self) -> int:
+        ''' Return the index of the star in the catalog '''
+        return self.index
+
+    @staticmethod
+    def is_star (star_name : str):
+        ''' Check if a name is referring to a star'''
+        try:
+            _ = MrKindStar.stars [star_name]
+            return True
+        except KeyError:
+            return False
+
+    star_index = 0
+    stars = dict [str, object] ()
+
+class CelObjects:
+    ''' Dictionary of celestial objects '''
+    SUN         = MrKindCentral ("Sun")
+    MOON        = MrKindCentral ("Moon")
+    ARIES       = MrKindAries ("Aries")
+    VENUS       = MrKindPlanet ("Venus")
+    MARS        = MrKindPlanet ("Mars")
+    JUPITER     = MrKindPlanet ("Jupiter")
+    SATURN      = MrKindPlanet ("Saturn")
+    Alpheratz   = MrKindStar ("Alpheratz")
+    Ankaa       = MrKindStar ("Ankaa")
+    Schedar     = MrKindStar ("Schedar")
+    Diphda      = MrKindStar ("Diphda")
+    Achernar    = MrKindStar ("Achernar")
+    Hamal       = MrKindStar ("Hamal")
+    Polaris     = MrKindStar ("Polaris")
+    Acamar      = MrKindStar ("Acamar")
+    Menkar      = MrKindStar ("Menkar")
+    Mirfak      = MrKindStar ("Mirfak")
+    Aldebaran   = MrKindStar ("Aldebaran")
+    Rigel       = MrKindStar ("Rigel")
+    Capella     = MrKindStar ("Capella")
+    Bellatrix   = MrKindStar ("Bellatrix")
+    Elnath      = MrKindStar ("Elnath")
+    Alnilam     = MrKindStar ("Alnilam")
+    Betelgeuse  = MrKindStar ("Betelgeuse")
+    Canopus     = MrKindStar ("Canopus")
+    Sirius      = MrKindStar ("Sirius")
+    Adhara      = MrKindStar ("Adhara")
+    Procyon     = MrKindStar ("Procyon")
+    Pollux      = MrKindStar ("Pollux")
+    Avior       = MrKindStar ("Avior")
+    Suhail      = MrKindStar ("Suhail")
+    Miaplacidus = MrKindStar ("Miaplacidus")
+    Alphard     = MrKindStar ("Alphard")
+    Regulus     = MrKindStar ("Regulus")
+    Dubhe       = MrKindStar ("Dubhe")
+    Denebola    = MrKindStar ("Denebola")
+    Gienah      = MrKindStar ("Gienah")
+    Acrux       = MrKindStar ("Acrux")
+    Gacrux      = MrKindStar ("Gacrux")
+    Alioth      = MrKindStar ("Alioth")
+    Spica       = MrKindStar ("Spica")
+    Alkaid      = MrKindStar ("Alkaid")
+    Hadar       = MrKindStar ("Hadar")
+    Menkent     = MrKindStar ("Menkent")
+    Arcturus    = MrKindStar ("Arcturus")
+    Rigil_Kent  = MrKindStar ("Rigil Kent.")
+    Kochab      = MrKindStar ("Kochab")
+    Zubenubi    = MrKindStar ("Zuben'ubi")
+    Alphecca    = MrKindStar ("Alphecca")
+    Antares     = MrKindStar ("Antares")
+    Atria       = MrKindStar ("Atria")
+    Sabik       = MrKindStar ("Sabik")
+    Shaula      = MrKindStar ("Shaula")
+    Rasalhague  = MrKindStar ("Rasalhague")
+    Eltanin     = MrKindStar ("Eltanin")
+    Kaus_Aust   = MrKindStar ("Kaus Aust.")
+    Vega        = MrKindStar ("Vega")
+    Nunki       = MrKindStar ("Nunki")
+    Altair      = MrKindStar ("Altair")
+    Peacock     = MrKindStar ("Peacock")
+    Deneb       = MrKindStar ("Deneb")
+    Enif        = MrKindStar ("Enif")
+    Al_Nair     = MrKindStar ("Al Na'ir")
+    Fomalhaut   = MrKindStar ("Fomalhaut")
+    Scheat      = MrKindStar ("Scheat")
+    Markab      = MrKindStar ("Markab")
+
+class ObsType:
+    ''' Base for observation type taxonomy '''
+    def __init__ (self, o_type : str) :
+        self.o_type = o_type
+
+    def __str__ (self) :
+        return self.o_type
+
+class ObsTypes:
+    ''' These are the observation types we can handle '''
+    GHA = ObsType ("GHA")
+    DECL = ObsType ("DECL")
+    HP = ObsType ("HP")
+    SHA = ObsType ("SHA")
+    SD = ObsType ("SD")
+
+class Almanac:
+    ''' Represents a machine-readable almanac in pandas/csv format '''
+    def __init__ (self, fn : str):
+        if fn in ["planets", "sun-moon", "sun-moon-sd", "venus-mars-hp"]:
+            self.pd = read_csv ("sample_data/"+fn + ".csv", index_col=0, delimiter=";", dtype="string")
+        elif fn in ["stars"]:
+            self.pd = read_csv ("sample_data/"+fn + ".csv", index_col=[0,1], delimiter=";", dtype="string")
+        else:
+            raise NotImplementedError
+        Almanac.active_almanacs [fn] = self
+
+    active_almanacs = dict [str, object] ()
+
+    @staticmethod
+    def get_almanac (fn : str) -> object:
+        ''' Return an almanac object. Use cache if possible '''
+        try:
+            return Almanac.active_almanacs [fn]
+        except KeyError:
+            return Almanac (fn)
+
+def get_mr_item (cel_obj : MrKind | str,
+                 ts : str,
+                 obs_type : ObsType,
+                 offset_hours : int = 0) -> str:
+    ''' Get a specific item from the nautical almanac '''
+    if isinstance (cel_obj, str):
+        c2 = MrKind.get_kind (cel_obj)
+        assert isinstance (c2, MrKind)
+        cel_obj = c2
+
+    if offset_hours != 0:
+        if offset_hours != 1:
+            raise ValueError ("offset_hours must be 0 or 1")
+        x = datetime.fromisoformat (ts)
+        ts = str(x + timedelta(hours=1))
+
+    if isinstance (cel_obj, (MrKindPlanet, MrKindAries)):
+        if str(obs_type) in ["HP"]:
+            the_almanac = Almanac.get_almanac ("venus-mars-hp")
+            df = the_almanac.pd
+
+            ready = False
+            ts_dt = datetime.fromisoformat (ts)
+            day_d = date (year=ts_dt.year, month=ts_dt.month, day=ts_dt.day)
+            iter_count = 0
+            max_iter = 4
+            loc = None
+            while not ready:
+                day_d_s = str(day_d)
+                try:
+                    loc = df.loc [day_d_s]
+                    ready = True
+                except KeyError as ke:
+                    day_d = day_d + timedelta (days=-1)
+                    iter_count += 1
+                    if iter_count > max_iter:
+                        raise ValueError ("Database match error") from ke
+            try:
+                assert isinstance (loc, Series)
+                return str(loc[str(cel_obj)+"_"+str(obs_type)])
+            except KeyError as ie:
+                raise ValueError ("Invalid parameter") from ie
+
+        else:
+            the_almanac = Almanac.get_almanac ("planets")
+            df = the_almanac.pd
+            loc = df.loc[ts]
+            try:
+                return str(loc[str(cel_obj)+"_"+str(obs_type)])
+            except KeyError as ie:
+                raise ValueError ("Invalid parameter") from ie
+    elif isinstance (cel_obj, MrKindCentral):
+        if str(obs_type) in ["SD","v"]:
+            the_almanac = Almanac.get_almanac ("sun-moon-sd")
+            df = the_almanac.pd
+            ts_dt = datetime.fromisoformat (ts)
+            day_d = date (year=ts_dt.year, month=ts_dt.month, day=ts_dt.day)
+            day_d_s = str(day_d)
+            loc = df.loc[day_d_s]
+            try:
+                return str(loc[str(cel_obj)+"_"+str(obs_type)])
+            except KeyError as ie:
+                raise ValueError ("Invalid parameter") from ie
+        else:
+            the_almanac = Almanac.get_almanac ("sun-moon")
+            df = the_almanac.pd
+            loc = df.loc[ts]
+            try:
+                return str(loc[str(cel_obj)+"_"+str(obs_type)])
+            except KeyError as ie:
+                raise ValueError ("Invalid parameter") from ie
+    elif isinstance (cel_obj ,MrKindStar):
+        if str(obs_type) in ["GHA"]:
+            return get_mr_item ("Aries", ts, ObsTypes.GHA)
+        else:
+            the_almanac = Almanac.get_almanac ("stars")
+            df = the_almanac.pd
+            ready = False
+            ts_dt = datetime.fromisoformat (ts)
+            day_d = date (year=ts_dt.year, month=ts_dt.month, day=ts_dt.day)
+            iter_count = 0
+            max_iter = 4
+            loc = None
+            while not ready:
+                day_d_s = str(day_d)
+                try:
+                    loc = df.loc [day_d_s,str(cel_obj)]
+                    ready = True
+                except KeyError as ke:
+                    day_d = day_d + timedelta (days=-1)
+                    iter_count += 1
+                    if iter_count > max_iter:
+                        raise ValueError ("Database match error") from ke
+            try:
+                assert isinstance (loc, Series)
+                return str(loc[str(obs_type)])
+            except KeyError as ie:
+                raise ValueError ("Invalid parameter") from ie
+    raise NotImplementedError ()
+
+################################################
 # Celestial Navigation
 ################################################
 
@@ -1270,24 +1535,26 @@ class Sight :
         ''' Set the time sigma (used in Monte Carlo simulations) '''
         Sight.time_diff_hold = time_diff
 
+    MR_DEBUG = True
+
 #pylint: disable=R0912
 #pylint: disable=R0913
 #pylint: disable=R0914
     def __init__ (self, \
                   object_name              : str,
                   set_time                 : str,
-                  gha_time_0               : str,
-                  gha_time_1               : str,
-                  decl_time_0              : str,
                   measured_alt             : str,
-                  estimated_position       : LatLonGeodetic | NoneType = None,
+                  gha_time_0               : str | NoneType = None,
+                  gha_time_1               : str | NoneType = None,
+                  decl_time_0              : str | NoneType = None,
                   decl_time_1              : NoneType | str = None,
+                  estimated_position       : LatLonGeodetic | NoneType = None,
                   sha_diff                 : NoneType | str = None,
                   observer_height          : int | float = 0,
                   artificial_horizon       : bool = False,
                   index_error_minutes      : int | float = 0,
                   semi_diameter_correction : int | float = 0,
-                  horizontal_parallax      : int | float = 0,
+                  horizontal_parallax      : int | float | NoneType = None,
                   sextant                  : NoneType | Sextant = None,
                   chronometer              : NoneType | Chronometer = None,
                   temperature              : float = 10.0,
@@ -1295,6 +1562,13 @@ class Sight :
                   pressure                 : float = 101.0,
                   ho_obs                   : bool = False,
                   no_dip                   : bool = False):               # For MC simulation
+
+        def q_replace (x : datetime) -> datetime:
+            p = x
+            q = p.astimezone (timezone.utc)
+            q = q.replace (tzinfo=None)
+            return q
+
         self.mapping_distance     = None
         self.temperature          = temperature
         self.dt_dh                = dt_dh
@@ -1308,13 +1582,43 @@ class Sight :
             diff = gauss(0, Sight.time_diff_hold)
             new_time = self.set_time_dt + timedelta(seconds=diff)
             self.set_time_dt = new_time
+        if gha_time_0 is None:
+
+            gha_time_0 = get_mr_item (self.object_name,
+                                      str(q_replace(self.set_time_dt_hour)),
+                                      ObsTypes.GHA)
+            if Sight.MR_DEBUG:
+                print ("GHA_0 = " + gha_time_0)
         self.gha_time_0           = parse_angle_string (gha_time_0)
+        if gha_time_1 is None:
+
+            gha_time_1 = get_mr_item (self.object_name,
+                                      str(q_replace(self.set_time_dt_hour)),
+                                      ObsTypes.GHA,
+                                      offset_hours=1)
+            if Sight.MR_DEBUG:
+                print ("GHA_1 = " + gha_time_1)            
         self.gha_time_1           = parse_angle_string (gha_time_1)
         if self.gha_time_1 < self.gha_time_0:
             self.gha_time_1 += 360
         if decl_time_1 is None:
             decl_time_1 = decl_time_0
+        if decl_time_0 is None:
+
+            decl_time_0 = get_mr_item (self.object_name,
+                                      str(q_replace(self.set_time_dt_hour)),
+                                      ObsTypes.DECL)
+            if Sight.MR_DEBUG:
+                print ("DECL_0 = " + decl_time_0)            
         self.decl_time_0          = parse_angle_string (decl_time_0)
+        if decl_time_1 is None:
+
+            decl_time_1 = get_mr_item (self.object_name,
+                                      str(q_replace(self.set_time_dt_hour)),
+                                      ObsTypes.DECL,
+                                      offset_hours=1)
+            if Sight.MR_DEBUG:
+                print ("DECL_1 = " + decl_time_1)            
         self.decl_time_1          = parse_angle_string (decl_time_1)
         if self.decl_time_0 < -90 or self.decl_time_0 > 90 or \
            self.decl_time_1 < -90 or self.decl_time_1 > 90:
@@ -1330,6 +1634,13 @@ class Sight :
                 self.measured_alt = 89.999999
         if sha_diff is not None:
             self.sha_diff         = parse_angle_string (sha_diff)
+        elif MrKindStar.is_star (self.object_name):
+            qq = get_mr_item (self.object_name,
+                                str(q_replace(self.set_time_dt_hour)),
+                                ObsTypes.SHA)
+            if Sight.MR_DEBUG:
+                print ("SHA = " + qq)               
+            self.sha_diff = parse_angle_string (qq)
         else:
             self.sha_diff         = 0
         self.observer_height      = observer_height
@@ -1349,6 +1660,16 @@ class Sight :
             raise ValueError ("Altitude value must be within (0,90]")
         if semi_diameter_correction != 0:
             self.__correct_semi_diameter (semi_diameter_correction)
+        if horizontal_parallax is None:
+            if self.object_name == "Moon":
+                qq = get_mr_item (self.object_name,
+                                  str(q_replace(self.set_time_dt_hour)),
+                                  ObsTypes.HP)
+                if Sight.MR_DEBUG:
+                    print ("HP = " + qq)                
+                horizontal_parallax = 60 * parse_angle_string (qq)
+            else:
+                horizontal_parallax = 0
         if horizontal_parallax != 0:
             self.__correct_for_horizontal_parallax (horizontal_parallax)
         if not ho_obs:

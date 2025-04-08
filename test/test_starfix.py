@@ -17,14 +17,17 @@ except ValueError:
 
 #pylint: disable=E0401
 from starfixdata_stat_1      import main as main_1
+from starfixdata_stat_1_mc   import main as main_1_mc
+from starfixdata_stat_1_mr   import main as main_1_mr
 from starfixdata_stat_2      import main as main_2
+from starfixdata_stat_2_mr   import main as main_2_mr
 from starfixdata_sea_1       import main as main_sea_1
 from starfixdata_sea_2       import main as main_sea_2
 from starfixdata_sea_3       import main as main_sea_3
 from starfixdata_sea_4       import main as main_sea_4
 from starfixdata_sea_5       import main as main_sea_5
 from terrestrial             import main as main_terrestrial
-from starfixdata_stat_1_mc   import main as main_1_mc
+
 #pylint: enable=E0401
 
 class TestStringMethods(unittest.TestCase):
@@ -40,7 +43,7 @@ class TestStringMethods(unittest.TestCase):
 
     def test_sea_1 (self):
         ''' Test suite 1, for DR/Moving '''
-        main_sea_1 ()        
+        main_sea_1 ()
 
     def test_sea_2 (self):
         ''' Test suite 2, for DR/Moving '''
@@ -64,7 +67,15 @@ class TestStringMethods(unittest.TestCase):
 
     def test_mc (self):
         ''' Test suite for Monte Carlo simulation '''
-        main_1_mc ()        
+        main_1_mc ()
+
+    def test_mr_1 (self):
+        ''' Test suite for Machine-Readable Nautical Almanac '''
+        main_1_mr ()
+
+    def test_mr_2 (self):
+        ''' Test suite for Machine-Readable Nautical Almanac '''
+        main_2_mr ()        
 
 if __name__ == '__main__':
     unittest.main()

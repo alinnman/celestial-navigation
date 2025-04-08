@@ -2,57 +2,38 @@
     © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
 
+    This sample uses an algorithm for better accuracy using repeated
+    refinements of the DR position. 
 '''
-# pylint: disable=C0413
+
 from time import time
-
-import sys
-from pathlib import Path
-file = Path(__file__).resolve()
-parent, root = file.parent, file.parents[1]
-sys.path.append(str(root))
-
-try:
-    sys.path.remove(str(parent))
-except ValueError:
-    pass
-
 from starfix import Sight, SightCollection, get_representation,\
-     get_google_map_string, IntersectError, Sextant, LatLonGeodetic
+                    get_google_map_string, IntersectError, LatLonGeodetic
 
-# Defining the Sextant object.
-mySextant = Sextant (index_error=0.5)
 
-# Our starfix data
-# Sample found in
-# https://www.facebook.com/groups/148521952310126/permalink/1966017207227249/?rdid=ndpn9CqTjIZ8wsmT&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2Fp%2F1B3UXbuZTS%2F
 
-#METER_PER_FEET = 0.3048
-#HEIGHT_IN_FEET = 16
-#TEMPERATURE    = 30
-
-THE_POS = LatLonGeodetic (17.8, -76.7)
-
-def get_starfixes (drp_pos : LatLonGeodetic) -> SightCollection :
+def get_starfixes (drp_pos : LatLonGeodetic,
+                   alt_sigma : float = 0.0,
+                   time_sigma : float = 0.0) -> SightCollection :
     ''' Returns a list of used star fixes (SightCollection) '''
 
+    Sight.set_estimated_position (drp_pos)
+    Sight.set_alt_diff           (alt_sigma)
+    Sight.set_time_diff          (time_sigma)
+
     a = Sight (   object_name          = "Sun",
-                set_time             = "2024-06-29 08:21:00+00:00",
-                measured_alt         = "92:46",
-                artificial_horizon   = True,
-                estimated_position   = drp_pos
+                set_time             = "2024-05-05 15:55:18+00:00",
+                measured_alt         = "55:8:1.1"
                 )
 
     b = Sight (   object_name          = "Sun",
-                set_time             = "2024-06-29 12:51:00+00:00",
-                measured_alt         = "98:36",
-                artificial_horizon   = True
+                set_time             = "2024-05-05 23:01:19+00:00",
+                measured_alt         = "19:28:19"
                 )
 
-    c = Sight (   object_name          = "Sun",
-                set_time             = "2024-06-28 15:36:00+00:00",
-                measured_alt         = "58:40",
-                artificial_horizon   = True
+    c = Sight (   object_name          = "Vega",
+                set_time             = "2024-05-06 04:04:13+00:00",
+                measured_alt         = "30:16:23.7",
                 )
     return SightCollection ([a, b, c])
 
@@ -60,19 +41,24 @@ def main ():
     ''' Main body of script.'''
 
     starttime = time ()
+    # the_pos = LatLonGeodetic (-40, 90) # BAD DRP position
+    the_pos = LatLonGeodetic (40, -90) # Rough DRP position
+    assume_good_pos = True
 
     try:
         intersections, _, _, collection =\
               SightCollection.get_intersections_conv (return_geodetic=True,
-                                                      estimated_position=THE_POS,
-                                                      get_starfixes=get_starfixes)
+                                                      estimated_position=the_pos,
+                                                      get_starfixes=get_starfixes,
+                                                      assume_good_estimated_position=\
+                                                      assume_good_pos)
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
         if ve.coll_object is not None:
             if isinstance (ve.coll_object, SightCollection):
                 print ("Check the circles! " +
                         ve.coll_object.get_map_developers_string(geodetic=True))
-        exit ()
+        raise ve
 
     assert intersections is not None
     assert collection is not None
@@ -91,7 +77,7 @@ def main ():
         az = s.get_azimuth (intersections)
         print ("Azimuth " + str(counter) + " = " + str(round(az,2)))
 
-    #Diagnostics for map rendering etc.
+    # Diagnostics for map rendering etc.
     print ("Some useful data follows")
     counter = 0
     for s in collection.sf_list:
