@@ -1535,7 +1535,7 @@ class Sight :
         ''' Set the time sigma (used in Monte Carlo simulations) '''
         Sight.time_diff_hold = time_diff
 
-    MR_DEBUG = True
+    MR_DEBUG = False
 
 #pylint: disable=R0912
 #pylint: disable=R0913
