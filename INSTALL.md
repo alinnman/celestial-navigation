@@ -16,6 +16,8 @@ three-star fix. A Google account is necessary.
 
 The code is installed using just a file copy of the python (.py)
 and (optionally) Jupyter notebook (.ipynb) files to a suitable directory.
+You also need the machine-readable nautical almanacs residing in the
+<tt>sample_data</tt> subfolder.
 No additional libraries are necessary.
 Python 3.11 is required.
 This
