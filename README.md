@@ -81,10 +81,11 @@ For more information on installation and usage of the Python scripts see
 A short explanation of the logical steps and algorithms used in this toolkit can
 be found [here](WORKFLOW.md).
 
-Digital versions of the Nautical Almanac (in PDF format) for [2024](NAmod(A4)_2024.pdf)
+Digital versions of the Nautical Almanac (in PDF format)
+for [2024](NAmod(A4)_2024.pdf)
 and [2025](NAmod(A4)_2025.pdf)
-are included in this repository. 
-A machine-readable nautical almanac (in CSV format) can be found 
+are included in this repository.
+A machine-readable nautical almanac (in CSV format) can be found
 [here](./sample_data/)
 
 A more detailed description of celestial navigation can be found
@@ -1004,3 +1005,80 @@ of the very useful SkyAlmanac package by
 The source data for all numbers in the almanac files is the
 [Hipparcos](https://www.cosmos.esa.int/web/hipparcos)
 service powered by ESA.
+
+These are the names of the used navigational celestial objects
+
+### Solar system
+
+<tt>
+Sun<br>
+Moon<br>
+Venus<br>
+Mars<br>
+Jupiter<br>
+Saturn<br>
+</tt>
+
+### Navigational stars
+
+<tt>
+Alpheratz<br>
+Ankaa<br>
+Schedar<br>
+Diphda<br>
+Achernar<br>
+Hamal<br>
+Polaris<br>
+Acamar<br>
+Menkar<br>
+Mirfak<br>
+Aldebaran<br>
+Rigel<br>
+Capella<br>
+Bellatrix<br>
+Elnath<br>
+Alnilam<br>
+Betelgeuse<br>
+Canopus<br>
+Sirius<br>
+Adhara<br>
+Procyon<br>
+Pollux<br>
+Avior<br>
+Suhail<br>
+Miaplacidus<br>
+Alphard<br>
+Regulus<br>
+Dubhe<br>
+Denebola<br>
+Gienah<br>
+Acrux<br>
+Gacrux<br>
+Alioth<br>
+Spica<br>
+Alkaid<br>
+Hadar<br>
+Menkent<br>
+Arcturus<br>
+Rigil Kent.<br>
+Kochab<br>
+Zuben'ubi<br>
+Alphecca<br>
+Antares<br>
+Atria<br>
+Sabik<br>
+Shaula<br>
+Rasalhague<br>
+Eltanin<br>
+Kaus Aust.<br>
+Vega<br>
+Nunki<br>
+Altair<br>
+Peacock<br>
+Deneb<br>
+Enif<br>
+Al Na'ir<br>
+Fomalhaut<br>
+Scheat<br>
+Markab<br>
+</tt>
