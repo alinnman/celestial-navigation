@@ -18,8 +18,8 @@ The code is installed using just a file copy of the python (.py)
 and (optionally) Jupyter notebook (.ipynb) files to a suitable directory.
 You also need the machine-readable nautical almanacs residing in the
 <tt>sample_data</tt> subfolder.
-No additional libraries are necessary.
-Python 3.11 is required.
+Required software base: Python 3.11 and Pandas.
+No other additional libraries are necessary.
 This
 [link](https://github.com/alinnman/celestial-navigation/archive/refs/heads/main.zip)
 will download all code in a ZIP file.
