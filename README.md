@@ -138,8 +138,8 @@ Arguments in *italics* are optional.
 | *decl_time_0*  | Declination reading for this hour. | String with format "DD:MM:SS". If omitted the [machine-readable nautical almanac](#mr) almanac will be used. |  Nautical Almanac |
 | *decl_time_1*  | Declination reading for next hour. | String with format "DD:MM:SS". Can be skipped for stars. Default = decl_time_0 | Nautical Almanac |
 | *sha_diff*   | SHA of star vs Aries in degrees. | String with format "DD:MM:SS". Only use for stars. Otherwise skip. Default = "0". If omitted for a **star** then the [machine-readable nautical almanac](#mr) will be used.| Nautical Almanac.|
-| *semidiameter_correction* | Correction for limb measurements.  | Typically used for Moon or Sun. *SD* value (arcminutes), positive (lower limb) or negative (upper limb). Default = 0. If omitted for the **Sun** or the **Moon** then the [machine-readable nautical almanac](#mr) will be used. | Nautical Almanac |
 | *horizontal_parallax* | Correction for horizontal parallax.  | Used for the Moon. *HP* value. Default = 0. If omitted for the **Moon** then the [machine-readable nautical almanac](#mr) will be used. | Nautical Almanac |
+| *limb_correction* | Correction for limb measurements.  | Typically used for Moon or Sun. Set to 0 (central), -1 (lower limb) or 1 (upper limb). Default = 0 | Your observation |
 | measured_alt | Altitude of object in degrees. | String with format "DD:MM:SS". | Sextant |
 | *index_error_minutes*    | Specify known index error of sextant. | Default = 0. | Sextant |
 | *artificial_horizon*    | Indicates if you use an artificial horizon. True or False. | All sextant readings will be divided by 2. Default = <tt>False</tt>.          | N/A |
