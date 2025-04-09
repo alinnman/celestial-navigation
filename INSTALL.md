@@ -47,16 +47,22 @@ or [starfixdata_sea_1.py](starfixdata_sea_1.py)
 to support your workflow and observations.
 There are also Jupyter notebooks availabe, see below.
 
-The Nautical Almanac must be used manually to get the GP (ground point) of
-your observations. Currently the almanacs of [2024](NAmod(A4)_2024.pdf)
-and [2025](NAmod(A4)_2024.pdf)
+A Nautical Almanac must be used to get the GP (ground point) of
+your observations. If your observations are made from 2024 to 2028
+you have a machine-readable almanac available [here](./sample_data).
+But you can also use a manual/printed almanac.
+Currently PDF almanacs of [2024](NAmod(A4)_2024.pdf),
+[2025](NAmod(A4)_2025.pdf),
+[2026](NAmod(A4)_2026.pdf),
+[2027](NAmod(A4)_2027.pdf)
+and [2028](NAmod(A4)_2028.pdf)
 are bundled in the repository in a digital version.
 But you may of course use a hard-copy of the nautical almanac and
 these can be ordered
 [here](https://www.amazon.com/s?i=stripbooks&rh=p_27%3AU.K.+Hydrographic&s=relevancerank&text=U.K.+Hydrographic&ref=dp_byline_sr_book_1).
-New digital versions (for 2026 and onwards)
+New digital versions (PDF or machine-readable)
 can be prepared using some GitHub code repositories,
-such as [this one](https://github.com/aendie/SkyAlmanac-Py3).
+such as [this one](https://github.com/alinnman/SkyAlmanac-Py3).
 
 The script sample [terrestrial.py](terrestrial.py)
 can be used (and modified) if you would like to use your sextant as an aid in

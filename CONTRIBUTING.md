@@ -29,7 +29,7 @@ These are some things I may consider doing (or have already started)
 *[MapDevelopers circle functions](https://www.mapdevelopers.com/draw-circle-tool.php) (web-based). Considering*
 *building functionality on GeoPandas or similar framework.*
 1. Create machine-readable Nautical Almanac<br/>
-*This will greatly improve workflow speed*
+*This will greatly improve workflow speed. A first implementation is ready now.*
 1. Create a lightweight web application and/or mobile app without requiring
 internet access. <br/>
 *A collection of simple Jupyter notebooks have been added, and this may be good*
