@@ -55,7 +55,7 @@ def get_starfixes (drp_pos : LatLonGeodetic):
                 measured_alt             = "57:8",
                 artificial_horizon       = True,
                 index_error_minutes      = 0,
-                semi_diameter_correction = 15.7,
+                limb_correction          = -1,
                 sextant                  = mySextant,
                 ##chronometer              = myChronometer,
                 estimated_position       = drp_pos

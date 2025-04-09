@@ -1390,9 +1390,11 @@ class Almanac:
     ''' Represents a machine-readable almanac in pandas/csv format '''
     def __init__ (self, fn : str):
         if fn in ["planets", "sun-moon", "sun-moon-sd", "venus-mars-hp"]:
-            self.pd = read_csv ("sample_data/"+fn + ".csv", index_col=0, delimiter=";", dtype="string")
+            self.pd = \
+            read_csv ("sample_data/"+fn + ".csv", index_col=0, delimiter=";", dtype="string")
         elif fn in ["stars"]:
-            self.pd = read_csv ("sample_data/"+fn + ".csv", index_col=[0,1], delimiter=";", dtype="string")
+            self.pd = \
+            read_csv ("sample_data/"+fn + ".csv", index_col=[0,1], delimiter=";", dtype="string")
         else:
             raise NotImplementedError
         Almanac.active_almanacs [fn] = self
@@ -1537,6 +1539,11 @@ class Sight :
 
     MR_DEBUG = False
 
+    # Used as special values for SD correction (limb correction)
+    LIMB_LOWER = -1
+    LIMB_CENTRAL = 0
+    LIMB_UPPER = 1
+
 #pylint: disable=R0912
 #pylint: disable=R0913
 #pylint: disable=R0914
@@ -1553,7 +1560,7 @@ class Sight :
                   observer_height          : int | float = 0,
                   artificial_horizon       : bool = False,
                   index_error_minutes      : int | float = 0,
-                  semi_diameter_correction : int | float = 0,
+                  limb_correction          : int = 0,
                   horizontal_parallax      : int | float | NoneType = None,
                   sextant                  : NoneType | Sextant = None,
                   chronometer              : NoneType | Chronometer = None,
@@ -1597,7 +1604,7 @@ class Sight :
                                       ObsTypes.GHA,
                                       offset_hours=1)
             if Sight.MR_DEBUG:
-                print ("GHA_1 = " + gha_time_1)            
+                print ("GHA_1 = " + gha_time_1)
         self.gha_time_1           = parse_angle_string (gha_time_1)
         if self.gha_time_1 < self.gha_time_0:
             self.gha_time_1 += 360
@@ -1609,7 +1616,7 @@ class Sight :
                                       str(q_replace(self.set_time_dt_hour)),
                                       ObsTypes.DECL)
             if Sight.MR_DEBUG:
-                print ("DECL_0 = " + decl_time_0)            
+                print ("DECL_0 = " + decl_time_0)
         self.decl_time_0          = parse_angle_string (decl_time_0)
         if decl_time_1 is None:
 
@@ -1618,7 +1625,7 @@ class Sight :
                                       ObsTypes.DECL,
                                       offset_hours=1)
             if Sight.MR_DEBUG:
-                print ("DECL_1 = " + decl_time_1)            
+                print ("DECL_1 = " + decl_time_1)
         self.decl_time_1          = parse_angle_string (decl_time_1)
         if self.decl_time_0 < -90 or self.decl_time_0 > 90 or \
            self.decl_time_1 < -90 or self.decl_time_1 > 90:
@@ -1639,7 +1646,7 @@ class Sight :
                                 str(q_replace(self.set_time_dt_hour)),
                                 ObsTypes.SHA)
             if Sight.MR_DEBUG:
-                print ("SHA = " + qq)               
+                print ("SHA = " + qq)
             self.sha_diff = parse_angle_string (qq)
         else:
             self.sha_diff         = 0
@@ -1658,6 +1665,20 @@ class Sight :
             self.__correct_for_artficial_horizon ()
         if self.measured_alt < 0 or self.measured_alt >= 90:
             raise ValueError ("Altitude value must be within (0,90]")
+
+        if limb_correction == Sight.LIMB_CENTRAL:
+            semi_diameter_correction = 0
+        elif limb_correction in [Sight.LIMB_LOWER,Sight.LIMB_UPPER]:
+            if self.object_name in ["Sun", "Moon"]:
+                qq = get_mr_item (self.object_name,
+                                  str(q_replace(self.set_time_dt_hour)),
+                                  ObsTypes.SD)
+                q = float (qq)
+                semi_diameter_correction = -1 * limb_correction * q
+            else:
+                semi_diameter_correction = 0
+        else:
+            raise ValueError ("limb_correction must be one of -1,0 or 1")
         if semi_diameter_correction != 0:
             self.__correct_semi_diameter (semi_diameter_correction)
         if horizontal_parallax is None:
@@ -1666,7 +1687,7 @@ class Sight :
                                   str(q_replace(self.set_time_dt_hour)),
                                   ObsTypes.HP)
                 if Sight.MR_DEBUG:
-                    print ("HP = " + qq)                
+                    print ("HP = " + qq)
                 horizontal_parallax = 60 * parse_angle_string (qq)
             else:
                 horizontal_parallax = 0
