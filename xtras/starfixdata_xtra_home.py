@@ -21,7 +21,8 @@ from starfix import Sight, SightCollection, Sextant, Chronometer,\
                     get_decimal_degrees_from_tuple,\
                     get_representation, \
                     get_google_map_string,\
-                    IntersectError, LatLonGeodetic
+                    IntersectError, LatLonGeodetic,\
+                    Circle
 from calibration import calibrationRealValue, calibrationMeasuredValue
 
 starttime = time ()
@@ -100,6 +101,8 @@ def main ():
     assert isinstance (intersections, LatLonGeodetic)
     print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
     print ("GM = " + get_google_map_string(intersections,4))
+    int_circle = Circle (intersections, 0.01)
+    print ("INT = " + int_circle.get_map_developers_string(include_url_start=True))
 
     # Check azimuth
     assert isinstance (intersections, LatLonGeodetic)

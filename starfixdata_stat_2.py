@@ -8,7 +8,8 @@
 
 from time import time
 from starfix import Sight, SightCollection, get_representation,\
-                    get_google_map_string, IntersectError, LatLonGeodetic
+                    get_google_map_string, IntersectError, LatLonGeodetic,\
+                    Circle
 
 
 def get_starfixes (drp_pos : LatLonGeodetic,
@@ -77,6 +78,8 @@ def main ():
     assert isinstance (intersections, LatLonGeodetic)
     print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
     print ("GM = " + get_google_map_string(intersections,4))
+    int_circle = Circle (intersections, 0.01)
+    print ("INT = " + int_circle.get_map_developers_string(include_url_start=True))    
 
     # Check azimuth
     assert isinstance (intersections, LatLonGeodetic)

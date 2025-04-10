@@ -353,10 +353,11 @@ def get_line_of_sight (h1 : float, h2 : float, temperature : float = 10,
 class Circle:
     ''' Helper class for circles (great or small circles) '''
 
-    def __init__ (self, latlon : LatLon, angle : int | float, circumference : float):
+    def __init__ (self, latlon : LatLon, angle : int | float, circumference : float = EARTH_CIRCUMFERENCE):
         ''' Parameters:
-                latlon : centerpoint
-                angle  : angle of circle in degrees, for a great circle set to 90
+                latlon        : centerpoint
+                angle         : angle of circle in degrees, for a great circle set to 90
+                circumference : the circumference of the sphere (Earth)
         '''
         self.latlon                 = latlon
         self.angle                  = angle
