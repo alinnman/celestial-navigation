@@ -23,7 +23,7 @@ Required software base:
 * [Python 3.11](https://www.python.org/downloads/release/python-3110/)
 or higher with core libraries.
 * [Pandas](https://pandas.pydata.org/)
-(needed for machine-readable nautical almanac).
+(needed for [machine-readable nautical almanac](README.md#mr)).
 * [Jupyter](https://jupyter.org/) (needed for running notebooks).
 
 No other additional libraries are necessary.
