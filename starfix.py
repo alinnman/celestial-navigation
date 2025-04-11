@@ -1913,7 +1913,7 @@ class SightCollection:
     def get_intersections\
         (self, return_geodetic : bool, limit : int | float = 100,
           estimated_position : NoneType | LatLon = None,
-          assume_good_estimated_position = False,
+          assume_good_estimated_position = True,
           diagnostics : bool = False) \
             -> tuple[LatLon | tuple[LatLon, LatLon], float, str]:
         ''' Get an intersection from the collection of sights. 
@@ -2146,7 +2146,7 @@ class SightCollection:
         (return_geodetic : bool,
             estimated_position : LatLon,
             get_starfixes : Callable,
-            assume_good_estimated_position : bool = False,
+            assume_good_estimated_position : bool = True,
             limit : int | float = 100,
             diagnostics : bool = False,
             max_iter : int = 10,
