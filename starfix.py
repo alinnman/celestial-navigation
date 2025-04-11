@@ -453,6 +453,7 @@ class CircleCollection:
 
 #pylint: enable=R0903
 
+#pylint: disable=R0914
 def get_great_circle_route\
      (start : LatLon, direction : LatLon | float | int,
       convert_to_geocentric : bool = True) -> Circle:
@@ -508,6 +509,7 @@ def get_great_circle_route\
     c = Circle (cp_latlon, 90, EARTH_CIRCUMFERENCE)
     c.accumulate_mapping_distance (distance)
     return c
+#pylint: enable=R0914
 
 class IntersectError (ValueError):
     ''' Exception used for failed intersections '''
@@ -520,6 +522,7 @@ class IntersectError (ValueError):
 #pylint: disable=R0913
 #pylint: disable=R0914
 #pylint: disable=R0915
+#pylint: disable=R0917
 def get_intersections (circle1 : Circle, circle2 : Circle,
                        estimated_position : NoneType | LatLon = None,
                        use_fitness : bool = True, diagnostics : bool = False,
@@ -818,6 +821,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 #pylint: enable=R0913
 #pylint: enable=R0914
 #pylint: enable=R0915
+#pylint: enable=R0917
 
 def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
     ''' Return the azimuth of the to_pos sight from from_pos sight
@@ -1057,6 +1061,7 @@ def get_circle_for_angle (point1 : LatLon, point2 : LatLon,
     return Circle (to_latlon(rot_center), radius, EARTH_CIRCUMFERENCE)
 
 #pylint: disable=R0913
+#pylint: disable=R0917
 def get_terrestrial_position (point_a1 : LatLon,
                               point_a2 : LatLon,
                               angle_a : int | float,
@@ -1079,6 +1084,7 @@ def get_terrestrial_position (point_a1 : LatLon,
                            diagnostics=diagnostics)
     return intersection, a, b, fitness, diag_output
 #pylint: enable=R0913
+#pylint: enable=R0917
 
 ################################################
 # Geodetics
@@ -1278,6 +1284,7 @@ class MrKind:
 
     kind_dict = dict[str, object] ()
 
+#pylint: disable=R0903
 class MrKindAries (MrKind):
     ''' Used for the position of Aries'''
 
@@ -1286,6 +1293,7 @@ class MrKindCentral (MrKind):
 
 class MrKindPlanet (MrKind):
     ''' Navigational planets '''
+#pylint: enable=R0903
 
 class MrKindStar (MrKind):
     ''' Navigational stars '''
@@ -1312,6 +1320,7 @@ class MrKindStar (MrKind):
     star_index = 0
     stars = dict [str, object] ()
 
+#pylint: disable=R0903
 class CelObjects:
     ''' Dictionary of celestial objects '''
     SUN         = MrKindCentral ("Sun")
@@ -1380,7 +1389,9 @@ class CelObjects:
     Fomalhaut   = MrKindStar ("Fomalhaut")
     Scheat      = MrKindStar ("Scheat")
     Markab      = MrKindStar ("Markab")
+#pylint: enable=R0903
 
+#pylint: disable=R0903
 class ObsType:
     ''' Base for observation type taxonomy '''
     def __init__ (self, o_type : str) :
@@ -1388,7 +1399,9 @@ class ObsType:
 
     def __str__ (self) :
         return self.o_type
+#pylint: enable=R0903
 
+#pylint: disable=R0903
 class ObsTypes:
     ''' These are the observation types we can handle '''
     GHA = ObsType ("GHA")
@@ -1396,7 +1409,9 @@ class ObsTypes:
     HP = ObsType ("HP")
     SHA = ObsType ("SHA")
     SD = ObsType ("SD")
+#pylint: enable=R0903
 
+#pylint: disable=R0903
 class Almanac:
     ''' Represents a machine-readable almanac in pandas/csv format '''
     def __init__ (self, fn : str):
@@ -1422,7 +1437,11 @@ class Almanac:
             return Almanac.active_almanacs [fn]
         except KeyError:
             return Almanac (fn)
+#pylint: enable=R0903
 
+#pylint: disable=R0912
+#pylint: disable=R0914
+#pylint: disable=R0915
 def get_mr_item (cel_obj : MrKind | str,
                  ts : str,
                  obs_type : ObsType,
@@ -1531,6 +1550,9 @@ def get_mr_item (cel_obj : MrKind | str,
             except KeyError as ie:
                 raise ValueError ("Invalid parameter") from ie
     raise NotImplementedError ()
+#pylint: enable=R0912
+#pylint: enable=R0914
+#pylint: enable=R0915
 
 ################################################
 # Celestial Navigation
