@@ -43,10 +43,8 @@ You are recommended to unzip the file to a specific directory
 (not a root directory).
 On Android you could create a directory in the "Documents" tree,
 e.g. "Documents/work/coding".
-Also make sure your PyDroid environment has the Pandas
-(and optionally Jupyter) libraries installed.
 Pydroid has access to <tt>pip</tt>
-for installing external libraries.
+for installing needed external libraries.
 
 The script [starfix.py](starfix.py) contains the core routines.
 
