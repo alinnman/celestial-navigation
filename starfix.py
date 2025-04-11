@@ -10,7 +10,16 @@ from datetime import datetime, date, timedelta, timezone
 from urllib.parse import quote_plus
 from types import NoneType
 from collections.abc import Callable
-from pandas import read_csv, Series
+
+PANDAS_INITIALIZED = False
+try:
+#pylint: disable=W0611
+    import pandas
+#pylint: enable=W0611
+    PANDAS_INITIALIZED = True
+except ModuleNotFoundError:
+    pass
+
 
 def version_warning (min_major_ver : int, min_minor_ver : int):
     ''' Check compatible Python version '''
@@ -353,7 +362,8 @@ def get_line_of_sight (h1 : float, h2 : float, temperature : float = 10,
 class Circle:
     ''' Helper class for circles (great or small circles) '''
 
-    def __init__ (self, latlon : LatLon, angle : int | float, circumference : float = EARTH_CIRCUMFERENCE):
+    def __init__ (self, latlon : LatLon, angle : int | float,
+                  circumference : float = EARTH_CIRCUMFERENCE):
         ''' Parameters:
                 latlon        : centerpoint
                 angle         : angle of circle in degrees, for a great circle set to 90
@@ -1390,6 +1400,9 @@ class ObsTypes:
 class Almanac:
     ''' Represents a machine-readable almanac in pandas/csv format '''
     def __init__ (self, fn : str):
+#pylint: disable=C0415
+        from pandas import read_csv
+#pylint: enable=C0415
         if fn in ["planets", "sun-moon", "sun-moon-sd", "venus-mars-hp"]:
             self.pd = \
             read_csv ("sample_data/"+fn + ".csv", index_col=0, delimiter=";", dtype="string")
@@ -1415,6 +1428,9 @@ def get_mr_item (cel_obj : MrKind | str,
                  obs_type : ObsType,
                  offset_hours : int = 0) -> str:
     ''' Get a specific item from the nautical almanac '''
+
+    if not PANDAS_INITIALIZED:
+        raise ValueError ("Pandas not available. Install it with \"pip install pandas\"")
     if isinstance (cel_obj, str):
         c2 = MrKind.get_kind (cel_obj)
         assert isinstance (c2, MrKind)
@@ -1448,6 +1464,9 @@ def get_mr_item (cel_obj : MrKind | str,
                     if iter_count > max_iter:
                         raise ValueError ("Database match error") from ke
             try:
+#pylint: disable=C0415
+                from pandas import Series
+#pylint: enable=C0415
                 assert isinstance (loc, Series)
                 return str(loc[str(cel_obj)+"_"+str(obs_type)])
             except KeyError as ie:
@@ -1504,6 +1523,9 @@ def get_mr_item (cel_obj : MrKind | str,
                     if iter_count > max_iter:
                         raise ValueError ("Database match error") from ke
             try:
+#pylint: disable=C0415
+                from pandas import Series
+#pylint: enable=C0415
                 assert isinstance (loc, Series)
                 return str(loc[str(obs_type)])
             except KeyError as ie:

@@ -65,7 +65,7 @@ def main ():
     print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
     print ("GM = " + get_google_map_string(intersections,4))
     int_circle = Circle (intersections, 0.01)
-    print ("INT = " + int_circle.get_map_developers_string(include_url_start=True))    
+    print ("INT = " + int_circle.get_map_developers_string(include_url_start=True))
 
     # Check azimuth
     assert isinstance (intersections, LatLonGeodetic)
