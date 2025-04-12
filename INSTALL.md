@@ -62,11 +62,11 @@ A Nautical Almanac must be used to get the GP (ground point) of
 your observations. If your observations are made from 2024 to 2028
 you have a machine-readable almanac available [here](./sample_data).
 But you can also use a manual/printed almanac.
-Currently PDF almanacs of [2024](NAmod(A4)_2024.pdf),
-[2025](NAmod(A4)_2025.pdf),
-[2026](NAmod(A4)_2026.pdf),
-[2027](NAmod(A4)_2027.pdf)
-and [2028](NAmod(A4)_2028.pdf)
+Currently PDF almanacs of [2024](nautical_almanacs/NAmod(A4)_2024.pdf),
+[2025](nautical_almanacs/NAmod(A4)_2025.pdf),
+[2026](nautical_almanacs/NAmod(A4)_2026.pdf),
+[2027](nautical_almanacs/NAmod(A4)_2027.pdf)
+and [2028](nautical_almanacs/NAmod(A4)_2028.pdf)
 are bundled in the repository in a digital version.
 But you may of course use a hard-copy of the nautical almanac and
 these can be ordered

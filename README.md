@@ -84,8 +84,8 @@ A short explanation of the logical steps and algorithms used in this toolkit can
 be found [here](WORKFLOW.md).
 
 Digital versions of the Nautical Almanac (in PDF format)
-for [2024](NAmod(A4)_2024.pdf)
-and [2025](NAmod(A4)_2025.pdf)
+for [2024](nautical_almanacs/NAmod(A4)_2024.pdf)
+and [2025](nauticak_almanacs/NAmod(A4)_2025.pdf)
 are included in this repository.
 A machine-readable nautical almanac (in CSV format) can be found
 [here](./sample_data/)
@@ -1017,7 +1017,8 @@ package](https://github.com/alinnman/SkyAlmanac-Py3) which in turn is a fork
 of the very useful SkyAlmanac package by
 [aendie](https://github.com/aendie) which in turn uses the
 [Skyfield](https://github.com/skyfielders/python-skyfield) package.
-(This package has also been used to generate the PDF nautical almanacs).
+(This package has also been used to generate the
+[PDF nautical almanacs](nautical_almanacs)).
 
 The source data for all numbers in the almanac files is the
 [Hipparcos](https://www.cosmos.esa.int/web/hipparcos)
