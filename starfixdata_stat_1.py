@@ -21,22 +21,31 @@ def get_starfixes (drp_pos : LatLonGeodetic,
     Sight.set_alt_diff           (alt_sigma)
     Sight.set_time_diff          (time_sigma)
 
-    a = Sight (   object_name          = "Sun",
+    TEMPERATURE = 10
+    DT_DH = -0.01
+
+    a = Sight (   object_name        = "Sun",
                 set_time             = "2024-05-05 15:55:18+00:00",
                 gha_time_0           = "45:50.4",
                 gha_time_1           = "60:50.4",
                 decl_time_0          = "16:30.6",
                 decl_time_1          = "16:31.3",
-                measured_alt         = "55:8:1.1"
+                #measured_alt         = "55:8:1.1", # INCORRECT?
+                measured_alt         = "55:7:54.4",
+                temperature          = TEMPERATURE,
+                dt_dh                = DT_DH
                 )
 
-    b = Sight (   object_name          = "Sun",
+    b = Sight (   object_name        = "Sun",
                 set_time             = "2024-05-05 23:01:19+00:00",
                 gha_time_0           = "165:50.8",
                 gha_time_1           = "180:50.8",
                 decl_time_0          = "16:36.2",
                 decl_time_1          = "16:36.9",
-                measured_alt         = "19:28:19"
+                #measured_alt         = "19:28:19", # INCORRECT?
+                measured_alt         = "19:28:27.4",
+                temperature          = TEMPERATURE,
+                dt_dh                = DT_DH
                 )
 
     c = Sight (   object_name          = "Vega",
@@ -44,8 +53,11 @@ def get_starfixes (drp_pos : LatLonGeodetic,
                 gha_time_0           = "284:30.4",
                 gha_time_1           = "299:32.9",
                 decl_time_0          = "38:48.1",
-                measured_alt         = "30:16:23.7",
-                sha_diff             = "80:33.4"
+                # measured_alt         = "30:16:23.7", # INCORRECT?
+                measured_alt         = "30:16:15.7",
+                sha_diff             = "80:33.4",
+                temperature          = TEMPERATURE,
+                dt_dh                = DT_DH
                 )
     return SightCollection ([a, b, c])
 
@@ -56,6 +68,7 @@ def main ():
     # the_pos = LatLonGeodetic (-40, 90) # BAD DRP position
     the_pos = LatLonGeodetic (40, -90) # Rough DRP position
     assume_good_pos = True
+    # The exact position is 41°51'00.1"N 87°39'00.2"W
 
     try:
         intersections, _, _, collection =\

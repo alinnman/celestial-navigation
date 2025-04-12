@@ -42,6 +42,7 @@ def main ():
 
     starttime = time ()
     the_pos = LatLonGeodetic (35, 10) # Rough DRP position
+    # The exact position is 36° 45' 11.01", 10° 13' 8.00"
 
     try:
         intersections, _, _, collection =\

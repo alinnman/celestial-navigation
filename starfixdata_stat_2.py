@@ -56,6 +56,7 @@ def main ():
 
     starttime = time ()
     the_pos = LatLonGeodetic (35, 10) # Rough DRP position
+    # The exact position is 36° 45' 11.01", 10° 13' 8.00"
 
     try:
         intersections, _, _, collection =\
@@ -79,7 +80,7 @@ def main ():
     print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
     print ("GM = " + get_google_map_string(intersections,4))
     int_circle = Circle (intersections, 0.01)
-    print ("INT = " + int_circle.get_map_developers_string(include_url_start=True))    
+    print ("INT = " + int_circle.get_map_developers_string(include_url_start=True))
 
     # Check azimuth
     assert isinstance (intersections, LatLonGeodetic)

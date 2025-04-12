@@ -45,6 +45,7 @@ def main ():
     # the_pos = LatLonGeodetic (-40, 90) # BAD DRP position
     the_pos = LatLonGeodetic (40, -90) # Rough DRP position
     assume_good_pos = True
+    # The exact position is 41°51'00.1"N 87°39'00.2"W
 
     try:
         intersections, _, _, collection =\
