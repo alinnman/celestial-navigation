@@ -12,43 +12,47 @@ from starfix import Sight, SightCollection, get_representation,\
                     Circle
 
 
+
 def get_starfixes (drp_pos : LatLonGeodetic,
-                   time_sigma : float = 0.0,
-                   alt_sigma  : float = 0.0) -> SightCollection :
+                   alt_sigma : float = 0.0,
+                   time_sigma : float = 0.0) -> SightCollection :
     ''' Returns a list of used star fixes (SightCollection) '''
 
     Sight.set_estimated_position (drp_pos)
     Sight.set_alt_diff           (alt_sigma)
     Sight.set_time_diff          (time_sigma)
 
-    a = Sight (object_name          = "Capella",
-               set_time             = "2024-09-17 23:36:13+00:00",
-               measured_alt         = "33 :9    :34"
-                )
+    a = Sight (object_name          = "Canopus",
+               set_time             = "2025-04-12 17:31:59+00:00",
+               measured_alt         = "52:43:13.4"
+              )
 
-    b = Sight (object_name          = "Moon",
-               set_time             = "2024-09-17 23:41:13+00:00",
-               measured_alt         = "48 :22  :5.2",
-                )
+    b = Sight (object_name          = "Hadar",
+               set_time             = "2025-04-12 17:36:59+00:00",
+               measured_alt         = "60:30:15"
+              )
 
-    c = Sight (object_name          = "Vega",
-               set_time             = "2024-09-17 23:46:13+00:00",
-               measured_alt         = "25 :39:4"
-                )
+    c = Sight (object_name          = "Achernar",
+               set_time             = "2025-04-12 17:41:59+00:00",
+               measured_alt         = "57:07:7.8",
+              )
     return SightCollection ([a, b, c])
 
 def main ():
     ''' Main body of script.'''
 
     starttime = time ()
-    the_pos = LatLonGeodetic (35, 10) # Rough DRP position
-    # The exact position is 36° 45' 11.01", 10° 13' 8.00"
+    the_pos = LatLonGeodetic (-89, -90) # Rough DRP position
+    assume_good_pos = True
+    # This sight was taken from the Amundsen-Scott base at the South Pole
 
     try:
         intersections, _, _, collection =\
               SightCollection.get_intersections_conv (return_geodetic=True,
                                                       estimated_position=the_pos,
-                                                      get_starfixes=get_starfixes)
+                                                      get_starfixes=get_starfixes,
+                                                      assume_good_estimated_position=\
+                                                      assume_good_pos)
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
         if ve.coll_object is not None:

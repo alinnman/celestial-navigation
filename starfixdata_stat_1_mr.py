@@ -22,17 +22,17 @@ def get_starfixes (drp_pos : LatLonGeodetic,
     Sight.set_alt_diff           (alt_sigma)
     Sight.set_time_diff          (time_sigma)
 
-    a = Sight (   object_name          = "Sun",
+    a = Sight ( object_name          = "Sun",
                 set_time             = "2024-05-05 15:55:18+00:00",
                 measured_alt         = "55:8:1.1"
                 )
 
-    b = Sight (   object_name          = "Sun",
+    b = Sight ( object_name          = "Sun",
                 set_time             = "2024-05-05 23:01:19+00:00",
                 measured_alt         = "19:28:19"
                 )
 
-    c = Sight (   object_name          = "Vega",
+    c = Sight ( object_name          = "Vega",
                 set_time             = "2024-05-06 04:04:13+00:00",
                 measured_alt         = "30:16:23.7",
                 )

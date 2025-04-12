@@ -37,6 +37,8 @@ You need a Google/Gmail account to run the code in the notebook*.
 1. [Sextant Calibration](#calibration)
 1. [Chronometer Handling](#chronometer)
 1. [Some notes on accuracy](#accuracy)
+    1. [Handling errors](#handling)
+    1. [Algorithm errors](#algorithm)
 1. [The machine-readable nautical almanac](#mr)
 
 ## 1. Introduction <a name="introduction"></a>
@@ -117,9 +119,9 @@ and the next hour.
 You can also see a complete example in
 [a python script](starfixdata_stat_mr_1.py)
 and also [a corresponding excel file](chicago.ods).
-This sample is built using altitudes taken from a star atlas Stellarium
-<https://en.wikipedia.org/wiki/Stellarium_(software)> from a point
-in central Chicago on May 5th 2024.
+This sample is built using altitudes taken from the star atlas
+[Stellarium](https://github.com/Stellarium/stellarium)
+from a point in central Chicago on May 5th 2024.
 In other words: No sextant readings were made and the accuracy is very good.
 (Running this sample will give you an accuracy of just some 100 meters).
 
@@ -967,6 +969,8 @@ are bundled in the repository.
 
 ## 8. Some notes on accuracy <a name="accuracy"></a>
 
+### 8.i Handling errors <a name="handling"></a>
+
 Celestial Navigation is nowhere as accurate as modern tech solutions like
 [GPS](https://en.wikipedia.org/wiki/Global_Positioning_System).
 And the simple reason is of course the setup with mechanical devices
@@ -989,6 +993,19 @@ of the altitude, and 2 seconds of the chronometer reading you get a
 sigma for the position of about **5 kilometers**.
 This is a humbling fact, and stresses the absolute
 need for precision while doing the practical observational work.
+
+### 8.ii Algorithm errors <a name="algorithm"></a>
+
+The toolkit has been tested against "sights" taken by the
+Star Atlas software [Stellarium](https://github.com/Stellarium/stellarium).
+The maximum error seems to be less than 1 nm. This method of testing
+eliminates all handling errors and tests the used algorithm only.
+Stellarium uses refraction handling (Bennet and Saemundssons formulas) as
+well as basic management of atmospheric conditions. It is also aware of the
+Earth ellipsoid and uses the WGS-84 reference system.
+
+There are likely algorithmic errors but as far as I can see these are
+less prominent than errors introduced by normal handling procedures.
 
 ## 9. The machine-readable nautical almanac <a name="mr">
 
