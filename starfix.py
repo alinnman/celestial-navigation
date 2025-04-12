@@ -710,23 +710,27 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         diag_output +=\
         "\n### **Calculating the rotation angle and vector to find the "+\
         "intersections from $\\text{q}$**\n"
-    try:
-        if circle1.angle < circle2.angle:
+
+    if circle1.angle < circle2.angle:
+        try:
             rho = acos (cos (deg_to_rad(circle1.angle)) / (dot_product (a_vec, q)))
-            if diagnostics:
-                diag_output +=\
-                "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle1}\\right)}}"+\
-                "{\\text{aVec}\\cdot\\text{q}}\\right)}"
-        else:
-            rho = acos (cos (deg_to_rad(circle2.angle)) / (dot_product (b_vec, q)))
-            if diagnostics:
-                diag_output +=\
-                "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle2}\\right)}}"+\
-                "{\\text{bVec}\\cdot\\text{q}}\\right)}"
+        except ValueError as ve:
+            raise IntersectError ("Small circles don't intersect") from ve
         if diagnostics:
-            diag_output += "=" + str(round(rho,4)) + "\\text{ ==> }\\rho$ (rotation angle)\n"
-    except ValueError as exc:
-        raise IntersectError ("Bad sight data. Circles do not intersect.") from exc
+            diag_output +=\
+            "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle1}\\right)}}"+\
+            "{\\text{aVec}\\cdot\\text{q}}\\right)}"
+    else:
+        try:
+            rho = acos (cos (deg_to_rad(circle2.angle)) / (dot_product (b_vec, q)))
+        except ValueError as ve:
+            raise IntersectError ("Small circles don't intersect") from ve
+        if diagnostics:
+            diag_output +=\
+            "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle2}\\right)}}"+\
+            "{\\text{bVec}\\cdot\\text{q}}\\right)}"
+    if diagnostics:
+        diag_output += "=" + str(round(rho,4)) + "\\text{ ==> }\\rho$ (rotation angle)\n"
 
     # Calculate a rotation vector
     rot_axis = normalize_vect(cross_product (cross_product (a_vec, b_vec), q))
