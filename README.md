@@ -311,7 +311,7 @@ See
 for more information. Also see code.
 
 From here we continue all calculations in a **geocentrical** (spherical)
-coordinate system on the unit sphere
+coordinate system on the unit sphere<br>
 ($\lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$).
 
 Define angles $\alpha$ and $\beta$ this way:
