@@ -367,12 +367,16 @@ The final rotation is accomplished using
 [Rodrigues/Gauss rotation formula](https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula)
 .
 
-$p_{\mathrm{rot}} = q \cos \rho + \left( r \times q \right) \sin \rho +
-r \left(r \cdot q \right)\left(1 - \cos \rho \right)$
+$P_{\mathrm{rot}}(\tau) = q \cos \tau + \left( r \times q \right) \sin \tau +
+r \left(r \cdot q \right)\left(1 - \cos \tau \right)$
 
 Apply the formula above for $\rho$ and $-\rho$ and you will get the two
 intersection points $p_1$ and $p_2$.
-**One of these points matches your location**.
+
+$p_1 = P_{\mathrm{rot}}(\rho)$<br>
+$p_2 = P_{\mathrm{rot}}(-\rho)$
+
+**One of these two points matches your location**.
 
 The final coordinates $p_1$ and $p_2$ are converted
 **back** to **geodetic coordinates**, ${p_1}_d$ and ${p_2}_d$.<br>
