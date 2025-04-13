@@ -311,7 +311,8 @@ See
 for more information. Also see code.
 
 From here we continue all calculations in a **geocentrical** (spherical)
-coordinate system on the unit sphere.
+coordinate system on the unit sphere
+($\lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$).
 
 Define angles $\alpha$ and $\beta$ this way:
 $\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
@@ -329,10 +330,6 @@ of the vector $x$.
 
 The circles relate to a *sight pair* $S_{p_{1,2}} = \{s_1, s_2\}$
 which we will come back to later.
-
-(From now on we assume all coordinates/vectors are located on the
-**unity sphere**, i.e.
-$\lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$)
 
 We aim for finding the intersections $p_1$ and $p_2$ for the circles $A$ and
 $B$ ($A \bigcap B$) and the point $q$ being the midpoint
