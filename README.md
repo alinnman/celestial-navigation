@@ -139,7 +139,7 @@ Arguments in *italics* are optional.
 | *gha_time_0*   | GHA reading for this hour. | String with format "DD:MM:SS". For stars use GHA of Aries. If omitted the [machine-readable nautical almanac](#mr) will be used. | Nautical Almanac |
 | *gha_time_1*   | GHA reading for next hour. | String with format "DD:MM:SS". For stars use GHA of Aries. If omitted the [machine-readable nautical almanac](#mr) will be used. | Nautical Almanac |
 | *decl_time_0*  | Declination reading for this hour. | String with format "DD:MM:SS". If omitted the [machine-readable nautical almanac](#mr) almanac will be used. |  Nautical Almanac |
-| *decl_time_1*  | Declination reading for next hour. | String with format "DD:MM:SS". Can be skipped for stars. Default = decl_time_0 | Nautical Almanac |
+| *decl_time_1*  | Declination reading for next hour. | String with format "DD:MM:SS". Can be skipped for stars. Default = decl_time_0. If omitted for a **solar system object** then the [machine-readable nautical almanac](#mr) will be used. | Nautical Almanac |
 | *sha_diff*   | SHA of star vs Aries in degrees. | String with format "DD:MM:SS". Only use for stars. Otherwise skip. Default = "0". If omitted for a **star** then the [machine-readable nautical almanac](#mr) will be used.| Nautical Almanac.|
 | *horizontal_parallax* | Correction for horizontal parallax.  | Used for the Moon. *HP* value. Default = 0. If omitted for the **Moon** then the [machine-readable nautical almanac](#mr) will be used. | Nautical Almanac |
 | *limb_correction* | Correction for limb measurements.  | Typically used for Moon or Sun. Set to 0 (central), -1 (lower limb) or 1 (upper limb). Default = 0 | Your observation |
@@ -1023,6 +1023,12 @@ of the very useful SkyAlmanac package by
 The source data for all numbers in the almanac files is the
 [Hipparcos](https://www.cosmos.esa.int/web/hipparcos)
 service powered by ESA.
+
+NOTE: The machine-readable almanac uses the
+[Pandas](https://pandas.pydata.org/) library. But as long as
+you enter all almanac parameters manually you can run the toolkit without
+this dependence. This can be useful for small Python setups where you only
+use the core libraries (such as mobile phones).
 
 These are the names of the used navigational celestial objects
 
