@@ -281,7 +281,8 @@ using the timestamps $t_1$ and $t_2$, get the
 [geographic position](https://www.celestialprogramming.com/snippets/geographicPosition.html)
 vectors (GP:s) $a$ and $b$.
 
-The GP:s $a$ and $b$ are located on the unit sphere
+Note: The GP:s $a$ and $b$ are **geocentrical**, and located on the unit sphere.
+All calculations for intersections are made on the unit sphere.
 
 $a \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
 <br>
@@ -309,8 +310,8 @@ See
 [this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion)
 for more information. Also see code.
 
-From here we continue all calculations in a **geocentric** (spherical)
-coordinate system.
+From here we continue all calculations in a **geocentrical** (spherical)
+coordinate system on the unit sphere.
 
 Define angles $\alpha$ and $\beta$ this way:
 $\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
@@ -331,8 +332,7 @@ which we will come back to later.
 
 (From now on we assume all coordinates/vectors are located on the
 **unity sphere**, i.e.
-$\lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$,
-i.e. the Earth is a three-dimensional sphere and its surface has radius = 1)
+$\lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$)
 
 We aim for finding the intersections $p_1$ and $p_2$ for the circles $A$ and
 $B$ ($A \bigcap B$) and the point $q$ being the midpoint
@@ -378,7 +378,7 @@ intersection points $p_1$ and $p_2$.
 **One of these points matches your location**.
 
 The final coordinates $p_1$ and $p_2$ are converted
-back to **geodetic coordinates**, ${p_1}_d$ and ${p_2}_d$.<br>
+**back** to **geodetic coordinates**, ${p_1}_d$ and ${p_2}_d$.<br>
 
 ${p_1}_d = C2D(p_1)$<br>
 ${p_2}_d = C2D(p_2)$
@@ -386,6 +386,8 @@ ${p_2}_d = C2D(p_2)$
 The used function ($\text{C2D}$) for this conversion is numerical.
 For more details, see code and
 [this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion).
+<br>(The function $\text{C2D}$ is the inverse of $\text{D2C}$,
+i.e $\text{C2D}(\text{D2C}(p))==p$)
 
 When performing the calculation above we also deduce the intersection angle for
 the two small circles (**fitness**). This angle will be used later on when we
