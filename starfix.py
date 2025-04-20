@@ -367,22 +367,31 @@ class Circle:
                 angle         : angle of circle in degrees, for a great circle set to 90
                 circumference : the circumference of the sphere (Earth)
         '''
-        self.latlon                 = latlon
-        self.angle                  = angle
-        self.circumference          = circumference
+        self.__latlon                 = latlon
+        self.__angle                = angle
+        self.__circumference        = circumference
         self.accum_mapping_distance = None
         self.mapping_distance_count = 0
 
+    def get_angle (self) :
+        ''' Return the angle (in degrees) of this circle '''
+        return self.__angle
+
+    def get_latlon (self) :
+        ''' Return the latlon of this circle '''
+        return self.__latlon
+
     def make_geodetic (self) :
         ''' Convert this circle to a geodetic latlon '''
-        if isinstance (self.latlon, LatLonGeodetic):
+        if isinstance (self.__latlon, LatLonGeodetic):
             pass
         else:
-            self.latlon = LatLonGeodetic (ll=self.latlon)
+            self.__latlon = LatLonGeodetic (ll=self.__latlon)
         return self
 
     def __str__(self) -> str:
-        return "CIRCLE: LATLON = [" + str(self.latlon) + "]; ANGLE = " + str(round(self.angle,4))
+        return "CIRCLE: LATLON = [" + \
+        str(self.__latlon) + "]; ANGLE = " + str(round(self.__angle,4))
 
     def accumulate_mapping_distance (self, distance : float | NoneType) :
         ''' Accumulates mapping distances, in order to build a mean value '''
@@ -412,7 +421,7 @@ class Circle:
             url_start = ""
             result = ""
         result += get_map_developers_string\
-              (self.get_radius(), self.latlon, self.get_mapping_distance(), color=color,\
+              (self.get_radius(), self.__latlon, self.get_mapping_distance(), color=color,\
                scale_factor=scale_factor)
         if include_url_start:
             result += "]"
@@ -421,7 +430,7 @@ class Circle:
 
     def get_radius (self) -> float:
         ''' Returns the radius of the sight (in kilometers) '''
-        return (self.angle/360)*self.circumference
+        return (self.__angle/360)*self.__circumference
 
 class CircleCollection:
     ''' Simple collection of circles '''
@@ -548,12 +557,12 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     geodetic (ellipsoidal) data. A general design decision is to make all intersection
     work in the geocentrical system, and convert/transform to/from geodetical when needed. 
     '''
-    assert circle1.angle >= 0 and circle2.angle >= 0
+    assert circle1.get_angle() >= 0 and circle2.get_angle() >= 0
 
     # Handle intersection of two great circles
-    if circle1.angle == 90 and circle2.angle == 90:
-        a_vec = to_rectangular (circle1.latlon)
-        b_vec = to_rectangular (circle2.latlon)
+    if circle1.get_angle() == 90 and circle2.get_angle() == 90:
+        a_vec = to_rectangular (circle1.get_latlon())
+        b_vec = to_rectangular (circle2.get_latlon())
         c1_vec = cross_product (a_vec, b_vec)
         if length_of_vect (c1_vec) == 0:
             raise IntersectError ("GP:s are the same or antipodal (Two great circles)")
@@ -571,16 +580,16 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 
         if estimated_position is None:
             dist1 = spherical_distance\
-                  (LatLonGeodetic(ll=c1_latlon), LatLonGeodetic(ll=circle1.latlon))
+                  (LatLonGeodetic(ll=c1_latlon), LatLonGeodetic(ll=circle1.get_latlon()))
             circle1.accumulate_distance (dist1)
             dist2 = spherical_distance\
-                  (LatLonGeodetic(ll=c1_latlon), LatLonGeodetic(ll=circle2.latlon))
+                  (LatLonGeodetic(ll=c1_latlon), LatLonGeodetic(ll=circle2.get_latlon()))
             circle2.accumulate_distance (dist2)
             dist3 = spherical_distance\
-                  (LatLonGeodetic(ll=c2_latlon), LatLonGeodetic(ll=circle1.latlon))
+                  (LatLonGeodetic(ll=c2_latlon), LatLonGeodetic(ll=circle1.get_latlon()))
             circle1.accumulate_distance (dist3)
             dist4 = spherical_distance\
-                  (LatLonGeodetic(ll=c2_latlon), LatLonGeodetic(ll=circle2.latlon))
+                  (LatLonGeodetic(ll=c2_latlon), LatLonGeodetic(ll=circle2.get_latlon()))
             circle2.accumulate_distance (dist4)
             return ret_tuple, fitness, diag_output
 
@@ -593,10 +602,10 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
                 best_distance = the_distance
                 best_intersection = ints
         dist1 = spherical_distance\
-                (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle1.latlon))
+                (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle1.get_latlon()))
         circle1.accumulate_mapping_distance (dist1)
         dist2 = spherical_distance\
-                (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle2.latlon))
+                (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle2.get_latlon()))
         circle2.accumulate_mapping_distance (dist2)
         assert best_intersection is not None
         return best_intersection, fitness, diag_output
@@ -611,13 +620,13 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             diag_output += "\n## Performing an intersection\n\n"
         diag_output += "### **Input parameters**\n"
         diag_output +=\
-        "$\\textbf{latlon1}=("+str(round(circle1.latlon.lat,4))+","+\
-            str(round(circle1.latlon.lon,4))+")$<br/>"
+        "$\\textbf{latlon1}=("+str(round(circle1.get_latlon().lat,4))+","+\
+            str(round(circle1.get_latlon().lon,4))+")$<br/>"
         diag_output +=\
         "$\\textbf{angle1}=("+str(round(circle1.angle,4))+")$<br/>"        
         diag_output +=\
-        "$\\textbf{latlon2}=("+str(round(circle2.latlon.lat,4))+","+\
-            str(round(circle2.latlon.lon,4))+")$<br/>"
+        "$\\textbf{latlon2}=("+str(round(circle2.get_latlon().lat,4))+","+\
+            str(round(circle2.get_latlon().lon,4))+")$<br/>"
         diag_output +=\
         "$\\textbf{angle2}=("+str(round(circle2.angle,4))+")$<br/>"
         if estimated_position is not None:
@@ -625,8 +634,8 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             "$\\textbf{EstimatedPosition}=("+\
                 str(round(estimated_position.lat,4))+","+\
                 str(round(estimated_position.lon,4))+")$<br/>"
-    a_vec = to_rectangular (circle1.latlon)
-    b_vec = to_rectangular (circle2.latlon)
+    a_vec = to_rectangular (circle1.get_latlon())
+    b_vec = to_rectangular (circle2.get_latlon())
     if diagnostics:
         diag_output += "\n### **Converting positions to cartesisans**\n"
         diag_output += " * $\\text{latlon1}$ converted to cartesians $=("+\
@@ -657,7 +666,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         diag_output +=\
         "\n### **Now we compute the vector $\\text{q}$, being at the midpoint between" +\
          " $\\text{aVec}$ and $\\text{bVec}$**\n"
-    p1 = mult_scalar_vect (cos(deg_to_rad(circle2.angle)), a_vec)
+    p1 = mult_scalar_vect (cos(deg_to_rad(circle2.get_angle())), a_vec)
     if diagnostics:
         diag_output +=\
         "* We compute $\\text{p1}$\n"
@@ -666,7 +675,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             str(round(p1[1],4))+","+\
             str(round(p1[2],4))+")\\text{ ==> }\\textbf{p1}"+\
             "$\n"
-    p2 = mult_scalar_vect (-cos(deg_to_rad(circle1.angle)), b_vec)
+    p2 = mult_scalar_vect (-cos(deg_to_rad(circle1.get_angle())), b_vec)
     if diagnostics:
         diag_output +=\
         "* We compute $\\text{p2}$\n"
@@ -709,9 +718,9 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         "\n### **Calculating the rotation angle and vector to find the "+\
         "intersections from $\\text{q}$**\n"
 
-    if circle1.angle < circle2.angle:
+    if circle1.get_angle() < circle2.get_angle():
         try:
-            rho = acos (cos (deg_to_rad(circle1.angle)) / (dot_product (a_vec, q)))
+            rho = acos (cos (deg_to_rad(circle1.get_angle())) / (dot_product (a_vec, q)))
         except ValueError as ve:
             raise IntersectError ("Small circles don't intersect") from ve
         if diagnostics:
@@ -720,7 +729,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             "{\\text{aVec}\\cdot\\text{q}}\\right)}"
     else:
         try:
-            rho = acos (cos (deg_to_rad(circle2.angle)) / (dot_product (b_vec, q)))
+            rho = acos (cos (deg_to_rad(circle2.get_angle())) / (dot_product (b_vec, q)))
         except ValueError as ve:
             raise IntersectError ("Small circles don't intersect") from ve
         if diagnostics:
@@ -790,16 +799,16 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 
     if estimated_position is None:
         dist1 = spherical_distance\
-              (LatLonGeodetic(ll=int1_latlon), LatLonGeodetic(ll=circle1.latlon))
+              (LatLonGeodetic(ll=int1_latlon), LatLonGeodetic(ll=circle1.get_latlon()))
         circle1.accumulate_mapping_distance (dist1)
         dist2 = spherical_distance\
-              (LatLonGeodetic(ll=int1_latlon), LatLonGeodetic(ll=circle2.latlon))
+              (LatLonGeodetic(ll=int1_latlon), LatLonGeodetic(ll=circle2.get_latlon()))
         circle2.accumulate_mapping_distance (dist2)
         dist3 = spherical_distance\
-              (LatLonGeodetic(ll=int2_latlon), LatLonGeodetic(ll=circle1.latlon))
+              (LatLonGeodetic(ll=int2_latlon), LatLonGeodetic(ll=circle1.get_latlon()))
         circle1.accumulate_mapping_distance (dist3)
         dist4 = spherical_distance\
-              (LatLonGeodetic(ll=int2_latlon), LatLonGeodetic(ll=circle2.latlon))
+              (LatLonGeodetic(ll=int2_latlon), LatLonGeodetic(ll=circle2.get_latlon()))
         circle2.accumulate_mapping_distance (dist4)
         return ret_tuple, fitness, diag_output
 
@@ -812,10 +821,10 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             best_distance = the_distance
             best_intersection = ints
     dist1 = spherical_distance\
-            (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle1.latlon))
+            (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle1.get_latlon()))
     circle1.accumulate_mapping_distance (dist1)
     dist2 = spherical_distance\
-            (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle2.latlon))
+            (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle2.get_latlon()))
     circle2.accumulate_mapping_distance (dist2)
     assert best_intersection is not None
     return best_intersection, fitness, diag_output
@@ -2321,7 +2330,7 @@ class SightTrip:
         circle2 = get_great_circle_route (taken_out, self.sight_end.gp)
 
         assert isinstance (circle2, Circle)
-        self.movement_vec = circle2.latlon
+        self.movement_vec = circle2.get_latlon()
         gi, fitness, diag = get_intersections \
                            (circle1, circle2,
                             estimated_position=taken_out)

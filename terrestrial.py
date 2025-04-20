@@ -32,17 +32,17 @@ def main ():
 
 
     print ("========================")
-    print ("Centerpoint 1 = " + get_google_map_string (c1.latlon, 4))
-    print ("Radius 1 = " + str(deg_to_rad(c1.angle)*EARTH_RADIUS))
-    print ("Centerpoint 2 = " + get_google_map_string (c2.latlon, 4))
-    print ("Radius 2 = " + str(deg_to_rad(c2.angle)*EARTH_RADIUS))
+    print ("Centerpoint 1 = " + get_google_map_string (c1.get_latlon(), 4))
+    print ("Radius 1 = " + str(deg_to_rad(c1.get_angle())*EARTH_RADIUS))
+    print ("Centerpoint 2 = " + get_google_map_string (c2.get_latlon(), 4))
+    print ("Radius 2 = " + str(deg_to_rad(c2.get_angle())*EARTH_RADIUS))
 
     # Draw a map
     circ1 = Circle (p1, 1/120, circumference=EARTH_CIRCUMFERENCE)
     circ2 = Circle (p2, 1/120, circumference=EARTH_CIRCUMFERENCE)
     circ3 = Circle (p3, 1/120, circumference=EARTH_CIRCUMFERENCE)
-    circ4 = Circle (c1.latlon, c1.angle, circumference=EARTH_CIRCUMFERENCE)
-    circ5 = Circle (c2.latlon, c2.angle, circumference=EARTH_CIRCUMFERENCE)
+    circ4 = Circle (c1.get_latlon(), c1.get_angle(), circumference=EARTH_CIRCUMFERENCE)
+    circ5 = Circle (c2.get_latlon(), c2.get_angle(), circumference=EARTH_CIRCUMFERENCE)
     circ_coll = CircleCollection ([circ1, circ2, circ3, circ4, circ5])
     print ("MD = " + circ_coll.get_map_developers_string())
 
