@@ -65,6 +65,7 @@ MAP_SCALE_FACTOR = 1.000655
 class LatLon:
     ''' Base class for lat-lon pairs '''
     def __init__ (self, lat : float | int, lon : float | int):
+        assert -90 < lat < 90
         self.lat = lat
         self.lon = mod_lon(lon)
 
@@ -334,9 +335,6 @@ def get_dip_of_horizon (hm : int | float, temperature : float = 10,
         temperature : temperature in degrees Celsius
         dt_th : temperature gradient in degrees Celsius / meter
     '''
-    #k_factor = 503*(pressure*10)*(1/((temperature+273)**2))*(0.0343 + dt_dh)
-    #r = EARTH_RADIUS
-    #rr = r / (1 - k_factor)
     rr = get_adjusted_earth_radius (temperature, dt_dh, pressure)
     h = hm / 1000
     the_dip = (acos (rr/(rr+h)))*(180/pi)*60
@@ -1042,7 +1040,6 @@ def parse_angle_string (angle_string : str) -> float:
 def get_circle_for_angle (point1 : LatLon, point2 : LatLon,
                           angle : int | float)\
       -> Circle :
-      #-> tuple [LatLon, float] :
     '''
     Calculate the circumscribed circle for two observed points with a specified angle, 
     giving a circle to use for determining terrestrial position 
@@ -1526,33 +1523,32 @@ def get_mr_item (cel_obj : MrKind | str,
     elif isinstance (cel_obj ,MrKindStar):
         if str(obs_type) in ["GHA"]:
             return get_mr_item ("Aries", ts, ObsTypes.GHA)
-        else:
-            the_almanac = Almanac.get_almanac ("stars")
-            df = the_almanac.pd
-            ready = False
-            ts_dt = datetime.fromisoformat (ts)
-            day_d = date (year=ts_dt.year, month=ts_dt.month, day=ts_dt.day)
-            iter_count = 0
-            max_iter = 4
-            loc = None
-            while not ready:
-                day_d_s = str(day_d)
-                try:
-                    loc = df.loc [day_d_s,str(cel_obj)]
-                    ready = True
-                except KeyError as ke:
-                    day_d = day_d + timedelta (days=-1)
-                    iter_count += 1
-                    if iter_count > max_iter:
-                        raise ValueError ("Database match error") from ke
+        the_almanac = Almanac.get_almanac ("stars")
+        df = the_almanac.pd
+        ready = False
+        ts_dt = datetime.fromisoformat (ts)
+        day_d = date (year=ts_dt.year, month=ts_dt.month, day=ts_dt.day)
+        iter_count = 0
+        max_iter = 4
+        loc = None
+        while not ready:
+            day_d_s = str(day_d)
             try:
+                loc = df.loc [day_d_s,str(cel_obj)]
+                ready = True
+            except KeyError as ke:
+                day_d = day_d + timedelta (days=-1)
+                iter_count += 1
+                if iter_count > max_iter:
+                    raise ValueError ("Database match error") from ke
+        try:
 #pylint: disable=C0415
-                from pandas import Series
+            from pandas import Series
 #pylint: enable=C0415
-                assert isinstance (loc, Series)
-                return str(loc[str(obs_type)])
-            except KeyError as ie:
-                raise ValueError ("Invalid parameter") from ie
+            assert isinstance (loc, Series)
+            return str(loc[str(obs_type)])
+        except KeyError as ie:
+            raise ValueError ("Invalid parameter") from ie
     raise NotImplementedError ()
 #pylint: enable=R0912
 #pylint: enable=R0914
@@ -2179,10 +2175,6 @@ class SightCollection:
                                           diagnostics=diagnostics,
                                           assume_good_estimated_position=\
                                           assume_good_estimated_position)
-            #except IntersectError as ve:
-                #print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
-                #print ("Check the circles! " + collection.get_map_developers_string(geodetic=True))
-            #    raise ve TODO Review
             assert isinstance (intersections, LatLon)
             the_distance = spherical_distance (estimated_position, intersections)
             if the_distance < dist_limit:
@@ -2293,7 +2285,6 @@ class SightTrip:
             limit = 0.001
             iter_limit = 100
             iter_count = 0
-            # ready = False
             taken_out = None
             rotated  = None
             while iter_count < iter_limit:
