@@ -623,12 +623,12 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         "$\\textbf{latlon1}=("+str(round(circle1.get_latlon().lat,4))+","+\
             str(round(circle1.get_latlon().lon,4))+")$<br/>"
         diag_output +=\
-        "$\\textbf{angle1}=("+str(round(circle1.angle,4))+")$<br/>"        
+        "$\\textbf{angle1}=("+str(round(circle1.get_angle(),4))+")$<br/>"        
         diag_output +=\
         "$\\textbf{latlon2}=("+str(round(circle2.get_latlon().lat,4))+","+\
             str(round(circle2.get_latlon().lon,4))+")$<br/>"
         diag_output +=\
-        "$\\textbf{angle2}=("+str(round(circle2.angle,4))+")$<br/>"
+        "$\\textbf{angle2}=("+str(round(circle2.get_angle(),4))+")$<br/>"
         if estimated_position is not None:
             diag_output +=\
             "$\\textbf{EstimatedPosition}=("+\
