@@ -2074,7 +2074,8 @@ class SightCollection:
         fitness_sum = 0
         for cp in chosen_points:
             selected_coord = coords [cp][0]
-            fitness_here = coords [cp][1]**3 # Penalize bad intersections
+            penalty_coefficient = 1
+            fitness_here = coords [cp][1]**penalty_coefficient # Penalize bad intersections
             fitness_sum += fitness_here
             rect_vec = to_rectangular (selected_coord)
             summation_vec =\
