@@ -66,18 +66,28 @@ class LatLon:
     ''' Base class for lat-lon pairs '''
     def __init__ (self, lat : float | int, lon : float | int):
         assert -90 < lat < 90
-        self.lat = lat
-        self.lon = mod_lon(lon)
+        self.__lat = lat
+        self.__lon = mod_lon(lon)
 
     def get_tuple (self) -> tuple[float | int, float | int] :
         ''' Used to simplify some code where tuples are more practical '''
-        return self.lon, self.lat
+        return self.__lon, self.__lat
+
+    def get_lat (self):
+        ''' Returns the latitude '''
+        return self.__lat
+
+    def get_lon (self):
+        ''' Returns the longitude '''
+        return self.__lon
 
 class LatLonGeocentric (LatLon):
     ''' Represents spherical coordinates on Earth '''
 
     def __str__(self):
-        return "(Geocentric) LAT = " + str(round(self.lat,4)) + "; LON = " + str(round(self.lon,4))
+        return "(Geocentric) LAT = " +\
+               str(round(self.get_lat(),4)) +\
+               "; LON = " + str(round(self.get_lon(),4))
 
 ################################################
 # Utility routines (algrebraic, spheric geometry)
@@ -162,8 +172,8 @@ def to_latlon (vec : list [float]) -> LatLonGeocentric:
 
 def to_rectangular (latlon : LatLon) -> list [float]:
     ''' Convert LatLon (spherical) coordinate to cartesian '''
-    phi = deg_to_rad (90 - latlon.lat)
-    theta = deg_to_rad (latlon.lon)
+    phi = deg_to_rad (90 - latlon.get_lat())
+    theta = deg_to_rad (latlon.get_lon())
     a_vec = list [float] ()
     a_vec.append (cos (theta) * sin (phi))
     a_vec.append (sin (theta) * sin (phi))
@@ -227,10 +237,10 @@ def takeout_course (latlon : LatLonGeocentric, course : int | float, speed_knots
     distance = speed_knots * time_hours
     distance_degrees = distance / 60
     # The "stretch" is just taking care of narrowing longitudes on higher latitudes
-    stretch_at_start = cos (deg_to_rad (latlon.lat))
+    stretch_at_start = cos (deg_to_rad (latlon.get_lat()))
     diff_lat = cos (deg_to_rad(course))*distance_degrees
     diff_lon = sin (deg_to_rad(course))*distance_degrees/stretch_at_start
-    return LatLonGeocentric (latlon.lat+diff_lat, latlon.lon+diff_lon)
+    return LatLonGeocentric (latlon.get_lat()+diff_lat, latlon.get_lon()+diff_lon)
 
 def angle_b_points (latlon1 : LatLon, latlon2 : LatLon) -> float:
     ''' Calculates the angle between two points on Earth 
@@ -500,7 +510,7 @@ def get_great_circle_route\
         return c
     # isinstance (direction, float) or isinstance (direction, int) == True
     assert isinstance (direction, float) or isinstance (direction, int)
-    if start.lat in (90,-90):
+    if start.get_lat() in (90,-90):
         raise ValueError ("Cannot take a course from any of the poles")
     north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
     b = to_rectangular (start)
@@ -620,20 +630,20 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             diag_output += "\n## Performing an intersection\n\n"
         diag_output += "### **Input parameters**\n"
         diag_output +=\
-        "$\\textbf{latlon1}=("+str(round(circle1.get_latlon().lat,4))+","+\
-            str(round(circle1.get_latlon().lon,4))+")$<br/>"
+        "$\\textbf{latlon1}=("+str(round(circle1.get_latlon().get_lat(),4))+","+\
+            str(round(circle1.get_latlon().get_lon(),4))+")$<br/>"
         diag_output +=\
         "$\\textbf{angle1}=("+str(round(circle1.get_angle(),4))+")$<br/>"        
         diag_output +=\
-        "$\\textbf{latlon2}=("+str(round(circle2.get_latlon().lat,4))+","+\
-            str(round(circle2.get_latlon().lon,4))+")$<br/>"
+        "$\\textbf{latlon2}=("+str(round(circle2.get_latlon().get_lat(),4))+","+\
+            str(round(circle2.get_latlon().get_lon(),4))+")$<br/>"
         diag_output +=\
         "$\\textbf{angle2}=("+str(round(circle2.get_angle(),4))+")$<br/>"
         if estimated_position is not None:
             diag_output +=\
             "$\\textbf{EstimatedPosition}=("+\
-                str(round(estimated_position.lat,4))+","+\
-                str(round(estimated_position.lon,4))+")$<br/>"
+                str(round(estimated_position.get_lat(),4))+","+\
+                str(round(estimated_position.get_lon(),4))+")$<br/>"
     a_vec = to_rectangular (circle1.get_latlon())
     b_vec = to_rectangular (circle2.get_latlon())
     if diagnostics:
@@ -790,11 +800,11 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     if diagnostics:
         diag_output += "* Converting the intersections to LatLon\n"
         diag_output += "    * $\\text{int1}$ converts to $("+\
-        str(round(int1_latlon.lat,4))+","+\
-        str(round(int1_latlon.lon,4))+")\\text{ ==> }\\textbf{Intersection 1}$\n"
+        str(round(int1_latlon.get_lat(),4))+","+\
+        str(round(int1_latlon.get_lon(),4))+")\\text{ ==> }\\textbf{Intersection 1}$\n"
         diag_output += "    * $\\text{int2}$ converts to $("+\
-        str(round(int2_latlon.lat,4))+","+\
-        str(round(int2_latlon.lon,4))+")\\text{ ==> }\\textbf{Intersection 2}$\n"
+        str(round(int2_latlon.get_lat(),4))+","+\
+        str(round(int2_latlon.get_lon(),4))+")\\text{ ==> }\\textbf{Intersection 2}$\n"
     ret_tuple = (int1_latlon, int2_latlon)
 
     if estimated_position is None:
@@ -844,15 +854,17 @@ def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
             The aziumuth angle (degrees 0-360)
     '''
     # From the poles we need to calculate azimuths differently
-    if from_pos.lat == 90:
-        return (-to_pos.lon) % 360
-    if from_pos.lat == -90:
-        return to_pos.lon % 360
+    if from_pos.get_lat() == 90:
+        return (-to_pos.get_lon()) % 360
+    if from_pos.get_lat() == -90:
+        return to_pos.get_lon() % 360
     # Antipodes have to be handled
-    if (to_pos.lat == -from_pos.lat) and (((to_pos.lon - from_pos.lon) % 180) == 0):
+    if (to_pos.get_lat() == -from_pos.get_lat()) \
+        and (((to_pos.get_lon() - from_pos.get_lon()) % 180) == 0):
         return 0
     # Same coordinate?
-    if (to_pos.lat == from_pos.lat) and (to_pos.lon == from_pos.lon):
+    if (to_pos.get_lat() == from_pos.get_lat())\
+        and (to_pos.get_lon() == from_pos.get_lon()):
         return 0
 
     a = to_rectangular (to_pos)
@@ -925,8 +937,8 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
             type_info = "(Geocentric) "
         type_string = type_info
         return type_string +\
-            str(round(intersections.lat,num_decimals)) + "," +\
-            str(round(intersections.lon,num_decimals))
+            str(round(intersections.get_lat(),num_decimals)) + "," +\
+            str(round(intersections.get_lon(),num_decimals))
 
     if isinstance (intersections, tuple):
         assert len (intersections) == 2
@@ -948,8 +960,8 @@ def get_map_developers_string\
     r = r * scale_factor
     result = "["
     result = result + str (round(r*1000)) + ","
-    result = result + str(round(latlon.lat,6)) + ","
-    result = result + str(round(latlon.lon,6)) + ","
+    result = result + str(round(latlon.get_lat(),6)) + ","
+    result = result + str(round(latlon.get_lon(),6)) + ","
     result = result + "\"#AAAAAA\",\"#"+color+"\",0.4]"
     return result
 
@@ -1118,7 +1130,7 @@ class LatLonGeodetic (LatLon):
 
         if isinstance (ll, LatLonGeodetic):
             # Just copy the data from a geodetic coordinate
-            super().__init__ (ll.lat, ll.lon)
+            super().__init__ (ll.get_lat(), ll.get_lon())
             return
 
         # ll is a *Geocentrical* coordinate
@@ -1126,7 +1138,7 @@ class LatLonGeodetic (LatLon):
         #    See: https://www.mathworks.com/help/aeroblks/geocentrictogeodeticlatitude.html
         # See C2D algorithm in README.md
         assert ll is not None
-        lam_bda = deg_to_rad (ll.lat)
+        lam_bda = deg_to_rad (ll.get_lat())
         a       = EARTH_RADIUS_GEODETIC_EQUATORIAL
         b       = EARTH_RADIUS_GEODETIC_POLAR
         f       = EARTH_FLATTENING
@@ -1153,7 +1165,7 @@ class LatLonGeodetic (LatLon):
             if iter_count > iter_limit:
                 iter_ready = True
 
-        super().__init__(rad_to_deg(mu), ll.lon)
+        super().__init__(rad_to_deg(mu), ll.get_lon())
 
     def get_latlon (self, height : float = 0) -> LatLonGeocentric:
         ''' Transforms a geodetic coordinate into geocentric
@@ -1162,20 +1174,20 @@ class LatLonGeodetic (LatLon):
         '''
         f = EARTH_FLATTENING
         a = EARTH_RADIUS_GEODETIC_EQUATORIAL / (2*pi)
-        assert self.lat is not None
-        mu = deg_to_rad(self.lat)
+        assert self.get_lat() is not None
+        mu = deg_to_rad(self.get_lat())
         e2 = f*(2-f)
         h = height
         n = a / sqrt(1 - e2*(sin(mu))**2)
         rho = (n + h) * cos(mu)
         z = (n*(1 - e2) + h)*sin(mu)
         lam_bda = atan2 (z, rho)
-        assert self.lon is not None
-        return LatLonGeocentric (rad_to_deg(lam_bda), self.lon)
+        assert self.get_lon() is not None
+        return LatLonGeocentric (rad_to_deg(lam_bda), self.get_lon())
 
     def __str__(self):
-        return "(Geodetic) LAT = " + str(round(self.lat,4)) +\
-               "; LON = " + str(round(self.lon,4))
+        return "(Geodetic) LAT = " + str(round(self.__lat,4)) +\
+               "; LON = " + str(round(self.get_lon(),4))
 
 
 def get_vertical_parallax (llg : LatLonGeodetic) -> tuple [float, LatLonGeocentric]:
@@ -1226,10 +1238,10 @@ def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
     b = (1 - f)*a
     tolerance = 1e-11 # to stop iteration
 
-    lat1  = deg_to_rad(pt1.lat)
-    long1 = deg_to_rad(pt1.lon)
-    lat2  = deg_to_rad(pt2.lat)
-    long2 = deg_to_rad(pt2.lon)
+    lat1  = deg_to_rad(pt1.get_lat())
+    long1 = deg_to_rad(pt1.get_lon())
+    lat2  = deg_to_rad(pt2.get_lat())
+    long2 = deg_to_rad(pt2.get_lon())
 
     phi1, phi2 = lat1, lat2
     U1 = atan2((1-f)*tan(phi1),1)
@@ -1830,7 +1842,7 @@ class Sight :
         if geodetic:
             if viewpoint is not None:
                 ell_dist = ellipsoidal_distance (viewpoint, LatLonGeodetic (ll=self.gp))
-                wp = LatLonGeodetic (lat = viewpoint.lat, lon = viewpoint.lon)
+                wp = LatLonGeodetic (lat = viewpoint.get_lat(), lon = viewpoint.get_lon())
                 wplatlon = wp.get_latlon()
                 sph_dist = spherical_distance (wplatlon, self.gp)
                 return (90-self.raw_measured_alt)*(ell_dist / sph_dist)
@@ -2133,7 +2145,8 @@ class SightCollection:
         sum_rect = mult_scalar_vect (1/found_intersections, sum_rect)
         intersections = to_latlon (sum_rect)
         # Convert this latlon to geodetic, since it IS geodetic...
-        intersections = LatLonGeodetic (lat=intersections.lat, lon=intersections.lon)
+        intersections = LatLonGeodetic (lat=intersections.get_lat(),\
+                                        lon=intersections.get_lon())
 
         square_sum = 0.0
         for c in int_coll:
