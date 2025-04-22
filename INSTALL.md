@@ -17,19 +17,23 @@ three-star fix. A Google account is necessary.
 The code is installed using just a file copy of the python (.py)
 and (optionally) Jupyter notebook (.ipynb) files to a suitable directory.
 You may also need the machine-readable nautical almanacs residing in the
-<tt>sample_data</tt> subfolder.
-Required software base:
+<tt>sample_data</tt> subfolder and some optional libraries.
+
+Your Python setup:
 
 * [Python 3.11](https://www.python.org/downloads/release/python-3110/)
 or higher with core libraries.
 * [Pandas](https://pandas.pydata.org/)
-(needed for [machine-readable nautical almanac](README.md#mr)).
-* [Jupyter](https://jupyter.org/) (needed for running notebooks).
+(Optional, needed for the [machine-readable nautical almanac](README.md#mr)).
+* [Jupyter](https://jupyter.org/) (Optional, needed for running notebooks).
+* [Folium](https://github.com/python-visualization/folium)
+(Optional, needed for high-quality mapping)
 
 No other additional libraries are necessary.
 This
 [link](https://github.com/alinnman/celestial-navigation/archive/refs/heads/main.zip)
-will download **all** code in a ZIP file.
+will download **all** source code and needed files in a ZIP file.
+The optional libraries can be installed using the standard <tt>pip</tt> utility.
 
 The python scripts could be installed in
 [PyDroid](https://play.google.com/store/apps/details?id=ru.iiec.pydroid3)
