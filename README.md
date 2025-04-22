@@ -13,6 +13,12 @@ of this toolkit!<br/>
 *Opens in [Google Colab](https://colab.research.google.com).
 You need a Google/Gmail account to run the code in the notebook*.
 
+It is all about precise handling of sextant readings producing
+intersections like in the picture below.<br>
+In this picture we were located in Chicago.
+
+![Intersections of small circles](pics/folium.png "Intersections of small circles" )
+
 ## Table of contents
 
 1. [Introduction](#introduction)
