@@ -4,6 +4,8 @@
 
     This sample uses an algorithm for better accuracy using repeated
     refinements of the DR position. 
+
+    Data is picked from the nautical almanac.
 '''
 
 from time import time

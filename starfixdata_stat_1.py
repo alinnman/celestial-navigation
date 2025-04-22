@@ -7,6 +7,7 @@
 '''
 
 from time import time
+import webbrowser
 from starfix import Sight, SightCollection, get_representation,\
                     get_google_map_string, IntersectError, LatLonGeodetic, Circle
 
@@ -21,8 +22,8 @@ def get_starfixes (drp_pos : LatLonGeodetic,
     Sight.set_alt_diff           (alt_sigma)
     Sight.set_time_diff          (time_sigma)
 
-    TEMPERATURE = 10
-    DT_DH = -0.01
+    temperature = 10
+    dt_dh = -0.01
 
     a = Sight (object_name          = "Sun",
                set_time             = "2024-05-05 15:55:18+00:00",
@@ -31,8 +32,8 @@ def get_starfixes (drp_pos : LatLonGeodetic,
                decl_time_0          = "16:30.6",
                decl_time_1          = "16:31.3",
                measured_alt         = "55:7:54.4",
-               temperature          = TEMPERATURE,
-               dt_dh                = DT_DH
+               temperature          = temperature,
+               dt_dh                = dt_dh
                )
 
     b = Sight (object_name          = "Sun",
@@ -42,8 +43,8 @@ def get_starfixes (drp_pos : LatLonGeodetic,
                decl_time_0          = "16:36.2",
                decl_time_1          = "16:36.9",
                measured_alt         = "19:28:27.4",
-               temperature          = TEMPERATURE,
-               dt_dh                = DT_DH
+               temperature          = temperature,
+               dt_dh                = dt_dh
                )
 
     c = Sight (object_name          = "Vega",
@@ -53,8 +54,8 @@ def get_starfixes (drp_pos : LatLonGeodetic,
                decl_time_0          = "38:48.1",
                measured_alt         = "30:16:15.7",
                sha_diff             = "80:33.4",
-               temperature          = TEMPERATURE,
-               dt_dh                = DT_DH
+               temperature          = temperature,
+               dt_dh                = dt_dh
                )
     return SightCollection ([a, b, c])
 
@@ -111,6 +112,11 @@ def main ():
                 str(round(s.get_circle(geodetic=True).get_radius (),1)))
         print (str(counter) + " GP     = " +\
                 get_google_map_string(LatLonGeodetic(ll=s.gp),4))
+
+    the_map = collection.render_folium (intersections)
+    file_name = "./map.html"
+    the_map.save (file_name)
+    webbrowser.open (file_name)
 
     print ("Time taken = " +str(taken_ms)+" ms")
 
