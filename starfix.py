@@ -20,6 +20,15 @@ try:
 except ModuleNotFoundError:
     pass
 
+FOLIUM_INITIALIZED = False
+try:
+#pylint: disable=W0611
+    import folium
+#pylint: enable=W0611
+    FOLIUM_INITIALIZED = True
+except ModuleNotFoundError:
+    pass
+
 
 def version_warning (min_major_ver : int, min_minor_ver : int):
     ''' Check compatible Python version '''
@@ -65,7 +74,7 @@ MAP_SCALE_FACTOR = 1.000655
 class LatLon:
     ''' Base class for lat-lon pairs '''
     def __init__ (self, lat : float | int, lon : float | int):
-        assert -90 < lat < 90
+        assert -90 <= lat <= 90
         self.__lat = lat
         self.__lon = mod_lon(lon)
 
@@ -2231,6 +2240,89 @@ class SightCollection:
                 c_l.append (Circle (m, 1/60, EARTH_CIRCUMFERENCE))
         return CircleCollection (c_l).get_map_developers_string (scale_factor=scale_factor)
 
+#pylint: disable=R0914
+    def render_folium (self, intersections : LatLon, accuracy : float = 1000) -> object:
+        ''' Renders a folium object to be used for map plotting'''
+        if not FOLIUM_INITIALIZED:
+            raise ValueError ("Folium not available. Cannot generate maps.")
+        the_sf_list = self.sf_list
+
+        coordinates = list [list[float]]()
+
+        int_geodetic = LatLonGeodetic (ll=intersections.get_latlon())
+#pylint: disable=C0415
+        from folium import Map, Circle as Folium_Circle, PolyLine
+#pylint: enable=C0415
+        the_map = Map(location=(int_geodetic.get_lat(),\
+                                int_geodetic.get_lon()), zoom_start=12)
+
+        radius = accuracy
+        Folium_Circle(
+            location=[int_geodetic.get_lat(),\
+                    int_geodetic.get_lon()],
+            radius=radius,
+            color="black",
+            weight=1,
+            fill_opacity=0.6,
+            opacity=1,
+            fill_color="lightgreen",
+            fill=False,  # gets overridden by fill_color
+            popup = "Radius = " + str(radius) + " meters",
+            tooltip="Weighted intersection point",
+        ).add_to(the_map)
+        north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
+        for s in the_sf_list:
+
+            sub_coord = []
+
+            assert isinstance (s, Sight)
+            c = s.get_circle (geodetic=False)
+            assert isinstance (c, Circle)
+            degrees_10 = 0
+            last_lon = 0
+            while degrees_10 < 3601:
+                angle = degrees_10 / 10
+                degrees_10 += 1
+                b = to_rectangular (c.get_latlon ())
+
+                east_tangent = normalize_vect(cross_product (north_pole, b))
+                north_tangent = normalize_vect (cross_product (b, east_tangent))
+                real_tangent =\
+                    add_vecs (\
+                                mult_scalar_vect (sin(deg_to_rad(angle)), east_tangent),
+                                mult_scalar_vect (-cos(deg_to_rad(angle)), north_tangent)
+                            )
+                y = rotate_vector (b, real_tangent, deg_to_rad(c.get_angle()))
+
+                y_latlon = to_latlon (y)
+                y_geodetic = LatLonGeodetic (ll = y_latlon)
+                this_lon = y_geodetic.get_lon ()
+                if this_lon * last_lon >= 0 or \
+                abs (this_lon * last_lon) < 1 :
+                    # Not crossing the dateline or crossing the 0 longitude
+                    sub_coord.append ([y_geodetic.get_lat(), this_lon])
+                else:
+                    # Finalize this segment and create a new one
+                    coordinates.append (sub_coord)
+                    PolyLine(
+                        locations=coordinates,
+                        color="#FF0000",
+                        weight=5,
+                        tooltip="Small circle",
+                    ).add_to(the_map)
+                    sub_coord = []
+                last_lon = y_geodetic.get_lon()
+            coordinates.append (sub_coord)
+            PolyLine(
+                locations=coordinates,
+                color="#FF0000",
+                weight=5,
+                tooltip="Small circle",
+            ).add_to(the_map)
+        return the_map
+#pylint: enable=R0914
+
+#pylint: disable=R0902
 class SightTrip:
     ''' Object used for dead-reckoning. Sights are taken on different times
         Course and speed are estimated input parameters.  '''
@@ -2399,3 +2491,4 @@ class SightTrip:
         result += "]"
         result = quote_plus (result)
         return url_start + result
+#pylint: enable=R0902
