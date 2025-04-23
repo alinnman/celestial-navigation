@@ -1195,7 +1195,7 @@ class LatLonGeodetic (LatLon):
         return LatLonGeocentric (rad_to_deg(lam_bda), self.get_lon())
 
     def __str__(self):
-        return "(Geodetic) LAT = " + str(round(self.__lat,4)) +\
+        return "(Geodetic) LAT = " + str(round(self.get_lat(),4)) +\
                "; LON = " + str(round(self.get_lon(),4))
 
 
@@ -1655,18 +1655,19 @@ class Sight :
         self.temperature          = temperature
         self.dt_dh                = dt_dh
         self.pressure             = pressure
-        self.object_name          = object_name
-        self.set_time_dt          = datetime.fromisoformat (set_time)
-        self.set_time_dt_hour     = self.set_time_dt.replace\
+        self.__object_name        = object_name
+        self.__set_time_dt        = datetime.fromisoformat (set_time)
+        self.set_time_dt_hour     = self.__set_time_dt.replace\
                                       (second=0, microsecond=0, minute=0,
-                                       hour=self.set_time_dt.hour, tzinfo=self.set_time_dt.tzinfo)
+                                       hour=self.__set_time_dt.hour,\
+                                       tzinfo=self.__set_time_dt.tzinfo)
         if Sight.time_diff_hold != 0.0:
             diff = gauss(0, Sight.time_diff_hold)
-            new_time = self.set_time_dt + timedelta(seconds=diff)
+            new_time = self.get_time() + timedelta(seconds=diff)
             self.set_time_dt = new_time
         if gha_time_0 is None:
 
-            gha_time_0 = get_mr_item (self.object_name,
+            gha_time_0 = get_mr_item (self.get_object_name(),
                                       str(q_replace(self.set_time_dt_hour)),
                                       ObsTypes.GHA)
             if Sight.MR_DEBUG:
@@ -1674,7 +1675,7 @@ class Sight :
         self.gha_time_0           = parse_angle_string (gha_time_0)
         if gha_time_1 is None:
 
-            gha_time_1 = get_mr_item (self.object_name,
+            gha_time_1 = get_mr_item (self.get_object_name(),
                                       str(q_replace(self.set_time_dt_hour)),
                                       ObsTypes.GHA,
                                       offset_hours=1)
@@ -1687,7 +1688,7 @@ class Sight :
             decl_time_1 = decl_time_0
         if decl_time_0 is None:
 
-            decl_time_0 = get_mr_item (self.object_name,
+            decl_time_0 = get_mr_item (self.get_object_name(),
                                       str(q_replace(self.set_time_dt_hour)),
                                       ObsTypes.DECL)
             if Sight.MR_DEBUG:
@@ -1695,7 +1696,7 @@ class Sight :
         self.decl_time_0          = parse_angle_string (decl_time_0)
         if decl_time_1 is None:
 
-            decl_time_1 = get_mr_item (self.object_name,
+            decl_time_1 = get_mr_item (self.get_object_name(),
                                       str(q_replace(self.set_time_dt_hour)),
                                       ObsTypes.DECL,
                                       offset_hours=1)
@@ -1716,8 +1717,8 @@ class Sight :
                 self.measured_alt = 89.999999
         if sha_diff is not None:
             self.sha_diff         = parse_angle_string (sha_diff)
-        elif MrKindStar.is_star (self.object_name):
-            qq = get_mr_item (self.object_name,
+        elif MrKindStar.is_star (self.get_object_name()):
+            qq = get_mr_item (self.get_object_name(),
                                 str(q_replace(self.set_time_dt_hour)),
                                 ObsTypes.SHA)
             if Sight.MR_DEBUG:
@@ -1744,8 +1745,8 @@ class Sight :
         if limb_correction == Sight.LIMB_CENTRAL:
             semi_diameter_correction = 0
         elif limb_correction in [Sight.LIMB_LOWER,Sight.LIMB_UPPER]:
-            if self.object_name in ["Sun", "Moon"]:
-                qq = get_mr_item (self.object_name,
+            if self.get_object_name() in ["Sun", "Moon"]:
+                qq = get_mr_item (self.get_object_name(),
                                   str(q_replace(self.set_time_dt_hour)),
                                   ObsTypes.SD)
                 q = float (qq)
@@ -1757,8 +1758,8 @@ class Sight :
         if semi_diameter_correction != 0:
             self.__correct_semi_diameter (semi_diameter_correction)
         if horizontal_parallax is None:
-            if self.object_name == "Moon":
-                qq = get_mr_item (self.object_name,
+            if self.get_object_name() == "Moon":
+                qq = get_mr_item (self.get_object_name(),
                                   str(q_replace(self.set_time_dt_hour)),
                                   ObsTypes.HP)
                 if Sight.MR_DEBUG:
@@ -1803,6 +1804,13 @@ class Sight :
 #pylint: enable=R0913
 #pylint: enable=R0914
 
+    def get_object_name (self) -> str:
+        ''' Returns the object name (celestial object name) of the sight '''
+        return self.__object_name
+
+    def get_time (self) -> datetime:
+        ''' Returns the timestamp of this sight '''
+        return self.__set_time_dt
 
     def __correct_set_time (self, chronometer : Chronometer):
         dt1 = self.set_time_dt
@@ -1835,7 +1843,7 @@ class Sight :
         self.measured_alt -= get_refraction (self.measured_alt, self.temperature, self.pressure)/60
 
     def __calculate_gp (self) -> LatLonGeocentric:
-        min_sec_contribution = (self.set_time_dt - self.set_time_dt_hour).total_seconds() / 3600
+        min_sec_contribution = (self.__set_time_dt - self.set_time_dt_hour).total_seconds() / 3600
 
         result_lon = mod_lon (- \
         ((self.gha_time_0 + self.sha_diff) + \
@@ -2262,7 +2270,7 @@ class SightCollection:
 
         int_geodetic = LatLonGeodetic (ll=intersections.get_latlon())
 #pylint: disable=C0415
-        from folium import Map, Circle as Folium_Circle, PolyLine
+        from folium import Map, Circle as Folium_Circle, PolyLine, Marker, Icon
 #pylint: enable=C0415
         the_map = Map(location=(int_geodetic.get_lat(),\
                                 int_geodetic.get_lon()), zoom_start=12)
@@ -2270,7 +2278,7 @@ class SightCollection:
         radius = accuracy
         Folium_Circle(
             location=[int_geodetic.get_lat(),\
-                    int_geodetic.get_lon()],
+                      int_geodetic.get_lon()],
             radius=radius,
             color="black",
             weight=1,
@@ -2281,14 +2289,34 @@ class SightCollection:
             popup = "Radius = " + str(radius) + " meters",
             tooltip="Diameter : " + str(accuracy) + " m."
         ).add_to(the_map)
+
+        Marker(
+            location=[int_geodetic.get_lat(), int_geodetic.get_lon()],
+            tooltip="Intersection",
+            popup= str (intersections),
+            #color = "green"
+            icon=Icon(icon="user"),
+        ).add_to(the_map)
+
         north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
         tt="Small circle"
         for s in the_sf_list:
 
             sub_coord = []
-
+            the_object_name = s.get_object_name()
             assert isinstance (s, Sight)
             c = s.get_circle (geodetic=False)
+            c_latlon = c.get_latlon()
+            c_latlon_d = LatLonGeodetic (ll = c_latlon)
+            time_string = str(s.get_time())
+            # Set a marker for a GP
+            Marker(
+                location=[c_latlon_d.get_lat(), c_latlon_d.get_lon()],
+                tooltip=the_object_name,
+                popup=the_object_name + "\n" + time_string,
+                icon=Icon(icon="star"),
+            ).add_to(the_map)
+
             b = to_rectangular (c.get_latlon ())
             east_tangent = normalize_vect(cross_product (north_pole, b))
             north_tangent = normalize_vect (cross_product (b, east_tangent))
@@ -2308,7 +2336,7 @@ class SightCollection:
 
                 y_latlon = to_latlon (y)
                 y_geodetic = LatLonGeodetic (ll = y_latlon)
-                this_lon = adapt_lon(y_geodetic.get_lon(), c.get_latlon().get_lon())
+                this_lon = adapt_lon(y_geodetic.get_lon(), c_latlon.get_lon())
                 # Avoid jagged lines
                 if last_lon is not None and\
                    abs (this_lon - last_lon) > 10 and\
@@ -2318,7 +2346,7 @@ class SightCollection:
                         locations=coordinates,
                         color="#FF0000",
                         weight=5,
-                        tooltip=tt
+                        popup=tt
                     ).add_to(the_map)
                     # Reset variables
                     coordinates = list [list[float]]()
@@ -2333,7 +2361,7 @@ class SightCollection:
                 locations=coordinates,
                 color="#FF0000",
                 weight=5,
-                tooltip=tt
+                popup=tt
             ).add_to(the_map)
         return the_map
 #pylint: enable=R0914
@@ -2363,10 +2391,10 @@ class SightTrip:
 
     def __calculate_time_hours (self):
         if isinstance (self.sight_start, Sight):
-            dt1 = self.sight_start.set_time_dt
+            dt1 = self.sight_start.get_time()
         else:
             dt1 = self.sight_start
-        dt2 = self.sight_end.set_time_dt
+        dt2 = self.sight_end.get_time()
         self.time_hours = calculate_time_hours (dt1, dt2)
 
     def __calculate_distance_to_target (self, angle : int | float,
