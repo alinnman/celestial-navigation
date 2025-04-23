@@ -7,6 +7,7 @@
 '''
 
 from time import time
+import webbrowser
 from starfix import Sight, SightCollection, get_representation,\
                     get_google_map_string, IntersectError, LatLonGeodetic,\
                     Circle
@@ -99,6 +100,11 @@ def main ():
                 str(round(s.get_circle(geodetic=True).get_radius (),1)))
         print (str(counter) + " GP     = " +\
                 get_google_map_string(LatLonGeodetic(ll=s.gp),4))
+
+    the_map = collection.render_folium (intersections)
+    file_name = "./map.html"
+    the_map.save (file_name)
+    webbrowser.open (file_name)
 
     print ("Time taken = " +str(taken_ms)+" ms")
 

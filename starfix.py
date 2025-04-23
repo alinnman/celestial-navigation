@@ -2231,6 +2231,7 @@ class SightCollection:
         '''
         Return URL for https://mapdevelopers.com circle plotting service
         '''
+
         c_l = list [Circle] ()
         for s in self.sf_list:
             a_circle = s.get_circle(geodetic=geodetic, viewpoint=viewpoint)
@@ -2243,6 +2244,16 @@ class SightCollection:
 #pylint: disable=R0914
     def render_folium (self, intersections : LatLon, accuracy : float = 1000) -> object:
         ''' Renders a folium object to be used for map plotting'''
+
+        def adapt_lon (input_lon : float, center_lon : float) -> float:
+            diff = input_lon - center_lon
+            if abs(diff) >= 180:
+                if center_lon > 0:
+                    diff = diff + 360
+                else:
+                    diff = diff - 360
+            return center_lon + diff
+
         if not FOLIUM_INITIALIZED:
             raise ValueError ("Folium not available. Cannot generate maps.")
         the_sf_list = self.sf_list
@@ -2268,56 +2279,61 @@ class SightCollection:
             fill_color="lightgreen",
             fill=False,  # gets overridden by fill_color
             popup = "Radius = " + str(radius) + " meters",
-            tooltip="Weighted intersection point",
+            tooltip="Diameter : " + str(accuracy) + " m."
         ).add_to(the_map)
         north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
+        tt="Small circle"
         for s in the_sf_list:
 
             sub_coord = []
 
             assert isinstance (s, Sight)
             c = s.get_circle (geodetic=False)
+            b = to_rectangular (c.get_latlon ())
+            east_tangent = normalize_vect(cross_product (north_pole, b))
+            north_tangent = normalize_vect (cross_product (b, east_tangent))
             assert isinstance (c, Circle)
             degrees_10 = 0
-            last_lon = 0
-            while degrees_10 < 3601:
-                angle = degrees_10 / 10
+            last_lon = None
+            while degrees_10 <= 3600:
+                # A PolyLine with 0.1 degrees separation is smooth enough
+                angle = degrees_10 / 10.0
                 degrees_10 += 1
-                b = to_rectangular (c.get_latlon ())
-
-                east_tangent = normalize_vect(cross_product (north_pole, b))
-                north_tangent = normalize_vect (cross_product (b, east_tangent))
                 real_tangent =\
                     add_vecs (\
-                                mult_scalar_vect (sin(deg_to_rad(angle)), east_tangent),
-                                mult_scalar_vect (-cos(deg_to_rad(angle)), north_tangent)
-                            )
+                                mult_scalar_vect (-cos(deg_to_rad(angle)), east_tangent),
+                                mult_scalar_vect (sin(deg_to_rad(angle)), north_tangent)
+                             )
                 y = rotate_vector (b, real_tangent, deg_to_rad(c.get_angle()))
 
                 y_latlon = to_latlon (y)
                 y_geodetic = LatLonGeodetic (ll = y_latlon)
-                this_lon = y_geodetic.get_lon ()
-                if this_lon * last_lon >= 0 or \
-                abs (this_lon * last_lon) < 1 :
-                    # Not crossing the dateline or crossing the 0 longitude
-                    sub_coord.append ([y_geodetic.get_lat(), this_lon])
-                else:
-                    # Finalize this segment and create a new one
-                    coordinates.append (sub_coord)
+                this_lon = adapt_lon(y_geodetic.get_lon(), c.get_latlon().get_lon())
+                # Avoid jagged lines
+                if last_lon is not None and\
+                   abs (this_lon - last_lon) > 10 and\
+                   len(coordinates) > 0:
+                    # Flush out current PolyLine
                     PolyLine(
                         locations=coordinates,
                         color="#FF0000",
                         weight=5,
-                        tooltip="Small circle",
+                        tooltip=tt
                     ).add_to(the_map)
+                    # Reset variables
+                    coordinates = list [list[float]]()
                     sub_coord = []
-                last_lon = y_geodetic.get_lon()
+                    last_lon = None
+                else:
+                    sub_coord.append\
+                            ([y_geodetic.get_lat(), this_lon])
+                last_lon = this_lon
             coordinates.append (sub_coord)
             PolyLine(
                 locations=coordinates,
                 color="#FF0000",
                 weight=5,
-                tooltip="Small circle",
+                tooltip=tt
             ).add_to(the_map)
         return the_map
 #pylint: enable=R0914
