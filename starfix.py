@@ -1818,8 +1818,12 @@ class Sight :
         self.set_time_dt = dt2
 
     def __correct_for_error (self, sextant : Sextant):
-        self.measured_alt /= sextant.graduation_error
+        #self.measured_alt /= sextant.graduation_error
+        #self.measured_alt -= sextant.index_error/60
         self.measured_alt -= sextant.index_error/60
+        self.measured_alt /= sextant.graduation_error
+        # Proposed change. See https://github.com/alinnman/celestial-navigation/discussions/3
+        # TODO Review this. 
 
     def __correct_semi_diameter (self, sd : int | float):
         self.measured_alt += sd/60
