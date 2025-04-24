@@ -2250,7 +2250,8 @@ class SightCollection:
         return CircleCollection (c_l).get_map_developers_string (scale_factor=scale_factor)
 
 #pylint: disable=R0914
-    def render_folium (self, intersections : LatLon, accuracy : float = 1000) -> object:
+    def render_folium\
+          (self, intersections : LatLon | NoneType = None, accuracy : float = 1000) -> object:
         ''' Renders a folium object to be used for map plotting'''
 
         def adapt_lon (input_lon : float, center_lon : float) -> float:
@@ -2268,35 +2269,42 @@ class SightCollection:
 
         coordinates = list [list[float]]()
 
-        int_geodetic = LatLonGeodetic (ll=intersections.get_latlon())
+
 #pylint: disable=C0415
         from folium import Map, Circle as Folium_Circle, PolyLine, Marker, Icon
 #pylint: enable=C0415
-        the_map = Map(location=(int_geodetic.get_lat(),\
-                                int_geodetic.get_lon()), zoom_start=12)
 
-        radius = accuracy
-        Folium_Circle(
-            location=[int_geodetic.get_lat(),\
-                      int_geodetic.get_lon()],
-            radius=radius,
-            color="black",
-            weight=1,
-            fill_opacity=0.6,
-            opacity=1,
-            fill_color="lightgreen",
-            fill=False,  # gets overridden by fill_color
-            popup = "Radius = " + str(radius) + " meters",
-            tooltip="Diameter : " + str(accuracy) + " m."
-        ).add_to(the_map)
+        if intersections is not None:
+            int_geodetic = LatLonGeodetic (ll=intersections.get_latlon())
 
-        Marker(
-            location=[int_geodetic.get_lat(), int_geodetic.get_lon()],
-            tooltip="Intersection",
-            popup= str (intersections),
-            #color = "green"
-            icon=Icon(icon="user"),
-        ).add_to(the_map)
+            the_map = Map(location=(int_geodetic.get_lat(),\
+                                    int_geodetic.get_lon()), zoom_start=12)
+
+            radius = accuracy
+            Folium_Circle(
+                location=[int_geodetic.get_lat(),\
+                        int_geodetic.get_lon()],
+                radius=radius,
+                color="black",
+                weight=1,
+                fill_opacity=0.6,
+                opacity=1,
+                fill_color="lightgreen",
+                fill=False,  # gets overridden by fill_color
+                popup = "Radius = " + str(radius) + " meters",
+                tooltip="Diameter : " + str(accuracy) + " m."
+            ).add_to(the_map)
+
+            Marker(
+                location=[int_geodetic.get_lat(), int_geodetic.get_lon()],
+                tooltip="Intersection",
+                popup= str (intersections),
+                #color = "green"
+                icon=Icon(icon="user"),
+            ).add_to(the_map)
+        else:
+            the_map = Map(location=(0,\
+                                    0), zoom_start=6)
 
         north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
         tt="Small circle"
