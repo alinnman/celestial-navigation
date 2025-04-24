@@ -2264,7 +2264,8 @@ class SightCollection:
             return center_lon + diff
 
         if not FOLIUM_INITIALIZED:
-            raise ValueError ("Folium not available. Cannot generate maps.")
+            raise ValueError\
+             ("Folium not available. Cannot generate maps. Install folium with \"pip install folium\"")
         the_sf_list = self.sf_list
 
         coordinates = list [list[float]]()
@@ -2299,7 +2300,6 @@ class SightCollection:
                 location=[int_geodetic.get_lat(), int_geodetic.get_lon()],
                 tooltip="Intersection",
                 popup= str (intersections),
-                #color = "green"
                 icon=Icon(icon="user"),
             ).add_to(the_map)
         else:
@@ -2321,7 +2321,7 @@ class SightCollection:
             Marker(
                 location=[c_latlon_d.get_lat(), c_latlon_d.get_lon()],
                 tooltip=the_object_name,
-                popup=the_object_name + "\n" + time_string,
+                popup=the_object_name + "\n" + time_string + "\n" + str(c_latlon_d),
                 icon=Icon(icon="star"),
             ).add_to(the_map)
 
