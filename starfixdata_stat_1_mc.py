@@ -9,6 +9,7 @@
 '''
 
 from time import time
+import webbrowser
 from starfix import Sight, SightCollection, get_representation,\
                     get_google_map_string, IntersectError, LatLonGeodetic
 
@@ -59,6 +60,8 @@ def main ():
     max_mc_iter = 100
     # The exact position is 41°51'00.1"N 87°39'00.2"W
 
+    intersections = collection = taken_ms = None
+    found_intersections = sigma = 0
     try:
         intersections, sigma, found_intersections =\
               SightCollection.get_intersections_mc (return_geodetic=True,
@@ -71,9 +74,7 @@ def main ():
         print ("Cannot perform a sight reduction. Bad sight data?\n" + str(ve))
         if ve.coll_object is not None:
             if isinstance (ve.coll_object, SightCollection):
-                print ("Check the circles! " +
-                        ve.coll_object.get_map_developers_string(geodetic=True))
-        raise ve
+                collection = ve.coll_object
 
     if found_intersections < max_mc_iter:
         print ("WARNING : Only " + str(found_intersections) + " intersections could be calculated.")
@@ -84,6 +85,12 @@ def main ():
     print (get_representation(intersections,1))
     print ("Sigma = " + str(sigma) + " km.")
     print ("GM = " + get_google_map_string(intersections,4))
+
+    if collection is not None and not isinstance (intersections, tuple):
+        the_map = collection.render_folium (intersections)
+        file_name = "./map.html"
+        the_map.save (file_name)
+        webbrowser.open (file_name)
 
     print ("Time taken = " +str(taken_ms)+" ms")
 

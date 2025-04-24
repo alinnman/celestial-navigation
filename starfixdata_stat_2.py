@@ -9,8 +9,7 @@
 from time import time
 import webbrowser
 from starfix import Sight, SightCollection, get_representation,\
-                    get_google_map_string, IntersectError, LatLonGeodetic,\
-                    Circle
+                    get_google_map_string, IntersectError, LatLonGeodetic
 
 
 def get_starfixes (drp_pos : LatLonGeodetic,
@@ -59,54 +58,52 @@ def main ():
     the_pos = LatLonGeodetic (35, 10) # Rough DRP position
     # The exact position is 36° 45' 11.01", 10° 13' 8.00"
 
+    intersections = collection = taken_ms = None
     try:
         intersections, _, _, collection =\
               SightCollection.get_intersections_conv (return_geodetic=True,
                                                       estimated_position=the_pos,
                                                       get_starfixes=get_starfixes)
+        assert intersections is not None
+        assert collection is not None
+        endtime = time ()
+        taken_ms = round((endtime-starttime)*1000,3)
+        print (get_representation(intersections,1))
+        assert isinstance (intersections, LatLonGeodetic)
+        print ("Google Maps Coordinate = " + get_google_map_string(intersections,4))
+
+        # Check azimuth
+        assert isinstance (intersections, LatLonGeodetic)
+        counter = 0
+        for s in collection.sf_list:
+            counter += 1
+            az = s.get_azimuth (intersections)
+            print ("Azimuth " + str(counter) + " = " + str(round(az,2)))
+
+        # Diagnostics for map rendering etc.
+        print ("Some useful data follows")
+        counter = 0
+        for s in collection.sf_list:
+            counter += 1
+            print (str(counter) + " radius = " +\
+                    str(round(s.get_circle(geodetic=True).get_radius (),1)))
+            print (str(counter) + " GP     = " +\
+                    get_google_map_string(LatLonGeodetic(ll=s.gp),4))
+
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
         if ve.coll_object is not None:
             if isinstance (ve.coll_object, SightCollection):
-                print ("Check the circles! " +
-                        ve.coll_object.get_map_developers_string(geodetic=True))
-        raise ve
+                collection = ve.coll_object
 
-    assert intersections is not None
-    assert collection is not None
-    endtime = time ()
-    taken_ms = round((endtime-starttime)*1000,3)
-    print (get_representation(intersections,1))
-    assert isinstance (intersections, LatLonGeodetic)
-    print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
-    print ("GM = " + get_google_map_string(intersections,4))
-    int_circle = Circle (intersections, 0.01)
-    print ("INT = " + int_circle.get_map_developers_string(include_url_start=True))
+    if collection is not None and not isinstance (intersections, tuple):
+        the_map = collection.render_folium (intersections)
+        file_name = "./map.html"
+        the_map.save (file_name)
+        webbrowser.open (file_name)
 
-    # Check azimuth
-    assert isinstance (intersections, LatLonGeodetic)
-    counter = 0
-    for s in collection.sf_list:
-        counter += 1
-        az = s.get_azimuth (intersections)
-        print ("Azimuth " + str(counter) + " = " + str(round(az,2)))
-
-    # Diagnostics for map rendering etc.
-    print ("Some useful data follows")
-    counter = 0
-    for s in collection.sf_list:
-        counter += 1
-        print (str(counter) + " radius = " +\
-                str(round(s.get_circle(geodetic=True).get_radius (),1)))
-        print (str(counter) + " GP     = " +\
-                get_google_map_string(LatLonGeodetic(ll=s.gp),4))
-
-    the_map = collection.render_folium (intersections)
-    file_name = "./map.html"
-    the_map.save (file_name)
-    webbrowser.open (file_name)
-
-    print ("Time taken = " +str(taken_ms)+" ms")
+    if taken_ms is not None:
+        print ("Time taken = " +str(taken_ms)+" ms")
 
 if __name__ == '__main__':
     main()
