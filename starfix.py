@@ -2292,7 +2292,7 @@ class SightCollection:
                 fill_color="lightgreen",
                 fill=False,  # gets overridden by fill_color
                 popup = "Radius = " + str(radius) + " meters",
-                tooltip="Diameter : " + str(accuracy) + " m."
+                tooltip="Radius : " + str(accuracy) + " m."
             ).add_to(the_map)
 
             Marker(
