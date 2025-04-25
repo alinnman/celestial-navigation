@@ -11,6 +11,15 @@ from urllib.parse import quote_plus
 from types import NoneType
 from collections.abc import Callable
 
+import subprocess
+from multiprocessing import Process
+import webbrowser
+import platform
+
+################################################
+# Metadata and file access
+################################################
+
 PANDAS_INITIALIZED = False
 try:
 #pylint: disable=W0611
@@ -46,6 +55,32 @@ def version_warning (min_major_ver : int, min_minor_ver : int):
             output_warning ()
 
 version_warning (3, 11)
+
+def __run_http_server ():
+    if __is_android():
+        subprocess.run (["python", "-m", "http.server", "8000"],\
+                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,\
+                        check=False)
+
+def __is_android () -> bool:
+    s = platform.platform()
+    s = s.lower ()
+    return "android" in s
+
+def show_or_display_file (filename : str):
+    ''' Used to display a file (typically a map) '''
+    linkname = "http://localhost:8000/" + filename
+    if __is_android ():
+        print ("Press this link ---> " + linkname)
+    else:
+        webbrowser.open (filename)
+
+def __start_http_server ():
+    if __is_android():
+        p = Process(target=__run_http_server)
+        p.start()
+
+__start_http_server ()
 
 
 ################################################
@@ -1823,7 +1858,7 @@ class Sight :
         self.measured_alt -= sextant.index_error/60
         self.measured_alt /= sextant.graduation_error
         # Proposed change. See https://github.com/alinnman/celestial-navigation/discussions/3
-        # TODO Review this. 
+        # TODO Review this.
 
     def __correct_semi_diameter (self, sd : int | float):
         self.measured_alt += sd/60
@@ -2269,7 +2304,8 @@ class SightCollection:
 
         if not FOLIUM_INITIALIZED:
             raise ValueError\
-             ("Folium not available. Cannot generate maps. Install folium with \"pip install folium\"")
+             ("Folium not available. Cannot generate maps. "+\
+              "Install folium with \"pip install folium\"")
         the_sf_list = self.sf_list
 
         coordinates = list [list[float]]()

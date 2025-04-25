@@ -7,9 +7,9 @@
 '''
 
 from time import time
-import webbrowser
 from starfix import Sight, SightCollection, get_representation,\
-                    get_google_map_string, IntersectError, LatLonGeodetic
+                    get_google_map_string, IntersectError, LatLonGeodetic,\
+                    show_or_display_file
 
 
 
@@ -111,7 +111,7 @@ def main ():
         the_map = collection.render_folium (intersections)
         file_name = "./map.html"
         the_map.save (file_name)
-        webbrowser.open (file_name)
+        show_or_display_file (file_name)
 
     if taken_ms is not None:
         print ("Time taken = " +str(taken_ms)+" ms")
