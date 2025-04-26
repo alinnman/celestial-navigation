@@ -38,6 +38,14 @@ try:
 except ModuleNotFoundError:
     pass
 
+if FOLIUM_INITIALIZED:
+    try:
+#pylint: disable=W0611        
+        from offline_folium import offline
+#pylint: enable=W0611        
+    except ModuleNotFoundError:
+        pass
+
 
 def version_warning (min_major_ver : int, min_minor_ver : int):
     ''' Check compatible Python version '''
@@ -2411,6 +2419,16 @@ class SightCollection:
                 weight=5,
                 popup=tt
             ).add_to(the_map)
+
+        lat_interval = 1
+        lon_interval = 1
+
+        for lat in range(-90, 91, lat_interval):
+            PolyLine([[lat, -180],[lat, 180]], weight=0.5, tooltip=str(lat)).add_to(the_map)
+
+        for lon in range(-180, 181, lon_interval):
+            PolyLine([[-90, lon],[90, lon]], weight=0.5, tooltip=str(lon)).add_to(the_map)
+
         return the_map
 #pylint: enable=R0914
 
