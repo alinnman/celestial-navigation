@@ -37,13 +37,17 @@ try:
     FOLIUM_INITIALIZED = True
 except ModuleNotFoundError:
     pass
+except ImportError:
+    pass
 
 if FOLIUM_INITIALIZED:
     try:
-#pylint: disable=W0611        
+#pylint: disable=W0611
         from offline_folium import offline
-#pylint: enable=W0611        
+#pylint: enable=W0611
     except ModuleNotFoundError:
+        pass
+    except ImportError:
         pass
 
 
