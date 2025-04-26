@@ -29,6 +29,15 @@ try:
 except ModuleNotFoundError:
     pass
 
+try:
+#pylint: disable=W0611
+    from offline_folium import offline
+#pylint: enable=W0611
+except ModuleNotFoundError:
+    pass
+except ImportError:
+    pass
+
 FOLIUM_INITIALIZED = False
 try:
 #pylint: disable=W0611
@@ -39,17 +48,6 @@ except ModuleNotFoundError:
     pass
 except ImportError:
     pass
-
-if FOLIUM_INITIALIZED:
-    try:
-#pylint: disable=W0611
-        from offline_folium import offline
-#pylint: enable=W0611
-    except ModuleNotFoundError:
-        pass
-    except ImportError:
-        pass
-
 
 def version_warning (min_major_ver : int, min_minor_ver : int):
     ''' Check compatible Python version '''
