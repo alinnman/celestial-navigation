@@ -3,6 +3,7 @@
     MIT License (see LICENSE file)
 '''
 
+import sys
 from sys import version_info
 from math import  pi, sin, cos, acos, sqrt, tan, atan2
 from random import gauss
@@ -14,7 +15,6 @@ from collections.abc import Callable
 import subprocess
 from multiprocessing import Process
 import webbrowser
-import platform
 
 ################################################
 # Metadata and file access
@@ -63,9 +63,9 @@ def __run_http_server ():
                         check=False)
 
 def __is_android () -> bool:
-    s = platform.platform()
-    s = s.lower ()
-    return "android" in s
+    if hasattr(sys, 'getandroidapilevel'):
+        return True
+    return False
 
 def show_or_display_file (filename : str):
     ''' Used to display a file (typically a map) '''
