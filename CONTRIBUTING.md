@@ -25,9 +25,8 @@ These are some things I may consider doing (or have already started)
 *Working on this right now. Sight reductions seems to work well but accurate*
 *mapping does not work yet.*
 1. Better mapping functions.<br/>
-*Currently using the*
-*[MapDevelopers circle functions](https://www.mapdevelopers.com/draw-circle-tool.php) (web-based). Considering*
-*building functionality on GeoPandas or similar framework.*
+*Currently implementing mapping based on the*
+*[Folium](https://github.com/python-visualization/folium) framework.*
 1. Create machine-readable Nautical Almanac<br/>
 *This will greatly improve workflow speed. A first implementation is ready now.*
 1. Create a lightweight web application and/or mobile app without requiring
