@@ -1939,20 +1939,98 @@ class Sight :
             Returns the azimuth in degrees (0-360)'''
         return get_azimuth (self.gp, from_pos)
 
-    def set_mapping_distance (self, distance : float | NoneType) :
-        ''' Attach a mapping distance estimation '''
-        self.mapping_distance = distance
+    #def set_mapping_distance (self, distance : float | NoneType) :
+    #    ''' Attach a mapping distance estimation '''
+    #    self.mapping_distance = distance
 
-    def get_map_developers_string (self, include_url_start : bool,
-                                   geodetic : bool,
-                                   viewpoint : LatLonGeodetic | NoneType = None,
-                                   scale_factor = MAP_SCALE_FACTOR) -> str:
-        '''
-        Return URL segment for https://mapdevelopers.com circle plotting service
-        '''
-        result = self.get_circle(geodetic=geodetic, viewpoint=viewpoint).get_map_developers_string\
-            (include_url_start = include_url_start, scale_factor=scale_factor)
-        return result
+    def render_folium (self, the_map : object):
+        ''' Render this Sight object on a Folium Map object'''
+
+        def adapt_lon (input_lon : float, center_lon : float) -> float:
+            diff = input_lon - center_lon
+            if abs(diff) >= 180:
+                if center_lon > 0:
+                    diff = diff + 360
+                else:
+                    diff = diff - 360
+            return center_lon + diff
+
+        if not FOLIUM_INITIALIZED:
+            raise ValueError\
+             ("Folium not available. Cannot generate maps. "+\
+              "Install folium with \"pip install folium\"")        
+
+        coordinates = list [list[float]]()
+
+        sub_coord = []
+        the_object_name = self.get_object_name()
+        #assert isinstance (s, Sight)
+        c = self.get_circle (geodetic=False)
+        c_latlon = c.get_latlon()
+        c_latlon_d = LatLonGeodetic (ll = c_latlon)
+        time_string = str(self.get_time())
+
+#pylint: disable=C0415
+        from folium import Map, PolyLine, Marker, Icon
+#pylint: enable=C0415
+        assert isinstance (the_map, Map)
+        # Set a marker for a GP
+        Marker(
+            location=[c_latlon_d.get_lat(), c_latlon_d.get_lon()],
+            tooltip=the_object_name,
+            popup=the_object_name + "\n" + time_string + "\n" + str(c_latlon_d),
+            icon=Icon(icon="star"),
+        ).add_to(the_map)
+
+        b = to_rectangular (c.get_latlon ())
+        north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
+        east_tangent = normalize_vect(cross_product (north_pole, b))
+        north_tangent = normalize_vect (cross_product (b, east_tangent))
+        assert isinstance (c, Circle)
+        degrees_10 = 0
+        last_lon = None
+        while degrees_10 <= 3600:
+            # A PolyLine with 0.1 degrees separation is smooth enough
+            angle = degrees_10 / 10.0
+            degrees_10 += 1
+            real_tangent =\
+                add_vecs (\
+                            mult_scalar_vect (-cos(deg_to_rad(angle)), east_tangent),
+                            mult_scalar_vect (sin(deg_to_rad(angle)), north_tangent)
+                            )
+            y = rotate_vector (b, real_tangent, deg_to_rad(c.get_angle()))
+
+            y_latlon = to_latlon (y)
+            y_geodetic = LatLonGeodetic (ll = y_latlon)
+            this_lon = adapt_lon(y_geodetic.get_lon(), c_latlon.get_lon())
+            # Avoid jagged lines
+            if last_lon is not None and\
+                abs (this_lon - last_lon) > 10 and\
+                len(sub_coord) > 0:
+                coordinates.append (sub_coord)
+                # Flush out current PolyLine
+                PolyLine(
+                    locations=coordinates,
+                    color="#FF0000",
+                    weight=5,
+                    popup="Small circle"
+                ).add_to(the_map)
+                # Reset variables
+                coordinates = list [list[float]]()
+                sub_coord = []
+                last_lon = None
+            else:
+                sub_coord.append\
+                        ([y_geodetic.get_lat(), this_lon])
+            last_lon = this_lon
+        coordinates.append (sub_coord)
+        PolyLine(
+            locations=coordinates,
+            color="#FF0000",
+            weight=5,
+            popup="Small circle"
+        ).add_to(the_map)
+
 #pylint: enable=R0902
 
 #pylint: disable=R0903
@@ -1978,10 +2056,10 @@ class SightPair:
                                 estimated_position=estimated_position,\
                                 diagnostics = diagnostics,
                                 intersection_number = intersection_number)
-        dist1 = circle1.get_mapping_distance ()
-        self.sf1.set_mapping_distance (dist1)
-        dist2 = circle2.get_mapping_distance ()
-        self.sf2.set_mapping_distance (dist2)
+        #dist1 = circle1.get_mapping_distance ()
+        #self.sf1.set_mapping_distance (dist1)
+        #dist2 = circle2.get_mapping_distance ()
+        #self.sf2.set_mapping_distance (dist2)
         return retval
 
 #pylint: enable=R0903
@@ -2281,36 +2359,11 @@ class SightCollection:
 #pylint: enable=R0917
 #pylint: enable=R0914
 
-    def get_map_developers_string \
-        (self, geodetic : bool, markers : list[LatLon] | NoneType = None,
-         viewpoint : LatLon | NoneType = None,
-         scale_factor : float = MAP_SCALE_FACTOR) -> str:
-        '''
-        Return URL for https://mapdevelopers.com circle plotting service
-        '''
-
-        c_l = list [Circle] ()
-        for s in self.sf_list:
-            a_circle = s.get_circle(geodetic=geodetic, viewpoint=viewpoint)
-            c_l.append (a_circle)
-        if isinstance (markers, list):
-            for m in markers:
-                c_l.append (Circle (m, 1/60, EARTH_CIRCUMFERENCE))
-        return CircleCollection (c_l).get_map_developers_string (scale_factor=scale_factor)
-
 #pylint: disable=R0914
     def render_folium\
-          (self, intersections : LatLon | NoneType = None, accuracy : float = 1000) -> object:
-        ''' Renders a folium object to be used for map plotting'''
-
-        def adapt_lon (input_lon : float, center_lon : float) -> float:
-            diff = input_lon - center_lon
-            if abs(diff) >= 180:
-                if center_lon > 0:
-                    diff = diff + 360
-                else:
-                    diff = diff - 360
-            return center_lon + diff
+          (self, intersections : tuple [LatLon, LatLon] | LatLon | NoneType = None,\
+           accuracy : float = 1000, label_text = "Intersection") -> object:
+        ''' Renders a folium object (Map) to be used for map plotting'''
 
         if not FOLIUM_INITIALIZED:
             raise ValueError\
@@ -2318,14 +2371,14 @@ class SightCollection:
               "Install folium with \"pip install folium\"")
         the_sf_list = self.sf_list
 
-        coordinates = list [list[float]]()
+        #coordinates = list [list[float]]()
 
 
 #pylint: disable=C0415
         from folium import Map, Circle as Folium_Circle, PolyLine, Marker, Icon
 #pylint: enable=C0415
 
-        if intersections is not None:
+        if isinstance (intersections, LatLon):
             int_geodetic = LatLonGeodetic (ll=intersections.get_latlon())
 
             the_map = Map(location=(int_geodetic.get_lat(),\
@@ -2348,79 +2401,18 @@ class SightCollection:
 
             Marker(
                 location=[int_geodetic.get_lat(), int_geodetic.get_lon()],
-                tooltip="Intersection",
-                popup= str (intersections),
+                tooltip=label_text,
+                popup= label_text + " " + str (intersections),
                 icon=Icon(icon="user"),
             ).add_to(the_map)
         else:
             the_map = Map(location=(0,\
                                     0), zoom_start=6)
 
-        north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
-        tt="Small circle"
+        # north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
+        # tt="Small circle"
         for s in the_sf_list:
-
-            sub_coord = []
-            the_object_name = s.get_object_name()
-            assert isinstance (s, Sight)
-            c = s.get_circle (geodetic=False)
-            c_latlon = c.get_latlon()
-            c_latlon_d = LatLonGeodetic (ll = c_latlon)
-            time_string = str(s.get_time())
-            # Set a marker for a GP
-            Marker(
-                location=[c_latlon_d.get_lat(), c_latlon_d.get_lon()],
-                tooltip=the_object_name,
-                popup=the_object_name + "\n" + time_string + "\n" + str(c_latlon_d),
-                icon=Icon(icon="star"),
-            ).add_to(the_map)
-
-            b = to_rectangular (c.get_latlon ())
-            east_tangent = normalize_vect(cross_product (north_pole, b))
-            north_tangent = normalize_vect (cross_product (b, east_tangent))
-            assert isinstance (c, Circle)
-            degrees_10 = 0
-            last_lon = None
-            while degrees_10 <= 3600:
-                # A PolyLine with 0.1 degrees separation is smooth enough
-                angle = degrees_10 / 10.0
-                degrees_10 += 1
-                real_tangent =\
-                    add_vecs (\
-                                mult_scalar_vect (-cos(deg_to_rad(angle)), east_tangent),
-                                mult_scalar_vect (sin(deg_to_rad(angle)), north_tangent)
-                             )
-                y = rotate_vector (b, real_tangent, deg_to_rad(c.get_angle()))
-
-                y_latlon = to_latlon (y)
-                y_geodetic = LatLonGeodetic (ll = y_latlon)
-                this_lon = adapt_lon(y_geodetic.get_lon(), c_latlon.get_lon())
-                # Avoid jagged lines
-                if last_lon is not None and\
-                   abs (this_lon - last_lon) > 10 and\
-                   len(coordinates) > 0:
-                    # Flush out current PolyLine
-                    PolyLine(
-                        locations=coordinates,
-                        color="#FF0000",
-                        weight=5,
-                        popup=tt
-                    ).add_to(the_map)
-                    # Reset variables
-                    coordinates = list [list[float]]()
-                    sub_coord = []
-                    last_lon = None
-                else:
-                    sub_coord.append\
-                            ([y_geodetic.get_lat(), this_lon])
-                last_lon = this_lon
-            coordinates.append (sub_coord)
-            PolyLine(
-                locations=coordinates,
-                color="#FF0000",
-                weight=5,
-                popup=tt
-            ).add_to(the_map)
+            s.render_folium (the_map)
 
         lat_interval = 1
         lon_interval = 1
@@ -2463,7 +2455,7 @@ class SightTrip:
         self.movement_vec             = None
         self.start_pos                = None
         self.end_pos                  = None
-        self.mapping_distance         = None
+        # self.mapping_distance         = None
 #pylint: enable=R0913
 
     def __calculate_time_hours (self):
@@ -2488,13 +2480,13 @@ class SightTrip:
                   - self.sight_end.get_circle(geodetic=False).get_radius()
         return dbp, taken_out, rotated_latlon
 
-    def set_mapping_distance (self, distance : float | NoneType):
-        ''' Attach a mapping distance estimation '''
-        self.mapping_distance = distance
+    #def set_mapping_distance (self, distance : float | NoneType):
+    #    ''' Attach a mapping distance estimation '''
+    #    self.mapping_distance = distance
 
-    def get_mapping_distance (self) -> float | NoneType:
-        ''' Get the current mapping distance estimation '''
-        return self.mapping_distance
+    #def get_mapping_distance (self) -> float | NoneType:
+    #    ''' Get the current mapping distance estimation '''
+    #    return self.mapping_distance
 
 #pylint: disable=R0914
     def get_intersections (self, return_geodetic : bool, diagnostics : bool = False) ->\
@@ -2563,8 +2555,8 @@ class SightTrip:
                             estimated_position=taken_out)
 
         assert isinstance (gi, LatLonGeocentric)
-        self.set_mapping_distance (circle2.get_mapping_distance ())
-        self.sight_end.set_mapping_distance (circle1.get_mapping_distance())
+        #self.set_mapping_distance (circle2.get_mapping_distance ())
+        # self.sight_end.set_mapping_distance (circle1.get_mapping_distance())
         self.start_pos = self.estimated_starting_point
         self.end_pos = gi
         if return_geodetic:
@@ -2572,44 +2564,69 @@ class SightTrip:
         return gi, fitness, diag
 #pylint: enable=R0914
 
-    def get_map_developers_string (self, scale_factor : float = MAP_SCALE_FACTOR) -> str:
-        '''
-        Return URL for https://mapdevelopers.com circle plotting service
-        '''
+    def render_folium (self, intersections : tuple [LatLon, LatLon] | LatLon,\
+                       accuracy : float = 1000):
+        ''' Renders this object as a Folium Map object '''
+
+        if not FOLIUM_INITIALIZED:
+            raise ValueError\
+             ("Folium not available. Cannot generate maps. "+\
+              "Install folium with \"pip install folium\"")        
+
+#pylint: disable=C0415
+        from folium import Map, Marker, PolyLine, Icon, Circle as Folium_Circle
+#pylint: enable=C0415
+
+        def draw_arrow (m : Map, from_point : LatLon, to_point : LatLon):
+            PolyLine (
+                locations=[[from_point.get_lat(), from_point.get_lon()],
+                           [to_point.get_lat(),   to_point.get_lon()]]
+            ).add_to(m)
+
         if isinstance (self.sight_start, Sight):
+            assert isinstance (intersections, tuple)
             s_c = SightCollection ([self.sight_start, self.sight_end])
-            if isinstance (self.start_pos, LatLonGeocentric) and \
-               isinstance (self.end_pos, LatLonGeocentric):
-                return s_c.get_map_developers_string\
-                        (geodetic = True,\
-                         markers = \
-                        [LatLonGeodetic(ll = self.start_pos), \
-                         LatLonGeodetic(ll = self.end_pos)],
-                         scale_factor=scale_factor)
-            else:
-                return s_c.get_map_developers_string (geodetic=True)
+            retval = s_c.render_folium (intersections=intersections[0],\
+                                        accuracy=accuracy,\
+                                        label_text="Target")
+            assert isinstance (retval, Map)
+            Marker (icon=Icon(color='lightgray', icon='home', prefix='fa'),
+                    tooltip = "Starting point",
+                    popup = "Starting point " + str(intersections[1]),
+                    location=[intersections[1].get_lat(),\
+                              intersections[1].get_lon()]).add_to(retval)
+            draw_arrow (retval, intersections [1], intersections [0])
+            return retval
 
-        # isinstance (self.sight_start, LatLon) == True
         assert isinstance (self.movement_vec, LatLonGeocentric)
+        assert isinstance (self.start_pos, LatLon)
+        assert isinstance (self.end_pos, LatLon)
+        end_pos_d   = LatLonGeodetic (ll = self.end_pos)
+        draw_map = Map (location = [end_pos_d.get_lat(),\
+                                    end_pos_d.get_lon()])
+        self.sight_end.render_folium (draw_map)
 
-        # Plot the end sight
-        str1 = self.sight_end.get_map_developers_string (include_url_start=False, geodetic = True)
-
-        # Plot the great circle
-        d = self.get_mapping_distance()
-        assert isinstance (d, float) or d is None
-        url_start = MAP_DEV_URL
-        result = "["
-        result += str1
 
         # Handle/plot markers
         if isinstance (self.start_pos, LatLonGeocentric) and \
            isinstance (self.end_pos, LatLonGeocentric):
-            result += ","
-            result += get_map_developers_string (1, LatLonGeodetic(ll=self.start_pos))
-            result += ","
-            result += get_map_developers_string (1, LatLonGeodetic(ll=self.end_pos))
-        result += "]"
-        result = quote_plus (result)
-        return url_start + result
+            start_pos_d = LatLonGeodetic (ll = self.start_pos)
+
+            Marker (icon=Icon(color='lightgray', icon='home', prefix='fa'),
+                    tooltip = "Starting point",
+                    popup = "Starting point " + str(start_pos_d),
+                    location=[start_pos_d.get_lat(),\
+                              start_pos_d.get_lon()]).add_to(draw_map)
+            end_pos_d = LatLonGeodetic (ll = self.end_pos)
+            Folium_Circle (location = [end_pos_d.get_lat(), end_pos_d.get_lon()],
+                           radius=accuracy).add_to (draw_map)
+            Marker (icon=Icon(color='blue', icon='user', prefix='fa'),
+                    tooltip = "Target",
+                    popup = "Target " + str(end_pos_d),
+                    location=[end_pos_d.get_lat(),\
+                              end_pos_d.get_lon()]).add_to(draw_map)
+            draw_arrow (draw_map, start_pos_d, end_pos_d)
+
+        return draw_map
+
 #pylint: enable=R0902

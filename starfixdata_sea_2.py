@@ -7,7 +7,7 @@ from datetime import datetime
 from time import time
 from starfix import Sight, SightTrip, get_representation,\
      LatLon, LatLonGeodetic, IntersectError, get_google_map_string,\
-     km_to_nm, spherical_distance
+     km_to_nm, spherical_distance, show_or_display_file
 
 def main ():
     ''' Main body of script '''
@@ -63,12 +63,16 @@ def main ():
     print ("Distance travelled = " +\
             str(round(km_to_nm(spherical_distance(s1_latlon, intersections)),2)) + " nm")
 
-    print ("--------- Mapping          --------- ")
-    print ("MD = " + st.get_map_developers_string ())
-
     print ("--------- Some diagnostics --------- ")
     print ("S2 radius = " + str(round(s2.get_circle(geodetic=False).get_radius (),1)))
     print ("S2 GP     = " + get_google_map_string(LatLonGeodetic(ll=s2.gp),4))
+
+    print ("--------- Mapping (Folium) --------- ")
+    m = st.render_folium(intersections)
+    file_name = "./map.html"
+    m.save (file_name)
+    show_or_display_file (file_name)
+
     print ("Time taken = " +str(taken_ms)+" ms")
 
 if __name__ == '__main__':
