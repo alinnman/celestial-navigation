@@ -2425,11 +2425,20 @@ class SightCollection:
         lat_interval = 1
         lon_interval = 1
 
-        for lat in range(-90, 91, lat_interval):
-            PolyLine([[lat, -180],[lat, 180]], weight=0.5, tooltip=str(lat)).add_to(the_map)
+        if isinstance (intersections, LatLon):
+            left_lon = int(intersections.get_lon() - 180)
+            right_lon = int(intersections.get_lon() + 181)
+        else:
+            left_lon = -180
+            right_lon = 181
 
-        for lon in range(-180, 181, lon_interval):
-            PolyLine([[-90, lon],[90, lon]], weight=0.5, tooltip=str(lon)).add_to(the_map)
+        for lat in range(-90, 91, lat_interval):
+            PolyLine([[lat, left_lon],[lat, right_lon]], weight=0.5, tooltip=str(lat)).\
+                add_to(the_map)
+
+        for lon in range(left_lon, right_lon, lon_interval):
+            PolyLine([[-90, lon],[90, lon]], weight=0.5, tooltip=str(lon)).\
+                add_to(the_map)
 
         return the_map
 #pylint: enable=R0914
