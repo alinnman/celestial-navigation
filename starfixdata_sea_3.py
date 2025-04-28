@@ -21,9 +21,8 @@ def main ():
     s1 = LatLonGeodetic (57.662, 18.263)
     s1_gc = s1.get_latlon ()
     #s1_c = s1.get_latlon_geocentric ()
-    # We start out at a course of 350 degrees
+    # We start out at this course
     c_course = 340
-    #c_course = 270
     course_gc = get_great_circle_route (s1_gc,
                                         # NOTE: The s1 coordinate must be converted to geocentrical
                                         c_course)
@@ -54,7 +53,7 @@ def main ():
     Marker (location=[s1.get_lat(), s1.get_lon()],\
             icon=Icon(icon="home", prefix="fa"),\
             popup="Starting point " + str(s1),
-            tooltip="Starting point").add_to(the_map)    
+            tooltip="Starting point").add_to(the_map)
     intersections = get_intersections (course_gc, light_house_circle_gc)
 
     assert isinstance (intersections[0], tuple)
@@ -78,7 +77,6 @@ def main ():
             tooltip="Lighthouse").add_to(the_map)
 
     file_name = "./map.html"
-
     the_map.save (file_name)
     show_or_display_file (file_name)
 

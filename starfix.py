@@ -499,7 +499,7 @@ class Circle:
             result = quote_plus (result)
         return url_start + result
 
-    def render_folium (self, the_map : object):
+    def render_folium (self, the_map : object, color : str = "#FF0000"):
         ''' Renders a circle on a folium map '''
 
         def adapt_lon (input_lon : float, center_lon : float) -> float:
@@ -551,7 +551,7 @@ class Circle:
                 # Flush out current PolyLine
                 PolyLine(
                     locations=coordinates,
-                    color="#FF0000",
+                    color=color,
                     weight=5,
                     popup="Small circle"
                 ).add_to(the_map)
@@ -566,7 +566,7 @@ class Circle:
         coordinates.append (sub_coord)
         PolyLine(
             locations=coordinates,
-            color="#FF0000",
+            color=color,
             weight=5,
             popup="Small circle"
         ).add_to(the_map)
@@ -601,15 +601,20 @@ class CircleCollection:
         result = quote_plus (result)
         return url_start + result
 
-    def render_folium (self, center_pos : LatLon) -> object :
+    def render_folium (self, center_pos : LatLon,\
+                       colors : list[str] | NoneType = None) -> object :
         ''' Render this circle collection in Folium '''
         check_folium ()
 #pylint: disable=C0415
         from folium import Map
 #pylint: enable=C0415
         the_map = Map (location=[center_pos.get_lat(), center_pos.get_lon()])
-        for c in self.c_list:
-            c.render_folium (the_map)
+        l = len (self.c_list)
+        for i in range (l):
+            color = "#FF0000"
+            if colors is not None:
+                color = colors [i]
+            self.c_list[i].render_folium (the_map, color)
         return the_map
 
 #pylint: enable=R0903
@@ -668,7 +673,7 @@ def get_great_circle_route\
         cp = cross_product (start_xyz, goto_xyz)
         cp_pos = to_latlon (cp)
         #cp_pos = LatLonGeodetic (ll=cp_pos)
-        return Circle (latlon = cp_pos, angle=90, circumference=EARTH_CIRCUMFERENCE)  
+        return Circle (latlon = cp_pos, angle=90, circumference=EARTH_CIRCUMFERENCE)
 
     north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
     b = to_rectangular (start)
@@ -2602,7 +2607,7 @@ class SightTrip:
                        accuracy : float = 1000):
         ''' Renders this object as a Folium Map object '''
 
-        check_folium ()       
+        check_folium ()
 
 #pylint: disable=C0415
         from folium import Map, Marker, PolyLine, Icon, Circle as Folium_Circle
