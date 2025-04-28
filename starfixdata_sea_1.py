@@ -50,42 +50,41 @@ def main ():
                     estimated_starting_point = s1_latlon,\
                     course_degrees           = c_course,\
                     speed_knots              = speed)
-
+    intersections = None
     try:
         intersections, _, _ = st.get_intersections (return_geodetic=True)
+
+        endtime = time ()
+        taken_ms = round((endtime-starttime)*1000,2)
+
+        print ("--------- Sight Reduction  --------- ")
+        assert isinstance (intersections, tuple)
+        print ("Starting point = " + str(get_representation(intersections[1],1)))
+        print ("End point = " + str(get_representation(intersections[0],1)))
+        print ("Distance travelled = " +\
+            str(round(km_to_nm(spherical_distance (intersections[0], intersections[1])),2)) +\
+                " nm")
+        print ("--------- Some diagnostics --------- ")
+
+        print ("S1 radius = " + str(round(s1.get_circle(geodetic=False).get_radius (),1)))
+        print ("S1 GP     = " + get_google_map_string(LatLonGeodetic(ll=s1.gp),4))
+
+        print ("S2 radius = " + str(round(s2.get_circle(geodetic=False).get_radius (),1)))
+        print ("S2 GP     = " + get_google_map_string(LatLonGeodetic(ll=s2.gp),4))
+
+        print ("Starting point GM = " + get_google_map_string (intersections[1],4))
+        print ("Ending   point GM = " + get_google_map_string (intersections[0],4))
+
+        print ("Time taken = " +str(taken_ms)+" ms")
+        m = st.render_folium(intersections)
+        print ("--------- Mapping (Folium) --------- ")
+        m = st.render_folium(intersections)                
+        file_name = "./map.html"
+        m.save (file_name)
+        show_or_display_file (file_name)        
+
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
-        # print ("Check the circles! " + st.get_map_developers_string())
-        raise ve
-
-    endtime = time ()
-    taken_ms = round((endtime-starttime)*1000,2)
-
-    print ("--------- Sight Reduction  --------- ")
-    assert isinstance (intersections, tuple)
-    print ("Starting point = " + str(get_representation(intersections[1],1)))
-    print ("End point = " + str(get_representation(intersections[0],1)))
-    print ("Distance travelled = " +\
-           str(round(km_to_nm(spherical_distance (intersections[0], intersections[1])),2)) +\
-              " nm")
-    print ("--------- Some diagnostics --------- ")
-
-    print ("S1 radius = " + str(round(s1.get_circle(geodetic=False).get_radius (),1)))
-    print ("S1 GP     = " + get_google_map_string(LatLonGeodetic(ll=s1.gp),4))
-
-    print ("S2 radius = " + str(round(s2.get_circle(geodetic=False).get_radius (),1)))
-    print ("S2 GP     = " + get_google_map_string(LatLonGeodetic(ll=s2.gp),4))
-
-    print ("Starting point GM = " + get_google_map_string (intersections[1],4))
-    print ("Ending   point GM = " + get_google_map_string (intersections[0],4))
-
-    print ("Time taken = " +str(taken_ms)+" ms")
-
-    print ("--------- Mapping (Folium) --------- ")
-    m = st.render_folium(intersections)
-    file_name = "./map.html"
-    m.save (file_name)
-    show_or_display_file (file_name)
 
 if __name__ == '__main__':
     main()
