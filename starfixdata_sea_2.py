@@ -16,7 +16,7 @@ def main ():
 
     # We are sailing from point s1 to point s2, in the Baltic Sea.
     # We have a good estimate of an initial position. (A previous fix)
-    s1_latlon = LatLonGeodetic (58.2244,17.9136)
+    s1_latlon = LatLonGeodetic (58.7656,18.0025)
 
     #This is the starting time
 
@@ -27,7 +27,7 @@ def main ():
     # We take a sight here and get this.
 
     s2 = Sight (  object_name          = "Sun",
-                set_time             = "2024-06-20 07:13:38+00:00",
+                set_time             = "2024-06-20 07:14:38+00:00",
                 gha_time_0           = "284:35.1",
                 gha_time_1           = "299:35.0",
                 decl_time_0          = "23:26.2",
@@ -48,7 +48,7 @@ def main ():
         intersections, _, _ = st.get_intersections (return_geodetic=True)
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
-        print ("Check the circles! " + st.get_map_developers_string())
+        # print ("Check the circles! " + st.get_map_developers_string())
         raise ve
 
     endtime = time ()
