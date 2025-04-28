@@ -848,7 +848,6 @@ The picture below illustrates the result
 
 ![Sailing in the Baltic Sea (closeup)](pics/baltic-intersection-4.png "Sailing in the Baltic Sea (closeup)")
 
-
 ### 4.v. Pure dead reckoning<a name="pure_dr"></a>
 
 You can also use a simple script for pure dead reckoning, where you only
