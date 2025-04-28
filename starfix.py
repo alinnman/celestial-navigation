@@ -8,7 +8,6 @@ from sys import version_info
 from math import  pi, sin, cos, acos, sqrt, tan, atan2
 from random import gauss
 from datetime import datetime, date, timedelta, timezone
-from urllib.parse import quote_plus
 from types import NoneType
 from collections.abc import Callable
 
@@ -116,8 +115,8 @@ EARTH_FLATTENING =\
     (EARTH_RADIUS_GEODETIC_EQUATORIAL - EARTH_RADIUS_GEODETIC_POLAR) / \
      EARTH_RADIUS_GEODETIC_EQUATORIAL
 
-MAP_DEV_URL = "https://www.mapdevelopers.com/draw-circle-tool.php?circles="
-MAP_SCALE_FACTOR = 1.000655
+#MAP_DEV_URL = "https://www.mapdevelopers.com/draw-circle-tool.php?circles="
+#MAP_SCALE_FACTOR = 1.000655
 
 ################################################
 # Data types
@@ -441,8 +440,6 @@ class Circle:
         self.__latlon                 = latlon
         self.__angle                = angle
         self.__circumference        = circumference
-        self.accum_mapping_distance = None
-        self.mapping_distance_count = 0
 
     def get_angle (self) :
         ''' Return the angle (in degrees) of this circle '''
@@ -463,41 +460,6 @@ class Circle:
     def __str__(self) -> str:
         return "CIRCLE: LATLON = [" + \
         str(self.__latlon) + "]; ANGLE = " + str(round(self.__angle,4))
-
-    def accumulate_mapping_distance (self, distance : float | NoneType) :
-        ''' Accumulates mapping distances, in order to build a mean value '''
-        if distance is None:
-            return
-        if self.accum_mapping_distance is None:
-            self.accum_mapping_distance = distance
-            self.mapping_distance_count = 1
-        else:
-            self.accum_mapping_distance += distance
-            self.mapping_distance_count += 1
-
-    def get_mapping_distance (self) -> float | NoneType:
-        ''' Retrieve the mean value of mapping distances '''
-        if self.accum_mapping_distance is None:
-            return None
-        return self.accum_mapping_distance / self.mapping_distance_count
-
-    def get_map_developers_string\
-        (self, include_url_start : bool, color : str = "000000",
-         scale_factor : float = MAP_SCALE_FACTOR) -> str:
-        ''' Get MD string for this circle '''
-        if include_url_start:
-            url_start = MAP_DEV_URL
-            result = "["
-        else:
-            url_start = ""
-            result = ""
-        result += get_map_developers_string\
-              (self.get_radius(), self.__latlon, self.get_mapping_distance(), color=color,\
-               scale_factor=scale_factor)
-        if include_url_start:
-            result += "]"
-            result = quote_plus (result)
-        return url_start + result
 
     def render_folium (self, the_map : object, color : str = "#FF0000",
                        adjust_geodetic : bool = True):
@@ -591,21 +553,6 @@ class CircleCollection:
             c.make_geodetic ()
         return self
 
-    def get_map_developers_string (self, color : str = "000000",\
-                                   scale_factor : float = MAP_SCALE_FACTOR) -> str:
-        ''' Return the MD string '''
-        url_start = MAP_DEV_URL
-        result = "["
-        clen = len(self.c_list)
-        for i in range (clen):
-            result += self.c_list[i].get_map_developers_string\
-                  (include_url_start=False, color = color, scale_factor=scale_factor)
-            if i < clen - 1:
-                result += ","
-        result += "]"
-        result = quote_plus (result)
-        return url_start + result
-
     def render_folium (self, center_pos : LatLon,\
                        colors : list[str] | NoneType = None,
                        adjust_geodetic : bool = True) -> object :
@@ -654,14 +601,9 @@ def get_great_circle_route\
         t2 = to_rectangular (direction)
         t3 = normalize_vect(cross_product (t1,t2))
         t4 = to_latlon (t3)
-        distance = EARTH_CIRCUMFERENCE / 4
         if converted:
             t4 = LatLonGeodetic (ll=t4)
-        distance_1 = spherical_distance (t4, LatLonGeodetic(ll=start))
-        distance_2 = spherical_distance (t4, LatLonGeodetic(ll=direction))
-        distance = (distance_1 + distance_2) / 2
         c = Circle (t4, 90, EARTH_CIRCUMFERENCE)
-        c.accumulate_mapping_distance (distance)
         return c
     # isinstance (direction, float) or isinstance (direction, int) == True
 
@@ -687,13 +629,9 @@ def get_great_circle_route\
     rotated = rotate_vector (east_tangent, b, deg_to_rad(90 - direction))
     cp = normalize_vect(cross_product (b, rotated))
     cp_latlon = to_latlon (cp)
-    distance = EARTH_CIRCUMFERENCE / 4
     if converted:
         cp_latlon = LatLonGeodetic (ll = cp_latlon)
-    #distance = spherical_distance (cp_latlon, LatLonGeodetic(ll=start))
-    # Consider using ellipsoidal distance above instead.
     c = Circle (cp_latlon, 90, EARTH_CIRCUMFERENCE)
-    #c.accumulate_mapping_distance (distance)
     return c
 #pylint: enable=R0914
 
@@ -782,10 +720,8 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
                 best_intersection = ints
         dist1 = spherical_distance\
                 (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle1.get_latlon()))
-        circle1.accumulate_mapping_distance (dist1)
         dist2 = spherical_distance\
                 (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle2.get_latlon()))
-        circle2.accumulate_mapping_distance (dist2)
         assert best_intersection is not None
         return best_intersection, fitness, diag_output
 
@@ -977,18 +913,6 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
     ret_tuple = (int1_latlon, int2_latlon)
 
     if estimated_position is None:
-        dist1 = spherical_distance\
-              (LatLonGeodetic(ll=int1_latlon), LatLonGeodetic(ll=circle1.get_latlon()))
-        circle1.accumulate_mapping_distance (dist1)
-        dist2 = spherical_distance\
-              (LatLonGeodetic(ll=int1_latlon), LatLonGeodetic(ll=circle2.get_latlon()))
-        circle2.accumulate_mapping_distance (dist2)
-        dist3 = spherical_distance\
-              (LatLonGeodetic(ll=int2_latlon), LatLonGeodetic(ll=circle1.get_latlon()))
-        circle1.accumulate_mapping_distance (dist3)
-        dist4 = spherical_distance\
-              (LatLonGeodetic(ll=int2_latlon), LatLonGeodetic(ll=circle2.get_latlon()))
-        circle2.accumulate_mapping_distance (dist4)
         return ret_tuple, fitness, diag_output
 
     # Check which of the intersections is closest to our estimatedCoordinates
@@ -999,12 +923,6 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         if the_distance < best_distance:
             best_distance = the_distance
             best_intersection = ints
-    dist1 = spherical_distance\
-            (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle1.get_latlon()))
-    circle1.accumulate_mapping_distance (dist1)
-    dist2 = spherical_distance\
-            (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle2.get_latlon()))
-    circle2.accumulate_mapping_distance (dist2)
     assert best_intersection is not None
     return best_intersection, fitness, diag_output
 #pylint: enable=R0912
@@ -1114,25 +1032,6 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
         return get_google_map_string (intersections[0], num_decimals) + ";" + \
                get_google_map_string (intersections[1], num_decimals)
 #pylint: enable=R1710
-
-def get_map_developers_string\
-     (r : float, latlon : LatLon, distance : float | NoneType = None,
-      color : str = "000000", scale_factor : float = MAP_SCALE_FACTOR) -> str:
-    '''
-    Return URL segment for https://mapdevelopers.com circle plotting service
-    '''
-    # Compensate for the behaviour in mapdevelopers.com. Circles have to be drawn slightly wider
-    #scale_factor = 1.00083
-    if distance is not None:
-        r = distance
-
-    r = r * scale_factor
-    result = "["
-    result = result + str (round(r*1000)) + ","
-    result = result + str(round(latlon.get_lat(),6)) + ","
-    result = result + str(round(latlon.get_lon(),6)) + ","
-    result = result + "\"#AAAAAA\",\"#"+color+"\",0.4]"
-    return result
 
 #pylint: disable=R0912
 def get_representation\
@@ -1816,7 +1715,6 @@ class Sight :
             q = q.replace (tzinfo=None)
             return q
 
-        self.mapping_distance     = None
         self.temperature          = temperature
         self.dt_dh                = dt_dh
         self.pressure             = pressure
@@ -2045,7 +1943,6 @@ class Sight :
             gp_x = self.gp
         retval = Circle (gp_x, self.get_angle(geodetic=geodetic,viewpoint=viewpoint),\
                        circumference)
-        retval.accumulate_mapping_distance (self.mapping_distance)
         return retval
 
     def get_distance_from (self, p : LatLonGeocentric, geodetic : bool) -> float:
@@ -2058,10 +1955,6 @@ class Sight :
         ''' Return the azimuth of this sight (to the GP) from a particular point on Earth 
             Returns the azimuth in degrees (0-360)'''
         return get_azimuth (self.gp, from_pos)
-
-    #def set_mapping_distance (self, distance : float | NoneType) :
-    #    ''' Attach a mapping distance estimation '''
-    #    self.mapping_distance = distance
 
     def render_folium (self, the_map : object):
         ''' Render this Sight object on a Folium Map object'''
@@ -2114,10 +2007,6 @@ class SightPair:
                                 estimated_position=estimated_position,\
                                 diagnostics = diagnostics,
                                 intersection_number = intersection_number)
-        #dist1 = circle1.get_mapping_distance ()
-        #self.sf1.set_mapping_distance (dist1)
-        #dist2 = circle2.get_mapping_distance ()
-        #self.sf2.set_mapping_distance (dist2)
         return retval
 
 #pylint: enable=R0903
@@ -2505,7 +2394,6 @@ class SightTrip:
         self.movement_vec             = None
         self.start_pos                = None
         self.end_pos                  = None
-        # self.mapping_distance         = None
 #pylint: enable=R0913
 
     def __calculate_time_hours (self):
@@ -2529,14 +2417,6 @@ class SightTrip:
               (taken_out, self.sight_end.gp)\
                   - self.sight_end.get_circle(geodetic=False).get_radius()
         return dbp, taken_out, rotated_latlon
-
-    #def set_mapping_distance (self, distance : float | NoneType):
-    #    ''' Attach a mapping distance estimation '''
-    #    self.mapping_distance = distance
-
-    #def get_mapping_distance (self) -> float | NoneType:
-    #    ''' Get the current mapping distance estimation '''
-    #    return self.mapping_distance
 
 #pylint: disable=R0914
     def get_intersections (self, return_geodetic : bool, diagnostics : bool = False) ->\
@@ -2605,8 +2485,6 @@ class SightTrip:
                             estimated_position=taken_out)
 
         assert isinstance (gi, LatLonGeocentric)
-        #self.set_mapping_distance (circle2.get_mapping_distance ())
-        # self.sight_end.set_mapping_distance (circle1.get_mapping_distance())
         self.start_pos = self.estimated_starting_point
         self.end_pos = gi
         if return_geodetic:
