@@ -49,6 +49,13 @@ except ModuleNotFoundError:
 except ImportError:
     pass
 
+def check_folium ():
+    ''' Check if folium is installed. Otherwise abort with exception '''
+    if not FOLIUM_INITIALIZED:
+        raise ValueError\
+            ("Folium not available. Cannot generate maps. "+\
+            "Install folium with \"pip install folium\"")  
+
 def version_warning (min_major_ver : int, min_minor_ver : int):
     ''' Check compatible Python version '''
 
@@ -504,10 +511,7 @@ class Circle:
                     diff = diff - 360
             return center_lon + diff
 
-        if not FOLIUM_INITIALIZED:
-            raise ValueError\
-             ("Folium not available. Cannot generate maps. "+\
-              "Install folium with \"pip install folium\"")           
+        check_folium ()
 
         coordinates = list [list[float]]()
         sub_coord = []
@@ -597,6 +601,17 @@ class CircleCollection:
         result = quote_plus (result)
         return url_start + result
 
+    def render_folium (self, center_pos : LatLon) -> object :
+        ''' Render this circle collection in Folium '''
+        check_folium ()
+#pylint: disable=C0415
+        from folium import Map
+#pylint: enable=C0415
+        the_map = Map (location=[center_pos.get_lat(), center_pos.get_lon()])
+        for c in self.c_list:
+            c.render_folium (the_map)
+        return the_map
+
 #pylint: enable=R0903
 
 #pylint: disable=R0914
@@ -638,9 +653,23 @@ def get_great_circle_route\
         c.accumulate_mapping_distance (distance)
         return c
     # isinstance (direction, float) or isinstance (direction, int) == True
-    assert isinstance (direction, float) or isinstance (direction, int)
+
+    assert isinstance (direction, (float, int))
     if start.get_lat() in (90,-90):
         raise ValueError ("Cannot take a course from any of the poles")
+
+    new_feature = True
+    if new_feature:
+        assert isinstance (start, LatLonGeocentric)
+        assert isinstance (direction, (float, int))
+        goto_pos = takeout_course (start, direction, 1, 1)
+        start_xyz = to_rectangular (start)
+        goto_xyz  = to_rectangular (goto_pos)
+        cp = cross_product (start_xyz, goto_xyz)
+        cp_pos = to_latlon (cp)
+        #cp_pos = LatLonGeodetic (ll=cp_pos)
+        return Circle (latlon = cp_pos, angle=90, circumference=EARTH_CIRCUMFERENCE)  
+
     north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
     b = to_rectangular (start)
     east_tangent = normalize_vect(cross_product (b, north_pole))
@@ -650,10 +679,10 @@ def get_great_circle_route\
     distance = EARTH_CIRCUMFERENCE / 4
     if converted:
         cp_latlon = LatLonGeodetic (ll = cp_latlon)
-    distance = spherical_distance (cp_latlon, LatLonGeodetic(ll=start))
+    #distance = spherical_distance (cp_latlon, LatLonGeodetic(ll=start))
     # Consider using ellipsoidal distance above instead.
     c = Circle (cp_latlon, 90, EARTH_CIRCUMFERENCE)
-    c.accumulate_mapping_distance (distance)
+    #c.accumulate_mapping_distance (distance)
     return c
 #pylint: enable=R0914
 
@@ -2021,10 +2050,7 @@ class Sight :
     def render_folium (self, the_map : object):
         ''' Render this Sight object on a Folium Map object'''
 
-        if not FOLIUM_INITIALIZED:
-            raise ValueError\
-             ("Folium not available. Cannot generate maps. "+\
-              "Install folium with \"pip install folium\"")        
+        check_folium ()
 
         the_object_name = self.get_object_name()
         #assert isinstance (s, Sight)
@@ -2381,10 +2407,7 @@ class SightCollection:
            accuracy : float = 1000, label_text = "Intersection") -> object:
         ''' Renders a folium object (Map) to be used for map plotting'''
 
-        if not FOLIUM_INITIALIZED:
-            raise ValueError\
-             ("Folium not available. Cannot generate maps. "+\
-              "Install folium with \"pip install folium\"")
+        check_folium ()
         the_sf_list = self.sf_list
 
 #pylint: disable=C0415
@@ -2579,10 +2602,7 @@ class SightTrip:
                        accuracy : float = 1000):
         ''' Renders this object as a Folium Map object '''
 
-        if not FOLIUM_INITIALIZED:
-            raise ValueError\
-             ("Folium not available. Cannot generate maps. "+\
-              "Install folium with \"pip install folium\"")        
+        check_folium ()       
 
 #pylint: disable=C0415
         from folium import Map, Marker, PolyLine, Icon, Circle as Folium_Circle

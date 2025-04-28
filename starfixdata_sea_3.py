@@ -1,12 +1,16 @@
-''' Simple sample representing a trip at sea with supporting celestial navigation
+''' Simple sample representing a trip at sea with supporting celestial navigation. 
+    Used for intercept of a lighthouse or similar on a steady course. 
+
     © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)       
 '''
 
 from time import time
-from starfix import LatLonGeodetic, get_representation,\
+from folium import Marker, Map, Icon
+from starfix import LatLonGeodetic,\
                     get_great_circle_route, Circle, CircleCollection, get_intersections,\
-                    get_line_of_sight, nm_to_km, km_to_nm, EARTH_CIRCUMFERENCE
+                    get_line_of_sight, nm_to_km, km_to_nm, EARTH_CIRCUMFERENCE,\
+                    show_or_display_file, spherical_distance
 def main ():
     ''' Main body of script '''
 
@@ -16,8 +20,10 @@ def main ():
     # We have a good estimate of an initial position. (A previous fix)
     s1 = LatLonGeodetic (57.662, 18.263)
     s1_gc = s1.get_latlon ()
+    #s1_c = s1.get_latlon_geocentric ()
     # We start out at a course of 350 degrees
-    c_course = 350
+    c_course = 340
+    #c_course = 270
     course_gc = get_great_circle_route (s1_gc,
                                         # NOTE: The s1 coordinate must be converted to geocentrical
                                         c_course)
@@ -41,28 +47,40 @@ def main ():
     light_house_circle_gc = Circle\
           (light_house_gc, actual_line_of_sight_nm/60, circumference=EARTH_CIRCUMFERENCE)
 
-    print ("--------- Sight Reduction  --------- ")
-    course_gc.make_geodetic()
-    intersections = get_intersections (course_gc, light_house_circle_gc) # , estimated_position=s1)
+    c_c = CircleCollection ([light_house_circle_gc, course_gc])
     endtime = time ()
-    assert isinstance (intersections, tuple)
-    #print (get_representation(intersections[0],1))
-    f = intersections [0]
-    assert isinstance (f, tuple)
-    intersection_circles = list [Circle] ()
-    for i in range(2):
-        the_coord = LatLonGeodetic(ll=f[i])
-        print (get_representation(the_coord,1))
-        intersection_circles.append (Circle (the_coord, 1/60, circumference=EARTH_CIRCUMFERENCE))
+    the_map = c_c.render_folium (light_house)
+    assert isinstance (the_map, Map)
+    Marker (location=[s1.get_lat(), s1.get_lon()],\
+            icon=Icon(icon="home", prefix="fa"),\
+            popup="Starting point " + str(s1),
+            tooltip="Starting point").add_to(the_map)    
+    intersections = get_intersections (course_gc, light_house_circle_gc)
 
-    print ("--------- Mapping          --------- ")
-    origin_circle = Circle(s1, 1/60, circumference=EARTH_CIRCUMFERENCE).make_geodetic()
-    light_house_circle = light_house_circle_gc.make_geodetic ()
-    c_c = CircleCollection ([light_house_circle,
-                             intersection_circles[0],
-                             intersection_circles[1],
-                             origin_circle])
-    print (c_c.get_map_developers_string())
+    assert isinstance (intersections[0], tuple)
+    m1 = intersections [0][0]
+    m1_d = LatLonGeodetic (ll=m1)
+    m2 = intersections [0][1]
+    m2_d = LatLonGeodetic (ll=m2)
+    m1_dist = spherical_distance (m1, s1_gc)
+    m2_dist = spherical_distance (m2, s1_gc)
+    chosen_point_d = None
+    if m1_dist < m2_dist:
+        chosen_point_d = m1_d
+    else:
+        chosen_point_d = m2_d
+    Marker (location=[chosen_point_d.get_lat(), chosen_point_d.get_lon()],
+            popup="Intercept point " + str(chosen_point_d),
+            tooltip = "Intercept point").add_to(the_map)
+    Marker (location=[light_house.get_lat(),light_house.get_lon()],\
+            icon=Icon(icon="info", prefix="fa"),\
+            popup="Lighthouse " + str(s1),
+            tooltip="Lighthouse").add_to(the_map)
+
+    file_name = "./map.html"
+
+    the_map.save (file_name)
+    show_or_display_file (file_name)
 
     taken_ms = round((endtime-starttime)*1000,2)
 
