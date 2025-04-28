@@ -76,9 +76,8 @@ def main ():
         print ("Ending   point GM = " + get_google_map_string (intersections[0],4))
 
         print ("Time taken = " +str(taken_ms)+" ms")
-        m = st.render_folium(intersections)
         print ("--------- Mapping (Folium) --------- ")
-        m = st.render_folium(intersections)
+        m = st.render_folium(intersections, draw_grid=False)
         file_name = "./map.html"
         m.save (file_name)
         show_or_display_file (file_name)

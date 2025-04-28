@@ -115,9 +115,6 @@ EARTH_FLATTENING =\
     (EARTH_RADIUS_GEODETIC_EQUATORIAL - EARTH_RADIUS_GEODETIC_POLAR) / \
      EARTH_RADIUS_GEODETIC_EQUATORIAL
 
-#MAP_DEV_URL = "https://www.mapdevelopers.com/draw-circle-tool.php?circles="
-#MAP_SCALE_FACTOR = 1.000655
-
 ################################################
 # Data types
 ################################################
@@ -2309,7 +2306,8 @@ class SightCollection:
 #pylint: disable=R0914
     def render_folium\
           (self, intersections : tuple [LatLon, LatLon] | LatLon | NoneType = None,\
-           accuracy : float = 1000, label_text = "Intersection") -> object:
+           accuracy : float = 1000, label_text = "Intersection",
+           draw_grid = True) -> object:
         ''' Renders a folium object (Map) to be used for map plotting'''
 
         check_folium ()
@@ -2353,23 +2351,25 @@ class SightCollection:
         for s in the_sf_list:
             s.render_folium (the_map)
 
-        lat_interval = 1
-        lon_interval = 1
+        if draw_grid:
 
-        if isinstance (intersections, LatLon):
-            left_lon = int(intersections.get_lon() - 180)
-            right_lon = int(intersections.get_lon() + 181)
-        else:
-            left_lon = -180
-            right_lon = 181
+            lat_interval = 1
+            lon_interval = 1
 
-        for lat in range(-90, 91, lat_interval):
-            PolyLine([[lat, left_lon],[lat, right_lon]], weight=0.5, tooltip=str(lat)).\
-                add_to(the_map)
+            if isinstance (intersections, LatLon):
+                left_lon = int(intersections.get_lon() - 180)
+                right_lon = int(intersections.get_lon() + 181)
+            else:
+                left_lon = -180
+                right_lon = 181
 
-        for lon in range(left_lon, right_lon, lon_interval):
-            PolyLine([[-90, lon],[90, lon]], weight=0.5, tooltip=str(lon)).\
-                add_to(the_map)
+            for lat in range(-90, 91, lat_interval):
+                PolyLine([[lat, left_lon],[lat, right_lon]], weight=0.5, tooltip=str(lat)).\
+                    add_to(the_map)
+
+            for lon in range(left_lon, right_lon, lon_interval):
+                PolyLine([[-90, lon],[90, lon]], weight=0.5, tooltip=str(lon)).\
+                    add_to(the_map)
 
         return the_map
 #pylint: enable=R0914
@@ -2493,7 +2493,7 @@ class SightTrip:
 #pylint: enable=R0914
 
     def render_folium (self, intersections : tuple [LatLon, LatLon] | LatLon,\
-                       accuracy : float = 1000):
+                       accuracy : float = 1000, draw_grid = True):
         ''' Renders this object as a Folium Map object '''
 
         check_folium ()
@@ -2513,7 +2513,8 @@ class SightTrip:
             s_c = SightCollection ([self.sight_start, self.sight_end])
             retval = s_c.render_folium (intersections=intersections[0],\
                                         accuracy=accuracy,\
-                                        label_text="Target")
+                                        label_text="Target",\
+                                        draw_grid=draw_grid)
             assert isinstance (retval, Map)
             Marker (icon=Icon(color='lightgray', icon='home', prefix='fa'),
                     tooltip = "Starting point",

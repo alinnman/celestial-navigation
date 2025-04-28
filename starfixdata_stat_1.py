@@ -108,7 +108,7 @@ def main ():
                 collection = ve.coll_object
 
     if collection is not None and not isinstance (intersections, tuple):
-        the_map = collection.render_folium (intersections)
+        the_map = collection.render_folium (intersections, draw_grid=False)
         file_name = "./map.html"
         the_map.save (file_name)
         show_or_display_file (file_name)

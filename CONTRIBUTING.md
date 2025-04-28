@@ -22,13 +22,15 @@ Regarding future plans for this project.
 These are some things I may consider doing (or have already started)
 
 1. Building on WGS-84 ellipsoid model.<br/>
-*Working on this right now. Sight reductions seems to work well but accurate*
-*mapping does not work yet.*
+*Working on this right now. Sight reductions seem to work well.*
 1. Better mapping functions.<br/>
 *Currently implementing mapping based on the*
 *[Folium](https://github.com/python-visualization/folium) framework.*
+*Also investigating methods for handling map data without an*
+*internet connection.*
 1. Create machine-readable Nautical Almanac<br/>
 *This will greatly improve workflow speed. A first implementation is ready now.*
+*A preloaded set of almanac data for 2024-2025 is bundled in the repository*
 1. Create a lightweight web application and/or mobile app without requiring
 internet access. <br/>
 *A collection of simple Jupyter notebooks have been added, and this may be good*

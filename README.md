@@ -18,7 +18,7 @@ You need a Google/Gmail account to run the code in the notebook*.
 You use the sextant to read the altitude (angle) of a sun, planet or star
 above the horizon. Repeat this several times. For each reading you get
 a circle that can be drawn on a map.
-Now see where these circles intersect.<br>
+Now see where these circles intersect. This will reveal your position.<br>
 In this picture we were located in Chicago.
 
 ![Intersections of small circles](pics/folium.png "Intersections of small circles" )
@@ -571,7 +571,9 @@ See code for explanation of this optimization.
 ### 3.iv. Running the Chicago script<a name="run-chicago-script"></a>
 
 This picture shows the small circles defined in the
-[starfixdata_stat_1.py](starfixdata_stat_1.py) sample
+[starfixdata_stat_1.py](starfixdata_stat_1.py) sample.
+The markers with star icons show used GP:s.
+The marker with the user icon is the identified intersection (in Chicago).
 ![Locating from Chicago](pics/chicago-intersection-1.png "Locating from Chicago")
 
 When we move in closer we can clearly see a precise intersection.
@@ -641,9 +643,10 @@ circles representing equal angle to two terrestrial points.
 
 The following picture shows how the sample results
 in two circles of equal angle.
-The three small circles are centered on three lighthouses and you have measured
-the observed angle between them from your observation point with a sextant.
-The red arrow points towards the calculated correct position (intersection).
+The three markers with info icon are centered on three lighthouses and you
+have measured the observed angle between them from your observation point
+with a sextant. The marker with the home icon is located at the
+calculated correct position (intersection).
 
 ![Navigation towards three lighthouses](pics/lighthouses.png "Terrestrial Navigation")
 
@@ -828,87 +831,23 @@ a demo for this.
 
 If you start from a specified position (<tt>LatLon</tt>) with a specified course
 expecting to intercept a specific circle, such as the first visibility of a
-lighthouse you can use a script like this one. This sample also uses a
-calculation on line of sight.
-
-    from starfix import LatLon, get_representation,\
-                        get_great_circle_route, Circle, get_intersections
-
-    # We are sailing from point s1
-    # We have a good estimate of an initial position. (A previous fix)
-    s1 = LatLon (57.662, 18.263)
-    # We start out at a course of 350 degrees
-    c_course = 350
-    course_gc = get_great_circle_route (s1, c_course)
-
-    # This is a position of a lighthouse
-    light_house = LatLon (58.739, 17.865)
-    # This is the elevation of the light source (m)
-    light_house_elevation = 44.5
-    # This is the maximum reach in nm
-    light_house_max_visibility_nm = 22
-    light_house_max_visibility_m = nm_to_km (light_house_max_visibility_nm) * 1000
-    # This is the elevation of the observer (in the ship)
-    observer_elevation = 3
-    # Calculate the max line of sight
-    line_of_sight = get_line_of_sight (light_house_elevation, observer_elevation)
-    # The actual line of sight is the minimum of max reach and line of sight
-    actual_line_of_sight = min (line_of_sight, light_house_max_visibility_m)
-    actual_line_of_sight_nm = km_to_nm (actual_line_of_sight/1000)
-
-    light_house_circle = Circle (light_house, actual_line_of_sight_nm/60)
-
-    # Get the intersections
-    intersections = get_intersections (course_gc, light_house_circle)
-    assert isinstance (intersections, tuple)
-    print (get_representation(intersections[0],1))
-
-    # Check the circles
-    c_c = CircleCollection ([course_gc, light_house_circle, Circle(s1, 1/60)])
-    print ("MD = " + c_c.get_map_developers_string())
+lighthouse you can use a script like this:
+[starfixdata_sea_3.py](starfixdata_sea_3.py)
 
 The picture below illustrates the result
 
 ![Intercepting a lighthouse](pics/intercept.png "Intercepting a lighthouse")
 
-The supplied script sample [starfixdata_sea_3.py](starfixdata_sea_3.py) contains
-a demo for this.
-
 ### 4.iv. Intercept a bearing<a name="intercept"></a>
 
 If you are moving on a straight course and expect to intercept a specific
-bearing of a lighthouse you can use the following script.
+bearing of a lighthouse you can use a script like this:
+[starfixdata_sea_4.py](starfixdata_sea_4.py)
 
-    from starfix import LatLon, get_representation,\
-                    get_great_circle_route, Circle, CircleCollection, get_intersections
+The picture below illustrates the result
 
-    # We are sailing from point s1
-    # We have a good estimate of an initial position. (A previous fix)
-    s1 = LatLon (57.662, 18.263)
-    # We start out at a course of 355 degrees
-    c_course = 355
-    course_gc = get_great_circle_route (s1, c_course)
+![Sailing in the Baltic Sea (closeup)](pics/baltic-intersection-4.png "Sailing in the Baltic Sea (closeup)")
 
-    # This is a position of a lighthouse
-    light_house = LatLon (58.739, 17.865)
-    # The intercept angle for the lighthouse is 300 degrees
-    light_house_intercept = 300
-    light_house_gc = get_great_circle_route (light_house, light_house_intercept)
-
-    # Get the intersections
-    intersections = get_intersections (course_gc, light_house_gc)
-    assert isinstance (intersections[0], tuple)
-    print (get_representation(intersections[0],1))
-
-    intersection1 = Circle (intersections[0][0],1/60)
-    start         = Circle (s1, 1/60)
-
-    # Check the circles
-    c_c = CircleCollection ([course_gc, light_house_gc, intersection1, start])
-    print ("MD = " + c_c.get_map_developers_string())
-
-The supplied script sample [starfixdata_sea_4.py](starfixdata_sea_4.py) contains
-a demo for this.
 
 ### 4.v. Pure dead reckoning<a name="pure_dr"></a>
 
