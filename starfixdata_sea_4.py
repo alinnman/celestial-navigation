@@ -45,7 +45,9 @@ def main ():
     c_c = CircleCollection ([course_gc, light_house_gcr])
 
     if folium_initialized():
+#pylint: disable=C0415
         from folium import Marker, Icon, Map
+#pylint: enable=C0415
         the_map = c_c.render_folium (light_house, ["#FF0000","#0000FF"])
         assert isinstance (the_map, Map)
 

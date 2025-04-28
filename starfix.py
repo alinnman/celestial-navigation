@@ -57,7 +57,7 @@ def check_folium ():
 
 def folium_initialized ():
     ''' Can be used to check if folium is initialized '''
-    return FOLIUM_INITIALIZED  
+    return FOLIUM_INITIALIZED
 
 def version_warning (min_major_ver : int, min_minor_ver : int):
     ''' Check compatible Python version '''

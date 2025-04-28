@@ -42,7 +42,9 @@ def main ():
     circ_coll = CircleCollection ([c1, c2])
 
     if folium_initialized ():
+#pylint: disable=C0415
         from folium import Marker, Icon, Map
+#pylint: enable=C0415
         blue = "#0000FF"
         the_map = circ_coll.render_folium (center_pos = p2, adjust_geodetic=False,\
                                         colors=[blue,blue])

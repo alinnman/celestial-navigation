@@ -51,14 +51,16 @@ def main ():
     endtime = time ()
     the_map = None
     if folium_initialized ():
-        from folium import Marker, Map, Icon        
+#pylint: disable=C0415
+        from folium import Marker, Map, Icon
+#pylint: enable=C0415
         the_map = c_c.render_folium (light_house)
         assert isinstance (the_map, Map)
         Marker (location=[s1.get_lat(), s1.get_lon()],\
                 icon=Icon(icon="home", prefix="fa"),\
                 popup="Starting point " + str(s1),
                 tooltip="Starting point").add_to(the_map)
-    
+
     intersections = get_intersections (course_gc, light_house_circle_gc)
     assert isinstance (intersections[0], tuple)
     m1 = intersections [0][0]
@@ -74,8 +76,10 @@ def main ():
         chosen_point_d = m2_d
     print ("Intercept point = " + get_google_map_string(chosen_point_d, 4))
     if folium_initialized():
+#pylint: disable=C0415
         from folium import Marker, Map, Icon
-        assert isinstance (the_map, Map)                   
+#pylint: enable=C0415
+        assert isinstance (the_map, Map)
         Marker (location=[chosen_point_d.get_lat(), chosen_point_d.get_lon()],
                 popup="Intercept point " + str(chosen_point_d),
                 tooltip = "Intercept point").add_to(the_map)
