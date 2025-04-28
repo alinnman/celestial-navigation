@@ -4,9 +4,10 @@
 
 '''
 from time import time
+from folium import Map, Marker, Icon
 from starfix import get_terrestrial_position, LatLonGeodetic,\
       get_google_map_string, deg_to_rad, EARTH_RADIUS,\
-      Circle, CircleCollection, EARTH_CIRCUMFERENCE
+      CircleCollection, show_or_display_file
 
 def main ():
     ''' Main body of script '''
@@ -38,13 +39,33 @@ def main ():
     print ("Radius 2 = " + str(deg_to_rad(c2.get_angle())*EARTH_RADIUS))
 
     # Draw a map
-    circ1 = Circle (p1, 1/120, circumference=EARTH_CIRCUMFERENCE)
-    circ2 = Circle (p2, 1/120, circumference=EARTH_CIRCUMFERENCE)
-    circ3 = Circle (p3, 1/120, circumference=EARTH_CIRCUMFERENCE)
-    circ4 = Circle (c1.get_latlon(), c1.get_angle(), circumference=EARTH_CIRCUMFERENCE)
-    circ5 = Circle (c2.get_latlon(), c2.get_angle(), circumference=EARTH_CIRCUMFERENCE)
-    circ_coll = CircleCollection ([circ1, circ2, circ3, circ4, circ5])
-    print ("MD = " + circ_coll.get_map_developers_string())
+
+    circ_coll = CircleCollection ([c1, c2])
+    blue = "#0000FF"
+    the_map = circ_coll.render_folium (center_pos = p2, adjust_geodetic=False,\
+                                       colors=[blue,blue])
+    assert isinstance (the_map, Map)
+    Marker (location=[p1.get_lat(),p1.get_lon()],\
+            icon=Icon(icon="info", prefix="fa"),\
+            popup="Lighthouse 1" + str(p1),
+            tooltip="Lighthouse 1").add_to(the_map)
+    Marker (location=[p2.get_lat(),p2.get_lon()],\
+            icon=Icon(icon="info", prefix="fa"),\
+            popup="Lighthouse 2" + str(p2),\
+            tooltip="Lighthouse 2").add_to(the_map)
+    Marker (location=[p3.get_lat(),p3.get_lon()],\
+            icon=Icon(icon="info", prefix="fa"),\
+            popup="Lighthouse 3" + str(p3),\
+            tooltip="Lighthouse 3").add_to(the_map)
+
+    Marker (location=[p[0].get_lat(), p[0].get_lon()],\
+            icon=Icon(icon="home", prefix="fa"),\
+            popup="You are here " + str(p[0]),\
+            tooltip="You are here").add_to(the_map)
+
+    file_name = "./map.html"
+    the_map.save (file_name)
+    show_or_display_file (file_name)
 
     taken_ms = round((endtime-starttime)*1000,2)
     print ("Time taken = " +str(taken_ms)+" ms")

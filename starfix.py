@@ -499,7 +499,8 @@ class Circle:
             result = quote_plus (result)
         return url_start + result
 
-    def render_folium (self, the_map : object, color : str = "#FF0000"):
+    def render_folium (self, the_map : object, color : str = "#FF0000",
+                       adjust_geodetic : bool = True):
         ''' Renders a circle on a folium map '''
 
         def adapt_lon (input_lon : float, center_lon : float) -> float:
@@ -541,8 +542,12 @@ class Circle:
             y = rotate_vector (b, real_tangent, deg_to_rad(self.get_angle()))
 
             y_latlon = to_latlon (y)
-            y_geodetic = LatLonGeodetic (ll = y_latlon)
-            this_lon = adapt_lon(y_geodetic.get_lon(), c_latlon.get_lon())
+            if adjust_geodetic:
+                y_geodetic = LatLonGeodetic (ll = y_latlon)
+                y_target = y_geodetic
+            else:
+                y_target = y_latlon
+            this_lon = adapt_lon(y_target.get_lon(), c_latlon.get_lon())
             # Avoid jagged lines
             if last_lon is not None and\
                 abs (this_lon - last_lon) > 10 and\
@@ -561,7 +566,7 @@ class Circle:
                 last_lon = None
             else:
                 sub_coord.append\
-                        ([y_geodetic.get_lat(), this_lon])
+                        ([y_target.get_lat(), this_lon])
             last_lon = this_lon
         coordinates.append (sub_coord)
         PolyLine(
@@ -602,7 +607,8 @@ class CircleCollection:
         return url_start + result
 
     def render_folium (self, center_pos : LatLon,\
-                       colors : list[str] | NoneType = None) -> object :
+                       colors : list[str] | NoneType = None,
+                       adjust_geodetic : bool = True) -> object :
         ''' Render this circle collection in Folium '''
         check_folium ()
 #pylint: disable=C0415
@@ -614,7 +620,7 @@ class CircleCollection:
             color = "#FF0000"
             if colors is not None:
                 color = colors [i]
-            self.c_list[i].render_folium (the_map, color)
+            self.c_list[i].render_folium (the_map, color, adjust_geodetic=adjust_geodetic)
         return the_map
 
 #pylint: enable=R0903
@@ -1218,60 +1224,6 @@ def parse_angle_string (angle_string : str) -> float:
     return ret_val
 
 ################################################
-# Terrestrial Navigation
-################################################
-
-def get_circle_for_angle (point1 : LatLon, point2 : LatLon,
-                          angle : int | float)\
-      -> Circle :
-    '''
-    Calculate the circumscribed circle for two observed points with a specified angle, 
-    giving a circle to use for determining terrestrial position 
-    '''
-    point1_v = to_rectangular (point1)
-    point2_v = to_rectangular (point2)
-
-    mid_point = normalize_vect (mult_scalar_vect (1/2, add_vecs (point1_v, point2_v)))
-    # Use the basic formula for finding a circumscribing circle
-    a = spherical_distance (point1, point2)
-    b = (a/2) * (1 / tan (deg_to_rad (angle / 2)))
-    c = (a/4) * (1 / (sin (deg_to_rad (angle / 2)) *\
-                      cos (deg_to_rad (angle / 2))))
-    x = b - c
-    # calculate position and radius of circle
-    rotation_angle = x / EARTH_RADIUS
-    rot_center = rotate_vector (mid_point,\
-                               normalize_vect(subtract_vecs (point2_v, point1_v)), rotation_angle)
-    radius = rad_to_deg(angle_b_points (to_latlon(rot_center), point1))
-    return Circle (to_latlon(rot_center), radius, EARTH_CIRCUMFERENCE)
-
-#pylint: disable=R0913
-#pylint: disable=R0917
-def get_terrestrial_position (point_a1 : LatLon,
-                              point_a2 : LatLon,
-                              angle_a : int | float,
-                              point_b1 : LatLon,
-                              point_b2 : LatLon,
-                              angle_b : int | float,
-                              estimated_position : LatLon | NoneType = None,
-                              diagnostics : bool = False)\
-            -> tuple [LatLon | tuple, Circle, Circle, float, str] :
-    '''
-    Given two pairs of terrestial observations (pos + angle) determine the observer's position 
-    '''
-
-    a = get_circle_for_angle (point_a1, point_a2, angle_a)
-    b = get_circle_for_angle (point_b1, point_b2, angle_b)
-    # Finally compute the intersection.
-    # Since we require an estimated position we will eliminate the false intersection.
-    intersection, fitness, diag_output =\
-        get_intersections (a, b, estimated_position=estimated_position,\
-                           diagnostics=diagnostics)
-    return intersection, a, b, fitness, diag_output
-#pylint: enable=R0913
-#pylint: enable=R0917
-
-################################################
 # Geodetics
 ################################################
 
@@ -1444,6 +1396,65 @@ def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
     return s
 #pylint: enable=R0914
 #pylint: enable=C0103
+
+################################################
+# Terrestrial Navigation
+################################################
+
+def get_circle_for_angle (point1 : LatLonGeodetic, point2 : LatLonGeodetic,
+                          angle : int | float)\
+      -> Circle :
+    '''
+    Calculate the circumscribed circle for two observed points with a specified angle, 
+    giving a circle to use for determining terrestrial position 
+    '''
+    point1_v = to_rectangular (point1)
+    point2_v = to_rectangular (point2)
+
+    mid_point = normalize_vect (mult_scalar_vect (1/2, add_vecs (point1_v, point2_v)))
+    # Use the basic formula for finding a circumscribing circle
+    a = spherical_distance (point1, point2)
+    b = (a/2) * (1 / tan (deg_to_rad (angle / 2)))
+    c = (a/4) * (1 / (sin (deg_to_rad (angle / 2)) *\
+                      cos (deg_to_rad (angle / 2))))
+    x = b - c
+    # calculate position and radius of circle
+    rotation_angle = x / EARTH_RADIUS
+    rot_center = rotate_vector (mid_point,\
+                               normalize_vect(subtract_vecs (point2_v, point1_v)), rotation_angle)
+    rot_center_latlon = to_latlon (rot_center)
+    radius = rad_to_deg(angle_b_points (to_latlon(rot_center), point1))
+    return Circle (LatLonGeodetic(lat=rot_center_latlon.get_lat(),\
+                                  lon=rot_center_latlon.get_lon()), radius, EARTH_CIRCUMFERENCE)
+
+#pylint: disable=R0913
+#pylint: disable=R0917
+def get_terrestrial_position (point_a1 : LatLonGeodetic,
+                              point_a2 : LatLonGeodetic,
+                              angle_a : int | float,
+                              point_b1 : LatLonGeodetic,
+                              point_b2 : LatLonGeodetic,
+                              angle_b : int | float,
+                              estimated_position : LatLonGeodetic | NoneType = None,
+                              diagnostics : bool = False)\
+            -> tuple [LatLon | tuple, Circle, Circle, float, str] :
+    '''
+    Given two pairs of terrestial observations (pos + angle) determine the observer's position 
+    '''
+
+    a = get_circle_for_angle (point_a1, point_a2, angle_a)
+    b = get_circle_for_angle (point_b1, point_b2, angle_b)
+
+    # Finally compute the intersection.
+    # Since we require an estimated position we will eliminate the false intersection.
+    intersection, fitness, diag_output =\
+        get_intersections (a, b, estimated_position=estimated_position,\
+                           diagnostics=diagnostics)
+    return intersection, a, b, fitness, diag_output
+#pylint: enable=R0913
+#pylint: enable=R0917
+
+
 
 ################################################
 # Machine-Readable Nautical Almanac
