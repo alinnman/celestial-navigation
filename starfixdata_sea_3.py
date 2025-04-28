@@ -6,11 +6,12 @@
 '''
 
 from time import time
-from folium import Marker, Map, Icon
+
 from starfix import LatLonGeodetic,\
                     get_great_circle_route, Circle, CircleCollection, get_intersections,\
                     get_line_of_sight, nm_to_km, km_to_nm, EARTH_CIRCUMFERENCE,\
-                    show_or_display_file, spherical_distance
+                    show_or_display_file, spherical_distance, folium_initialized,\
+                    get_google_map_string
 def main ():
     ''' Main body of script '''
 
@@ -48,14 +49,17 @@ def main ():
 
     c_c = CircleCollection ([light_house_circle_gc, course_gc])
     endtime = time ()
-    the_map = c_c.render_folium (light_house)
-    assert isinstance (the_map, Map)
-    Marker (location=[s1.get_lat(), s1.get_lon()],\
-            icon=Icon(icon="home", prefix="fa"),\
-            popup="Starting point " + str(s1),
-            tooltip="Starting point").add_to(the_map)
+    the_map = None
+    if folium_initialized ():
+        from folium import Marker, Map, Icon        
+        the_map = c_c.render_folium (light_house)
+        assert isinstance (the_map, Map)
+        Marker (location=[s1.get_lat(), s1.get_lon()],\
+                icon=Icon(icon="home", prefix="fa"),\
+                popup="Starting point " + str(s1),
+                tooltip="Starting point").add_to(the_map)
+    
     intersections = get_intersections (course_gc, light_house_circle_gc)
-
     assert isinstance (intersections[0], tuple)
     m1 = intersections [0][0]
     m1_d = LatLonGeodetic (ll=m1)
@@ -68,17 +72,20 @@ def main ():
         chosen_point_d = m1_d
     else:
         chosen_point_d = m2_d
-    Marker (location=[chosen_point_d.get_lat(), chosen_point_d.get_lon()],
-            popup="Intercept point " + str(chosen_point_d),
-            tooltip = "Intercept point").add_to(the_map)
-    Marker (location=[light_house.get_lat(),light_house.get_lon()],\
-            icon=Icon(icon="info", prefix="fa"),\
-            popup="Lighthouse " + str(s1),
-            tooltip="Lighthouse").add_to(the_map)
-
-    file_name = "./map.html"
-    the_map.save (file_name)
-    show_or_display_file (file_name)
+    print ("Intercept point = " + get_google_map_string(chosen_point_d, 4))
+    if folium_initialized():
+        from folium import Marker, Map, Icon
+        assert isinstance (the_map, Map)                   
+        Marker (location=[chosen_point_d.get_lat(), chosen_point_d.get_lon()],
+                popup="Intercept point " + str(chosen_point_d),
+                tooltip = "Intercept point").add_to(the_map)
+        Marker (location=[light_house.get_lat(),light_house.get_lon()],\
+                icon=Icon(icon="info", prefix="fa"),\
+                popup="Lighthouse " + str(s1),
+                tooltip="Lighthouse").add_to(the_map)
+        file_name = "./map.html"
+        the_map.save (file_name)
+        show_or_display_file (file_name)
 
     taken_ms = round((endtime-starttime)*1000,2)
 

@@ -7,10 +7,9 @@
 '''
 
 from time import time
-from folium import Marker, Map, Icon
 from starfix import LatLonGeodetic, LatLonGeocentric, get_representation,\
                     get_great_circle_route, CircleCollection, get_intersections,\
-                    get_google_map_string, show_or_display_file
+                    get_google_map_string, show_or_display_file, folium_initialized
 def main ():
     ''' Main body of script '''
 
@@ -44,26 +43,29 @@ def main ():
     print ("--------- Mapping          --------- ")
 
     c_c = CircleCollection ([course_gc, light_house_gcr])
-    the_map = c_c.render_folium (light_house, ["#FF0000","#0000FF"])
-    assert isinstance (the_map, Map)
 
-    Marker (location=[s1.get_lat(), s1.get_lon()],\
-            icon=Icon(icon="home", prefix="fa"),\
-            popup="Starting point " + str(s1),
-            tooltip="Starting point").add_to(the_map)
+    if folium_initialized():
+        from folium import Marker, Icon, Map
+        the_map = c_c.render_folium (light_house, ["#FF0000","#0000FF"])
+        assert isinstance (the_map, Map)
 
-    Marker (location=[the_coord.get_lat(), the_coord.get_lon()],
-            popup="Intercept point " + str(the_coord),
-            tooltip = "Intercept point").add_to(the_map)
+        Marker (location=[s1.get_lat(), s1.get_lon()],\
+                icon=Icon(icon="home", prefix="fa"),\
+                popup="Starting point " + str(s1),
+                tooltip="Starting point").add_to(the_map)
 
-    Marker (location=[light_house.get_lat(),light_house.get_lon()],\
-            icon=Icon(icon="info", prefix="fa"),\
-            popup="Lighthouse " + str(s1),
-            tooltip="Lighthouse").add_to(the_map)
+        Marker (location=[the_coord.get_lat(), the_coord.get_lon()],
+                popup="Intercept point " + str(the_coord),
+                tooltip = "Intercept point").add_to(the_map)
 
-    file_name = "./map.html"
-    the_map.save (file_name)
-    show_or_display_file (file_name)
+        Marker (location=[light_house.get_lat(),light_house.get_lon()],\
+                icon=Icon(icon="info", prefix="fa"),\
+                popup="Lighthouse " + str(s1),
+                tooltip="Lighthouse").add_to(the_map)
+
+        file_name = "./map.html"
+        the_map.save (file_name)
+        show_or_display_file (file_name)
 
     taken_ms = round((endtime-starttime)*1000,2)
 
