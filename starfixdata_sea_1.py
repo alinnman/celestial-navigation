@@ -78,10 +78,10 @@ def main ():
         print ("Time taken = " +str(taken_ms)+" ms")
         m = st.render_folium(intersections)
         print ("--------- Mapping (Folium) --------- ")
-        m = st.render_folium(intersections)                
+        m = st.render_folium(intersections)
         file_name = "./map.html"
         m.save (file_name)
-        show_or_display_file (file_name)        
+        show_or_display_file (file_name)
 
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
