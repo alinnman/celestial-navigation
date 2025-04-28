@@ -13,8 +13,12 @@ of this toolkit!<br/>
 *Opens in [Google Colab](https://colab.research.google.com).
 You need a Google/Gmail account to run the code in the notebook*.
 
-It is all about precise handling of sextant readings producing
-intersections like in the picture below.<br>
+## Celestial Navigation for Dummies
+
+You use the sextant to read the altitude (angle) of a sun, planet or star
+above the horizon. Repeat this several times. For each reading you get
+a circle that can be drawn on a map.
+Now see where these circles intersect.<br>
 In this picture we were located in Chicago.
 
 ![Intersections of small circles](pics/folium.png "Intersections of small circles" )
