@@ -230,10 +230,6 @@ algorithms adopted to the
 [WGS-84 ellipsoid](https://en.m.wikipedia.org/wiki/World_Geodetic_System).
 These corrections are briefly explained below.
 
-The current implementation seems to work well for deducing intersections and
-sight reduction, but currently the mapping features
-(using the MapDevelopers service) are not yet fully accurate.
-
 ### 3.ii. Using two sights<a name="using-two-sights"></a>
 
 Using two star fixes a sight reduction can be done in the following way:
@@ -248,9 +244,7 @@ Using two star fixes a sight reduction can be done in the following way:
         intersections, _, _ = collection.get_intersections ()
         print (get_representation(intersections,1))
     except IntersectError as ve:
-        print ("Cannot get perform a sight reduction. Bad sight data.\n" + str(ve))
-        ## For debugging: Get a map where you can look at the intersections
-        print ("Check the circles! " + collection.get_map_developers_string())        
+        print ("Cannot get perform a sight reduction. Bad sight data.\n" + str(ve))   
 
 You can enter an estimated position (Dead Reckoning Position, **DRP**)
 as a parameter.
@@ -477,9 +471,7 @@ Using three (or more) sights a sight reduction can be done in the following way
         except IntersectError as ve:
             print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
             if ve.coll_object is not None:
-                if isinstance (ve.coll_object, SightCollection):
-                    print ("Check the circles! " +
-                            ve.coll_object.get_map_developers_string(geodetic=True))
+                # Display mapping information
             exit ()
 
         assert intersections is not None
@@ -487,8 +479,6 @@ Using three (or more) sights a sight reduction can be done in the following way
         # Print latlon coordinate of intersection
         print (get_representation(intersections,1))
         assert isinstance (intersections, LatLonGeodetic)
-        # Print mapping circles
-        print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
         # Print Google Map coordinate of intersection
         print ("GM = " + get_google_map_string(intersections,4))
 
@@ -798,8 +788,7 @@ You may also write a script where the starting point is a known position
         intersections, _, _ = st.get_intersections ()
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
-        print ("Check the circles! " + st.get_map_developers_string())
-        exit ()
+        # Print mapping information
     print ("MD = " + st.get_map_developers_string ())
 
     # Diagnostics for map rendering etc.
