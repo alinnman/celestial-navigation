@@ -612,28 +612,28 @@ def get_great_circle_route\
     if start.get_lat() in (90,-90):
         raise ValueError ("Cannot take a course from any of the poles")
 
-    new_feature = True
-    if new_feature:
-        assert isinstance (start, LatLonGeocentric)
-        assert isinstance (direction, (float, int))
-        goto_pos = takeout_course (start, direction, 1, 1)
-        start_xyz = to_rectangular (start)
-        goto_xyz  = to_rectangular (goto_pos)
-        cp = cross_product (start_xyz, goto_xyz)
-        cp_pos = to_latlon (cp)
-        #cp_pos = LatLonGeodetic (ll=cp_pos)
-        return Circle (latlon = cp_pos, angle=90, circumference=EARTH_CIRCUMFERENCE)
+    # Made a new (simpler) implementation
+    assert isinstance (start, LatLonGeocentric)
+    assert isinstance (direction, (float, int))
+    goto_pos = takeout_course (start, direction, 1, 1)
+    start_xyz = to_rectangular (start)
+    goto_xyz  = to_rectangular (goto_pos)
+    cp = cross_product (start_xyz, goto_xyz)
+    cp_pos = to_latlon (cp)
+    #cp_pos = LatLonGeodetic (ll=cp_pos)
+    return Circle (latlon = cp_pos, angle=90, circumference=EARTH_CIRCUMFERENCE)
 
-    north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
-    b = to_rectangular (start)
-    east_tangent = normalize_vect(cross_product (b, north_pole))
-    rotated = rotate_vector (east_tangent, b, deg_to_rad(90 - direction))
-    cp = normalize_vect(cross_product (b, rotated))
-    cp_latlon = to_latlon (cp)
-    if converted:
-        cp_latlon = LatLonGeodetic (ll = cp_latlon)
-    c = Circle (cp_latlon, 90, EARTH_CIRCUMFERENCE)
-    return c
+    # Leaving old implementation here
+    #north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
+    #b = to_rectangular (start)
+    #east_tangent = normalize_vect(cross_product (b, north_pole))
+    #rotated = rotate_vector (east_tangent, b, deg_to_rad(90 - direction))
+    #cp = normalize_vect(cross_product (b, rotated))
+    #cp_latlon = to_latlon (cp)
+    #if converted:
+    #    cp_latlon = LatLonGeodetic (ll = cp_latlon)
+    #c = Circle (cp_latlon, 90, EARTH_CIRCUMFERENCE)
+    #return c
 #pylint: enable=R0914
 
 class IntersectError (ValueError):
@@ -697,18 +697,6 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             fitness = length_of_vect (c1_vec)
 
         if estimated_position is None:
-            dist1 = spherical_distance\
-                  (LatLonGeodetic(ll=c1_latlon), LatLonGeodetic(ll=circle1.get_latlon()))
-            circle1.accumulate_distance (dist1)
-            dist2 = spherical_distance\
-                  (LatLonGeodetic(ll=c1_latlon), LatLonGeodetic(ll=circle2.get_latlon()))
-            circle2.accumulate_distance (dist2)
-            dist3 = spherical_distance\
-                  (LatLonGeodetic(ll=c2_latlon), LatLonGeodetic(ll=circle1.get_latlon()))
-            circle1.accumulate_distance (dist3)
-            dist4 = spherical_distance\
-                  (LatLonGeodetic(ll=c2_latlon), LatLonGeodetic(ll=circle2.get_latlon()))
-            circle2.accumulate_distance (dist4)
             return ret_tuple, fitness, diag_output
 
         # Check which of the intersections is closest to our estimatedCoordinates
@@ -719,10 +707,6 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
             if the_distance < best_distance:
                 best_distance = the_distance
                 best_intersection = ints
-        dist1 = spherical_distance\
-                (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle1.get_latlon()))
-        dist2 = spherical_distance\
-                (LatLonGeodetic(ll=best_intersection), LatLonGeodetic(ll=circle2.get_latlon()))
         assert best_intersection is not None
         return best_intersection, fitness, diag_output
 
