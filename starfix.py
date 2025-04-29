@@ -134,11 +134,11 @@ class LatLon:
         ''' Used to simplify some code where tuples are more practical '''
         return self.__lon, self.__lat
 
-    def get_lat (self):
+    def get_lat (self) -> int | float:
         ''' Returns the latitude '''
         return self.__lat
 
-    def get_lon (self):
+    def get_lon (self) -> int | float:
         ''' Returns the longitude '''
         return self.__lon
 
@@ -204,7 +204,7 @@ def dot_product (vec1 : list [float], vec2 : list [float]) -> float:
         s += v1*vec2[i]
     return s
 
-def mod_lon (lon : int | float):
+def mod_lon (lon : int | float) -> int | float:
     ''' Transforms a longitude value to the range (-180,180) '''
     x = lon + 180
     x = x % 360
@@ -442,11 +442,11 @@ class Circle:
         self.__angle                = angle
         self.__circumference        = circumference
 
-    def get_angle (self) :
+    def get_angle (self) -> int | float :
         ''' Return the angle (in degrees) of this circle '''
         return self.__angle
 
-    def get_latlon (self) :
+    def get_latlon (self) -> LatLon:
         ''' Return the latlon of this circle '''
         return self.__latlon
 
@@ -462,6 +462,7 @@ class Circle:
         return "CIRCLE: LATLON = [" + \
         str(self.__latlon) + "]; ANGLE = " + str(round(self.__angle,4))
 
+#pylint: disable=R0914
     def render_folium (self, the_map : object, color : str = "#FF0000",
                        adjust_geodetic : bool = True):
         ''' Renders a circle on a folium map '''
@@ -538,6 +539,7 @@ class Circle:
             weight=5,
             popup="Small circle"
         ).add_to(the_map)
+#pylint: enable=R0914
 
     def get_radius (self) -> float:
         ''' Returns the radius of the sight (in kilometers) '''
@@ -1220,7 +1222,7 @@ def get_geodetic_alt (position : LatLonGeocentric, geocentric_alt : float,
 #pylint: disable=C0103
 #pylint: disable=R0914
 def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
-    ''' Compute a distance on an path on an ellipsoid
+    ''' Compute a distance on a path on an ellipsoid
         From: https://www.johndcook.com/blog/2018/11/24/spheroid-distance/   
     '''
 
@@ -2268,7 +2270,6 @@ class SightCollection:
             # accurate DR positions
             collection = get_starfixes (estimated_position)
             assert isinstance (collection, SightCollection)
-            #try:
             intersections, fitness, diag =\
             collection.get_intersections (return_geodetic=return_geodetic,
                                           limit=limit,
