@@ -28,9 +28,25 @@ def main ():
       get_terrestrial_position (p3[0], p2[0], angle_1, p2[0], p1[0], angle_2)
     endtime = time ()
     assert isinstance (p, tuple)
-    print ("Your location 1 = " + get_google_map_string(p[0],4))
-    print ("Your location 2 = " + get_google_map_string(p[1],4))
+    # Since no estimated position was given we assume we have a tuple
 
+    # Select the real intersection point
+    # There is a false intersection located at one of the lighthouses
+    # This false intersection must be eliminated
+    chosen_p = None
+    limit_for_dist = 0.001
+    for i in [0,1]:
+        invalid = False
+        for check_p in [p1[0], p2[0], p3[0]]:
+            dist = spherical_distance (p[i], check_p)
+            if dist < limit_for_dist:
+                invalid = True
+                break
+        if not invalid:
+            chosen_p = i
+            break
+    assert isinstance (chosen_p, int)
+    print ("Your location = " + get_google_map_string(p[chosen_p],4))
 
     print ("========================")
     print ("Centerpoint 1 = " + get_google_map_string (c1.get_latlon(), 4))
@@ -40,13 +56,14 @@ def main ():
 
     # Draw a map
 
-    circ_coll = CircleCollection ([c1, c2])
-
     if folium_initialized ():
 #pylint: disable=C0415
         from folium import Marker, Icon, Map
 #pylint: enable=C0415
         blue = "#0000FF"
+
+        circ_coll = CircleCollection ([c1, c2])
+
         the_map = circ_coll.render_folium (center_pos = p2[0], adjust_geodetic=False,\
                                            colors=[blue,blue])
         assert isinstance (the_map, Map)
@@ -63,23 +80,6 @@ def main ():
                 popup=p3[1]+ " " +  str(p2[0]),\
                 tooltip=p3[1]).add_to(the_map)
 
-        # Select the real intersection point
-        # There is a false intersection located at one of the lighthouses
-        # This false intersection must be eliminated
-        chosen_p = None
-        limit_for_dist = 0.001
-        for i in [0,1]:
-            invalid = False
-            for check_p in [p1[0], p2[0], p3[0]]:
-                dist = spherical_distance (p[i], check_p)
-                if dist < limit_for_dist:
-                    invalid = True
-                    break
-            if not invalid:
-                chosen_p = i
-                break
-
-        assert isinstance (chosen_p, int)
         Marker (location=[p[chosen_p].get_lat(), p[chosen_p].get_lon()],\
                 icon=Icon(icon="home", prefix="fa"),\
                 popup="You are here " + str(p[0]),\

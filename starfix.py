@@ -59,7 +59,7 @@ def folium_initialized ():
     ''' Can be used to check if folium is initialized '''
     return FOLIUM_INITIALIZED
 
-def version_warning (min_major_ver : int, min_minor_ver : int):
+def __version_warning (min_major_ver : int, min_minor_ver : int):
     ''' Check compatible Python version '''
 
     def output_warning ():
@@ -74,7 +74,7 @@ def version_warning (min_major_ver : int, min_minor_ver : int):
         if minor_version < min_minor_ver:
             output_warning ()
 
-version_warning (3, 11)
+__version_warning (3, 11)
 
 def __run_http_server ():
     if __is_android():
@@ -956,7 +956,7 @@ def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
 # Time management
 ################################################
 
-def calculate_time_hours (dt1 : datetime, dt2 : datetime):
+def calculate_time_hours (dt1 : datetime, dt2 : datetime) -> float:
     '''
     Return the difference between two timestamps in hours
     '''
@@ -1315,12 +1315,12 @@ def get_circle_for_angle (point1 : LatLonGeodetic, point2 : LatLonGeodetic,
 
 #pylint: disable=R0913
 #pylint: disable=R0917
-def get_terrestrial_position (point_a1 : LatLonGeodetic,
+def get_terrestrial_position (point_a1 : LatLonGeodetic, # First point pair
                               point_a2 : LatLonGeodetic,
-                              angle_a : int | float,
-                              point_b1 : LatLonGeodetic,
+                              angle_a : int | float,     # First angle
+                              point_b1 : LatLonGeodetic, # Second point pair
                               point_b2 : LatLonGeodetic,
-                              angle_b : int | float,
+                              angle_b : int | float,     # Second angle
                               estimated_position : LatLonGeodetic | NoneType = None,
                               diagnostics : bool = False)\
             -> tuple [LatLon | tuple, Circle, Circle, float, str] :
@@ -1336,6 +1336,7 @@ def get_terrestrial_position (point_a1 : LatLonGeodetic,
     intersection, fitness, diag_output =\
         get_intersections (a, b, estimated_position=estimated_position,\
                            diagnostics=diagnostics)
+
     return intersection, a, b, fitness, diag_output
 #pylint: enable=R0913
 #pylint: enable=R0917
@@ -1391,7 +1392,7 @@ class MrKindStar (MrKind):
         return self.index
 
     @staticmethod
-    def is_star (star_name : str):
+    def is_star (star_name : str) -> bool:
         ''' Check if a name is referring to a star'''
         try:
             _ = MrKindStar.stars [star_name]
@@ -1479,7 +1480,7 @@ class ObsType:
     def __init__ (self, o_type : str) :
         self.o_type = o_type
 
-    def __str__ (self) :
+    def __str__ (self) -> str:
         return self.o_type
 #pylint: enable=R0903
 
