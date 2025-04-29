@@ -1941,7 +1941,7 @@ class Sight :
             Returns the azimuth in degrees (0-360)'''
         return get_azimuth (self.gp, from_pos)
 
-    def render_folium (self, the_map : object):
+    def render_folium (self, the_map : object, draw_markers = True):
         ''' Render this Sight object on a Folium Map object'''
 
         check_folium ()
@@ -1958,12 +1958,13 @@ class Sight :
 #pylint: enable=C0415
         assert isinstance (the_map, Map)
         # Set a marker for a GP
-        Marker(
-            location=[c_latlon_d.get_lat(), c_latlon_d.get_lon()],
-            tooltip=the_object_name,
-            popup=the_object_name + "\n" + time_string + "\n" + str(c_latlon_d),
-            icon=Icon(icon="star"),
-        ).add_to(the_map)
+        if draw_markers:
+            Marker(
+                location=[c_latlon_d.get_lat(), c_latlon_d.get_lon()],
+                tooltip=the_object_name,
+                popup=the_object_name + "\n" + time_string + "\n" + str(c_latlon_d),
+                icon=Icon(icon="star"),
+            ).add_to(the_map)
 
         c.render_folium (the_map)
 
@@ -2295,7 +2296,7 @@ class SightCollection:
     def render_folium\
           (self, intersections : tuple [LatLon, LatLon] | LatLon | NoneType = None,\
            accuracy : float = 1000, label_text = "Intersection",
-           draw_grid = True) -> object:
+           draw_grid = True, draw_markers = True) -> object:
         ''' Renders a folium object (Map) to be used for map plotting'''
 
         check_folium ()
@@ -2325,19 +2326,19 @@ class SightCollection:
                 popup = "Radius = " + str(radius) + " meters",
                 tooltip="Radius : " + str(accuracy) + " m."
             ).add_to(the_map)
-
-            Marker(
-                location=[int_geodetic.get_lat(), int_geodetic.get_lon()],
-                tooltip=label_text,
-                popup= label_text + " " + str (intersections),
-                icon=Icon(icon="user"),
-            ).add_to(the_map)
+            if draw_markers:
+                Marker(
+                    location=[int_geodetic.get_lat(), int_geodetic.get_lon()],
+                    tooltip=label_text,
+                    popup= label_text + " " + str (intersections),
+                    icon=Icon(icon="user"),
+                ).add_to(the_map)
         else:
             the_map = Map(location=(0,\
                                     0), zoom_start=6)
 
         for s in the_sf_list:
-            s.render_folium (the_map)
+            s.render_folium (the_map, draw_markers=draw_markers)
 
         if draw_grid:
 
@@ -2481,7 +2482,7 @@ class SightTrip:
 #pylint: enable=R0914
 
     def render_folium (self, intersections : tuple [LatLon, LatLon] | LatLon,\
-                       accuracy : float = 1000, draw_grid = True):
+                       accuracy : float = 1000, draw_grid = True, draw_markers = True):
         ''' Renders this object as a Folium Map object '''
 
         check_folium ()
@@ -2504,11 +2505,12 @@ class SightTrip:
                                         label_text="Target",\
                                         draw_grid=draw_grid)
             assert isinstance (retval, Map)
-            Marker (icon=Icon(color='lightgray', icon='home', prefix='fa'),
-                    tooltip = "Starting point",
-                    popup = "Starting point " + str(intersections[1]),
-                    location=[intersections[1].get_lat(),\
-                              intersections[1].get_lon()]).add_to(retval)
+            if draw_markers:
+                Marker (icon=Icon(color='lightgray', icon='home', prefix='fa'),
+                        tooltip = "Starting point",
+                        popup = "Starting point " + str(intersections[1]),
+                        location=[intersections[1].get_lat(),\
+                                intersections[1].get_lon()]).add_to(retval)
             draw_arrow (retval, intersections [1], intersections [0])
             return retval
 
@@ -2525,20 +2527,21 @@ class SightTrip:
         if isinstance (self.start_pos, LatLonGeocentric) and \
            isinstance (self.end_pos, LatLonGeocentric):
             start_pos_d = LatLonGeodetic (ll = self.start_pos)
-
-            Marker (icon=Icon(color='lightgray', icon='home', prefix='fa'),
-                    tooltip = "Starting point",
-                    popup = "Starting point " + str(start_pos_d),
-                    location=[start_pos_d.get_lat(),\
-                              start_pos_d.get_lon()]).add_to(draw_map)
+            if draw_markers:
+                Marker (icon=Icon(color='lightgray', icon='home', prefix='fa'),
+                        tooltip = "Starting point",
+                        popup = "Starting point " + str(start_pos_d),
+                        location=[start_pos_d.get_lat(),\
+                                start_pos_d.get_lon()]).add_to(draw_map)
             end_pos_d = LatLonGeodetic (ll = self.end_pos)
             Folium_Circle (location = [end_pos_d.get_lat(), end_pos_d.get_lon()],
                            radius=accuracy).add_to (draw_map)
-            Marker (icon=Icon(color='blue', icon='user', prefix='fa'),
-                    tooltip = "Target",
-                    popup = "Target " + str(end_pos_d),
-                    location=[end_pos_d.get_lat(),\
-                              end_pos_d.get_lon()]).add_to(draw_map)
+            if draw_markers:
+                Marker (icon=Icon(color='blue', icon='user', prefix='fa'),
+                        tooltip = "Target",
+                        popup = "Target " + str(end_pos_d),
+                        location=[end_pos_d.get_lat(),\
+                                end_pos_d.get_lon()]).add_to(draw_map)
             draw_arrow (draw_map, start_pos_d, end_pos_d)
 
         return draw_map

@@ -6,7 +6,8 @@
 from time import time
 from starfix import get_terrestrial_position, LatLonGeodetic,\
       get_google_map_string, deg_to_rad, EARTH_RADIUS,\
-      CircleCollection, show_or_display_file, folium_initialized
+      CircleCollection, show_or_display_file, folium_initialized,\
+      spherical_distance
 
 def main ():
     ''' Main body of script '''
@@ -51,18 +52,32 @@ def main ():
         assert isinstance (the_map, Map)
         Marker (location=[p1.get_lat(),p1.get_lon()],\
                 icon=Icon(icon="info", prefix="fa"),\
-                popup="Lighthouse 1" + str(p1),
+                popup="Lighthouse 1 " + str(p1),
                 tooltip="Lighthouse 1").add_to(the_map)
         Marker (location=[p2.get_lat(),p2.get_lon()],\
                 icon=Icon(icon="info", prefix="fa"),\
-                popup="Lighthouse 2" + str(p2),\
+                popup="Lighthouse 2 " + str(p2),\
                 tooltip="Lighthouse 2").add_to(the_map)
         Marker (location=[p3.get_lat(),p3.get_lon()],\
                 icon=Icon(icon="info", prefix="fa"),\
-                popup="Lighthouse 3" + str(p3),\
+                popup="Lighthouse 3 " + str(p3),\
                 tooltip="Lighthouse 3").add_to(the_map)
 
-        Marker (location=[p[0].get_lat(), p[0].get_lon()],\
+        chosen_p = None
+        limit_for_dist = 0.001
+        for i in [0,1]:
+            invalid = False
+            for check_p in [p1, p2, p3]:
+                dist = spherical_distance (p[i], check_p)
+                if dist < limit_for_dist:
+                    invalid = True
+                    break
+            if not invalid:
+                chosen_p = i
+                break
+
+        assert isinstance (chosen_p, int)
+        Marker (location=[p[chosen_p].get_lat(), p[chosen_p].get_lon()],\
                 icon=Icon(icon="home", prefix="fa"),\
                 popup="You are here " + str(p[0]),\
                 tooltip="You are here").add_to(the_map)
