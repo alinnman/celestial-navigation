@@ -1143,25 +1143,27 @@ class LatLonGeodetic (LatLon):
         a       = EARTH_RADIUS_GEODETIC_EQUATORIAL
         b       = EARTH_RADIUS_GEODETIC_POLAR
         f       = EARTH_FLATTENING
-        r       = EARTH_RADIUS
+        e2      = f*(2-f)
+
+        # See https://se.mathworks.com/help/aeroblks/radiusatgeocentriclatitude.html
+        r       = sqrt ((a**2)/(1+(1/(1-f)**2-1)*(sin(lam_bda))**2))
+
         rho     = r * cos(lam_bda)
         z       = r * sin(lam_bda)
-        e2      = f*(2-f)
-        r       = a
         eprim2  = e2 / (1 - e2)
         iter_ready = False
         iter_count = 0
         iter_limit = 10
         diff_limit = 10**-8
         mu = pi/4
+        # Fixed-point iteration of Bowring's formula
         while not iter_ready:
             beta = atan2 ((1-f)*sin(mu), cos(mu))
             new_mu = atan2 (z + b*eprim2*(sin(beta)**3),\
                             rho-a*e2*((cos(beta)**3)))
             if abs(new_mu - mu) < diff_limit:
                 iter_ready = True
-            else:
-                mu = new_mu
+            mu = new_mu
             iter_count += 1
             if iter_count > iter_limit:
                 iter_ready = True
@@ -1175,7 +1177,6 @@ class LatLonGeodetic (LatLon):
         '''
         f = EARTH_FLATTENING
         a = EARTH_RADIUS_GEODETIC_EQUATORIAL / (2*pi)
-        assert self.get_lat() is not None
         mu = deg_to_rad(self.get_lat())
         e2 = f*(2-f)
         h = height
@@ -1183,7 +1184,6 @@ class LatLonGeodetic (LatLon):
         rho = (n + h) * cos(mu)
         z = (n*(1 - e2) + h)*sin(mu)
         lam_bda = atan2 (z, rho)
-        assert self.get_lon() is not None
         return LatLonGeocentric (rad_to_deg(lam_bda), self.get_lon())
 
     def __str__(self):
