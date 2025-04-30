@@ -596,17 +596,17 @@ def get_great_circle_route\
     if start.get_lat() in (90,-90):
         raise ValueError ("Cannot take a course from any of the poles")
 
-    new_implementation = False
+    #new_implementation = False
     # Made a new (simpler) implementation
-    if new_implementation:
-        assert isinstance (start, LatLonGeocentric)
-        assert isinstance (direction, (float, int))
-        goto_pos = takeout_course (start, direction, 1, 1)
-        start_xyz = to_rectangular (start)
-        goto_xyz  = to_rectangular (goto_pos)
-        cp = cross_product (start_xyz, goto_xyz)
-        cp_pos = to_latlon (cp)
-        return Circle (latlon = cp_pos, angle=90, circumference=EARTH_CIRCUMFERENCE)
+    #if new_implementation:
+    #    assert isinstance (start, LatLonGeocentric)
+    #    assert isinstance (direction, (float, int))
+    #    goto_pos = takeout_course (start, direction, 1, 1)
+    #    start_xyz = to_rectangular (start)
+    #    goto_xyz  = to_rectangular (goto_pos)
+    #    cp = cross_product (start_xyz, goto_xyz)
+    #    cp_pos = to_latlon (cp)
+    #    return Circle (latlon = cp_pos, angle=90)
 
     # Leaving old implementation here
     north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
@@ -615,7 +615,7 @@ def get_great_circle_route\
     rotated = rotate_vector (east_tangent, b, deg_to_rad(90 - direction))
     cp = normalize_vect(cross_product (b, rotated))
     cp_latlon = to_latlon (cp)
-    c = Circle (cp_latlon, 90, EARTH_CIRCUMFERENCE)
+    c = Circle (cp_latlon, 90)
     return c
 #pylint: enable=R0914
 
@@ -2163,7 +2163,7 @@ class SightCollection:
             limit : int | float = 100,
             diagnostics : bool = False,
             max_iter : int = 10,
-            dist_limit : float = 0.01) ->\
+            dist_limit : float = 0.001) ->\
             tuple[LatLon | tuple[LatLon, LatLon], float, str, object]:
         ''' Returns an intersection based on improved algorithm.
             Successively searches for (iterates) to get the correct

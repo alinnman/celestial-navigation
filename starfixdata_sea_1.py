@@ -20,11 +20,8 @@ def main ():
 
     #This is the star fix for s1, the starting point
 
-    s1 = Sight (  object_name          = "Sun",
+    s1 = Sight (object_name          = "Sun",
                 set_time             = "2024-06-20 06:14:38+00:00",
-                gha_time_0           = "269:35.2",
-                gha_time_1           = "284:35.1",
-                decl_time_0          = "23:26.2",
                 measured_alt         = "30:51:27.1",
                 estimated_position   =  s1_latlon
                 )
@@ -34,18 +31,15 @@ def main ():
 
     # We take a sight here and get this.
 
-    s2 = Sight (  object_name          = "Sun",
+    s2 = Sight (object_name          = "Sun",
                 set_time             = "2024-06-20 07:14:38+00:00",
-                gha_time_0           = "284:35.1",
-                gha_time_1           = "299:35.0",
-                decl_time_0          = "23:26.2",
                 measured_alt         = "38:34:21.6"
                 )
 
-    # We reach s2 by applying about 175 degrees with a speed of 20 knots.
+    # We start at s1 and reach s2 by applying about 175 degrees with a speed of 20 knots.
     c_course = 175
     speed = 20
-    st = SightTrip (sight_start               = s1,\
+    st = SightTrip (sight_start              = s1,\
                     sight_end                = s2,\
                     estimated_starting_point = s1_latlon,\
                     course_degrees           = c_course,\

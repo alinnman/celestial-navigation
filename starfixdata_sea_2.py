@@ -26,11 +26,8 @@ def main ():
 
     # We take a sight here and get this.
 
-    s2 = Sight (  object_name          = "Sun",
+    s2 = Sight (object_name          = "Sun",
                 set_time             = "2024-06-20 07:14:38+00:00",
-                gha_time_0           = "284:35.1",
-                gha_time_1           = "299:35.0",
-                decl_time_0          = "23:26.2",
                 measured_alt         = "38:34:21.6",
                 estimated_position   = s1_latlon
                 )

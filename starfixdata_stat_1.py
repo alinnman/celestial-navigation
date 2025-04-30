@@ -4,14 +4,14 @@
 
     This sample uses an algorithm for better accuracy using repeated
     refinements of the DR position. 
+
+    Data is picked from the nautical almanac.
 '''
 
 from time import time
 from starfix import Sight, SightCollection, get_representation,\
                     get_google_map_string, IntersectError, LatLonGeodetic,\
                     show_or_display_file
-
-
 
 def get_starfixes (drp_pos : LatLonGeodetic,
                    alt_sigma : float = 0.0,
@@ -22,41 +22,20 @@ def get_starfixes (drp_pos : LatLonGeodetic,
     Sight.set_alt_diff           (alt_sigma)
     Sight.set_time_diff          (time_sigma)
 
-    temperature = 10
-    dt_dh = -0.01
+    a = Sight ( object_name          = "Sun",
+                set_time             = "2024-05-05 15:55:18+00:00",
+                measured_alt         = "55:8:1.1"
+                )
 
-    a = Sight (object_name          = "Sun",
-               set_time             = "2024-05-05 15:55:18+00:00",
-               gha_time_0           = "45:50.4",
-               gha_time_1           = "60:50.4",
-               decl_time_0          = "16:30.6",
-               decl_time_1          = "16:31.3",
-               measured_alt         = "55:8:1.1",
-               temperature          = temperature,
-               dt_dh                = dt_dh
-               )
+    b = Sight ( object_name          = "Sun",
+                set_time             = "2024-05-05 23:01:19+00:00",
+                measured_alt         = "19:28:19"
+                )
 
-    b = Sight (object_name          = "Sun",
-               set_time             = "2024-05-05 23:01:19+00:00",
-               gha_time_0           = "165:50.8",
-               gha_time_1           = "180:50.8",
-               decl_time_0          = "16:36.2",
-               decl_time_1          = "16:36.9",
-               measured_alt         = "19:28:19",
-               temperature          = temperature,
-               dt_dh                = dt_dh
-               )
-
-    c = Sight (object_name          = "Vega",
-               set_time             = "2024-05-06 04:04:13+00:00",
-               gha_time_0           = "284:30.4",
-               gha_time_1           = "299:32.9",
-               decl_time_0          = "38:48.1",
-               measured_alt         = "30:16:23.7",
-               sha_diff             = "80:33.4",
-               temperature          = temperature,
-               dt_dh                = dt_dh
-               )
+    c = Sight ( object_name          = "Vega",
+                set_time             = "2024-05-06 04:04:13+00:00",
+                measured_alt         = "30:16:23.7",
+                )
     return SightCollection ([a, b, c])
 
 def main ():
@@ -67,7 +46,9 @@ def main ():
     the_pos = LatLonGeodetic (40, -90) # Rough DRP position
     assume_good_pos = True
     # The exact position is 41°51'00.1"N 87°39'00.2"W
-    intersections = collection = taken_ms = None
+
+    intersections = collection = None
+    taken_ms = 0
     try:
         intersections, _, _, collection =\
               SightCollection.get_intersections_conv (return_geodetic=True,
@@ -108,13 +89,12 @@ def main ():
                 collection = ve.coll_object
 
     if collection is not None and not isinstance (intersections, tuple):
-        the_map = collection.render_folium (intersections, draw_grid=False)
+        the_map = collection.render_folium (intersections)
         file_name = "./map.html"
         the_map.save (file_name)
         show_or_display_file (file_name)
 
-    if taken_ms is not None:
-        print ("Time taken = " +str(taken_ms)+" ms")
+    print ("Time taken = " +str(taken_ms)+" ms")
 
 if __name__ == '__main__':
     main()

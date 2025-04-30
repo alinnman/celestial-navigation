@@ -4,12 +4,15 @@
 
     This sample uses an algorithm for better accuracy using repeated
     refinements of the DR position. 
+
+    Data is picked from the nautical almanac.
 '''
 
 from time import time
 from starfix import Sight, SightCollection, get_representation,\
                     get_google_map_string, IntersectError, LatLonGeodetic,\
                     show_or_display_file
+
 
 def get_starfixes (drp_pos : LatLonGeodetic,
                    time_sigma : float = 0.0,
@@ -22,32 +25,18 @@ def get_starfixes (drp_pos : LatLonGeodetic,
 
     a = Sight (object_name          = "Capella",
                set_time             = "2024-09-17 23:36:13+00:00",
-               gha_time_0           = "342:21.9",
-               gha_time_1           = "357:24.4",
-               decl_time_0          = "46 :1.2",
-               decl_time_1          = "46 :1.3",
-               sha_diff             = "280:22.3",
                measured_alt         = "33 :9    :34"
-              )
+                )
 
     b = Sight (object_name          = "Moon",
                set_time             = "2024-09-17 23:41:13+00:00",
-               gha_time_0           = "347:55.7" ,
-               gha_time_1           = "2  :24.6",
-               decl_time_0          = "-3 :43.5",
-               decl_time_1          = "-3 :25.3",
-               horizontal_parallax  = 61.2,
-               measured_alt         = "48 :22  :5.2"
-              )
+               measured_alt         = "48 :22  :5.2",
+                )
 
     c = Sight (object_name          = "Vega",
                set_time             = "2024-09-17 23:46:13+00:00",
-               gha_time_0           = "342:21.9",
-               gha_time_1           = "357:24.4",
-               decl_time_0          = "38 :48.6",
-               sha_diff             = "80 :33.3",
                measured_alt         = "25 :39:4"
-              )
+                )
     return SightCollection ([a, b, c])
 
 def main ():
@@ -57,7 +46,8 @@ def main ():
     the_pos = LatLonGeodetic (35, 10) # Rough DRP position
     # The exact position is 36° 45' 11.01", 10° 13' 8.00"
 
-    intersections = collection = taken_ms = None
+    intersections = collection = None
+    taken_ms = 0
     try:
         intersections, _, _, collection =\
               SightCollection.get_intersections_conv (return_geodetic=True,
@@ -89,6 +79,7 @@ def main ():
             print (str(counter) + " GP     = " +\
                     get_google_map_string(LatLonGeodetic(ll=s.gp),4))
 
+
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
         if ve.coll_object is not None:
@@ -101,8 +92,7 @@ def main ():
         the_map.save (file_name)
         show_or_display_file (file_name)
 
-    if taken_ms is not None:
-        print ("Time taken = " +str(taken_ms)+" ms")
+    print ("Time taken = " +str(taken_ms)+" ms")
 
 if __name__ == '__main__':
     main()

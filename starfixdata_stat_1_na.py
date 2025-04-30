@@ -4,8 +4,6 @@
 
     This sample uses an algorithm for better accuracy using repeated
     refinements of the DR position. 
-
-    Data is picked from the nautical almanac.
 '''
 
 from time import time
@@ -14,45 +12,69 @@ from starfix import Sight, SightCollection, get_representation,\
                     show_or_display_file
 
 
+
 def get_starfixes (drp_pos : LatLonGeodetic,
-                   time_sigma : float = 0.0,
-                   alt_sigma  : float = 0.0) -> SightCollection :
+                   alt_sigma : float = 0.0,
+                   time_sigma : float = 0.0) -> SightCollection :
     ''' Returns a list of used star fixes (SightCollection) '''
 
     Sight.set_estimated_position (drp_pos)
     Sight.set_alt_diff           (alt_sigma)
     Sight.set_time_diff          (time_sigma)
 
-    a = Sight (object_name          = "Capella",
-               set_time             = "2024-09-17 23:36:13+00:00",
-               measured_alt         = "33 :9    :34"
-                )
+    temperature = 10
+    dt_dh = -0.01
 
-    b = Sight (object_name          = "Moon",
-               set_time             = "2024-09-17 23:41:13+00:00",
-               measured_alt         = "48 :22  :5.2",
-                )
+    a = Sight (object_name          = "Sun",
+               set_time             = "2024-05-05 15:55:18+00:00",
+               gha_time_0           = "45:50.4",
+               gha_time_1           = "60:50.4",
+               decl_time_0          = "16:30.6",
+               decl_time_1          = "16:31.3",
+               measured_alt         = "55:8:1.1",
+               temperature          = temperature,
+               dt_dh                = dt_dh
+               )
+
+    b = Sight (object_name          = "Sun",
+               set_time             = "2024-05-05 23:01:19+00:00",
+               gha_time_0           = "165:50.8",
+               gha_time_1           = "180:50.8",
+               decl_time_0          = "16:36.2",
+               decl_time_1          = "16:36.9",
+               measured_alt         = "19:28:19",
+               temperature          = temperature,
+               dt_dh                = dt_dh
+               )
 
     c = Sight (object_name          = "Vega",
-               set_time             = "2024-09-17 23:46:13+00:00",
-               measured_alt         = "25 :39:4"
-                )
+               set_time             = "2024-05-06 04:04:13+00:00",
+               gha_time_0           = "284:30.4",
+               gha_time_1           = "299:32.9",
+               decl_time_0          = "38:48.1",
+               measured_alt         = "30:16:23.7",
+               sha_diff             = "80:33.4",
+               temperature          = temperature,
+               dt_dh                = dt_dh
+               )
     return SightCollection ([a, b, c])
 
 def main ():
     ''' Main body of script.'''
 
     starttime = time ()
-    the_pos = LatLonGeodetic (35, 10) # Rough DRP position
-    # The exact position is 36° 45' 11.01", 10° 13' 8.00"
-
-    intersections = collection = None
-    taken_ms = 0
+    # the_pos = LatLonGeodetic (-40, 90) # BAD DRP position
+    the_pos = LatLonGeodetic (40, -90) # Rough DRP position
+    assume_good_pos = True
+    # The exact position is 41°51'00.1"N 87°39'00.2"W
+    intersections = collection = taken_ms = None
     try:
         intersections, _, _, collection =\
               SightCollection.get_intersections_conv (return_geodetic=True,
                                                       estimated_position=the_pos,
-                                                      get_starfixes=get_starfixes)
+                                                      get_starfixes=get_starfixes,
+                                                      assume_good_estimated_position=\
+                                                      assume_good_pos)
         assert intersections is not None
         assert collection is not None
         endtime = time ()
@@ -79,7 +101,6 @@ def main ():
             print (str(counter) + " GP     = " +\
                     get_google_map_string(LatLonGeodetic(ll=s.gp),4))
 
-
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
         if ve.coll_object is not None:
@@ -87,12 +108,13 @@ def main ():
                 collection = ve.coll_object
 
     if collection is not None and not isinstance (intersections, tuple):
-        the_map = collection.render_folium (intersections)
+        the_map = collection.render_folium (intersections, draw_grid=False)
         file_name = "./map.html"
         the_map.save (file_name)
         show_or_display_file (file_name)
 
-    print ("Time taken = " +str(taken_ms)+" ms")
+    if taken_ms is not None:
+        print ("Time taken = " +str(taken_ms)+" ms")
 
 if __name__ == '__main__':
     main()

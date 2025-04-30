@@ -1,5 +1,8 @@
 ''' Simple sample representing a trip at sea with dead reckoning calculation
     © August Linnman, 2025, email: august@linnman.net
+
+    Simple pure dead-reckoning calculation
+
     MIT License (see LICENSE file)       
 '''
 
