@@ -577,35 +577,17 @@ class CircleCollection:
 
 #pylint: disable=R0914
 def get_great_circle_route\
-     (start : LatLon, direction : LatLon | float | int,
-      convert_to_geocentric : bool = True) -> Circle:
+     (start : LatLonGeocentric, direction : LatLonGeocentric | float | int) -> Circle:
     ''' Calculates a great circle starting in 'start' 
         and passing 'direction' coordinate (if LatLon) 
         or with direction 'direction' degrees (if float or int)    
     '''
-#pylint: disable=C0123
-    if isinstance (direction, LatLonGeocentric):
-        assert type(start) == type(direction)
-#pylint: enable=C0123
-
-    converted = False
-    if convert_to_geocentric and isinstance (start, LatLonGeodetic):
-        start = start.get_latlon()
-        converted = True
-#pylint: disable=C0123
-        assert type(start) == LatLonGeocentric
-        if isinstance (direction, LatLonGeodetic):
-            direction = direction.get_latlon()
-            assert type(direction) == LatLonGeocentric
-#pylint: enable=C0123
 
     if isinstance (direction, LatLonGeocentric):
         t1 = to_rectangular (start)
         t2 = to_rectangular (direction)
         t3 = normalize_vect(cross_product (t1,t2))
         t4 = to_latlon (t3)
-        if converted:
-            t4 = LatLonGeodetic (ll=t4)
         c = Circle (t4, 90, EARTH_CIRCUMFERENCE)
         return c
     # isinstance (direction, float) or isinstance (direction, int) == True
@@ -614,28 +596,27 @@ def get_great_circle_route\
     if start.get_lat() in (90,-90):
         raise ValueError ("Cannot take a course from any of the poles")
 
+    new_implementation = False
     # Made a new (simpler) implementation
-    assert isinstance (start, LatLonGeocentric)
-    assert isinstance (direction, (float, int))
-    goto_pos = takeout_course (start, direction, 1, 1)
-    start_xyz = to_rectangular (start)
-    goto_xyz  = to_rectangular (goto_pos)
-    cp = cross_product (start_xyz, goto_xyz)
-    cp_pos = to_latlon (cp)
-    #cp_pos = LatLonGeodetic (ll=cp_pos)
-    return Circle (latlon = cp_pos, angle=90, circumference=EARTH_CIRCUMFERENCE)
+    if new_implementation:
+        assert isinstance (start, LatLonGeocentric)
+        assert isinstance (direction, (float, int))
+        goto_pos = takeout_course (start, direction, 1, 1)
+        start_xyz = to_rectangular (start)
+        goto_xyz  = to_rectangular (goto_pos)
+        cp = cross_product (start_xyz, goto_xyz)
+        cp_pos = to_latlon (cp)
+        return Circle (latlon = cp_pos, angle=90, circumference=EARTH_CIRCUMFERENCE)
 
     # Leaving old implementation here
-    #north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
-    #b = to_rectangular (start)
-    #east_tangent = normalize_vect(cross_product (b, north_pole))
-    #rotated = rotate_vector (east_tangent, b, deg_to_rad(90 - direction))
-    #cp = normalize_vect(cross_product (b, rotated))
-    #cp_latlon = to_latlon (cp)
-    #if converted:
-    #    cp_latlon = LatLonGeodetic (ll = cp_latlon)
-    #c = Circle (cp_latlon, 90, EARTH_CIRCUMFERENCE)
-    #return c
+    north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
+    b = to_rectangular (start)
+    east_tangent = normalize_vect(cross_product (b, north_pole))
+    rotated = rotate_vector (east_tangent, b, deg_to_rad(90 - direction))
+    cp = normalize_vect(cross_product (b, rotated))
+    cp_latlon = to_latlon (cp)
+    c = Circle (cp_latlon, 90, EARTH_CIRCUMFERENCE)
+    return c
 #pylint: enable=R0914
 
 class IntersectError (ValueError):

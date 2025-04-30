@@ -29,7 +29,7 @@ def main ():
                                         c_course)
 
     # This is a position of a lighthouse
-    light_house = LatLonGeodetic (58.739, 17.865)
+    light_house = LatLonGeodetic (58.7396, 17.8656)
     light_house_gc = light_house.get_latlon ()
     # This is the elevation of the light source (m)
     light_house_elevation = 44.5

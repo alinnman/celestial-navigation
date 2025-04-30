@@ -20,10 +20,10 @@ def main ():
     s1 = LatLonGeodetic (57.662, 18.263)
     # We start out at this course
     c_course = 340
-    course_gc = get_great_circle_route (s1, c_course)
+    course_gc = get_great_circle_route (s1.get_latlon(), c_course)
 
     # This is a position of a lighthouse
-    light_house = LatLonGeodetic (58.7396, 17.8657)
+    light_house = LatLonGeodetic (58.7396, 17.8656)
     light_house_gc = light_house.get_latlon()
     # The intercept angle for the lighthouse
     light_house_intercept = 45

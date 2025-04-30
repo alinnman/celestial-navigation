@@ -17,7 +17,7 @@ def main ():
     # Simple sample of terrestrial navigation on three lighthouses.
 
     # Our three lighthouses, ordered left to right
-    p1 = [LatLonGeodetic (58.739439, 17.865486), "Landsort"]
+    p1 = [LatLonGeodetic (58.7396,   17.8656),   "Landsort"]
     p2 = [LatLonGeodetic (58.594091, 17.467489), "Gustaf Dalén"]
     p3 = [LatLonGeodetic (58.60355,  17.316041), "Hävringe"]
 
