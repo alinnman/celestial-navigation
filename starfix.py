@@ -1219,70 +1219,6 @@ def get_geodetic_alt (position : LatLonGeocentric, geocentric_alt : float,
     diff = rad_to_deg(ang_2 - ang_1)
     return geocentric_alt + diff
 
-#pylint: disable=C0103
-#pylint: disable=R0914
-def ellipsoidal_distance(pt1 : LatLon, pt2 : LatLon) -> float:
-    ''' Compute a distance on a path on an ellipsoid
-        From: https://www.johndcook.com/blog/2018/11/24/spheroid-distance/   
-    '''
-
-    # If coordinates are geocentrical we must convert to geodetic first
-    if not isinstance (pt1, LatLonGeodetic):
-        pt1_g = LatLonGeodetic (ll = pt1)
-        pt1 = pt1_g
-    if not isinstance (pt2, LatLonGeodetic):
-        pt2_g = LatLonGeodetic (ll = pt2)
-        pt2 = pt2_g
-
-    a = EARTH_RADIUS_GEODETIC_EQUATORIAL # equatorial radius in meters
-    f = EARTH_FLATTENING # ellipsoid flattening
-    b = (1 - f)*a
-    tolerance = 1e-11 # to stop iteration
-
-    lat1  = deg_to_rad(pt1.get_lat())
-    long1 = deg_to_rad(pt1.get_lon())
-    lat2  = deg_to_rad(pt2.get_lat())
-    long2 = deg_to_rad(pt2.get_lon())
-
-    phi1, phi2 = lat1, lat2
-    U1 = atan2((1-f)*tan(phi1),1)
-    U2 = atan2((1-f)*tan(phi2),1)
-    L1, L2 = long1, long2
-    L = L2 - L1
-
-    lambda_old = L + 0
-
-    while True:
-
-        t = (cos(U2)*sin(lambda_old))**2
-        t += (cos(U1)*sin(U2) - sin(U1)*cos(U2)*cos(lambda_old))**2
-        sin_sigma = t**0.5
-        cos_sigma = sin(U1)*sin(U2) + cos(U1)*cos(U2)*cos(lambda_old)
-        sigma = atan2(sin_sigma, cos_sigma)
-
-        sin_alpha = cos(U1)*cos(U2)*sin(lambda_old) / sin_sigma
-        cos_sq_alpha = 1 - sin_alpha**2
-        cos_2sigma_m = cos_sigma - 2*sin(U1)*sin(U2)/cos_sq_alpha
-        C = f*cos_sq_alpha*(4 + f*(4-3*cos_sq_alpha))/16
-
-        t = sigma + C*sin_sigma*(cos_2sigma_m + C*cos_sigma*(-1 + 2*cos_2sigma_m**2))
-        lambda_new = L + (1 - C)*f*sin_alpha*t
-        if abs(lambda_new - lambda_old) <= tolerance:
-            break
-        lambda_old = lambda_new
-
-    u2 = cos_sq_alpha*((a**2 - b**2)/b**2)
-    A = 1 + (u2/16384)*(4096 + u2*(-768+u2*(320 - 175*u2)))
-    B = (u2/1024)*(256 + u2*(-128 + u2*(74 - 47*u2)))
-    t = cos_2sigma_m + 0.25*B*(cos_sigma*(-1 + 2*cos_2sigma_m**2))
-    t -= (B/6)*cos_2sigma_m*(-3 + 4*sin_sigma**2)*(-3 + 4*cos_2sigma_m**2)
-    delta_sigma = B * sin_sigma * t
-    s = b*A*(sigma - delta_sigma)
-
-    return s
-#pylint: enable=R0914
-#pylint: enable=C0103
-
 ################################################
 # Terrestrial Navigation
 ################################################
@@ -1909,28 +1845,21 @@ class Sight :
 
         return LatLonGeocentric (result_lat, result_lon)
 
-    def get_angle (self, geodetic : bool, viewpoint : LatLon | NoneType = None) -> float:
+    def get_angle (self, geodetic : bool) -> float:
         ''' Returns the (Earth-based) angle of the sight '''
         if geodetic:
-            if viewpoint is not None:
-                ell_dist = ellipsoidal_distance (viewpoint, LatLonGeodetic (ll=self.gp))
-                wp = LatLonGeodetic (lat = viewpoint.get_lat(), lon = viewpoint.get_lon())
-                wplatlon = wp.get_latlon()
-                sph_dist = spherical_distance (wplatlon, self.gp)
-                return (90-self.raw_measured_alt)*(ell_dist / sph_dist)
             return 90-self.raw_measured_alt
-
         return 90-self.measured_alt
 
-    def get_circle (self, geodetic : bool, viewpoint : LatLon | NoneType = None) -> Circle:
+    def get_circle (self, geodetic : bool) -> Circle:
         ''' Return a circle object corresponding to this Sight '''
         circumference = EARTH_CIRCUMFERENCE
         if geodetic:
             gp_x = LatLonGeodetic (ll = self.gp)
         else:
             gp_x = self.gp
-        retval = Circle (gp_x, self.get_angle(geodetic=geodetic,viewpoint=viewpoint),\
-                       circumference)
+        retval = Circle (gp_x, self.get_angle(geodetic=geodetic),\
+                         circumference)
         return retval
 
     def get_distance_from (self, p : LatLonGeocentric, geodetic : bool) -> float:
