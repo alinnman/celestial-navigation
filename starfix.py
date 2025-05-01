@@ -464,7 +464,7 @@ class Circle:
 
 #pylint: disable=R0914
     def render_folium (self, the_map : object, color : str = "#FF0000",
-                       adjust_geodetic : bool = True):
+                       adjust_geodetic : bool = True, dashed = False):
         ''' Renders a circle on a folium map '''
 
         def adapt_lon (input_lon : float, center_lon : float) -> float:
@@ -477,6 +477,11 @@ class Circle:
             return center_lon + diff
 
         check_folium ()
+
+        if dashed:
+            dash_argument = '10'
+        else:
+            dash_argument = False
 
         coordinates = list [list[float]]()
         sub_coord = []
@@ -522,7 +527,8 @@ class Circle:
                     locations=coordinates,
                     color=color,
                     weight=5,
-                    popup="Small circle"
+                    popup="Small circle",
+                    dash_array=dash_argument
                 ).add_to(the_map)
                 # Reset variables
                 coordinates = list [list[float]]()
@@ -537,7 +543,8 @@ class Circle:
             locations=coordinates,
             color=color,
             weight=5,
-            popup="Small circle"
+            popup="Small circle",
+            dash_array = dash_argument
         ).add_to(the_map)
 #pylint: enable=R0914
 
@@ -1741,7 +1748,7 @@ class Sight :
             self.__correct_for_refraction ()
             if not no_dip:
                 self.__correct_dip_of_horizon ()
-        self.gp = self.__calculate_gp ()
+        self.__gp = self.__calculate_gp ()
 
         if estimated_position is None:
             # Use previously used parameter value
@@ -1759,7 +1766,7 @@ class Sight :
             # We must convert the sextant altitude (geodetic) to a geocentric value
             self.measured_alt =\
                 get_geocentric_alt (self.estimated_position,\
-                                    self.measured_alt, self.gp)
+                                    self.measured_alt, self.get_gp())
         # At this point the altitude values are saved
         # self.measured_alt     = A corrected *geocentrical* altitude
         #      This value is used for all intersection work
@@ -1771,6 +1778,10 @@ class Sight :
 #pylint: enable=R0912
 #pylint: enable=R0913
 #pylint: enable=R0914
+
+    def get_gp (self) -> LatLonGeocentric:
+        ''' Returns the GP (geographical point) '''
+        return self.__gp
 
     def get_object_name (self) -> str:
         ''' Returns the object name (celestial object name) of the sight '''
@@ -1836,23 +1847,23 @@ class Sight :
         ''' Return a circle object corresponding to this Sight '''
         circumference = EARTH_CIRCUMFERENCE
         if geodetic:
-            gp_x = LatLonGeodetic (ll = self.gp)
+            gp_x = LatLonGeodetic (ll = self.get_gp())
         else:
-            gp_x = self.gp
+            gp_x = self.get_gp()
         retval = Circle (gp_x, self.get_angle(geodetic=geodetic),\
                          circumference)
         return retval
 
     def get_distance_from (self, p : LatLonGeocentric, geodetic : bool) -> float:
         ''' Return the spherical distance from point (p) to the sight circle of equal altitude '''
-        p_distance = spherical_distance (p, self.gp)
+        p_distance = spherical_distance (p, self.get_gp())
         the_radius = self.get_circle(geodetic=geodetic).get_radius ()
         return p_distance - the_radius
 
     def get_azimuth (self, from_pos : LatLon) -> float:
         ''' Return the azimuth of this sight (to the GP) from a particular point on Earth 
             Returns the azimuth in degrees (0-360)'''
-        return get_azimuth (self.gp, from_pos)
+        return get_azimuth (self.get_gp(), from_pos)
 
     def render_folium (self, the_map : object, draw_markers = True):
         ''' Render this Sight object on a Folium Map object'''
@@ -2208,7 +2219,7 @@ class SightCollection:
     def render_folium\
           (self, intersections : tuple [LatLon, LatLon] | LatLon | NoneType = None,\
            accuracy : float = 1000, label_text = "Intersection",
-           draw_grid = True, draw_markers = True) -> object:
+           draw_grid = True, draw_markers = True, draw_azimuths = False) -> object:
         ''' Renders a folium object (Map) to be used for map plotting'''
 
         check_folium ()
@@ -2248,6 +2259,19 @@ class SightCollection:
         else:
             the_map = Map(location=(0,\
                                     0), zoom_start=6)
+
+        if draw_azimuths:
+            for s in the_sf_list:
+                gp = s.get_gp()
+                if isinstance (intersections, LatLon):
+                    int2 = None
+                    if isinstance (intersections, LatLonGeocentric):
+                        int2 = intersections
+                    elif isinstance (intersections, LatLonGeodetic):
+                        int2 = intersections.get_latlon()
+                    assert isinstance (int2, LatLonGeocentric)
+                    gcr = get_great_circle_route (gp, int2)
+                    gcr.render_folium (the_map, color='#AAAAFF', dashed=True)
 
         for s in the_sf_list:
             s.render_folium (the_map, draw_markers=draw_markers)
@@ -2315,7 +2339,7 @@ class SightTrip:
                                    self.speed_knots, self.time_hours)
 
         dbp = spherical_distance\
-              (taken_out, self.sight_end.gp)\
+              (taken_out, self.sight_end.get_gp())\
                   - self.sight_end.get_circle(geodetic=False).get_radius()
         return dbp, taken_out, rotated_latlon
 
@@ -2334,7 +2358,7 @@ class SightTrip:
                  estimated_position = self.estimated_starting_point,\
                  diagnostics = diagnostics)
             # Determine angle of the intersection point on sight_start small circle
-            a_vec = to_rectangular (self.sight_start.gp)
+            a_vec = to_rectangular (self.sight_start.get_gp())
             assert isinstance (best_intersection, LatLonGeocentric)
             b_vec = to_rectangular (best_intersection)
 
@@ -2373,11 +2397,11 @@ class SightTrip:
                                     self.course_degrees,\
                                     self.speed_knots, self.time_hours)
         assert isinstance (taken_out, LatLonGeocentric)
-        circle1 = Circle (self.sight_end.gp,
+        circle1 = Circle (self.sight_end.get_gp(),
                           self.sight_end.get_angle(geodetic = False),
                           EARTH_CIRCUMFERENCE)
 
-        circle2 = get_great_circle_route (taken_out, self.sight_end.gp)
+        circle2 = get_great_circle_route (taken_out, self.sight_end.get_gp())
 
         assert isinstance (circle2, Circle)
         self.movement_vec = circle2.get_latlon()

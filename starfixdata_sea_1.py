@@ -61,10 +61,10 @@ def main ():
         print ("--------- Some diagnostics --------- ")
 
         print ("S1 radius = " + str(round(s1.get_circle(geodetic=False).get_radius (),1)))
-        print ("S1 GP     = " + get_google_map_string(LatLonGeodetic(ll=s1.gp),4))
+        print ("S1 GP     = " + get_google_map_string(LatLonGeodetic(ll=s1.get_gp()),4))
 
         print ("S2 radius = " + str(round(s2.get_circle(geodetic=False).get_radius (),1)))
-        print ("S2 GP     = " + get_google_map_string(LatLonGeodetic(ll=s2.gp),4))
+        print ("S2 GP     = " + get_google_map_string(LatLonGeodetic(ll=s2.get_gp()),4))
 
         print ("Starting point GM = " + get_google_map_string (intersections[1],4))
         print ("Ending   point GM = " + get_google_map_string (intersections[0],4))

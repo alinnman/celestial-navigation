@@ -58,7 +58,7 @@ def main ():
 
         print ("--------- Some diagnostics --------- ")
         print ("S2 radius = " + str(round(s2.get_circle(geodetic=False).get_radius (),1)))
-        print ("S2 GP     = " + get_google_map_string(LatLonGeodetic(ll=s2.gp),4))
+        print ("S2 GP     = " + get_google_map_string(LatLonGeodetic(ll=s2.get_gp()),4))
 
         print ("--------- Mapping (Folium) --------- ")
         m = st.render_folium(intersections)

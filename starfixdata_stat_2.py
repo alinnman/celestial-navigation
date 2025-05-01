@@ -73,12 +73,12 @@ def main ():
         print ("Some useful data follows")
         counter = 0
         for s in collection.sf_list:
+            assert isinstance (s, Sight)
             counter += 1
             print (str(counter) + " radius = " +\
                     str(round(s.get_circle(geodetic=True).get_radius (),1)))
             print (str(counter) + " GP     = " +\
-                    get_google_map_string(LatLonGeodetic(ll=s.gp),4))
-
+                    get_google_map_string(LatLonGeodetic(ll=s.get_gp()),4))
 
     except IntersectError as ve:
         print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
@@ -87,7 +87,8 @@ def main ():
                 collection = ve.coll_object
 
     if collection is not None and not isinstance (intersections, tuple):
-        the_map = collection.render_folium (intersections)
+        # Draw the map. We display azimuth circles here. This is just an experimental feature
+        the_map = collection.render_folium (intersections, draw_azimuths=True, draw_grid=False)
         file_name = "./map.html"
         the_map.save (file_name)
         show_or_display_file (file_name)
