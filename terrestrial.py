@@ -64,7 +64,7 @@ def main ():
 
         circ_coll = CircleCollection ([c1, c2])
 
-        the_map = circ_coll.render_folium (center_pos = p2[0], adjust_geodetic=False,\
+        the_map = circ_coll.render_folium (center_pos = p[chosen_p], adjust_geodetic=False,\
                                            colors=[blue,blue])
         assert isinstance (the_map, Map)
         Marker (location=[p1[0].get_lat(),p1[0].get_lon()],\
