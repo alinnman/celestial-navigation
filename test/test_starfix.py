@@ -28,6 +28,7 @@ from starfixdata_sea_3       import main as main_sea_3
 from starfixdata_sea_4       import main as main_sea_4
 from starfixdata_sea_5       import main as main_sea_5
 from terrestrial             import main as main_terrestrial
+from starfix                 import LatLonGeocentric, LatLonGeodetic, spherical_distance
 
 #pylint: enable=E0401
 
@@ -81,6 +82,15 @@ class TestStringMethods(unittest.TestCase):
     def test_mr_2 (self):
         ''' Test suite for Machine-Readable Nautical Almanac '''
         main_2_mr ()
+
+    def test_latlons (self):
+        ''' Verify that the D2C and C2D functions are inverses '''
+        for x in range (0, 91):
+            a = LatLonGeocentric (x,40)
+            b = LatLonGeodetic (ll = a)
+            c = b.get_latlon ()
+            d = spherical_distance (a, c)
+            assert d < 0.001
 
 if __name__ == '__main__':
     unittest.main()
