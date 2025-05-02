@@ -52,7 +52,7 @@ You are recommended to unzip the file to a specific directory
 On Android you could create a directory in the "Documents" tree,
 e.g. "Documents/work/coding".
 Pydroid has access to <tt>pip</tt>
-for installing needed external libraries. 
+for installing needed external libraries.
 
 The script [starfix.py](starfix.py) contains the core routines.
 
