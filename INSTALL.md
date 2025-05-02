@@ -52,7 +52,7 @@ You are recommended to unzip the file to a specific directory
 On Android you could create a directory in the "Documents" tree,
 e.g. "Documents/work/coding".
 Pydroid has access to <tt>pip</tt>
-for installing needed external libraries.
+for installing needed external libraries. 
 
 The script [starfix.py](starfix.py) contains the core routines.
 
@@ -93,3 +93,13 @@ In addition to the supplied scripts you may also run the code in
 and this allows for a convenient way to keep your workflow in an easily
 managed web interface. The notebook web interface can be launched from specific
 launch scripts (launch.xxx.py).
+
+The Pydroid app should also
+be tweaked slightly, in order to allow for running Jupyter notebooks. Using
+the Settings (Android) app make sure you have these configurations made.
+
+1. Set "Allow notifications".
+1. Remove any battery saving settings.
+
+Unless you do these adjustments you will likely get an error while running
+notebooks causing the kernel to hang after about 1 minute.

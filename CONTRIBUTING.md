@@ -34,8 +34,7 @@ These are some things I may consider doing (or have already started)
 1. Create a lightweight web application and/or mobile app without requiring
 internet access. <br/>
 *A collection of simple Jupyter notebooks have been added, and this may be good*
-*enough for practical work. There are however bugs in current Jupyter*
-*implementations on Android.*
+*enough for practical work.*
 1. Diagnostic output for describing the underlying maths.
 (Mainly for the notebooks)<br/>
 *Working on this right now.*
