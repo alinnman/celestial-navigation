@@ -463,11 +463,23 @@ class Circle:
         str(self.__latlon) + "]; ANGLE = " + str(round(self.__angle,4))
 
 #pylint: disable=R0914
+#pylint: disable=R0913
+#pylint: disable=R0917
     def render_folium (self, the_map : object, color : str = "#FF0000",
-                       adjust_geodetic : bool = True, dashed = False):
-        ''' Renders a circle on a folium map '''
+                       adjust_geodetic : bool = True, dashed = False,
+                       steps_per_degree = 10,
+                       popup = "Circle"):
+        ''' Renders a circle on a folium map 
+            The circle is drawn in several consecutive steps.
+            The steps_per_degree parameter is used to get the needed accuracy.
+            A high value for this parameter will get a very accurate drawing, 
+            at the expense of some execution time and a large HTML rendering. 
+        '''
 
         def adapt_lon (input_lon : float, center_lon : float) -> float:
+            ''' This is a helper routine used for aligning the circle around the 
+                center point (avoids cutting the circle around the date lines)
+            '''
             diff = input_lon - center_lon
             if abs(diff) >= 180:
                 if center_lon > 0:
@@ -497,12 +509,12 @@ class Circle:
         north_tangent = normalize_vect (cross_product (b, east_tangent))
         c_latlon = self.get_latlon ()
         # assert isinstance (self, Circle)
-        degrees_10 = 0
+        degrees_step = 0
         last_lon = None
-        while degrees_10 <= 3600:
+        while degrees_step <= 360 * steps_per_degree:
             # A PolyLine with 0.1 degrees separation is smooth enough
-            angle = degrees_10 / 10.0
-            degrees_10 += 1
+            angle = degrees_step / float (steps_per_degree)
+            degrees_step += 1
             real_tangent =\
                 add_vecs (\
                             mult_scalar_vect (-cos(deg_to_rad(angle)), east_tangent),
@@ -527,7 +539,7 @@ class Circle:
                     locations=coordinates,
                     color=color,
                     weight=5,
-                    popup="Small circle",
+                    popup=popup,
                     dash_array=dash_argument
                 ).add_to(the_map)
                 # Reset variables
@@ -543,10 +555,12 @@ class Circle:
             locations=coordinates,
             color=color,
             weight=5,
-            popup="Small circle",
+            popup=popup,
             dash_array = dash_argument
         ).add_to(the_map)
 #pylint: enable=R0914
+#pylint: enable=R0913
+#pylint: enable=R0917
 
     def get_radius (self) -> float:
         ''' Returns the radius of the sight (in kilometers) '''
@@ -563,9 +577,10 @@ class CircleCollection:
             c.make_geodetic ()
         return self
 
-    def render_folium (self, center_pos : LatLon,\
+    def render_folium (self, center_pos : LatLon,
                        colors : list[str] | NoneType = None,
-                       adjust_geodetic : bool = True) -> object :
+                       adjust_geodetic : bool = True,
+                       steps_per_degree = 10) -> object :
         ''' Render this circle collection in Folium '''
         check_folium ()
 #pylint: disable=C0415
@@ -577,7 +592,9 @@ class CircleCollection:
             color = "#FF0000"
             if colors is not None:
                 color = colors [i]
-            self.c_list[i].render_folium (the_map, color, adjust_geodetic=adjust_geodetic)
+            self.c_list[i].render_folium\
+                (the_map, color, adjust_geodetic=adjust_geodetic,
+                 steps_per_degree=steps_per_degree)
         return the_map
 
 #pylint: enable=R0903

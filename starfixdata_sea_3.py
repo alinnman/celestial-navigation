@@ -54,7 +54,7 @@ def main ():
 #pylint: disable=C0415
         from folium import Marker, Map, Icon
 #pylint: enable=C0415
-        the_map = c_c.render_folium (light_house)
+        the_map = c_c.render_folium (light_house, steps_per_degree=100)
         assert isinstance (the_map, Map)
         Marker (location=[s1.get_lat(), s1.get_lon()],\
                 icon=Icon(icon="home", prefix="fa"),\

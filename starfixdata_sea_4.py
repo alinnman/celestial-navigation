@@ -48,11 +48,12 @@ def main ():
 #pylint: disable=C0415
         from folium import Marker, Icon, Map
 #pylint: enable=C0415
-        the_map = c_c.render_folium (light_house, ["#FF0000","#0000FF"])
+        the_map = c_c.render_folium (light_house, ["#FF0000","#0000FF"],
+                                     steps_per_degree = 100) # This is for high accuracy
         assert isinstance (the_map, Map)
 
-        Marker (location=[s1.get_lat(), s1.get_lon()],\
-                icon=Icon(icon="home", prefix="fa"),\
+        Marker (location=[s1.get_lat(), s1.get_lon()],
+                icon=Icon(icon="home", prefix="fa"),
                 popup="Starting point " + str(s1),
                 tooltip="Starting point").add_to(the_map)
 
@@ -60,8 +61,8 @@ def main ():
                 popup="Intercept point " + str(the_coord),
                 tooltip = "Intercept point").add_to(the_map)
 
-        Marker (location=[light_house.get_lat(),light_house.get_lon()],\
-                icon=Icon(icon="info", prefix="fa"),\
+        Marker (location=[light_house.get_lat(),light_house.get_lon()],
+                icon=Icon(icon="info", prefix="fa"),
                 popup="Lighthouse " + str(s1),
                 tooltip="Lighthouse").add_to(the_map)
 
