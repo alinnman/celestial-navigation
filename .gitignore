@@ -4,4 +4,5 @@ __pycache__/*
 .ipynb_checkpoints/starfix-pynb-checkpoint.ipynb
 testing*
 *.html
+*.json
 
