@@ -1,7 +1,11 @@
 ''' This is a simple refactoring of common code used in the notebooks'''
 import json
+from types import NoneType
 import ipywidgets as widgets
 from ipywidgets import Layout
+from folium import Map as Folium_Map
+from starfix import LatLonGeodetic, SightCollection, Sight, IntersectError,\
+                    get_representation, get_google_map_string
 
 NUM_DICT = None
 FILE_NAME = None
@@ -129,3 +133,65 @@ def render_widget ():
                       description=v[1]+"_"+str(i+1))
             widget_array.append (obj)
     return widget_array
+
+def get_starfixes (drp_pos : LatLonGeodetic) -> SightCollection :
+    ''' Returns a list of used star fixes (SightCollection) '''
+
+    Sight.set_estimated_position (drp_pos)
+    retval = []
+    assert isinstance (NUM_DICT, dict)
+    assert isinstance (TYPE_ARRAY, list)
+    for i in range (3):
+        if str2bool(NUM_DICT["Use"+str(i+1)]):
+            retval.append (Sight ( object_name          = NUM_DICT         [TYPE_ARRAY[0][0]+str(i+1)],
+                                   measured_alt         = NUM_DICT         [TYPE_ARRAY[1][0]+str(i+1)],
+                                   set_time             = NUM_DICT         [TYPE_ARRAY[2][0]+str(i+1)],
+                                   index_error_minutes  = float(NUM_DICT   [TYPE_ARRAY[3][0]+str(i+1)]),
+                                   limb_correction      = int(NUM_DICT     [TYPE_ARRAY[4][0]+str(i+1)]),
+                                   artificial_horizon   = str2bool(NUM_DICT[TYPE_ARRAY[5][0]+str(i+1)]),
+                                   observer_height      = float(NUM_DICT   [TYPE_ARRAY[6][0]+str(i+1)]),
+                                   temperature          = float(NUM_DICT   [TYPE_ARRAY[7][0]+str(i+1)]),
+                                   dt_dh                = float(NUM_DICT   [TYPE_ARRAY[8][0]+str(i+1)]),
+                                   pressure             = float(NUM_DICT   [TYPE_ARRAY[9][0]+str(i+1)])
+                                 ))
+
+    return SightCollection (retval)
+
+
+# SIGHT REDUCTION.
+
+def sight_reduction () -> Folium_Map: 
+    assert isinstance (NUM_DICT, dict)
+    the_pos = LatLonGeodetic (float(NUM_DICT["DrpLat"]), 
+                            float(NUM_DICT["DrpLon"])) # Rough DRP position
+
+    intersections = None
+    collection = None
+    the_map = None
+    try:
+        intersections, _, _, collection =\
+                SightCollection.get_intersections_conv (return_geodetic=True,
+                                                        estimated_position=the_pos,
+                                                        get_starfixes=get_starfixes,
+                                                        assume_good_estimated_position=True)
+        
+        assert intersections is not None
+        assert collection is not None
+        print (get_representation(intersections,1))
+        assert isinstance (intersections, LatLonGeodetic)
+        print ("Google Map Coordinate = " + get_google_map_string(intersections,4))
+
+    except IntersectError as ve:
+        print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
+        if ve.coll_object is not None:
+            if isinstance (ve.coll_object, SightCollection):
+                collection = ve.coll_object
+
+    if isinstance (intersections, tuple):
+        intersections = None
+
+    if collection is not None:
+        the_map = collection.render_folium (intersections)
+    assert isinstance (the_map, Folium_Map)
+    return the_map
+
