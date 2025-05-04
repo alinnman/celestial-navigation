@@ -1,4 +1,4 @@
-# Input form
+''' This is a simple refactoring of common code used in the notebooks'''
 import json
 import ipywidgets as widgets
 from ipywidgets import Layout
@@ -9,12 +9,11 @@ TYPE_ARRAY = None
 
 def get_dict () -> dict:
     ''' Return the genererated dictionary'''
-    global NUM_DICT
     assert isinstance (NUM_DICT, dict)
     return NUM_DICT
 
 def get_type_array () -> dict:
-    global TYPE_ARRAY
+    ''' Return the generated type array '''
     assert isinstance (TYPE_ARRAY, dict)
     return TYPE_ARRAY
 
@@ -37,7 +36,6 @@ def initialize (fn : str, init_dict : dict) :
 
 def dump_dict ():
     ''' Dumps the contents to a json file '''
-    global FILE_NAME
     j_dump = json.dumps (NUM_DICT)
     assert isinstance (FILE_NAME, str)
     with open(FILE_NAME, "w", encoding="utf-8") as f:
@@ -58,7 +56,7 @@ class MyTextWidget (widgets.Text):
     def __init__ (self, attr_name, description):
         self.__attr_name = attr_name
         assert isinstance (NUM_DICT, dict)
-        super().__init__ (NUM_DICT[self.__attr_name], 
+        super().__init__ (NUM_DICT[self.__attr_name],
                           description=description, disabled=False,
                           style=style,
                           layout=Layout(width='50%'))
@@ -76,10 +74,10 @@ class MyCheckboxWidget (widgets.Checkbox):
     def __init__ (self, attr_name, description):
         self.__attr_name = attr_name
         assert isinstance (NUM_DICT, dict)
-        super().__init__ (str2bool(NUM_DICT[self.__attr_name]), 
+        super().__init__ (str2bool(NUM_DICT[self.__attr_name]),
                           description=description, disabled=False,
                           style=style)
-                         
+
         self.observe (handle_change)
 
     def handle_event (self, change):
@@ -92,7 +90,7 @@ class MyLimbDropdown (widgets.Dropdown):
     ''' This class represents dropdowns '''
     def __init__ (self, attr_name, description):
         self.__attr_name = attr_name
-        assert isinstance (NUM_DICT, dict)        
+        assert isinstance (NUM_DICT, dict)
         super().__init__ (value=NUM_DICT[self.__attr_name],
                           options=[("Lower",'-1'),("Central", '0'),("Upper",'1')],
                           description=description, disabled=False, style=style)
@@ -100,9 +98,9 @@ class MyLimbDropdown (widgets.Dropdown):
 
     def handle_event (self, change):
         ''' Event terminator '''
-        assert isinstance (NUM_DICT, dict)        
+        assert isinstance (NUM_DICT, dict)
         NUM_DICT[self.__attr_name]=str(change['new'])
-        dump_dict ()            
+        dump_dict ()
 
 def render_widget ():
     ''' Renders the widget layout used by the notebooks '''
@@ -131,5 +129,3 @@ def render_widget ():
                       description=v[1]+"_"+str(i+1))
             widget_array.append (obj)
     return widget_array
-
-#VBox (widget_array)
