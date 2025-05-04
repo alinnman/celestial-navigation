@@ -1,0 +1,135 @@
+# Input form
+import json
+import ipywidgets as widgets
+from ipywidgets import Layout
+
+NUM_DICT = None
+FILE_NAME = None
+TYPE_ARRAY = None
+
+def get_dict () -> dict:
+    ''' Return the genererated dictionary'''
+    global NUM_DICT
+    assert isinstance (NUM_DICT, dict)
+    return NUM_DICT
+
+def get_type_array () -> dict:
+    global TYPE_ARRAY
+    assert isinstance (TYPE_ARRAY, dict)
+    return TYPE_ARRAY
+
+def str2bool(v):
+    ''' Simple conversion from bool to string '''
+    return v.lower() in ("yes", "true", "t", "1")
+
+def initialize (fn : str, init_dict : dict) :
+    ''' Initialize the helper '''
+    global FILE_NAME
+    global NUM_DICT
+    FILE_NAME = fn
+
+    try:
+        with open(FILE_NAME, "r", encoding="utf-8") as f:
+            s = f.read ()
+            NUM_DICT = json.loads (s)
+    except FileNotFoundError:
+        NUM_DICT = init_dict
+
+def dump_dict ():
+    ''' Dumps the contents to a json file '''
+    global FILE_NAME
+    j_dump = json.dumps (NUM_DICT)
+    assert isinstance (FILE_NAME, str)
+    with open(FILE_NAME, "w", encoding="utf-8") as f:
+        f.write(j_dump)
+
+def handle_change (change):
+    ''' Handler for widget events '''
+    if change['type'] == 'change' and change['name'] == 'value':
+        the_owner = change['owner']
+        # assert isinstance (the_owner, MyWidget)
+        the_owner.handle_event (change)
+
+style = {'description_width': '120px'}
+
+class MyTextWidget (widgets.Text):
+    ''' This class represents simple text input'''
+
+    def __init__ (self, attr_name, description):
+        self.__attr_name = attr_name
+        assert isinstance (NUM_DICT, dict)
+        super().__init__ (NUM_DICT[self.__attr_name], 
+                          description=description, disabled=False,
+                          style=style,
+                          layout=Layout(width='50%'))
+        self.observe (handle_change)
+
+    def handle_event (self, change):
+        ''' Event terminator '''
+        assert isinstance (NUM_DICT, dict)
+        NUM_DICT[self.__attr_name]=change['new']
+        dump_dict ()
+
+class MyCheckboxWidget (widgets.Checkbox):
+    ''' This class represents checkboxes '''
+
+    def __init__ (self, attr_name, description):
+        self.__attr_name = attr_name
+        assert isinstance (NUM_DICT, dict)
+        super().__init__ (str2bool(NUM_DICT[self.__attr_name]), 
+                          description=description, disabled=False,
+                          style=style)
+                         
+        self.observe (handle_change)
+
+    def handle_event (self, change):
+        ''' Event terminator '''
+        assert isinstance (NUM_DICT, dict)
+        NUM_DICT[self.__attr_name]=str(change['new'])
+        dump_dict ()
+
+class MyLimbDropdown (widgets.Dropdown):
+    ''' This class represents dropdowns '''
+    def __init__ (self, attr_name, description):
+        self.__attr_name = attr_name
+        assert isinstance (NUM_DICT, dict)        
+        super().__init__ (value=NUM_DICT[self.__attr_name],
+                          options=[("Lower",'-1'),("Central", '0'),("Upper",'1')],
+                          description=description, disabled=False, style=style)
+        self.observe (handle_change)
+
+    def handle_event (self, change):
+        ''' Event terminator '''
+        assert isinstance (NUM_DICT, dict)        
+        NUM_DICT[self.__attr_name]=str(change['new'])
+        dump_dict ()            
+
+def render_widget ():
+    ''' Renders the widget layout used by the notebooks '''
+    global TYPE_ARRAY
+    widget_array = []
+    TYPE_ARRAY = [["ObjectName",         "NAME",           MyTextWidget],
+                 ["Altitude",            "ALT",            MyTextWidget],
+                 ["Time",                "TIME",           MyTextWidget],
+                 ["IndexError",          "INDEX_ERROR",    MyTextWidget],
+                 ["LimbCorrection",      "LIMB_CORR",      MyLimbDropdown],
+                 ["ArtificialHorizon",   "ARTIFICIAL_HOR", MyCheckboxWidget],
+                 ["ObserverHeight",      "OBS_HEIGHT",     MyTextWidget],
+                 ["Temperature",         "TEMP",           MyTextWidget],
+                 ["TemperatureGradient", "TEMP_GRADIENT",  MyTextWidget],
+                 ["Pressure",            "PRESSURE",       MyTextWidget]]
+
+    widget_array.append (MyTextWidget ("DrpLat","DRP_LAT"))
+    widget_array.append (MyTextWidget ("DrpLon","DRP_LON"))
+    for i in range (3):
+        widget_array.append (MyCheckboxWidget("Use"+str(i+1),\
+                                            description="Use " + str(i+1)))
+        for _,v in enumerate (TYPE_ARRAY):
+            cl = v[2]
+            assert isinstance (cl, type)
+            obj = cl (v[0]+str(i+1),
+                      description=v[1]+"_"+str(i+1))
+            widget_array.append (obj)
+    return widget_array
+
+#VBox (widget_array)
