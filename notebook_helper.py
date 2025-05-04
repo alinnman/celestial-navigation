@@ -1,6 +1,5 @@
 ''' This is a simple refactoring of common code used in the notebooks'''
 import json
-from types import NoneType
 import ipywidgets as widgets
 from ipywidgets import Layout
 from folium import Map as Folium_Map
@@ -27,8 +26,10 @@ def str2bool(v):
 
 def initialize (fn : str, init_dict : dict) :
     ''' Initialize the helper '''
+#pylint: disable=W0603
     global FILE_NAME
     global NUM_DICT
+#pylint: enable=W0603
     FILE_NAME = fn
 
     try:
@@ -108,7 +109,9 @@ class MyLimbDropdown (widgets.Dropdown):
 
 def render_widget ():
     ''' Renders the widget layout used by the notebooks '''
+#pylint: disable=W0603
     global TYPE_ARRAY
+#pylint: enable=W0603
     widget_array = []
     TYPE_ARRAY = [["ObjectName",         "NAME",           MyTextWidget],
                  ["Altitude",            "ALT",            MyTextWidget],
@@ -143,16 +146,26 @@ def get_starfixes (drp_pos : LatLonGeodetic) -> SightCollection :
     assert isinstance (TYPE_ARRAY, list)
     for i in range (3):
         if str2bool(NUM_DICT["Use"+str(i+1)]):
-            retval.append (Sight ( object_name          = NUM_DICT         [TYPE_ARRAY[0][0]+str(i+1)],
-                                   measured_alt         = NUM_DICT         [TYPE_ARRAY[1][0]+str(i+1)],
-                                   set_time             = NUM_DICT         [TYPE_ARRAY[2][0]+str(i+1)],
-                                   index_error_minutes  = float(NUM_DICT   [TYPE_ARRAY[3][0]+str(i+1)]),
-                                   limb_correction      = int(NUM_DICT     [TYPE_ARRAY[4][0]+str(i+1)]),
-                                   artificial_horizon   = str2bool(NUM_DICT[TYPE_ARRAY[5][0]+str(i+1)]),
-                                   observer_height      = float(NUM_DICT   [TYPE_ARRAY[6][0]+str(i+1)]),
-                                   temperature          = float(NUM_DICT   [TYPE_ARRAY[7][0]+str(i+1)]),
-                                   dt_dh                = float(NUM_DICT   [TYPE_ARRAY[8][0]+str(i+1)]),
-                                   pressure             = float(NUM_DICT   [TYPE_ARRAY[9][0]+str(i+1)])
+            retval.append (Sight ( object_name          =
+                                       NUM_DICT         [TYPE_ARRAY[0][0]+str(i+1)],
+                                   measured_alt         =
+                                       NUM_DICT         [TYPE_ARRAY[1][0]+str(i+1)],
+                                   set_time             =
+                                       NUM_DICT         [TYPE_ARRAY[2][0]+str(i+1)],
+                                   index_error_minutes  =
+                                       float(NUM_DICT   [TYPE_ARRAY[3][0]+str(i+1)]),
+                                   limb_correction      =
+                                       int(NUM_DICT     [TYPE_ARRAY[4][0]+str(i+1)]),
+                                   artificial_horizon   =
+                                       str2bool(NUM_DICT[TYPE_ARRAY[5][0]+str(i+1)]),
+                                   observer_height      =
+                                       float(NUM_DICT   [TYPE_ARRAY[6][0]+str(i+1)]),
+                                   temperature          =
+                                       float(NUM_DICT   [TYPE_ARRAY[7][0]+str(i+1)]),
+                                   dt_dh                =
+                                       float(NUM_DICT   [TYPE_ARRAY[8][0]+str(i+1)]),
+                                   pressure             =
+                                       float(NUM_DICT   [TYPE_ARRAY[9][0]+str(i+1)])
                                  ))
 
     return SightCollection (retval)
@@ -160,9 +173,10 @@ def get_starfixes (drp_pos : LatLonGeodetic) -> SightCollection :
 
 # SIGHT REDUCTION.
 
-def sight_reduction () -> Folium_Map: 
+def sight_reduction () -> Folium_Map:
+    ''' Perform a sight reduction given data entered above '''
     assert isinstance (NUM_DICT, dict)
-    the_pos = LatLonGeodetic (float(NUM_DICT["DrpLat"]), 
+    the_pos = LatLonGeodetic (float(NUM_DICT["DrpLat"]),
                             float(NUM_DICT["DrpLon"])) # Rough DRP position
 
     intersections = None
@@ -174,7 +188,7 @@ def sight_reduction () -> Folium_Map:
                                                         estimated_position=the_pos,
                                                         get_starfixes=get_starfixes,
                                                         assume_good_estimated_position=True)
-        
+
         assert intersections is not None
         assert collection is not None
         print (get_representation(intersections,1))
@@ -194,4 +208,3 @@ def sight_reduction () -> Folium_Map:
         the_map = collection.render_folium (intersections)
     assert isinstance (the_map, Folium_Map)
     return the_map
-
