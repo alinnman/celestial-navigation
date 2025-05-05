@@ -1,4 +1,11 @@
-''' This is a simple refactoring of common code used in the notebooks'''
+''' Simple sample representing a trip at sea with supporting celestial navigation
+    © August Linnman, 2025, email: august@linnman.net
+
+    This is a simple refactoring of common code used in the notebooks
+
+    MIT License (see LICENSE file)       
+'''
+
 import json
 from pydoc import locate
 import ipywidgets as widgets
