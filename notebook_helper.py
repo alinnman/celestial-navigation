@@ -65,7 +65,7 @@ class MyTextWidget (widgets.Text):
         super().__init__ (NUM_DICT[self.__attr_name],
                           description=description, disabled=False,
                           style=style,
-                          layout=Layout(width='50%'))
+                          layout=Layout(width='90%'))
         self.observe (handle_change)
 
     def handle_event (self, change):
