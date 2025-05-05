@@ -1,8 +1,8 @@
 ''' This is a simple refactoring of common code used in the notebooks'''
 import json
+from pydoc import locate
 import ipywidgets as widgets
 from ipywidgets import Layout
-from pydoc import locate
 from folium import Map as Folium_Map
 from starfix import LatLonGeodetic, SightCollection, Sight, IntersectError,\
                     get_representation, get_google_map_string
