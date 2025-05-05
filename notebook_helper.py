@@ -2,6 +2,7 @@
 import json
 import ipywidgets as widgets
 from ipywidgets import Layout
+from pydoc import locate
 from folium import Map as Folium_Map
 from starfix import LatLonGeodetic, SightCollection, Sight, IntersectError,\
                     get_representation, get_google_map_string
@@ -107,30 +108,21 @@ class MyLimbDropdown (widgets.Dropdown):
         NUM_DICT[self.__attr_name]=str(change['new'])
         dump_dict ()
 
-def render_widget ():
+def render_widget (ta : list, nr_of_views : int, include_drp : bool = True) -> list:
     ''' Renders the widget layout used by the notebooks '''
 #pylint: disable=W0603
     global TYPE_ARRAY
 #pylint: enable=W0603
     widget_array = []
-    TYPE_ARRAY = [["ObjectName",         "NAME",           MyTextWidget],
-                 ["Altitude",            "ALT",            MyTextWidget],
-                 ["Time",                "TIME",           MyTextWidget],
-                 ["IndexError",          "INDEX_ERROR",    MyTextWidget],
-                 ["LimbCorrection",      "LIMB_CORR",      MyLimbDropdown],
-                 ["ArtificialHorizon",   "ARTIFICIAL_HOR", MyCheckboxWidget],
-                 ["ObserverHeight",      "OBS_HEIGHT",     MyTextWidget],
-                 ["Temperature",         "TEMP",           MyTextWidget],
-                 ["TemperatureGradient", "TEMP_GRADIENT",  MyTextWidget],
-                 ["Pressure",            "PRESSURE",       MyTextWidget]]
-
-    widget_array.append (MyTextWidget ("DrpLat","DRP_LAT"))
-    widget_array.append (MyTextWidget ("DrpLon","DRP_LON"))
-    for i in range (3):
+    TYPE_ARRAY = ta
+    if include_drp:
+        widget_array.append (MyTextWidget ("DrpLat","DRP_LAT"))
+        widget_array.append (MyTextWidget ("DrpLon","DRP_LON"))
+    for i in range (nr_of_views):
         widget_array.append (MyCheckboxWidget("Use"+str(i+1),\
                                             description="Use " + str(i+1)))
         for _,v in enumerate (TYPE_ARRAY):
-            cl = v[2]
+            cl = locate ("notebook_helper." + v[2])
             assert isinstance (cl, type)
             obj = cl (v[0]+str(i+1),
                       description=v[1]+"_"+str(i+1))
