@@ -90,7 +90,6 @@ class MyCheckboxWidget (widgets.Checkbox):
         super().__init__ (str2bool(NUM_DICT[self.__attr_name]),
                           description=description, disabled=False,
                           style=style)
-
         self.observe (handle_change)
 
     def handle_event (self, change):
@@ -123,11 +122,11 @@ def render_widget (ta : list, nr_of_views : int, include_drp : bool = True) -> l
     widget_array = []
     TYPE_ARRAY = ta
     if include_drp:
-        widget_array.append (MyTextWidget ("DrpLat","DRP_LAT"))
-        widget_array.append (MyTextWidget ("DrpLon","DRP_LON"))
+        widget_array.append (MyTextWidget ("DrpLat","<b>DRP_LAT</b>"))
+        widget_array.append (MyTextWidget ("DrpLon","<b>DRP_LON</b>"))
     for i in range (nr_of_views):
         widget_array.append (MyCheckboxWidget("Use"+str(i+1),\
-                                            description="Use " + str(i+1)))
+                                              description="<b>Use</b> " + str(i+1)))
         for _,v in enumerate (TYPE_ARRAY):
             cl = locate ("notebook_helper." + v[2])
             assert isinstance (cl, type)
@@ -176,7 +175,7 @@ def sight_reduction () -> Folium_Map:
     ''' Perform a sight reduction given data entered above '''
     assert isinstance (NUM_DICT, dict)
     the_pos = LatLonGeodetic (float(NUM_DICT["DrpLat"]),
-                            float(NUM_DICT["DrpLon"])) # Rough DRP position
+                              float(NUM_DICT["DrpLon"]))
 
     intersections = None
     collection = None
