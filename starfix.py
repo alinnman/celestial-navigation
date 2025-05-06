@@ -1943,7 +1943,7 @@ class SightCollection:
 
     def __init__ (self, sf_list : list[Sight]):
         if len (sf_list) < 2:
-            raise ValueError ("SightCollection should have at least two sights")
+            raise IntersectError ("SightCollection should have at least two sights")
         self.sf_list = sf_list
 
 #pylint: disable=R0912
