@@ -122,8 +122,8 @@ def render_widget (ta : list, nr_of_views : int, include_drp : bool = True) -> l
     widget_array = []
     TYPE_ARRAY = ta
     if include_drp:
-        widget_array.append (MyTextWidget ("DrpLat","DRP_LAT"))
-        widget_array.append (MyTextWidget ("DrpLon","DRP_LON"))
+        widget_array.append (MyTextWidget ("DrpLat","𝗗𝗥𝗣_𝗟𝗔𝗧"))
+        widget_array.append (MyTextWidget ("DrpLon","𝗗𝗥𝗣_𝗟𝗢𝗡"))
     for i in range (nr_of_views):
         widget_array.append (MyCheckboxWidget("Use"+str(i+1),\
                                               description="Use " + str(i+1)))
