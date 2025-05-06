@@ -7,9 +7,10 @@
 '''
 
 import json
+from types import NoneType
 from pydoc import locate
 import ipywidgets as widgets
-from ipywidgets import Layout
+from ipywidgets import Layout, VBox
 from folium import Map as Folium_Map
 from starfix import LatLonGeodetic, SightCollection, Sight, IntersectError,\
                     get_representation, get_google_map_string
@@ -58,10 +59,9 @@ def handle_change (change):
     ''' Handler for widget events '''
     if change['type'] == 'change' and change['name'] == 'value':
         the_owner = change['owner']
-        # assert isinstance (the_owner, MyWidget)
         the_owner.handle_event (change)
 
-style = {'description_width': '120px'}
+style = {'description_width': '100px'}
 
 class MyTextWidget (widgets.Text):
     ''' This class represents simple text input'''
@@ -122,17 +122,19 @@ def render_widget (ta : list, nr_of_views : int, include_drp : bool = True) -> l
     widget_array = []
     TYPE_ARRAY = ta
     if include_drp:
-        widget_array.append (MyTextWidget ("DrpLat","<b>DRP_LAT</b>"))
-        widget_array.append (MyTextWidget ("DrpLon","<b>DRP_LON</b>"))
+        widget_array.append (MyTextWidget ("DrpLat","DRP_LAT"))
+        widget_array.append (MyTextWidget ("DrpLon","DRP_LON"))
     for i in range (nr_of_views):
         widget_array.append (MyCheckboxWidget("Use"+str(i+1),\
-                                              description="<b>Use</b> " + str(i+1)))
+                                              description="Use " + str(i+1)))
+        vbox_array = []
         for _,v in enumerate (TYPE_ARRAY):
             cl = locate ("notebook_helper." + v[2])
             assert isinstance (cl, type)
             obj = cl (v[0]+str(i+1),
                       description=v[1]+"_"+str(i+1))
-            widget_array.append (obj)
+            vbox_array.append (obj)
+        widget_array.append (VBox(vbox_array, layout=Layout(margin='0 0 0 20px')))
     return widget_array
 
 def get_starfixes (drp_pos : LatLonGeodetic) -> SightCollection :
@@ -171,7 +173,7 @@ def get_starfixes (drp_pos : LatLonGeodetic) -> SightCollection :
 
 # SIGHT REDUCTION.
 
-def sight_reduction () -> Folium_Map:
+def sight_reduction () -> Folium_Map | NoneType:
     ''' Perform a sight reduction given data entered above '''
     assert isinstance (NUM_DICT, dict)
     the_pos = LatLonGeodetic (float(NUM_DICT["DrpLat"]),
@@ -204,5 +206,7 @@ def sight_reduction () -> Folium_Map:
 
     if collection is not None:
         the_map = collection.render_folium (intersections)
-    assert isinstance (the_map, Folium_Map)
-    return the_map
+        assert isinstance (the_map, Folium_Map)
+        return the_map
+    else:
+        return None
