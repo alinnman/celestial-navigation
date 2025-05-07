@@ -126,7 +126,9 @@ EARTH_FLATTENING =\
 class LatLon:
     ''' Base class for lat-lon pairs '''
     def __init__ (self, lat : float | int, lon : float | int):
-        assert -90 <= lat <= 90
+        if lat > 90 or lat < -90:
+            raise ValueError ("Latitude must be between -90 and 90.")
+        #assert -90 <= lat <= 90
         self.__lat = lat
         self.__lon = mod_lon(lon)
 
