@@ -36,3 +36,9 @@ You may also watch a website I wrote dedicated to reasoning and challenging
 questions on Earth geometry [here](https://earthform.linnman.net/),
 including a special challenge related to Celestial Navigation
 [here](https://earthform.linnman.net/bonus-challenge-celestial-navigation).
+
+I have also prepared a simple Google Colab
+[notebook](https://colab.research.google.com/drive/1tCY3mvpLlzUKot2Rul3I4ZobVCzzRBtT?usp=sharing)
+to be used in discussions
+with flat earthers, to show how celestial navigation works and how powerful
+its mechanism is to give evidence for a spheric Earth.
