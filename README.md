@@ -568,7 +568,7 @@ See code for explanation of this optimization.
 
 To summarize: The algorithms described above show a method of getting an
 accurate sight reduction given a DRP position $p_d$ and a collection of sights
-$S_{\mathrm{sights}} = S_s = \lbrace s_1, s_2, \dots s_n  \rbrace $<br>
+$S_s = \lbrace s_1, s_2, \dots s_n  \rbrace $<br>
 
 We can write this as an (iterative) sight reduction function $R$ in this way
 
