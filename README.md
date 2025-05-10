@@ -568,13 +568,13 @@ See code for explanation of this optimization.
 
 To summarize: The algorithms described above show a method of getting an
 accurate sight reduction given a DRP position $p_d$ and a collection of sights
-$S_{\mathrm{sights}} = \lbrace s_1, s_2, \dots s_n  \rbrace $<br>
+$S_{\mathrm{sights}} = S_s = \lbrace s_1, s_2, \dots s_n  \rbrace $<br>
 
 We can write this as an (iterative) sight reduction function $R$ in this way
 
-${p_d}_{i+1} = R\left( {p_d}_i,S_{\mathrm{sights}} \right)$
+${p_d}_{i+1} = R\left( {{p_d}_i},{S_s} \right)$
 
-Repeat this until $|{p_d}_{j+1} - {p_d}_{i}| < \delta$
+Repeat this until $p_{d_{j+1}} - p_{d{_j}} < \delta$
 
 *A short note: An alternate algorithm using circles*
 *of equal altitude on a **geodetical** surface would not need a DR seed,*
