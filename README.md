@@ -574,7 +574,7 @@ We can write this as an (iterative) sight reduction function $R$ in this way
 
 ${p_d}_{i+1} = R\left( {{p_d}_i},{S_s} \right)$
 
-Repeat this until $p_{d_{j+1}} - p_{d{_j}} < \delta$
+Repeat this until $\left|p_{d_{j+1}} - p_{d{_j}}\right| < \delta$
 
 *A short note: An alternate algorithm using circles*
 *of equal altitude on a **geodetical** surface would not need a DR seed,*
