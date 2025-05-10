@@ -312,7 +312,8 @@ The symbol $\cdot$ denotes a
 The $\text{D2C}()$ function converts from geodetic to geocentrical coordinates.
 See
 [this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion)
-for more information. Also see code.
+for more information. <br>Also see code
+[&rarr;](https://github.com/alinnman/celestial-navigation/blob/bb71731f8c4be417b20bf55676bc18e6492028cf/starfix.py#L2188).
 
 From here we continue all calculations in a **geocentrical** (spherical)
 coordinate system on the unit sphere<br>
@@ -389,10 +390,12 @@ ${p_1}_d = C2D(p_1)$<br>
 ${p_2}_d = C2D(p_2)$
 
 The used function ($\text{C2D}$) for this conversion is numerical.
-For more details, see code and
+For more details, see
 [this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion).
 <br>(The function $\text{C2D}$ is the inverse of $\text{D2C}$,
-i.e $\text{C2D}(\text{D2C}(p))==p$)
+i.e $\text{C2D}(\text{D2C}(p))==p$)<br>
+Also see code
+[&rarr;](https://github.com/alinnman/celestial-navigation/blob/bb71731f8c4be417b20bf55676bc18e6492028cf/starfix.py#L2188)
 
 When performing the calculation above we also deduce the intersection angle for
 the two small circles (**fitness**). This angle will be used later on when we
@@ -449,6 +452,8 @@ $\phi_{\text{gc}} = \left|\left| a \times b \right|\right| =
 \left|\left| b \times a\right|\right| $
 
 ### 3.iii. Using three or more sights<a name="using-three-or-more-sights"></a>
+
+#### Basic algorithm: Collecting and sorting sight pairs
 
 Using three (or more) sights a sight reduction can be done in the following way
 
@@ -540,9 +545,12 @@ giving priority (weighting) for intersections with a larger angle.
 The final result of the intersection algorithm will be a **single** mean value
 of the extracted intersection points.
 
+#### Optimization of DR location
+
 In order to get better accuracy you can use the static method
-<tt>SightCollection.get_intersections_conv</tt> in order to iterate through
-successively better dead reckoning estimations.
+<tt>SightCollection.get_intersections_conv</tt>
+[&rarr;](https://github.com/alinnman/celestial-navigation/blob/bb71731f8c4be417b20bf55676bc18e6492028cf/starfix.py#L2188)
+in order to iterate through successively better dead reckoning estimations.
 To get high accuracy you normally only need 3 iterations.
 
 The reason for this is the mapping between geocentric and geodetic coordinates.
@@ -557,6 +565,22 @@ position is inaccurate. Successive iterations will handle this and will make
 the $p_d$ approximations successively converge to the correct position.
 
 See code for explanation of this optimization.
+
+To summarize: The algorithms described above show a method of getting an
+accurate sight reduction given a DRP position $p_d$ and a collection of sights
+$S_{\mathrm{sights}} = \lbrace s_1, s_2, \dots s_n  \rbrace $<br>
+
+We can write this as an (iterative) sight reduction function $R$ in this way
+
+${p_d}_{i+1} = R\left( {p_d}_i,S_{\mathrm{sights}} \right)$
+
+Repeat this until $|{p_d}_{j+1} - {p_d}_{i}| < \delta$
+
+*A short note: An alternate algorithm using circles*
+*of equal altitude on a **geodetical** surface would not need a DR seed,*
+*but would be much more complex to implement. Using the optimization*
+*and iterative algorithm explained above mitigates this problem,*
+*and still within a reasonable execution time.*
 
 ### 3.iv. Running the Chicago script<a name="run-chicago-script"></a>
 
