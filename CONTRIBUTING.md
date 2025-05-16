@@ -48,4 +48,6 @@ with no dependency on an internet connection.
 Keeping it runnable in a lightweigth Python environment is desirable,
 with the mobile phone as the natural choice of hardware.
 
+Some notes on development [here](DEVELOPMENT.md).
+
 Any contributions are welcome!

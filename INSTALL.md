@@ -103,3 +103,7 @@ the Settings (Android) app make sure you have these configurations made.
 
 Unless you do these adjustments you will likely get an error while running
 notebooks causing the kernel to hang after about 1 minute.
+
+## Development
+
+Some short notes on development [here](DEVELOPMENT.md).
