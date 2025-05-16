@@ -212,13 +212,9 @@ For more information about the formula above please refer to
 
 ### 2.iii. Ignored Corrections<a name="ignored-corrections"></a>
 
-Currently the tool does not aim for very high accuracy and more elaborate
-corrections are eliminated.
-
 * Refraction correction is simple (see above), but probably good enough for
 basic celestial navigation.
 
-Future implementations may contain more precise corrections though.
 See [more about future plans](CONTRIBUTING.md).
 
 ## 3. Sight reduction (Stationary observer)<a name="sight-reduction"></a>
