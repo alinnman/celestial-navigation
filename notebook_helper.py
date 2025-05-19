@@ -63,7 +63,9 @@ def handle_change (change):
 
 style = {'description_width': '100px'}
 
+#pylint: disable=R0901
 class MyTextWidget (widgets.Text):
+
     ''' This class represents simple text input'''
 
     def __init__ (self, attr_name, description):
@@ -74,6 +76,12 @@ class MyTextWidget (widgets.Text):
                           style=style,
                           layout=Layout(width='90%'))
         self.observe (handle_change)
+
+    def __copy__ (self):
+        raise NotImplementedError
+
+    def __deepcopy__ (self, _):
+        raise NotImplementedError
 
     def handle_event (self, change):
         ''' Event terminator '''
@@ -92,6 +100,12 @@ class MyCheckboxWidget (widgets.Checkbox):
                           style=style)
         self.observe (handle_change)
 
+    def __copy__ (self):
+        raise NotImplementedError
+
+    def __deepcopy__ (self, _):
+        raise NotImplementedError
+
     def handle_event (self, change):
         ''' Event terminator '''
         assert isinstance (NUM_DICT, dict)
@@ -108,11 +122,18 @@ class MyLimbDropdown (widgets.Dropdown):
                           description=description, disabled=False, style=style)
         self.observe (handle_change)
 
+    def __copy__ (self):
+        raise NotImplementedError
+
+    def __deepcopy__ (self, _):
+        raise NotImplementedError        
+
     def handle_event (self, change):
         ''' Event terminator '''
         assert isinstance (NUM_DICT, dict)
         NUM_DICT[self.__attr_name]=str(change['new'])
         dump_dict ()
+#pylint: enable=R0901
 
 def render_widget (ta : list, nr_of_views : int, include_drp : bool = True) -> list:
     ''' Renders the widget layout used by the notebooks '''
