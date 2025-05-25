@@ -29,7 +29,6 @@ from kivy.core.window import Window
 # pylint: enable=C0413
 # pylint: enable=C0411
 
-
 def str2bool(v):
     ''' Simple conversion from bool to string '''
     return v.lower() in ("yes", "true", "t", "1")
@@ -65,22 +64,23 @@ def get_starfixes(drp_pos: LatLonGeodetic) -> SightCollection:
     # assert isinstance (TYPE_ARRAY, list)
     for i in range(3):
         if str2bool(NUM_DICT["Use"+str(i+1)]):
-            retval.append(Sight(object_name=NUM_DICT["ObjectName"+str(i+1)],
-                                measured_alt=NUM_DICT["Altitude"+str(i+1)],
-                                set_time=NUM_DICT["Time"+str(i+1)],
-                                index_error_minutes=float(
-                NUM_DICT["IndexError"+str(i+1)]),
-                limb_correction=int(
-                NUM_DICT["LimbCorrection"+str(i+1)]),
-                artificial_horizon=str2bool(
-                NUM_DICT["ArtificialHorizon"+str(i+1)]),
-                observer_height=float(
-                NUM_DICT["ObserverHeight"+str(i+1)]),
-                temperature=float(
-                NUM_DICT["Temperature"+str(i+1)]),
-                dt_dh=float(
-                NUM_DICT["TemperatureGradient"+str(i+1)]),
-                pressure=float(NUM_DICT["Pressure"+str(i+1)])
+            retval.append(
+                Sight(object_name=NUM_DICT["ObjectName"+str(i+1)],
+                      measured_alt=NUM_DICT["Altitude"+str(i+1)],
+                      set_time=NUM_DICT["Time"+str(i+1)],
+                      index_error_minutes=float(
+                          NUM_DICT["IndexError"+str(i+1)]),
+                      limb_correction=int(
+                          NUM_DICT["LimbCorrection"+str(i+1)]),
+                      artificial_horizon=str2bool(
+                          NUM_DICT["ArtificialHorizon"+str(i+1)]),
+                      observer_height=float(
+                          NUM_DICT["ObserverHeight"+str(i+1)]),
+                      temperature=float(
+                          NUM_DICT["Temperature"+str(i+1)]),
+                      dt_dh=float(
+                          NUM_DICT["TemperatureGradient"+str(i+1)]),
+                      pressure=float(NUM_DICT["Pressure"+str(i+1)])
             ))
 
     return SightCollection(retval)
@@ -107,11 +107,7 @@ def sight_reduction() -> str:
 
     except IntersectError as ve:
         print("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
-        if ve.coll_object is not None:
-            if isinstance(ve.coll_object, SightCollection):
-                collection = ve.coll_object
-        return "Failed sight reduction"
-
+        return "Failed sight reduction."
 
 class ExecButton (Button):
     ''' This is the button starting the sight reduction '''
@@ -119,7 +115,7 @@ class ExecButton (Button):
     def __init__(self, form, **kwargs):
         super().__init__(**kwargs)
         self.form = form
-        self.text = "Perform sight reduction"
+        self.text = "Perform sight reduction!"
 # pylint: disable=E1101
         self.bind(on_press=self.callback)
 # pylint: enable=E1101
