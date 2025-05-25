@@ -25,6 +25,7 @@ In order to create this environment you should execute these commands:
     pip install folium
     pip install offline_folium
     python -m offline_folium
+    pip install kivy
 
 After having created this you can use VSCode to define
 this as your python environment using Ctrl-Shift-P
@@ -39,7 +40,7 @@ patterns in order to not check in these files into git:
 * Python cache files
 * Jupyter temp files
 * Test scripts (anything with a name beginning with <tt>testing</tt>)
-* HTML and JSON files (these are produces as map output by Folium)
+* HTML and JSON files (these are produced as map output by Folium)
 
 You may of course edit the git ignore file to adjust to your needs.
 

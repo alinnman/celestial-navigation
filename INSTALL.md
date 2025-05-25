@@ -26,12 +26,14 @@ or higher with core libraries.
 * [Pandas](https://pandas.pydata.org/)
 (*Optional*, needed for the
 [machine-readable nautical almanac](README.md#mr)).
-* [Jupyter](https://jupyter.org/) (*Optional*, needed for running notebooks).
+* [Jupyter](https://jupyter.org/) (*Optional*, needed for running notebooks.)
 * [Folium](https://github.com/python-visualization/folium)
 (*Optional*, needed for high-quality mapping)
 * [Offline Folium](https://github.com/robintw/offline_folium)
 (*Optional*,
-will allow map generation without an internet connection. Requires Folium)
+will allow map generation without an internet connection. Requires Folium.)
+* [Kivy](hhttps://kivy.org/)
+(*Optional*, For running the demo app.)
 
 No other additional libraries are necessary.
 This

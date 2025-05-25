@@ -6,7 +6,7 @@ testing*
 *.html
 *.json
 .venv/*
-*.kv
+
 
 
 
