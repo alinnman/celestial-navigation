@@ -5,27 +5,30 @@
     © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
 '''
-
+# pylint: disable=C0413
+# pylint: disable=C0411
+from starfix import LatLonGeodetic, SightCollection, Sight, \
+    get_representation, IntersectError
 import json
-from kivy.app import runTouchApp
-from kivy.core.window import Window
-from kivy.lang import Builder
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.checkbox import CheckBox
-from kivy.uix.dropdown import DropDown
-from kivy.uix.button import Button
-from kivy.uix.textinput import TextInput
-from kivy.uix.label import Label
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.boxlayout import BoxLayout
 import kivy
-from starfix import LatLonGeodetic, SightCollection, Sight,\
-                    get_representation, IntersectError
-#window_sizes=Window.size
-#print (window_sizes)
 kivy.config.Config.set('graphics', 'width', 800)
 kivy.config.Config.set('graphics', 'height', 400)
 kivy.config.Config.set('graphics', 'resizable', False)
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
+from kivy.uix.dropdown import DropDown
+from kivy.uix.checkbox import CheckBox
+from kivy.uix.scrollview import ScrollView
+from kivy.lang import Builder
+from kivy.app import runTouchApp
+from kivy.core.window import Window
+
+# pylint: enable=C0413
+# pylint: enable=C0411
+
 
 def str2bool(v):
     ''' Simple conversion from bool to string '''
@@ -52,65 +55,64 @@ NUM_DICT = None
 
 # SIGHT REDUCTION.
 
-def get_starfixes (drp_pos : LatLonGeodetic) -> SightCollection :
+
+def get_starfixes(drp_pos: LatLonGeodetic) -> SightCollection:
     ''' Returns a list of used star fixes (SightCollection) '''
-    assert isinstance (NUM_DICT, dict)
+    assert isinstance(NUM_DICT, dict)
 
-    Sight.set_estimated_position (drp_pos)
+    Sight.set_estimated_position(drp_pos)
     retval = []
-    assert isinstance (NUM_DICT, dict)
-    #assert isinstance (TYPE_ARRAY, list)
-    for i in range (3):
+    assert isinstance(NUM_DICT, dict)
+    # assert isinstance (TYPE_ARRAY, list)
+    for i in range(3):
         if str2bool(NUM_DICT["Use"+str(i+1)]):
-            retval.append (Sight ( object_name          =
-                                       NUM_DICT         ["ObjectName"+str(i+1)],
-                                   measured_alt         =
-                                       NUM_DICT         ["Altitude"+str(i+1)],
-                                   set_time             =
-                                       NUM_DICT         ["Time"+str(i+1)],
-                                   index_error_minutes  =
-                                       float(NUM_DICT   ["IndexError"+str(i+1)]),
-                                   limb_correction      =
-                                       int(NUM_DICT     ["LimbCorrection"+str(i+1)]),
-                                   artificial_horizon   =
-                                       str2bool(NUM_DICT["ArtificialHorizon"+str(i+1)]),
-                                   observer_height      =
-                                       float(NUM_DICT   ["ObserverHeight"+str(i+1)]),
-                                   temperature          =
-                                       float(NUM_DICT   ["Temperature"+str(i+1)]),
-                                   dt_dh                =
-                                       float(NUM_DICT   ["TemperatureGradient"+str(i+1)]),
-                                   pressure             =
-                                       float(NUM_DICT   ["Pressure"+str(i+1)])
-                                 ))
+            retval.append(Sight(object_name=NUM_DICT["ObjectName"+str(i+1)],
+                                measured_alt=NUM_DICT["Altitude"+str(i+1)],
+                                set_time=NUM_DICT["Time"+str(i+1)],
+                                index_error_minutes=float(
+                NUM_DICT["IndexError"+str(i+1)]),
+                limb_correction=int(
+                NUM_DICT["LimbCorrection"+str(i+1)]),
+                artificial_horizon=str2bool(
+                NUM_DICT["ArtificialHorizon"+str(i+1)]),
+                observer_height=float(
+                NUM_DICT["ObserverHeight"+str(i+1)]),
+                temperature=float(
+                NUM_DICT["Temperature"+str(i+1)]),
+                dt_dh=float(
+                NUM_DICT["TemperatureGradient"+str(i+1)]),
+                pressure=float(NUM_DICT["Pressure"+str(i+1)])
+            ))
 
-    return SightCollection (retval)
+    return SightCollection(retval)
 
-def sight_reduction () -> str:
+
+def sight_reduction() -> str:
     ''' Perform a sight reduction given data entered above '''
-    assert isinstance (NUM_DICT, dict)
-    the_pos = LatLonGeodetic (lat = float(NUM_DICT["DrpLat"]),
-                              lon = float(NUM_DICT["DrpLon"]))
+    assert isinstance(NUM_DICT, dict)
+    the_pos = LatLonGeodetic(lat=float(NUM_DICT["DrpLat"]),
+                             lon=float(NUM_DICT["DrpLon"]))
 
     intersections = None
     collection = None
     try:
         intersections, _, _, collection =\
-                SightCollection.get_intersections_conv (return_geodetic=True,
-                                                        estimated_position=the_pos,
-                                                        get_starfixes=get_starfixes,
-                                                        assume_good_estimated_position=True)
+            SightCollection.get_intersections_conv(return_geodetic=True,
+                                                   estimated_position=the_pos,
+                                                   get_starfixes=get_starfixes,
+                                                   assume_good_estimated_position=True)
 
         assert intersections is not None
         assert collection is not None
-        return get_representation(intersections,1)
+        return get_representation(intersections, 1)
 
     except IntersectError as ve:
-        print ("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
+        print("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
         if ve.coll_object is not None:
-            if isinstance (ve.coll_object, SightCollection):
+            if isinstance(ve.coll_object, SightCollection):
                 collection = ve.coll_object
         return "Failed sight reduction"
+
 
 class ExecButton (Button):
     ''' This is the button starting the sight reduction '''
@@ -131,8 +133,9 @@ class ExecButton (Button):
         the_form = instance.form
         assert isinstance(the_form, InputForm)
         the_form.extract_from_widgets()
-        sr = sight_reduction ()
+        sr = sight_reduction()
         the_form.results.text = sr
+
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
@@ -191,12 +194,14 @@ def initialize(fn: str, init_dict: dict):
     except FileNotFoundError:
         NUM_DICT = init_dict
 
+
 def dump_dict():
     ''' Dumps the contents to a json file '''
     j_dump = json.dumps(NUM_DICT)
     assert isinstance(FILE_NAME, str)
     with open(FILE_NAME, "w", encoding="utf-8") as f:
         f.write(j_dump)
+
 
 initialize("kivyapp.1.json",
            {"ObjectName1": "Sun",
@@ -246,7 +251,7 @@ class InputForm(GridLayout):
     nr_of_sights = 3
 
     def __init__(self, **kwargs):
-        super().__init__(cols=1, spacing=2, size_hint_y=None, **kwargs)
+        super().__init__(cols=1, spacing=2, **kwargs)
 
         self.data_widget_container = {}
 
@@ -390,15 +395,22 @@ class InputForm(GridLayout):
                 NUM_DICT[e] = w.text
         dump_dict()
 
+
 if __name__ == '__main__':
-    layout = InputForm()
+    layout = InputForm(size_hint_y = None) #TODO Restore
+    #layout = GridLayout(cols=1, spacing=10, size_hint_y=None)
 # pylint: disable=E1101
     layout.bind(minimum_height=layout.setter('height'))
 # pylint: enable=E1101
+
+    #for idx in range(100):
+    #    bttn = Button(text=str(idx), size_hint_y=None, height=40)
+    #    layout.add_widget(bttn)
+
     root = ScrollView(
         size_hint=(1, None),
         size=(Window.width, Window.height)
-        #size = (100,100)
+        # size = (100,100)
     )
     root.add_widget(layout)
     runTouchApp(root)
