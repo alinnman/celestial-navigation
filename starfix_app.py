@@ -55,7 +55,6 @@ NUM_DICT = None
 
 # SIGHT REDUCTION.
 
-
 def get_starfixes(drp_pos: LatLonGeodetic) -> SightCollection:
     ''' Returns a list of used star fixes (SightCollection) '''
     assert isinstance(NUM_DICT, dict)
@@ -397,20 +396,14 @@ class InputForm(GridLayout):
 
 
 if __name__ == '__main__':
-    layout = InputForm(size_hint_y = None) #TODO Restore
-    #layout = GridLayout(cols=1, spacing=10, size_hint_y=None)
+    layout = InputForm(size_hint_y = None)
 # pylint: disable=E1101
     layout.bind(minimum_height=layout.setter('height'))
 # pylint: enable=E1101
 
-    #for idx in range(100):
-    #    bttn = Button(text=str(idx), size_hint_y=None, height=40)
-    #    layout.add_widget(bttn)
-
     root = ScrollView(
         size_hint=(1, None),
         size=(Window.width, Window.height)
-        # size = (100,100)
     )
     root.add_widget(layout)
     runTouchApp(root)
