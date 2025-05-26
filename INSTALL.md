@@ -33,7 +33,7 @@ or higher with core libraries.
 (*Optional*,
 will allow map generation without an internet connection. Requires Folium.)
 * [Kivy](hhttps://kivy.org/)
-(*Optional*, For running the demo app.)
+(*Optional*, for running the demo app.)
 
 No other additional libraries are necessary.
 This
