@@ -309,7 +309,7 @@ The $\text{D2C}()$ function converts from geodetic to geocentrical coordinates.
 See
 [this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion)
 for more information. <br>Also see code
-[&rarr;](https://github.com/alinnman/celestial-navigation/blob/bb71731f8c4be417b20bf55676bc18e6492028cf/starfix.py#L2188).
+[&rarr;](https://github.com/alinnman/celestial-navigation/blob/bb71731f8c4be417b20bf55676bc18e6492028cf/starfix.py#L1180).
 
 From here we continue all calculations in a **geocentrical** (spherical)
 coordinate system on the unit sphere<br>
@@ -385,13 +385,15 @@ The final coordinates $p_1$ and $p_2$ are converted
 ${p_1}_d = C2D(p_1)$<br>
 ${p_2}_d = C2D(p_2)$
 
-The used function ($\text{C2D}$) for this conversion is numerical.
+The used function ($\text{C2D}$) for this conversion is numerical/iterative.
 For more details, see
 [this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion).
 <br>(The function $\text{C2D}$ is the inverse of $\text{D2C}$,
 i.e $\text{C2D}(\text{D2C}(p))==p$)<br>
 Also see code
-[&rarr;](https://github.com/alinnman/celestial-navigation/blob/bb71731f8c4be417b20bf55676bc18e6492028cf/starfix.py#L2188)
+[&rarr;](https://github.com/alinnman/celestial-navigation/blob/bb71731f8c4be417b20bf55676bc18e6492028cf/starfix.py#L1147)
+and this explanation
+[&rarr;](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Newton%E2%80%93Raphson_method).
 
 When performing the calculation above we also deduce the intersection angle for
 the two small circles (**fitness**). This angle will be used later on when we
