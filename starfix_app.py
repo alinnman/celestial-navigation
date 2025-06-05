@@ -1,6 +1,7 @@
 ''' 
     Simple demo app for celestial navigation. 
-    Based on Kivy. 
+    Based on Kivy.
+    Can be used for more elaborate apps, including on Android and iOS. 
 
     © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
@@ -36,6 +37,7 @@ def str2bool(v):
 
 Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 
+# Set default color and sizes of the form
 Builder.load_string(
     """
 
@@ -197,10 +199,12 @@ def initialize(fn: str, init_dict: dict):
     FILE_NAME = fn
 
     try:
+        # First see if we have a saved json file
         with open(FILE_NAME, "r", encoding="utf-8") as f:
             s = f.read()
             NUM_DICT = json.loads(s)
     except FileNotFoundError:
+        # If no file present, then load the defaults
         NUM_DICT = init_dict
 
 
@@ -212,6 +216,7 @@ def dump_dict():
         f.write(j_dump)
 
 
+# Initialize the input form with the standard Chicago sights. 
 initialize("kivyapp.1.json",
            {"ObjectName1": "Sun",
             "Altitude1": "55:8:1.1",

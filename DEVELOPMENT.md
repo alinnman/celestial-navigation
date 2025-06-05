@@ -48,3 +48,9 @@ You may of course edit the git ignore file to adjust to your needs.
 
 The files in the [test](test) folder contain unit tests which can
 be run in VSCode testing module.
+
+## App development
+
+The file [starfix_app.py](starfix_app.py) contains a very simple
+app built on the Kivy framework. It can be used as a starter point
+for developing Android or iOS apps.
