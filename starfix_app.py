@@ -131,6 +131,20 @@ class ExecButton (Button):
         sr = sight_reduction()
         the_form.results.text = sr
 
+class QuitButton (Button):
+    ''' This button quits the application '''
+    def __init__(self, form, **kwargs):
+        super().__init__(**kwargs)
+        self.form = form
+        self.text = "Quit"
+# pylint: disable=E1101
+        self.bind(on_press=self.callback)
+# pylint: enable=E1101
+
+    @staticmethod
+    def callback(_):
+        ''' This is the button callback function '''
+        exit()
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
@@ -359,6 +373,11 @@ class InputForm(GridLayout):
         bl = FormRow()
         self.results = MyLabel(text='', markup=True, indent=False)
         bl.add_widget(self.results)
+        self.add_widget(bl)
+
+        bl = FormRow()
+        butt = QuitButton(self)
+        bl.add_widget(butt)
         self.add_widget(bl)
 
         self.populate_widgets()
