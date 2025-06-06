@@ -12,6 +12,7 @@ from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError
 import json
 import kivy
+#kivy.require('2.1.0')
 kivy.config.Config.set('graphics', 'width', 800)
 kivy.config.Config.set('graphics', 'height', 400)
 kivy.config.Config.set('graphics', 'resizable', False)
@@ -24,7 +25,7 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.scrollview import ScrollView
 from kivy.lang import Builder
-from kivy.app import runTouchApp
+from kivy.app import App
 from kivy.core.window import Window
 
 # pylint: enable=C0413
@@ -146,7 +147,9 @@ class QuitButton (Button):
     @staticmethod
     def callback(_):
         ''' This is the button callback function '''
-        exit()
+        the_app = App.get_running_app ()
+        if isinstance (the_app, App):
+            the_app.stop()
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
@@ -189,6 +192,22 @@ class LimbDropDown (Button):
                               x: setattr(self, 'text', x))
 # pylint: enable=E1101
 
+class StarFixApp (App):
+    ''' The application class '''
+
+    def build(self):
+        # return a Button() as a root widget
+        layout = InputForm(size_hint_y = None)
+# pylint: disable=E1101
+        layout.bind(minimum_height=layout.setter('height'))
+# pylint: enable=E1101
+
+        root = ScrollView(
+            size_hint=(1, None),
+            size=(Window.width, Window.height)
+        )
+        root.add_widget(layout)
+        return root
 
 def initialize(fn: str, init_dict: dict):
     ''' Initialize the helper '''
@@ -215,48 +234,48 @@ def dump_dict():
     with open(FILE_NAME, "w", encoding="utf-8") as f:
         f.write(j_dump)
 
+def do_initialize ():
+    ''' Initialize data from json '''
+    initialize("kivyapp.1.json",
+            {"ObjectName1": "Sun",
+                "Altitude1": "55:8:1.1",
+                "Time1": "2024-05-05 15:55:18+00:00",
+                "LimbCorrection1": "0",
+                "IndexError1": "0",
+                "ArtificialHorizon1": "False",
+                "ObserverHeight1": "0",
+                "Temperature1": "10",
+                "TemperatureGradient1": "-0.01",
+                "Pressure1": "101",
 
-# Initialize the input form with the standard Chicago sights. 
-initialize("kivyapp.1.json",
-           {"ObjectName1": "Sun",
-            "Altitude1": "55:8:1.1",
-            "Time1": "2024-05-05 15:55:18+00:00",
-            "LimbCorrection1": "0",
-            "IndexError1": "0",
-            "ArtificialHorizon1": "False",
-            "ObserverHeight1": "0",
-            "Temperature1": "10",
-            "TemperatureGradient1": "-0.01",
-            "Pressure1": "101",
+                "ObjectName2": "Sun",
+                "Altitude2": "19:28:19",
+                "Time2": "2024-05-05 23:01:19+00:00",
+                "LimbCorrection2": "0",
+                "IndexError2": "0",
+                "ArtificialHorizon2": "False",
+                "ObserverHeight2": "0",
+                "Temperature2": "10",
+                "TemperatureGradient2": "-0.01",
+                "Pressure2": "101",
 
-            "ObjectName2": "Sun",
-            "Altitude2": "19:28:19",
-            "Time2": "2024-05-05 23:01:19+00:00",
-            "LimbCorrection2": "0",
-            "IndexError2": "0",
-            "ArtificialHorizon2": "False",
-            "ObserverHeight2": "0",
-            "Temperature2": "10",
-            "TemperatureGradient2": "-0.01",
-            "Pressure2": "101",
+                "ObjectName3": "Vega",
+                "Altitude3": "30:16:23.7",
+                "Time3": "2024-05-06 04:04:13+00:00",
+                "LimbCorrection3": "0",
+                "IndexError3": "0",
+                "ArtificialHorizon3": "False",
+                "ObserverHeight3": "0",
+                "Temperature3": "10",
+                "TemperatureGradient3": "-0.01",
+                "Pressure3": "101",
 
-            "ObjectName3": "Vega",
-            "Altitude3": "30:16:23.7",
-            "Time3": "2024-05-06 04:04:13+00:00",
-            "LimbCorrection3": "0",
-            "IndexError3": "0",
-            "ArtificialHorizon3": "False",
-            "ObserverHeight3": "0",
-            "Temperature3": "10",
-            "TemperatureGradient3": "-0.01",
-            "Pressure3": "101",
+                "DrpLat": "40",
+                "DrpLon": "-90",
 
-            "DrpLat": "40",
-            "DrpLon": "-90",
-
-            "Use1": "True",
-            "Use2": "True",
-            "Use3": "True"})
+                "Use1": "True",
+                "Use2": "True",
+                "Use3": "True"})
 
 
 class InputForm(GridLayout):
@@ -414,16 +433,7 @@ class InputForm(GridLayout):
                 NUM_DICT[e] = w.text
         dump_dict()
 
-
 if __name__ == '__main__':
-    layout = InputForm(size_hint_y = None)
-# pylint: disable=E1101
-    layout.bind(minimum_height=layout.setter('height'))
-# pylint: enable=E1101
-
-    root = ScrollView(
-        size_hint=(1, None),
-        size=(Window.width, Window.height)
-    )
-    root.add_widget(layout)
-    runTouchApp(root)
+    do_initialize()
+    a = StarFixApp ()
+    a.run()
