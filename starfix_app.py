@@ -171,7 +171,7 @@ class MyLabel (Label):
     ''' This is used for labels'''
 
     def __init__(self, indent: bool = False, **kwargs):
-        left_hint = 0.25 if indent else 0.2
+        left_hint = 0.45 if indent else 0.4
         super().__init__(size_hint=(left_hint, 1), **kwargs)
         # self.size_hint (0.2, 1)
 
