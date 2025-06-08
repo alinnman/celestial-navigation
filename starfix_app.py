@@ -121,6 +121,7 @@ class ExecButton (Button):
         self.text = "Perform sight reduction!"
 # pylint: disable=E1101
         self.bind(on_press=self.callback)
+        self.bind(on_touch=self.callback)
 # pylint: enable=E1101
 
     @staticmethod
@@ -142,6 +143,7 @@ class QuitButton (Button):
         self.text = "Quit"
 # pylint: disable=E1101
         self.bind(on_press=self.callback)
+        self.bind(on_touch=self.callback)        
 # pylint: enable=E1101
 
     @staticmethod
