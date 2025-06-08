@@ -15,6 +15,7 @@ from starfix import LatLonGeodetic, SightCollection, Sight, \
 import json
 import kivy
 kivy.require('2.3.1')
+# Omitting size specifications
 #kivy.config.Config.set('graphics', 'width', 400)
 #kivy.config.Config.set('graphics', 'height', 400)
 kivy.config.Config.set('graphics', 'resizable', False)
@@ -136,6 +137,7 @@ class ExecButton (Button):
         sr = sight_reduction()
         the_form.results.text = sr
 
+# Omitting quit button, but keeping code for reference
 #class QuitButton (Button):
 #    ''' This button quits the application '''
 #    def __init__(self, form, **kwargs):
@@ -424,6 +426,7 @@ class InputForm(GridLayout):
         bl.add_widget(self.results)
         self.add_widget(bl)
 
+        # Omitting quit button, but keeping code for reference
         #bl = FormRow()
         #butt = QuitButton(self)
         #bl.add_widget(butt)
@@ -462,4 +465,3 @@ if __name__ == '__main__':
     do_initialize()
     a = StarFixApp ()
     runTouchApp (a.get_root())
-    #a.run()
