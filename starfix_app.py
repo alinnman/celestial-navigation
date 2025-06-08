@@ -25,7 +25,7 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.scrollview import ScrollView
 from kivy.lang import Builder
-from kivy.app import App
+from kivy.app import App, runTouchApp
 from kivy.core.window import Window
 
 # pylint: enable=C0413
@@ -121,7 +121,6 @@ class ExecButton (Button):
         self.text = "Perform sight reduction!"
 # pylint: disable=E1101
         self.bind(on_press=self.callback)
-        self.bind(on_touch=self.callback)
 # pylint: enable=E1101
 
     @staticmethod
@@ -143,7 +142,6 @@ class QuitButton (Button):
         self.text = "Quit"
 # pylint: disable=E1101
         self.bind(on_press=self.callback)
-        self.bind(on_touch=self.callback)        
 # pylint: enable=E1101
 
     @staticmethod
@@ -202,8 +200,8 @@ class MyTextInput (TextInput):
 class StarFixApp (App):
     ''' The application class '''
 
-    def build(self):
-        # return a Button() as a root widget
+    def __init__ (self, **kwargs):
+        super().__init__(**kwargs)
         layout = InputForm(size_hint_y = None)
 # pylint: disable=E1101
         layout.bind(minimum_height=layout.setter('height'))
@@ -215,7 +213,16 @@ class StarFixApp (App):
             #size=(Window.width, Window.height)
         )
         root.add_widget(layout)
-        return root
+        self.m_root = root
+
+
+    def build(self):
+        # return a Scroll View as a root widget
+        return self.m_root
+
+    def get_root (self):
+        ''' Return the root widget '''
+        return self.m_root
 
 def initialize(fn: str, init_dict: dict):
     ''' Initialize the helper '''
@@ -444,4 +451,5 @@ class InputForm(GridLayout):
 if __name__ == '__main__':
     do_initialize()
     a = StarFixApp ()
-    a.run()
+    runTouchApp (a.get_root())
+    #a.run()
