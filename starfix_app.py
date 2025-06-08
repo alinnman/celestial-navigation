@@ -13,8 +13,8 @@ from starfix import LatLonGeodetic, SightCollection, Sight, \
 import json
 import kivy
 kivy.require('2.3.1')
-kivy.config.Config.set('graphics', 'width', 800)
-kivy.config.Config.set('graphics', 'height', 400)
+#kivy.config.Config.set('graphics', 'width', 400)
+#kivy.config.Config.set('graphics', 'height', 400)
 kivy.config.Config.set('graphics', 'resizable', False)
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -159,7 +159,7 @@ class FormRow (BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size_hint_y = None
-        self.size = (200, 28)
+        #self.size = (100, 28)
 
 
 class MyLabel (Label):
@@ -178,7 +178,7 @@ class LimbDropDown (Button):
         super().__init__(text="0", **kwargs)
         self.my_dropdown = DropDown()
         for index in [-1, 0, 1]:
-            btn = Button(text=str(index), size_hint_y=None, height=20)
+            btn = Button(text=str(index), size_hint_y=None, height=self.height/2)
 # pylint: disable=E1101
             btn.bind(on_release=lambda btn: self.my_dropdown.select(btn.text))
 # pylint: enable=E1101
@@ -192,6 +192,11 @@ class LimbDropDown (Button):
                               x: setattr(self, 'text', x))
 # pylint: enable=E1101
 
+class MyTextInput (TextInput):
+    ''' The input field class used '''
+    def __init__(self, **kwargs):
+        super().__init__(size_hint = (1,1), **kwargs)
+
 class StarFixApp (App):
     ''' The application class '''
 
@@ -203,8 +208,9 @@ class StarFixApp (App):
 # pylint: enable=E1101
 
         root = ScrollView(
-            size_hint=(1, None),
-            size=(Window.width, Window.height)
+            size_hint= (1,1)
+            #size_hint=(1, None),
+            #size=(Window.width, Window.height)
         )
         root.add_widget(layout)
         return root
@@ -290,14 +296,14 @@ class InputForm(GridLayout):
 
         bl = FormRow()
         bl.add_widget(MyLabel(text='DRP Latitude:'))
-        self.drp_lat_input = TextInput()
+        self.drp_lat_input = MyTextInput()
         self.data_widget_container["DrpLat"] = self.drp_lat_input
         bl.add_widget(self.drp_lat_input)
         self.add_widget(bl)
 
         bl = FormRow()
         bl.add_widget(MyLabel(text='DRP Longitude:'))
-        self.drp_lon_input = TextInput()
+        self.drp_lon_input = MyTextInput()
         self.data_widget_container["DrpLon"] = self.drp_lon_input
         bl.add_widget(self.drp_lon_input)
         self.add_widget(bl)
@@ -313,7 +319,7 @@ class InputForm(GridLayout):
 
             bl = FormRow()
             bl.add_widget(MyLabel(text='Name '+str(sight+1)+':', indent=True))
-            x = TextInput()
+            x = MyTextInput()
             self.data_widget_container["ObjectName"+str(sight+1)] = x
             bl.add_widget(x)
             self.add_widget(bl)
@@ -321,14 +327,14 @@ class InputForm(GridLayout):
             bl = FormRow()
             bl.add_widget(MyLabel(text='Altitude ' +
                           str(sight+1)+':', indent=True))
-            x = TextInput()
+            x = MyTextInput()
             self.data_widget_container["Altitude"+str(sight+1)] = x
             bl.add_widget(x)
             self.add_widget(bl)
 
             bl = FormRow()
             bl.add_widget(MyLabel(text='Time '+str(sight+1)+':', indent=True))
-            x = TextInput()
+            x = MyTextInput()
             self.data_widget_container["Time"+str(sight+1)] = x
             bl.add_widget(x)
             self.add_widget(bl)
@@ -336,7 +342,7 @@ class InputForm(GridLayout):
             bl = FormRow()
             bl.add_widget(MyLabel(text='Index Error ' +
                           str(sight+1)+':', indent=True))
-            x = TextInput()
+            x = MyTextInput()
             self.data_widget_container["IndexError"+str(sight+1)] = x
             bl.add_widget(x)
             self.add_widget(bl)
@@ -360,7 +366,7 @@ class InputForm(GridLayout):
             bl = FormRow()
             bl.add_widget(MyLabel(text='Observer Height ' +
                           str(sight+1)+":", indent=True))
-            x = TextInput()
+            x = MyTextInput()
             self.data_widget_container["ObserverHeight"+str(sight+1)] = x
             bl.add_widget(x)
             self.add_widget(bl)
@@ -368,7 +374,7 @@ class InputForm(GridLayout):
             bl = FormRow()
             bl.add_widget(MyLabel(text='Temperature ' +
                           str(sight+1)+':', indent=True))
-            x = TextInput()
+            x = MyTextInput()
             self.data_widget_container["Temperature"+str(sight+1)] = x
             bl.add_widget(x)
             self.add_widget(bl)
@@ -376,7 +382,7 @@ class InputForm(GridLayout):
             bl = FormRow()
             bl.add_widget(MyLabel(text='Temp Gradient ' +
                           str(sight+1)+':', indent=True))
-            x = TextInput()
+            x = MyTextInput()
             self.data_widget_container["TemperatureGradient"+str(sight+1)] = x
             bl.add_widget(x)
             self.add_widget(bl)
@@ -384,7 +390,7 @@ class InputForm(GridLayout):
             bl = FormRow()
             bl.add_widget(MyLabel(text='Pressure ' +
                           str(sight+1)+':', indent=True))
-            x = TextInput()
+            x = MyTextInput()
             self.data_widget_container["Pressure"+str(sight+1)] = x
             bl.add_widget(x)
             self.add_widget(bl)
