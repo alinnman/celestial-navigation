@@ -147,9 +147,10 @@ class QuitButton (Button):
     @staticmethod
     def callback(_):
         ''' This is the button callback function '''
-        the_app = App.get_running_app ()
-        if isinstance (the_app, App):
-            the_app.stop()
+        quit()
+        #the_app = App.get_running_app ()
+        #if isinstance (the_app, App):
+        #    the_app.stop()
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
