@@ -1,7 +1,9 @@
 ''' 
-    Simple demo app for celestial navigation. 
+    Simple skeleton demo app for celestial navigation. 
     Based on Kivy.
     Can be used for more elaborate apps, including on Android and iOS. 
+
+    *** WORK IN PROGRESS ***
 
     © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
@@ -134,23 +136,25 @@ class ExecButton (Button):
         sr = sight_reduction()
         the_form.results.text = sr
 
-class QuitButton (Button):
-    ''' This button quits the application '''
-    def __init__(self, form, **kwargs):
-        super().__init__(**kwargs)
-        self.form = form
-        self.text = "Quit"
+#class QuitButton (Button):
+#    ''' This button quits the application '''
+#    def __init__(self, form, **kwargs):
+#        super().__init__(**kwargs)
+#        self.form = form
+#        self.text = "Quit"
 # pylint: disable=E1101
-        self.bind(on_press=self.callback)
+#        self.bind(on_press=self.callback)
 # pylint: enable=E1101
 
-    @staticmethod
-    def callback(_):
-        ''' This is the button callback function '''
-        quit()
-        #the_app = App.get_running_app ()
-        #if isinstance (the_app, App):
-        #    the_app.stop()
+#    @staticmethod
+#    def callback(_):
+#        ''' This is the button callback function '''
+        #quit()
+#        the_app = App.get_running_app ()
+#        if isinstance (the_app, StarFixApp):
+#            r = the_app.get_root()
+#            r.clear_widgets ()
+#            the_app.stop()
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
@@ -224,6 +228,9 @@ class StarFixApp (App):
     def get_root (self):
         ''' Return the root widget '''
         return self.m_root
+
+    #def stop (self, **kwargs):
+    #    super().stop()
 
 def initialize(fn: str, init_dict: dict):
     ''' Initialize the helper '''
@@ -301,6 +308,8 @@ class InputForm(GridLayout):
 
     def __init__(self, **kwargs):
         super().__init__(cols=1, spacing=2, **kwargs)
+
+        #Window.bind(on_request_close=self.end_func)
 
         self.data_widget_container = {}
 
@@ -415,10 +424,10 @@ class InputForm(GridLayout):
         bl.add_widget(self.results)
         self.add_widget(bl)
 
-        bl = FormRow()
-        butt = QuitButton(self)
-        bl.add_widget(butt)
-        self.add_widget(bl)
+        #bl = FormRow()
+        #butt = QuitButton(self)
+        #bl.add_widget(butt)
+        #self.add_widget(bl)
 
         self.populate_widgets()
 
