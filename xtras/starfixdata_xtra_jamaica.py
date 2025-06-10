@@ -143,7 +143,7 @@ def main ():
     taken_ms = round((endtime-starttime)*1000,3)
     print (get_representation(intersections,1))
     assert isinstance (intersections, LatLonGeodetic)
-    print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
+    # print ("MD = " + collection.get_map_developers_string(geodetic=True, viewpoint=intersections))
     print ("GM = " + get_google_map_string(intersections,4))
 
     # Check azimuth
@@ -162,7 +162,7 @@ def main ():
         print (str(counter) + " radius = " +\
                 str(round(s.get_circle(geodetic=True).get_radius (),1)))
         print (str(counter) + " GP     = " +\
-                get_google_map_string(LatLonGeodetic(ll=s.gp),4))
+                get_google_map_string(LatLonGeodetic(ll=s.get_gp()),4))
 
     print ("Time taken = " +str(taken_ms)+" ms")
 
