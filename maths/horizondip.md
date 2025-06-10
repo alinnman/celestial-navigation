@@ -32,7 +32,7 @@ $d(h)=\arctan\sqrt\frac{h^2 + 2h}{R} \approx \arctan \sqrt\frac{{2h}}{R}$
 It is easy to see that $\arctan$ behaves like a linear function
 with derivative $=1$ for low values of $h$:
 
-$\arctan(x) \approx x$
+$\arctan(h) \approx h$ (when $x$ is small)
 
 From this we can deduce the approximation:
 
