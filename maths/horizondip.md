@@ -10,7 +10,7 @@ exact geometric formula
 
 $d(h) = \arccos \left( \frac{R}{R+h}\right)$
 
-where $R$ is the radius for the Earth (${6.378}\times{10^6}$ m),
+where $R$ is the radius. For the Earth it is ${6.378}\times{10^6}$ m.<br>
 $h$ is observer elevation.
 
 This expression can also (using simple trigonometrics and application
@@ -19,7 +19,8 @@ of Pythagoras' formula) be written as:
 $d(h) = \arctan \sqrt{\frac{h^2 + 2h}{R}}$
 
 A common observation for lower elevations is seeing the dip
-well approximated by this formula<br>
+well approximated by this formula, when measuring with a level,
+theodolite or similar:<br>
 
 $d_{\text{amR}}(h) \approx 1.75 \times \sqrt{h}$
 
