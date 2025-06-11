@@ -23,7 +23,7 @@ well approximated by this formula<br>
 
 $d_{\text{amR}}(h) \approx 1.75 \times \sqrt{h}$
 
-Where $d_{\text{amR}}$ is the observed dip.
+Where $d_{\text{amR}}$ is the observed dip in arcminutes.
 
 Now let us deduce this approximation.
 
