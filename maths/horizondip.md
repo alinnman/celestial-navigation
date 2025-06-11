@@ -81,7 +81,7 @@ $k = \sqrt{\frac{2}{R}} \times \frac{180}{\pi}
 from which we get
 
 $R = \frac{{180}^2 \times {60}^2 \times 2}{{\pi}^2 \times k^2}
-\approx \mathbb{\frac {2.364 \times 10^7}{k^2}}$
+\approx \frac {2.364 \times 10^7}{k^2}$
 
 From this we can easily get the radius of the Earth ($R$) given the
 coefficient ($k$) just like [Al-Biruni did in 1017 AD](https://en.wikipedia.org/wiki/Al-Biruni#Geography_and_geodesy)
