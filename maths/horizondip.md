@@ -27,10 +27,15 @@ Now let us deduce this approximation.
 
 Let's see what happens for small values of $h$:
 
-$d(h)=\arctan\sqrt\frac{h^2 + 2h}{R} \approx \arctan \sqrt\frac{{2h}}{R}$
+$d(h)=\arctan\sqrt\frac{h^2 + 2h}{R} \approx \arctan \sqrt\frac{{2h}}{R}$ (when $h$ is small)
 
 It is easy to see that $\arctan$ behaves like a linear function
 with derivative $=1$ for low values of $h$:
+
+$\frac{d}{dh}\arctan h \approx 1$ (when $h$ is small)<br>
+$\arctan(0) = 0$
+
+From which we get
 
 $\arctan(h) \approx h$ (when $h$ is small)
 
@@ -57,7 +62,7 @@ From this we can also calculate the radius, if we know the coefficient of the sq
 So we observe
 
 $d_{\text{am}}(h) \approx k \times \sqrt{h}$<br>
-where $k = 1.75$ (refraction) or $1.93$ (no refraction)
+where $k = 1.75$ (refraction, based on observations) or $1.93$ (no refraction, based on geometry)
 
 From the calculation above it is easy to calculate the radius $R$
 
