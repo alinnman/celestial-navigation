@@ -18,7 +18,7 @@ of Pythagoras' formula) be written as:
 
 $d(h) = \arctan \sqrt{\frac{h^2 + 2h}{R}}$
 
-A common observation for lower elevations is seeing the dip
+A common observation for lower elevations over Earth's surface is seeing the dip
 well approximated by this formula, when measuring with a level,
 theodolite or similar:<br>
 
@@ -64,7 +64,7 @@ the Earth [when refraction is active](https://en.wikipedia.org/wiki/Atmospheric_
 and this leads to a lower coeffient in
 the formula applicable for refraction above.
 
-From this we can also calculate the radius, if we know the coefficient
+From this we can also **calculate the radius**, if we know the coefficient
 of the square root formula.
 
 So we observe
@@ -81,7 +81,7 @@ $k = \sqrt{\frac{2}{R}} \times \frac{180}{\pi}
 from which we get
 
 $R = \frac{{180}^2 \times {60}^2 \times 2}{{\pi}^2 \times k^2}
-\approx \frac {2.364 \times 10^7}{k^2}$
+\approx \mathbb{\frac {2.364 \times 10^7}{k^2}}$
 
 From this we can easily get the radius of the Earth ($R$) given the
 coefficient ($k$) just like [Al-Biruni did in 1017 AD](https://en.wikipedia.org/wiki/Al-Biruni#Geography_and_geodesy)
