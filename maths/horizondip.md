@@ -36,7 +36,7 @@ $d(h)=\arctan\sqrt\frac{h^2 + 2h}{R} \approx \arctan \sqrt\frac{{2h}}{R}$
 It is easy to see that $\arctan$ behaves like a linear function
 with derivative $=1$ for low values of $h$:
 
-$\frac{d}{dh}\arctan h \approx 1$ (when $h$ is small)<br>
+$\frac{d}{dh}\arctan(h) \approx 1$ (when $h$ is small)<br>
 $\arctan(0) = 0$
 
 From which we get
@@ -57,8 +57,8 @@ Calculating this gives this formula where there is **no refraction**:
 $d_{\text{am}}(h) \approx 1.93 \times \sqrt{h}$
 
 So we see a difference, for no refraction ($d_{\text{am}}$)
-vs refraction ($d_{\text{amR}}$)
-(with coefficients $1.93$ vs $1.75$ respectively).
+vs refraction ($d_{\text{amR}}$),
+with coefficients $1.93$ vs $1.75$ respectively.
 This can easily be explained through a larger "perceived radius" of
 the Earth [when refraction is active](https://en.wikipedia.org/wiki/Atmospheric_refraction#Terrestrial_refraction),
 and this leads to a lower coeffient in
@@ -85,4 +85,17 @@ $R = \frac{{180}^2 \times {60}^2 \times 2}{{\pi}^2 \times k^2}
 
 From this we can easily get the radius of the Earth ($R$) given the
 coefficient ($k$) just like [Al-Biruni did in 1017 AD](https://en.wikipedia.org/wiki/Al-Biruni#Geography_and_geodesy)
-(it is about $6300$ km)
+
+Note that Al-Biruni's calculation was made without knowledge of refraction
+and also with measurements with partially unkown units of measurement
+(in today's units).
+Hi didn't get a very exact result for the radius $R$.
+His primary finding was the method he used,
+and the discovery of the dip of the horizon.
+Insert different values and we get:
+
+$R \approx \frac {2.364 \times 10^7}{1.75^2} = 7.72 \times 10^6$ (which is larger than the real value)
+
+$R \approx \frac {2.364 \times 10^7}{1.93^2} = 6.35 \times 10^6$ (close to the real value)
+
+
