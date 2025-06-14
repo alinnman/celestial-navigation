@@ -94,8 +94,25 @@ His primary finding was the method he used,
 and the discovery of the dip of the horizon.
 Insert different values and we get:
 
-$R \approx \frac {2.364 \times 10^7}{1.75^2} = 7.72 \times 10^6$ (which is larger than the real value)
+$R \approx \frac {2.364 \times 10^7}{1.75^2} = 7.72 \times 10^6$
+(which is larger than the real value)
 
-$R \approx \frac {2.364 \times 10^7}{1.93^2} = 6.35 \times 10^6$ (close to the real value)
+$R \approx \frac {2.364 \times 10^7}{1.93^2} = 6.35 \times 10^6$
+(close to the real value)
 
+In the picture below we see a series of actual dip measurments.
+For details see [this video](https://youtu.be/6viR_GJ8998?si=JCDL66ikg9gqIYtu).
 
+![Theodolite measurments](../pics/theodilite-measurements.png)
+
+If you run [this script](k_factory.py) you will see that the actual $k$ factor
+for this test was **$1.88$** which indicates less refraction than the "default" value
+of $1.75$. Nevertheless; refraction is difficult and will always create
+uncertainties in measurements like this. The overall effect of the horizon dip
+and its dependence of increasing elevation is however **very obvious**.
+
+If the theodolite measurements in the YouTube video were used as direct
+data for Earth radius calculation we would get:
+
+$R \approx \frac {2.364 \times 10^7}{1.88^2} = 6.659 \times 10^6$<br>
+which is only about 5 percent larger than the real value.
