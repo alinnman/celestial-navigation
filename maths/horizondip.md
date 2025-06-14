@@ -89,7 +89,7 @@ coefficient ($k$) just like [Al-Biruni did in 1017 AD](https://en.wikipedia.org/
 Note that Al-Biruni's calculation was made without knowledge of refraction
 and also with measurements with partially unkown units of measurement
 (in today's units).
-Hi didn't get a very exact result for the radius $R$.
+He didn't get a very exact result for the radius $R$.
 His primary finding was the method he used,
 and the discovery of the dip of the horizon.
 Insert different values and we get:
