@@ -88,10 +88,12 @@ coefficient ($k$) just like [Al-Biruni did in 1017 AD](https://en.wikipedia.org/
 
 Note that Al-Biruni's calculation was made without knowledge of refraction
 and also with measurements with partially unkown units of measurement
-(in today's units).
+(in today's units). He also used a rather primitive level device.
 He didn't get a very exact result for the radius $R$.
-His primary finding was the method he used,
-and the discovery of the dip of the horizon.
+His primary finding was the **method** he used,
+and the discovery of the dip of the horizon, allowing for anyone after
+him to repeat the experiment.
+
 Insert different values and we get:
 
 $R \approx \frac {2.364 \times 10^7}{1.75^2} = 7.72 \times 10^6$
@@ -106,8 +108,8 @@ For details see [this video](https://youtu.be/6viR_GJ8998?si=JCDL66ikg9gqIYtu).
 ![Theodolite measurments](../pics/theodilite-measurements.png)
 
 If you run [this script](k_factory.py) you will see that the actual $k$ factor
-for this test was **$1.88$** which indicates less refraction than the "default" value
-of $1.75$. Nevertheless; refraction is difficult and will always create
+for this test was **$1.88$** which indicates less refraction than the "default"
+value of $1.75$. Nevertheless; refraction is difficult and will always create
 uncertainties in measurements like this. The overall effect of the horizon dip
 and its dependence of increasing elevation is however **very obvious**.
 

@@ -2,7 +2,8 @@
     © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
 
-    This is a little script calculating the k factor for a series of dip observations
+    This is a little script calculating the k factor and the radius of the Earth
+    for a series of dip observations.
 '''
 
 from math import sqrt
