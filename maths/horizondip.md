@@ -102,8 +102,8 @@ $R \approx \frac {2.364 \times 10^7}{1.75^2} = 7.72 \times 10^6$
 $R \approx \frac {2.364 \times 10^7}{1.93^2} = 6.35 \times 10^6$
 (close to the real value)
 
-In the picture below we see a series of actual dip measurments.
-For details see [this video](https://youtu.be/6viR_GJ8998?si=JCDL66ikg9gqIYtu).
+In the picture below we see a series of actual dip measurements.
+For details see [this video](https://youtu.be/6viR_GJ8998?si=JCDL66ikg9gqIYtu). You can clearly see the square root relation here.
 
 ![Theodolite measurments](../pics/theodilite-measurements.png)
 
