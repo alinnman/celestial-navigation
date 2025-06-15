@@ -117,4 +117,4 @@ If the theodolite measurements in the YouTube video were used as direct
 data for Earth radius calculation we would get:
 
 $R \approx \frac {2.364 \times 10^7}{1.88^2} = 6.659 \times 10^6$<br>
-which is only about 5 percent larger than the real value.
+which is only about 4 percent larger than the real value.
