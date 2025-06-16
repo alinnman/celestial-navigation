@@ -6,7 +6,6 @@ testing*
 *.html
 *.json
 .venv/*
-
-
-
+.buildozer/**
+.buildozer/android/platform/python-for-android
 

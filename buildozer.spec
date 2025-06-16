@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,pandas
+requirements = libffi,python3,kivy,pandas
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -104,16 +104,16 @@ fullscreen = 0
 android.api = 31
 
 # (int) Minimum API your APK / AAB will support.
-android.minapi = 21
+android.minapi = 25
 
 # (int) Android SDK version to use
-android.sdk = 20
+android.sdk = 23
 
 # (str) Android NDK version to use
-android.ndk = 23b
+android.ndk = 25b
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
-android.ndk_api = 21
+android.ndk_api = 25
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
 android.private_storage = False
@@ -249,11 +249,11 @@ android.accept_sdk_license = False
 #android.manifest.orientation = fullSensor
 
 # (list) Android additional libraries to copy into libs/armeabi
-#android.add_libs_armeabi = libs/android/*.so
-#android.add_libs_armeabi_v7a = libs/android-v7/*.so
-#android.add_libs_arm64_v8a = libs/android-v8/*.so
-#android.add_libs_x86 = libs/android-x86/*.so
-#android.add_libs_mips = libs/android-mips/*.so
+android.add_libs_armeabi = libs/android/*.so
+android.add_libs_armeabi_v7a = libs/android-v7/*.so
+android.add_libs_arm64_v8a = libs/android-v8/*.so
+android.add_libs_x86 = libs/android-x86/*.so
+android.add_libs_mips = libs/android-mips/*.so
 
 # (bool) Indicate whether the screen should stay on
 # Don't forget to add the WAKE_LOCK permission if you set this to True
