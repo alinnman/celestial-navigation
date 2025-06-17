@@ -108,10 +108,10 @@ android.ndk = 25b
 #android.private_storage = True
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
-android.ndk_path = ~/Desktop/crystax-ndk-10.3.2
+android.ndk_path = 
 
 # (str) Android SDK directory (if empty, it will be automatically downloaded.)
-#android.sdk_path = ~/Desktop/platform-tools
+#android.sdk_path = 
 
 # (str) ANT directory (if empty, it will be automatically downloaded.)
 #android.ant_path =
