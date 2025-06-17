@@ -5,7 +5,8 @@ __pycache__/*
 testing*
 *.html
 *.json
-.venv/*
+.venv/**
 .buildozer/**
-.buildozer/android/platform/python-for-android
+bin/**
+
 
