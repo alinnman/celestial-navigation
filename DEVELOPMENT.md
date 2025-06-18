@@ -49,8 +49,21 @@ You may of course edit the git ignore file to adjust to your needs.
 The files in the [test](test) folder contain unit tests which can
 be run in VSCode testing module.
 
-## App development
+## App development and deployment
 
-The file [starfix_app.py](starfix_app.py) contains a very simple
+The file [main.py](main.py) contains a very simple
 app built on the Kivy framework. It can be used as a starter point
 for developing Android or iOS apps.
+
+A script solution based on [buildozer](https://github.com/kivy/buildozer)
+is available and it produces a working/running app for Android 15.
+In order to use it you need to follow the installation instructions.
+Be careful to keep your work in the virtual environment (venv). See above.
+
+Building the app is done using these command:
+
+    source .venv/bin/activate
+    buildozer -v android debug
+
+Note however that you probably need to fine-tune and adjust your enviroment
+carefully before being able to run the app build script successfully.

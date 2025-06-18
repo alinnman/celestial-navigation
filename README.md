@@ -87,8 +87,8 @@ a sight reduction in 1-2 milliseconds.
 * As a bonus there is also support for **terrestrial navigation**.
   See [below](#terrestrial) for more information.
 
-For more information on installation and usage of the Python scripts see
-[here](INSTALL.md).
+For more information on installation and usage of the Python scripts
+and the (experimental) mobile all see [here](INSTALL.md).
 
 A short explanation of the logical steps and algorithms used in this toolkit can
 be found [here](WORKFLOW.md).
