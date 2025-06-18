@@ -23,13 +23,13 @@ source.include_exts = py,csv
 source.include_patterns = sample_data/*.csv
 
 # (list) Source files to exclude (let empty to not exclude anything)
-source.exclude_dirs = .venv, .vscode, colab, maths, nautical_almanacs
+source.exclude_dirs = .venv, .vscode, colab, maths, nautical_almanacs, test, xtras
 
 # (list) List of directory to exclude (let empty to not exclude anything)
 #source.exclude_dirs = tests, bin
 
 # (list) List of exclusions using pattern matching
-source.exclude_patterns = starfixdata_stat*.py, starfixdata_sea*.py
+source.exclude_patterns = starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py
 
 # (str) Application versioning (method 1)
 version = 0.1
@@ -69,10 +69,10 @@ orientation = portrait
 # author = © Copyright Info
 
 # change the major version of python used by the app
-osx.python_version = 3
+# osx.python_version = 3
 
 # Kivy version to use
-osx.kivy_version = 1.10.1
+# osx.kivy_version = 1.10.1
 
 #
 # Android specific
@@ -89,7 +89,7 @@ fullscreen = 0
 #android.presplash_color = #FFFFFF
 
 # (list) Permissions
-android.permissions = 
+android.permissions = INTERNET,CHANGE_WIFI_MULTICAST_STATE,ACCESS_NETWORK_STATE,ACCESS_WIFI_STATE, MANAGE_EXTERNAL_STORAGE
 
 # (int) Android API to use
 # see https://developer.android.com/distribute/best-practices/develop/target-sdk

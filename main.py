@@ -14,7 +14,7 @@ from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError
 import json
 import kivy
-kivy.require('2.3.1')
+# kivy.require('2.3.1')
 # Omitting size specifications
 #kivy.config.Config.set('graphics', 'width', 400)
 #kivy.config.Config.set('graphics', 'height', 400)
@@ -137,27 +137,6 @@ class ExecButton (Button):
         sr = sight_reduction()
         the_form.results.text = sr
 
-# Omitting quit button, but keeping code for reference
-#class QuitButton (Button):
-#    ''' This button quits the application '''
-#    def __init__(self, form, **kwargs):
-#        super().__init__(**kwargs)
-#        self.form = form
-#        self.text = "Quit"
-# pylint: disable=E1101
-#        self.bind(on_press=self.callback)
-# pylint: enable=E1101
-
-#    @staticmethod
-#    def callback(_):
-#        ''' This is the button callback function '''
-        #quit()
-#        the_app = App.get_running_app ()
-#        if isinstance (the_app, StarFixApp):
-#            r = the_app.get_root()
-#            r.clear_widgets ()
-#            the_app.stop()
-
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
 
@@ -250,14 +229,23 @@ def initialize(fn: str, init_dict: dict):
     except FileNotFoundError:
         # If no file present, then load the defaults
         NUM_DICT = init_dict
+#pylint: disable=W0702
+    except:
+        NUM_DICT = init_dict
+#pylint: enable=W0702
 
 
 def dump_dict():
     ''' Dumps the contents to a json file '''
     j_dump = json.dumps(NUM_DICT)
     assert isinstance(FILE_NAME, str)
-    with open(FILE_NAME, "w", encoding="utf-8") as f:
-        f.write(j_dump)
+    try:
+        with open(FILE_NAME, "w", encoding="utf-8") as f:
+            f.write(j_dump)
+#pylint: disable=W0702            
+    except:
+        pass
+#pylint: enable=W0702    
 
 def do_initialize ():
     ''' Initialize data from json '''
