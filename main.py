@@ -229,23 +229,13 @@ def initialize(fn: str, init_dict: dict):
     except FileNotFoundError:
         # If no file present, then load the defaults
         NUM_DICT = init_dict
-#pylint: disable=W0702
-    except:
-        NUM_DICT = init_dict
-#pylint: enable=W0702
-
 
 def dump_dict():
     ''' Dumps the contents to a json file '''
     j_dump = json.dumps(NUM_DICT)
     assert isinstance(FILE_NAME, str)
-    try:
-        with open(FILE_NAME, "w", encoding="utf-8") as f:
-            f.write(j_dump)
-#pylint: disable=W0702            
-    except:
-        pass
-#pylint: enable=W0702    
+    with open(FILE_NAME, "w", encoding="utf-8") as f:
+        f.write(j_dump)
 
 def do_initialize ():
     ''' Initialize data from json '''

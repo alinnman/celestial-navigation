@@ -53,7 +53,7 @@ requirements = pandas,kivy
 presplash.filename = pics/us-navy.jpg
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon512x512.png
+icon.filename = pics/icon512x512.png
 
 # (str) Supported orientation (one of landscape, portrait or all)
 orientation = portrait
@@ -86,10 +86,10 @@ fullscreen = 0
 # red, blue, green, black, white, gray, cyan, magenta, yellow, lightgray,
 # darkgray, grey, lightgrey, darkgrey, aqua, fuchsia, lime, maroon, navy,
 # olive, purple, silver, teal.
-#android.presplash_color = #FFFFFF
+android.presplash_color = blue
 
 # (list) Permissions
-android.permissions = INTERNET,CHANGE_WIFI_MULTICAST_STATE,ACCESS_NETWORK_STATE,ACCESS_WIFI_STATE, MANAGE_EXTERNAL_STORAGE
+android.permissions = MANAGE_EXTERNAL_STORAGE
 
 # (int) Android API to use
 # see https://developer.android.com/distribute/best-practices/develop/target-sdk
