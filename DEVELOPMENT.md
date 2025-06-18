@@ -52,15 +52,15 @@ be run in VSCode testing module.
 ## App development and deployment
 
 The file [main.py](main.py) contains a very simple
-app built on the Kivy framework. It can be used as a starter point
+app (Celeste) built on the Kivy framework. It can be used as a starter point
 for developing Android or iOS apps.
 
 A script solution based on [buildozer](https://github.com/kivy/buildozer)
-is available and it produces a working/running app for Android 15.
+is available and it produces a working/running app (APK file) for Android 15.
 In order to use it you need to follow the installation instructions.
 Be careful to keep your work in the virtual environment (venv). See above.
 
-Building the app is done using these command:
+Building the app is done using these commands:
 
     source .venv/bin/activate
     buildozer -v android debug
