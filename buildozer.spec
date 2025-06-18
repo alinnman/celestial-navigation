@@ -89,17 +89,17 @@ fullscreen = 0
 #android.presplash_color = #FFFFFF
 
 # (list) Permissions
-android.permissions = INTERNET,CHANGE_WIFI_MULTICAST_STATE,ACCESS_NETWORK_STATE,ACCESS_WIFI_STATE
+android.permissions = 
 
 # (int) Android API to use
 # see https://developer.android.com/distribute/best-practices/develop/target-sdk
-android.api = 27
+android.api = 33
 
 # (int) Minimum API required
-#android.minapi = 19
+android.minapi = 33
 
 # (int) Android SDK version to use
-android.sdk = 23
+android.sdk = 33
 
 # (str) Android NDK version to use
 android.ndk = 25b
@@ -108,7 +108,7 @@ android.ndk = 25b
 #android.private_storage = True
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
-android.ndk_path = 
+#android.ndk_path = 
 
 # (str) Android SDK directory (if empty, it will be automatically downloaded.)
 #android.sdk_path = 
