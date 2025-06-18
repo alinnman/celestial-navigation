@@ -88,24 +88,24 @@ a sight reduction in 1-2 milliseconds.
   See [below](#terrestrial) for more information.
 
 For more information on installation and usage of the Python scripts
-and the (experimental) mobile app see [here](INSTALL.md).
+and the (experimental) mobile app [see here](INSTALL.md).
 
 A short explanation of the logical steps and algorithms used in this toolkit can
-be found [here](WORKFLOW.md).
+be [found here](WORKFLOW.md).
 
 Digital versions of the Nautical Almanac (in PDF format)
 for [2024](nautical_almanacs/NAmod(A4)_2024.pdf)
 and [2025](nauticak_almanacs/NAmod(A4)_2025.pdf)
 are included in this repository.
-A machine-readable nautical almanac (in CSV format) can be found
-[here](./sample_data/)
+A machine-readable nautical almanac (in CSV format) can be
+[found here](./sample_data/)
 
-A more detailed description of celestial navigation can be found
-[here](https://www.waypointamsterdam.com/Handy_stuf/Short_Guide_To_Astro_navigation.pdf).<br>
+A more detailed description of celestial navigation can be
+[found here](https://www.waypointamsterdam.com/Handy_stuf/Short_Guide_To_Astro_navigation.pdf).<br>
 
 A historical document, the Admiralty Navigational Manual (1938),
-from His Majestys Stationary Office (UK) can be found
-[here](https://archive.org/details/dli.ernet.211556/mode/2up).
+from His Majestys Stationary Office (UK) can be
+[found here](https://archive.org/details/dli.ernet.211556/mode/2up).
 
 If you wonder why I wrote this in the first place, then see
 [this short explanation](WHY.md), where I also give some tips
@@ -413,8 +413,8 @@ $\phi = \left|\left|d_1 \times d_2\right|\right|$  ;  $0<=\phi<=1$
 
 Note: I have chosen to use an algorithm based on 3D cartesian vectors.
 Standard literature on sight reduction typically uses 2D spherical coordinates,
-such as **Longhand haversine sight reduction** as described
-[here](https://en.wikipedia.org/wiki/Sight_reduction#Longhand_haversine_sight_reduction).
+such as **Longhand haversine sight reduction** as
+[described here](https://en.wikipedia.org/wiki/Sight_reduction#Longhand_haversine_sight_reduction).
 Such calculations in 2D are easier to carry out by hand but results in more
 complex computer software. The 3D/cartesian approach is more structurally
 simple and easier to convert to well-functioning software.
@@ -893,7 +893,7 @@ sextant (Davis Mark III), a standard watch and an artificial horizon.
 
 ![Simple celestial navigation gear](pics/celnav-gear.jpg "Simple celestial navigation gear")
 
-The sample can be found [here](xtras/starfixdata_xtra_home.py).
+The sample can be [found here](xtras/starfixdata_xtra_home.py).
 The resulting position is just 1.45 nautical miles away from my real position,
 which I consider being an excellent result given the simple equipment and my
 modest level of training.
