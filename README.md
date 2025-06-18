@@ -88,7 +88,7 @@ a sight reduction in 1-2 milliseconds.
   See [below](#terrestrial) for more information.
 
 For more information on installation and usage of the Python scripts
-and the (experimental) mobile all see [here](INSTALL.md).
+and the (experimental) mobile app see [here](INSTALL.md).
 
 A short explanation of the logical steps and algorithms used in this toolkit can
 be found [here](WORKFLOW.md).
