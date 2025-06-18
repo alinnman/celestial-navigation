@@ -31,6 +31,8 @@ from kivy.lang import Builder
 from kivy.app import App, runTouchApp
 from kivy.core.window import Window
 
+Window.softinput_mode = 'below_target'
+
 # pylint: enable=C0413
 # pylint: enable=C0411
 

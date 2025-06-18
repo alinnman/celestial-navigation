@@ -89,7 +89,7 @@ fullscreen = 0
 android.presplash_color = gray
 
 # (list) Permissions
-android.permissions = MANAGE_EXTERNAL_STORAGE
+android.permissions = 
 
 # (int) Android API to use
 # see https://developer.android.com/distribute/best-practices/develop/target-sdk
