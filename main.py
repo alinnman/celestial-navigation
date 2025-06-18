@@ -14,7 +14,7 @@ from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError
 import json
 import kivy
-# kivy.require('2.3.1')
+kivy.require('2.0.0')
 # Omitting size specifications
 #kivy.config.Config.set('graphics', 'width', 400)
 #kivy.config.Config.set('graphics', 'height', 400)
