@@ -70,7 +70,7 @@ a task that traditionally is performed with careful manual work using special
 tables (sight reduction tables), pen, dividers and specialized plotting charts.
 Using a calculator can speed up this manual task, and also reduce possible
 (human) errors.
-A **computer** can do it even quicker, and this toolkit will typically perform
+A **computer** (or mobile phone) can do it even quicker, and this toolkit will typically perform
 a sight reduction in 1-2 milliseconds.  
 
 * The toolkit supports **stationary** observations, i.e. when observations are
