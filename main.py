@@ -1,7 +1,7 @@
 ''' 
     Simple skeleton demo app for celestial navigation. 
     Based on Kivy.
-    Can be used for more elaborate apps, including on Android and iOS. 
+    Can be used for more elaborate apps, including on Android and iOS, Protype now working.. 
 
     *** WORK IN PROGRESS ***
 
@@ -94,7 +94,7 @@ def get_starfixes(drp_pos: LatLonGeodetic) -> SightCollection:
     return SightCollection(retval)
 
 
-def sight_reduction() -> str:
+def sight_reduction() -> tuple[str,bool]:
     ''' Perform a sight reduction given data entered above '''
     assert isinstance(NUM_DICT, dict)
     the_pos = LatLonGeodetic(lat=float(NUM_DICT["DrpLat"]),
@@ -111,11 +111,14 @@ def sight_reduction() -> str:
 
         assert intersections is not None
         assert collection is not None
-        return get_representation(intersections, 1)
+        return get_representation(intersections, 1), True
 
     except IntersectError as ve:
-        print("Cannot perform a sight reduction. Bad sight data.\n" + str(ve))
-        return "Failed sight reduction."
+        return "Failed sight reduction. " + str (ve), False
+    except KeyError as ve:
+    	return "Invalid parameters. " + str (ve), False
+    except ValueError as ve:
+    	return str(ve) + " " + str(type(ve)), False
 
 class ExecButton (Button):
     ''' This is the button starting the sight reduction '''
@@ -136,7 +139,9 @@ class ExecButton (Button):
         the_form = instance.form
         assert isinstance(the_form, InputForm)
         the_form.extract_from_widgets()
-        sr = sight_reduction()
+        sr, result = sight_reduction()
+        if result:
+            dump_dict()
         the_form.results.text = sr
 
 class FormRow (BoxLayout):
@@ -439,7 +444,7 @@ class InputForm(GridLayout):
                 NUM_DICT[e] = str(w.active)
             elif isinstance(w, LimbDropDown):
                 NUM_DICT[e] = w.text
-        dump_dict()
+        #dump_dict()
 
 if __name__ == '__main__':
     do_initialize()
