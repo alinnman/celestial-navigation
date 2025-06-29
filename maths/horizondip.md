@@ -107,7 +107,7 @@ For details see [this video](https://youtu.be/6viR_GJ8998?si=JCDL66ikg9gqIYtu). 
 
 ![Theodolite measurments](../pics/theodilite-measurements.png)
 
-If you run [this script](k_factory.py) you will see that the actual $k$ factor
+If you run [this script](k_factor.py) you will see that the actual $k$ factor
 for this test was **$1.88$** which indicates less refraction than the "default"
 value of $1.75$. Nevertheless; refraction is difficult and will always create
 uncertainties in measurements like this. The overall effect of the horizon dip
