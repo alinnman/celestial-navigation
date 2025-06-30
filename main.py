@@ -116,9 +116,9 @@ def sight_reduction() -> tuple[str,bool]:
     except IntersectError as ve:
         return "Failed sight reduction. " + str (ve), False
     except KeyError as ve:
-    	return "Invalid parameters. " + str (ve), False
+        return "Invalid parameters." + str (ve), False
     except ValueError as ve:
-    	return str(ve) + " " + str(type(ve)), False
+        return str(ve), False
 
 class ExecButton (Button):
     ''' This is the button starting the sight reduction '''

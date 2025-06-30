@@ -14,6 +14,7 @@ from collections.abc import Callable
 import subprocess
 from multiprocessing import Process
 import webbrowser
+from configparser import ConfigParser
 
 ################################################
 # Metadata and file access
@@ -1440,21 +1441,35 @@ class ObsTypes:
 #pylint: disable=R0903
 class Almanac:
     ''' Represents a machine-readable almanac in pandas/csv format '''
+
+    data_path = "sample_data/"
+
     def __init__ (self, fn : str):
 #pylint: disable=C0415
         from pandas import read_csv
 #pylint: enable=C0415
         if fn in ["planets", "sun-moon", "sun-moon-sd", "venus-mars-hp"]:
             self.pd = \
-            read_csv ("sample_data/"+fn + ".csv", index_col=0, delimiter=";", dtype="string")
+            read_csv (self.data_path+fn + ".csv", index_col=0, delimiter=";", dtype="string")
         elif fn in ["stars"]:
             self.pd = \
-            read_csv ("sample_data/"+fn + ".csv", index_col=[0,1], delimiter=";", dtype="string")
+            read_csv (self.data_path+fn + ".csv", index_col=[0,1], delimiter=";", dtype="string")
         else:
             raise NotImplementedError
         Almanac.active_almanacs [fn] = self
 
     active_almanacs = dict [str, object] ()
+
+    range_from = None
+    range_to = None
+    @staticmethod
+    def init_ranges (dp : str):
+        """ Initialize the range object """
+        config = ConfigParser ()
+        fn = dp+"range.properties"
+        config.read (fn)
+        Almanac.range_from = config.get('Limits', 'From')
+        Almanac.range_to   = config.get('Limits', 'To')
 
     @staticmethod
     def get_almanac (fn : str) -> object:
@@ -1464,6 +1479,20 @@ class Almanac:
         except KeyError:
             return Almanac (fn)
 #pylint: enable=R0903
+
+Almanac.init_ranges (Almanac.data_path)
+
+class AlmanacRangeException (ValueError):
+    ''' Represents an exception where the range of the nautical almanac has been exceeded '''
+    def __init__ (self, description : str):
+        self.from_date = Almanac.range_from
+        self.to_date = Almanac.range_to
+        super().__init__ (self, description)
+
+    def __str__ (self) -> str:
+        return "The almanac only holds values between " +\
+                str(self.from_date) +  " to " +\
+                str(self.to_date)
 
 #pylint: disable=R0912
 #pylint: disable=R0914
@@ -1507,7 +1536,7 @@ def get_mr_item (cel_obj : MrKind | str,
                     day_d = day_d + timedelta (days=-1)
                     iter_count += 1
                     if iter_count > max_iter:
-                        raise ValueError ("Database match error") from ke
+                        raise AlmanacRangeException("Database match error") from ke
             try:
 #pylint: disable=C0415
                 from pandas import Series
@@ -1520,11 +1549,11 @@ def get_mr_item (cel_obj : MrKind | str,
         else:
             the_almanac = Almanac.get_almanac ("planets")
             df = the_almanac.pd
-            loc = df.loc[ts]
             try:
+                loc = df.loc[ts]
                 return str(loc[str(cel_obj)+"_"+str(obs_type)])
             except KeyError as ie:
-                raise ValueError ("Invalid parameter") from ie
+                raise AlmanacRangeException ("Invalid parameter") from ie
     elif isinstance (cel_obj, MrKindCentral):
         if str(obs_type) in ["SD","v"]:
             the_almanac = Almanac.get_almanac ("sun-moon-sd")
@@ -1532,19 +1561,19 @@ def get_mr_item (cel_obj : MrKind | str,
             ts_dt = datetime.fromisoformat (ts)
             day_d = date (year=ts_dt.year, month=ts_dt.month, day=ts_dt.day)
             day_d_s = str(day_d)
-            loc = df.loc[day_d_s]
             try:
+                loc = df.loc[day_d_s]
                 return str(loc[str(cel_obj)+"_"+str(obs_type)])
             except KeyError as ie:
-                raise ValueError ("Invalid parameter") from ie
+                raise AlmanacRangeException ("Invalid parameter") from ie
         else:
             the_almanac = Almanac.get_almanac ("sun-moon")
             df = the_almanac.pd
-            loc = df.loc[ts]
             try:
+                loc = df.loc[ts]
                 return str(loc[str(cel_obj)+"_"+str(obs_type)])
             except KeyError as ie:
-                raise ValueError ("Invalid parameter") from ie
+                raise AlmanacRangeException ("Invalid parameter") from ie
     elif isinstance (cel_obj ,MrKindStar):
         if str(obs_type) in ["GHA"]:
             return get_mr_item ("Aries", ts, ObsTypes.GHA)
@@ -1565,7 +1594,7 @@ def get_mr_item (cel_obj : MrKind | str,
                 day_d = day_d + timedelta (days=-1)
                 iter_count += 1
                 if iter_count > max_iter:
-                    raise ValueError ("Database match error") from ke
+                    raise AlmanacRangeException ("Database match error") from ke
         try:
 #pylint: disable=C0415
             from pandas import Series
@@ -1573,7 +1602,7 @@ def get_mr_item (cel_obj : MrKind | str,
             assert isinstance (loc, Series)
             return str(loc[str(obs_type)])
         except KeyError as ie:
-            raise ValueError ("Invalid parameter") from ie
+            raise AlmanacRangeException ("Invalid parameter") from ie
     raise NotImplementedError ()
 #pylint: enable=R0912
 #pylint: enable=R0914
