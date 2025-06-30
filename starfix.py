@@ -1294,18 +1294,20 @@ def get_terrestrial_position (point_a1 : LatLonGeodetic, # First point pair
 class MrKind:
     ''' Defines root of cel object taxonomy '''
     def __init__ (self, s : str):
-        self.kind = s
+        s_l = s.lower()
+        self.kind = s_l
         MrKind.kind_dict [self.kind] = self
     def __str__ (self):
-        return self.kind
+        return self.kind.lower()
 
     @staticmethod
     def get_kind (s : str) -> object:
         ''' Return a corresponding kind representation '''
+        s_l = s.lower()
         try:
-            retval = MrKind.kind_dict [s]
+            retval = MrKind.kind_dict [s_l]
         except KeyError as ke:
-            raise ValueError ("Non-existent kind of object") from ke
+            raise ValueError ("Non-existent kind of object <" + s_l + ">") from ke
         assert isinstance (retval, MrKind)
         return retval
 
@@ -1328,8 +1330,9 @@ class MrKindStar (MrKind):
     def __init__ (self,s):
         self.index = MrKindStar.star_index
         MrKindStar.star_index += 1
-        super().__init__(s)
-        MrKindStar.stars [s] = self
+        s_l = s.lower()
+        super().__init__(s_l)
+        MrKindStar.stars [s_l] = self
 
     def get_index (self) -> int:
         ''' Return the index of the star in the catalog '''
@@ -1339,7 +1342,7 @@ class MrKindStar (MrKind):
     def is_star (star_name : str) -> bool:
         ''' Check if a name is referring to a star'''
         try:
-            _ = MrKindStar.stars [star_name]
+            _ = MrKindStar.stars [star_name.lower()]
             return True
         except KeyError:
             return False
@@ -1506,6 +1509,7 @@ def get_mr_item (cel_obj : MrKind | str,
     if not PANDAS_INITIALIZED:
         raise ValueError ("Pandas not available. Install it with \"pip install pandas\"")
     if isinstance (cel_obj, str):
+        cel_obj = cel_obj.lower ()
         c2 = MrKind.get_kind (cel_obj)
         assert isinstance (c2, MrKind)
         cel_obj = c2
@@ -1517,6 +1521,7 @@ def get_mr_item (cel_obj : MrKind | str,
         ts = str(x + timedelta(hours=1))
 
     if isinstance (cel_obj, (MrKindPlanet, MrKindAries)):
+
         if str(obs_type) in ["HP"]:
             the_almanac = Almanac.get_almanac ("venus-mars-hp")
             df = the_almanac.pd
@@ -1571,7 +1576,7 @@ def get_mr_item (cel_obj : MrKind | str,
             df = the_almanac.pd
             try:
                 loc = df.loc[ts]
-                return str(loc[str(cel_obj)+"_"+str(obs_type)])
+                return str(loc[str(cel_obj).lower()+"_"+str(obs_type)])
             except KeyError as ie:
                 raise AlmanacRangeException ("Invalid parameter") from ie
     elif isinstance (cel_obj ,MrKindStar):
