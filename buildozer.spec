@@ -17,10 +17,10 @@ package.domain = linnman.net
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,csv
+source.include_exts = py,csv,properties
 
 # (list) List of inclusions using pattern matching
-source.include_patterns = sample_data/*.csv
+source.include_patterns = sample_data/*
 
 # (list) Source files to exclude (let empty to not exclude anything)
 source.exclude_dirs = .venv, .vscode, colab, maths, nautical_almanacs, test, xtras
@@ -32,7 +32,7 @@ source.exclude_dirs = .venv, .vscode, colab, maths, nautical_almanacs, test, xtr
 source.exclude_patterns = starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py
 
 # (str) Application versioning (method 1)
-version = 0.1
+version = 0.1.1
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -40,7 +40,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = pandas,kivy
+requirements = pandas,kivy,folium
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes

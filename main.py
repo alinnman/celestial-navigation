@@ -10,8 +10,9 @@
 '''
 # pylint: disable=C0413
 # pylint: disable=C0411
+from types import NoneType
 from starfix import LatLonGeodetic, SightCollection, Sight, \
-    get_representation, IntersectError
+    get_representation, IntersectError, show_or_display_file
 import json
 import kivy
 kivy.require('2.0.0')
@@ -94,7 +95,7 @@ def get_starfixes(drp_pos: LatLonGeodetic) -> SightCollection:
     return SightCollection(retval)
 
 
-def sight_reduction() -> tuple[str,bool]:
+def sight_reduction() -> tuple[str, bool, LatLonGeodetic | NoneType, SightCollection | NoneType]:
     ''' Perform a sight reduction given data entered above '''
     assert isinstance(NUM_DICT, dict)
     the_pos = LatLonGeodetic(lat=float(NUM_DICT["DrpLat"]),
@@ -109,16 +110,16 @@ def sight_reduction() -> tuple[str,bool]:
                                                    get_starfixes=get_starfixes,
                                                    assume_good_estimated_position=True)
 
-        assert intersections is not None
-        assert collection is not None
-        return get_representation(intersections, 1), True
+        assert isinstance (intersections, LatLonGeodetic)
+        assert isinstance (collection, SightCollection)
+        return get_representation(intersections, 1), True, intersections, collection
 
     except IntersectError as ve:
-        return "Failed sight reduction. " + str (ve), False
+        return "Failed sight reduction. " + str (ve), False, None, None
     except KeyError as ve:
-        return "Invalid parameters." + str (ve), False
+        return "Invalid parameters." + str (ve), False, None, None
     except ValueError as ve:
-        return str(ve), False
+        return str(ve), False, None, None
 
 class ExecButton (Button):
     ''' This is the button starting the sight reduction '''
@@ -139,8 +140,13 @@ class ExecButton (Button):
         the_form = instance.form
         assert isinstance(the_form, InputForm)
         the_form.extract_from_widgets()
-        sr, result = sight_reduction()
+        sr, result, intersections, coll = sight_reduction()
         if result:
+            assert isinstance (coll, SightCollection)
+            the_map = coll.render_folium (intersections)
+            file_name = "./map.html"
+            the_map.save (file_name)
+            show_or_display_file (file_name)
             dump_dict()
         the_form.results.text = sr
 
