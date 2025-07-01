@@ -12,7 +12,7 @@
 # pylint: disable=C0411
 from types import NoneType
 from starfix import LatLonGeodetic, SightCollection, Sight, \
-    get_representation, IntersectError, show_or_display_file
+    get_representation, IntersectError
 import json
 import kivy
 kivy.require('2.0.0')
@@ -135,20 +135,27 @@ class ExecButton (Button):
     @staticmethod
     def callback(instance):
         ''' This is the button callback function '''
-        print(type(instance))
         assert isinstance(instance, ExecButton)
         the_form = instance.form
         assert isinstance(the_form, InputForm)
         the_form.extract_from_widgets()
-        sr, result, intersections, coll = sight_reduction()
+        sr, result, _, _ = sight_reduction()
         if result:
-            assert isinstance (coll, SightCollection)
-            the_map = coll.render_folium (intersections)
-            file_name = "./map.html"
-            the_map.save (file_name)
-            show_or_display_file (file_name)
+            #assert isinstance (coll, SightCollection)
+            #try:
+            #    the_map = coll.render_folium (intersections)
+            #except BaseException as be:
+            #    the_form.results.text = str(be)
+            #    return
+            #file_name = "./map.html"
+            #the_map.save (file_name)
+            #the_link = show_or_display_file (file_name, return_link=True)
+            #assert isinstance (the_link, str)
+            #webbrowser.open (the_link)
             dump_dict()
-        the_form.results.text = sr
+            the_form.results.text = "Your location = " + sr
+        else:
+            the_form.results.text = sr
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''

@@ -32,7 +32,7 @@ source.exclude_dirs = .venv, .vscode, colab, maths, nautical_almanacs, test, xtr
 source.exclude_patterns = starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py
 
 # (str) Application versioning (method 1)
-version = 0.1.1
+version = 0.1.2
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -40,7 +40,7 @@ version = 0.1.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = pandas,kivy,folium
+requirements = pandas,kivy
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -99,7 +99,7 @@ android.api = 33
 android.minapi = 33
 
 # (int) Android SDK version to use
-android.sdk = 33
+# android.sdk = 33
 
 # (str) Android NDK version to use
 android.ndk = 25b
@@ -194,17 +194,17 @@ android.ndk = 25b
 #android.copy_libs = 1
 
 # (str) The Android arch to build for, choices: armeabi-v7a, arm64-v8a, x86
-android.arch = armeabi-v7a
+android.archs = armeabi-v7a
 
 #
 # Python for android (p4a) specific
 #
 
 # (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
-#p4a.source_dir =
+#p4a.source_dir = ../python-for-android-master
 
 # (str) The directory in which python-for-android should look for your own build recipes (if any)
-#p4a.local_recipes =
+#p4a.local_recipes = ../python-for-android-master/pythonforandroid/recipes
 
 # (str) Filename to the hook for p4a
 #p4a.hook =

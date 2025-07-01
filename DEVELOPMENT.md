@@ -65,5 +65,13 @@ Building the app is done using these commands:
     source .venv/bin/activate
     buildozer -v android debug
 
-Note however that you probably need to fine-tune and adjust your enviroment
-carefully before being able to run the app build script successfully.
+Note however that you probably need to fine-tune and adjust your enviroment carefully before being able to run the app build script successfully.
+
+## App testing
+
+Check
+[this&nbsp;folder](https://drive.google.com/drive/folders/1QFcncVEuCQMnls8lyNElDtpTYruMgI0D?usp=drive_link)
+for a list of compiled APK files. These apps should run nicely
+but have limited functionality (mapping support may be missing). 
+At the moment I have not yet finalized publishing on Google Play.
+

@@ -78,26 +78,38 @@ def __version_warning (min_major_ver : int, min_minor_ver : int):
 __version_warning (3, 11)
 
 def __run_http_server ():
-    if __is_android():
-        subprocess.run (["python", "-m", "http.server", "8000"],\
-                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,\
-                        check=False)
+    #if __is_android() or __is_kivy_app():
+    subprocess.run (["python", "-m", "http.server", "8000"],\
+                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,\
+                    check=False)
 
 def __is_android () -> bool:
     if hasattr(sys, 'getandroidapilevel'):
         return True
     return False
 
-def show_or_display_file (filename : str):
+def __is_kivy_app () -> bool:
+#pylint: disable=C0415
+    from kivy.utils import platform
+#pylint: enable=C0415
+    if platform in ('linux', 'win', 'macosx'):
+        return True
+    return False
+
+def show_or_display_file (filename : str, return_link : bool = False) -> str | NoneType:
     ''' Used to display a file (typically a map) '''
     linkname = "http://localhost:8000/" + filename
-    if __is_android ():
-        print ("Press this link ---> " + linkname)
+    if return_link:
+        return linkname
     else:
-        webbrowser.open (filename)
+        if __is_android ():
+            print ("Press this link ---> " + linkname)
+        else:
+            webbrowser.open (filename)
+        return None
 
 def __start_http_server ():
-    if __is_android():
+    if __is_android() or __is_kivy_app():
         p = Process(target=__run_http_server)
         p.start()
 
