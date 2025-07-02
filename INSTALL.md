@@ -46,7 +46,7 @@ or higher with core libraries.
 * [Offline Folium](https://github.com/robintw/offline_folium)
 (*Optional*,
 will allow map generation without an internet connection. Requires Folium.)
-* [Kivy](hhttps://kivy.org/)
+* [Kivy](https://kivy.org/)
 (*Optional*, for running the demo app.)
 
 No other additional libraries are necessary.
