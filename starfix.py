@@ -90,7 +90,10 @@ def __is_android () -> bool:
 
 def __is_kivy_app () -> bool:
 #pylint: disable=C0415
-    from kivy.utils import platform
+    try:
+        from kivy.utils import platform
+    except ModuleNotFoundError:
+        return False
 #pylint: enable=C0415
     if platform in ('linux', 'win', 'macosx'):
         return True
