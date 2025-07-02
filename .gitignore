@@ -6,6 +6,7 @@ testing*
 *.html
 *.json
 .venv/**
+.venv-buildozer/**
 .buildozer/**
 bin/**
 

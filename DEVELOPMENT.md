@@ -31,12 +31,20 @@ After having created this you can use VSCode to define
 this as your python environment using Ctrl-Shift-P
 and selecting this as your Python interpreter.
 
+NOTE: In order to support app development and distribution using
+the buildozer tool (see below) I have also prepared an alternative
+virtual environment (.venv-buildozer).
+
+    python -m venv .venv-buildozer
+    source .venv/bin/activate
+    pip install git+https://github.com/misl6/buildozer.git@feat/aab-support
+
 ## The .gitignore file
 
 The file [.gitignore](.gitignore) contains several exclusion
 patterns in order to not check in these files into git:
 
-* The .venv (see above)
+* .venv and .venv-buildozer (see above)
 * Python cache files
 * Jupyter temp files
 * Test scripts (anything with a name beginning with <tt>testing</tt>)
@@ -57,15 +65,21 @@ for developing Android or iOS apps.
 
 A script solution based on [buildozer](https://github.com/kivy/buildozer)
 is available and it produces a working/running app (APK file) for Android 15.
-In order to use it you need to follow the installation instructions.
-Be careful to keep your work in the virtual environment (venv). See above.
+Currently I use a fork of
+[this tool](https://gist.github.com/Guhan-SenSam/35c5ed7da254a7c0141e6a8b6101eb33)
+which is documented here. This can also produce AAB files
+(for releases on Google Play)
+
+In order to use this you need to follow the installation instructions carefully.
+Be careful to keep your work in the virtual environment. See above.
 
 Building the app is done using these commands:
 
-    source .venv/bin/activate
+    source .venv-buildozer/bin/activate
     buildozer -v android debug
 
-Note however that you probably need to fine-tune and adjust your enviroment carefully before being able to run the app build script successfully.
+Note however that you probably need to fine-tune and adjust your enviroment
+carefully before being able to run the app build script successfully.
 
 ## App testing
 
