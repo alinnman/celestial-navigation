@@ -7,7 +7,7 @@ title = Celeste
 package.name = myapp
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.test
+package.domain = linnman.net
 
 # (str) Source code where the main.py live
 source.dir = .
