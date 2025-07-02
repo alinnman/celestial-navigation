@@ -14,6 +14,12 @@ three-star fix. A Google account is necessary.
 
 ## Installation
 
+### About operating systems
+
+All development and testing has sofar been done on Linux (Ubuntu), Android and Google Colab.
+Nothing has (yet) been tested in MS Windows. The scripts have known bugs preventing them
+to be run on MS Windows. These bugs will be corrected later on. 
+
 ### A mobile app (Android)
 
 A mobile app has been developed but it is still in alpha stage and not
