@@ -50,6 +50,9 @@ will allow map generation without an internet connection. Requires Folium.)
 * [Kivy](https://kivy.org/)
 (*Optional*, for running the demo app.)
 
+NOTE: The Offline Folium package seems to have bugs, resulting in incorrect plotting.
+I have disabled it for now. 
+
 No other additional libraries are necessary.
 [This link](https://github.com/alinnman/celestial-navigation/archive/refs/heads/main.zip)
 will download **all** source code and needed files in a ZIP file.

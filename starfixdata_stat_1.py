@@ -7,8 +7,6 @@
 
     Data is picked from the nautical almanac.
 '''
-
-from multiprocessing import freeze_support
 from time import time
 from starfix import Sight, SightCollection, get_representation,\
                     get_google_map_string, IntersectError, LatLonGeodetic,\
@@ -80,7 +78,7 @@ def main ():
             assert isinstance (s, Sight)
             counter += 1
             print (str(counter) + " radius = " +\
-                    str(round(s.get_circle( 
+                    str(round(s.get_circle(
                         geodetic=True).get_radius (),1)))
             print (str(counter) + " GP     = " +\
                     get_google_map_string(LatLonGeodetic(ll=s.get_gp()),4))

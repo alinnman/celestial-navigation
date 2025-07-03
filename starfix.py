@@ -29,14 +29,14 @@ try:
 except ModuleNotFoundError:
     pass
 
-try:
+#try:
 #pylint: disable=W0611
-    from offline_folium import offline
+#    from offline_folium import offline
 #pylint: enable=W0611
-except ModuleNotFoundError:
-    pass
-except ImportError:
-    pass
+#except ModuleNotFoundError:
+#    pass
+#except ImportError:
+#    pass
 
 FOLIUM_INITIALIZED = False
 try:
@@ -56,7 +56,7 @@ def check_folium ():
             ("Folium not available. Cannot generate maps. "+\
             "Install folium with \"pip install folium\"")
 
-def folium_initialized ():
+def folium_initialized () -> bool:
     ''' Can be used to check if folium is initialized '''
     return FOLIUM_INITIALIZED
 
@@ -82,7 +82,6 @@ def __run_http_server ():
     subprocess.run (["python", "-m", "http.server", "8000"],\
                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,\
                     check=False)
-    print ("HTTP server subprocess started") # TODO Review
 
 def __is_windows ():
     if os_name == 'nt':
@@ -98,7 +97,6 @@ def __is_windows ():
 #pylint: disable=C0415
 #    try:
 #        from kivy.utils import platform
-#        print (platform) # TODO Remove
 #        if platform in ('linux'):
 #            return True
 #        return False
@@ -134,7 +132,6 @@ def __start_http_server ():
         p = Process(target=__run_http_server)
         p.start()
         http_server_running = True
-        print ("HTTP server started.") # TODO Review
 #pylint: disable=W0702
     except:
         pass
