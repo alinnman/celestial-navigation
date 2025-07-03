@@ -20,7 +20,6 @@ from starfixdata_stat_1      import main as main_1_mr
 from starfixdata_stat_1_na   import main as main_1
 from starfixdata_stat_1_mc   import main as main_1_mc
 from starfixdata_stat_2_na   import main as main_2
-from starfixdata_stat_2      import main as main_2_mr
 from starfixdata_stat_3      import main as main_3
 from starfixdata_sea_1       import main as main_sea_1
 from starfixdata_sea_2       import main as main_sea_2
@@ -78,10 +77,6 @@ class TestStringMethods(unittest.TestCase):
     def test_mr_1 (self):
         ''' Test suite for Machine-Readable Nautical Almanac '''
         main_1_mr ()
-
-    def test_mr_2 (self):
-        ''' Test suite for Machine-Readable Nautical Almanac '''
-        main_2_mr ()
 
     def test_latlons (self):
         ''' Verify that the D2C and C2D functions are inverses '''

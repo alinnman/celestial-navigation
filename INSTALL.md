@@ -17,8 +17,9 @@ three-star fix. A Google account is necessary.
 ### About operating systems
 
 All development and testing has sofar been done on Linux (Ubuntu), Android and Google Colab.
-Nothing has (yet) been tested in MS Windows. The scripts have known bugs preventing them
-to be run on MS Windows. These bugs will be corrected later on. 
+Nothing has (yet) been tested thourougly in MS Windows. You will likely be able
+to develop and run scripts and the kivy app on Windows, but the android cross-compiling kit
+(buildozer) has sofar only been executed under Linux. 
 
 ### A mobile app (Android)
 

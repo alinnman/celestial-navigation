@@ -5,10 +5,15 @@
 
 # Some notes on development
 
+## Choice of operating system
+
+All development has sofar been been made on Linux (Ubuntu 22.04 LTS).
+You may try using windows too, but be prepared for bugs. 
+
 ## A virtual environment (venv)
 
 This code was developed with
-[VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) on a Linux (Ubuntu)
+[VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) on a Linux (Ubuntu 22.04 LTS)
 machine.
 
 The Python environment has been installed in a
@@ -23,7 +28,7 @@ In order to create this environment you should execute these commands:
     pip install pandas
     pip install jupyter
     pip install folium
-    pip install offline_folium
+    pip install offline-folium
     python -m offline_folium
     pip install kivy
 
@@ -86,6 +91,6 @@ carefully before being able to run the app build script successfully.
 Check
 [this&nbsp;folder](https://drive.google.com/drive/folders/1QFcncVEuCQMnls8lyNElDtpTYruMgI0D?usp=drive_link)
 for a list of compiled APK files. These apps should run nicely
-but have limited functionality (mapping support may be missing). 
+but still have limited functionality (mapping support may be missing). 
 At the moment I have not yet finalized publishing on Google Play.
 

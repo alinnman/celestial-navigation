@@ -86,18 +86,19 @@ def __run_http_server ():
 def __is_android () -> bool:
     if hasattr(sys, 'getandroidapilevel'):
         return True
-    return False
+    return False 
 
 def __is_kivy_app () -> bool:
 #pylint: disable=C0415
     try:
         from kivy.utils import platform
+        if platform in ('linux'):
+            return True
+        return False        
     except ModuleNotFoundError:
         return False
 #pylint: enable=C0415
-    if platform in ('linux', 'win', 'macosx'):
-        return True
-    return False
+    #if platform in ('linux', 'win', 'macosx'):
 
 def show_or_display_file (filename : str, return_link : bool = False) -> str | NoneType:
     ''' Used to display a file (typically a map) '''
@@ -105,16 +106,19 @@ def show_or_display_file (filename : str, return_link : bool = False) -> str | N
     if return_link:
         return linkname
     else:
-        if __is_android ():
-            print ("Press this link ---> " + linkname)
+        if not http_server_running:
+            print ("Map can be found at : " + filename)
         else:
             webbrowser.open (filename)
         return None
+
+http_server_running = False
 
 def __start_http_server ():
     if __is_android() or __is_kivy_app():
         p = Process(target=__run_http_server)
         p.start()
+        http_server_running = True
 
 __start_http_server ()
 
