@@ -8,6 +8,7 @@
     Data is picked from the nautical almanac.
 '''
 
+from multiprocessing import freeze_support
 from time import time
 from starfix import Sight, SightCollection, get_representation,\
                     get_google_map_string, IntersectError, LatLonGeodetic,\

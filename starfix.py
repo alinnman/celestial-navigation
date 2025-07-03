@@ -3,7 +3,7 @@
     MIT License (see LICENSE file)
 '''
 
-import sys
+from os import name as os_name
 from sys import version_info
 from math import  pi, sin, cos, acos, sqrt, tan, atan2
 from random import gauss
@@ -82,11 +82,17 @@ def __run_http_server ():
     subprocess.run (["python", "-m", "http.server", "8000"],\
                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,\
                     check=False)
+    print ("HTTP server subprocess started") # TODO Review
 
-def __is_android () -> bool:
-    if hasattr(sys, 'getandroidapilevel'):
+def __is_windows ():
+    if os_name == 'nt':
         return True
     return False
+
+#def __is_android () -> bool:
+#    if hasattr(sys, 'getandroidapilevel'):
+#        return True
+#    return False
 
 #def __is_kivy_app () -> bool:
 #pylint: disable=C0415
@@ -122,10 +128,13 @@ def __start_http_server ():
     global http_server_running
 #pylint: enable=W0603
     #if __is_android(): # or __is_kivy_app():
+    if __is_windows():
+        return
     try:
         p = Process(target=__run_http_server)
         p.start()
         http_server_running = True
+        print ("HTTP server started.") # TODO Review
 #pylint: disable=W0702
     except:
         pass
