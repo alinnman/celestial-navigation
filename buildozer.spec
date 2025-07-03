@@ -13,7 +13,7 @@ package.domain = linnman.net
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,csv,properties
+source.include_exts = py,csv,properties,js,json
 
 # (list) List of inclusions using pattern matching
 source.include_patterns = sample_data/*
@@ -26,10 +26,10 @@ source.exclude_dirs = .venv, .venv-buildozer, .vscode, colab, maths, nautical_al
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
-source.exclude_patterns = starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py
+source.exclude_patterns = calibration.py, starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py, kivyapp.*.json, notebook.*.json
 
 # (str) Application versioning (method 1)
-version = 0.1.3
+version = 0.1.4
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]

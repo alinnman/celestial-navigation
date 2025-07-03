@@ -9,5 +9,8 @@ testing*
 .venv-buildozer/**
 .buildozer/**
 bin/**
+folium/**
+branca/**
+
 
 
