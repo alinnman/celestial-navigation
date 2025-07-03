@@ -1,5 +1,3 @@
-#!/usr/bin/env python3.11
-
 ''' Test suite for the toolkit '''
 # pylint: disable=C0413
 import unittest
@@ -10,14 +8,8 @@ file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
-try:
-    sys.path.remove(str(parent))
-except ValueError:
-    pass
-
 #pylint: disable=E0401
 from starfixdata_stat_1      import main as main_1_mr
-from starfixdata_stat_1_na   import main as main_1
 from starfixdata_stat_1_mc   import main as main_1_mc
 from starfixdata_stat_2_na   import main as main_2
 from starfixdata_stat_3      import main as main_3
@@ -28,15 +20,20 @@ from starfixdata_sea_4       import main as main_sea_4
 from starfixdata_sea_5       import main as main_sea_5
 from terrestrial             import main as main_terrestrial
 from starfix                 import LatLonGeocentric, LatLonGeodetic, spherical_distance
-
 #pylint: enable=E0401
+
+
+try:
+    sys.path.remove(str(parent))
+except ValueError:
+    pass
 
 class TestStringMethods(unittest.TestCase):
     ''' Test class'''
 
     def test_starfix_1(self):
         ''' Test suite 1, Stationary '''
-        main_1 ()
+        main_1_mr ()
 
     def test_starfix_2(self):
         ''' Test suite 2, Stationary '''
@@ -86,6 +83,4 @@ class TestStringMethods(unittest.TestCase):
             c = b.get_latlon ()
             d = spherical_distance (a, c)
             assert d < 0.001
-
-if __name__ == '__main__':
-    unittest.main()
+     
