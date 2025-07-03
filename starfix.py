@@ -86,7 +86,7 @@ def __run_http_server ():
 def __is_android () -> bool:
     if hasattr(sys, 'getandroidapilevel'):
         return True
-    return False 
+    return False
 
 def __is_kivy_app () -> bool:
 #pylint: disable=C0415
@@ -94,7 +94,7 @@ def __is_kivy_app () -> bool:
         from kivy.utils import platform
         if platform in ('linux'):
             return True
-        return False        
+        return False
     except ModuleNotFoundError:
         return False
 #pylint: enable=C0415
@@ -112,9 +112,14 @@ def show_or_display_file (filename : str, return_link : bool = False) -> str | N
             webbrowser.open (filename)
         return None
 
+#pylint: disable=C0103
 http_server_running = False
+#pylint: enable=C0103
 
 def __start_http_server ():
+#pylint: disable=W0603
+    global http_server_running
+#pylint: enable=W0603
     if __is_android() or __is_kivy_app():
         p = Process(target=__run_http_server)
         p.start()
