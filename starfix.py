@@ -88,15 +88,16 @@ def __is_android () -> bool:
         return True
     return False
 
-def __is_kivy_app () -> bool:
+#def __is_kivy_app () -> bool:
 #pylint: disable=C0415
-    try:
-        from kivy.utils import platform
-        if platform in ('linux'):
-            return True
-        return False
-    except ModuleNotFoundError:
-        return False
+#    try:
+#        from kivy.utils import platform
+#        print (platform) # TODO Remove
+#        if platform in ('linux'):
+#            return True
+#        return False
+#    except ModuleNotFoundError:
+#        return False
 #pylint: enable=C0415
     #if platform in ('linux', 'win', 'macosx'):
 
@@ -120,10 +121,15 @@ def __start_http_server ():
 #pylint: disable=W0603
     global http_server_running
 #pylint: enable=W0603
-    if __is_android() or __is_kivy_app():
+    #if __is_android(): # or __is_kivy_app():
+    try:
         p = Process(target=__run_http_server)
         p.start()
         http_server_running = True
+#pylint: disable=W0702
+    except:
+        pass
+#pylint: enable=W0702
 
 __start_http_server ()
 

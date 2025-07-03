@@ -79,7 +79,8 @@ def main ():
             assert isinstance (s, Sight)
             counter += 1
             print (str(counter) + " radius = " +\
-                    str(round(s.get_circle(geodetic=True).get_radius (),1)))
+                    str(round(s.get_circle( 
+                        geodetic=True).get_radius (),1)))
             print (str(counter) + " GP     = " +\
                     get_google_map_string(LatLonGeodetic(ll=s.get_gp()),4))
 
