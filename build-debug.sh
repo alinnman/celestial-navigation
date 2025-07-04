@@ -1,9 +1,17 @@
 #!/bin/bash
 
+#
+#    © August Linnman, 2025, email: august@linnman.net
+#    MIT License (see LICENSE file)
+#
+
 # Simple build script. Bootstrapping the pure python libraries
 # and then building using buildozer (p4a)
 
 source .venv-buildozer/bin/activate
+
+# The libraries folium and branca are injected as pure python
+# libraries and will be deployed into the private.tar asset
 
 pip install folium
 rm -r folium

@@ -8,13 +8,13 @@
 ## Choice of operating system
 
 All development has sofar been been made on Linux (Ubuntu 22.04 LTS).
-You may try using windows too, but be prepared for bugs. 
+You may try using windows too, but be prepared for bugs.
 
 ## A virtual environment (venv)
 
 This code was developed with
-[VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code) on a Linux (Ubuntu 22.04 LTS)
-machine.
+[VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code)
+on a Linux (Ubuntu 22.04 LTS) machine.
 
 The Python environment has been installed in a
 [virtual environment](https://docs.python.org/3.11/library/venv.html)
@@ -81,7 +81,9 @@ Be careful to keep your work in the virtual environment. See above.
 Building the app is done using these commands:
 
     source .venv-buildozer/bin/activate
-    buildozer -v android debug
+    ./build-debug.sh
+
+This executes a script preparing a debug APK file.
 
 Note however that you probably need to fine-tune and adjust your enviroment
 carefully before being able to run the app build script successfully.
@@ -91,6 +93,5 @@ carefully before being able to run the app build script successfully.
 Check
 [this&nbsp;folder](https://drive.google.com/drive/folders/1QFcncVEuCQMnls8lyNElDtpTYruMgI0D?usp=drive_link)
 for a list of compiled APK files. These apps should run nicely
-but still have limited functionality (mapping support may be missing). 
+but still have limited functionality (mapping support may be missing).
 At the moment I have not yet finalized publishing on Google Play.
-

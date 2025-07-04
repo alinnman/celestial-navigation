@@ -26,6 +26,8 @@ In this picture we were located in Chicago.
 ## Table of contents
 
 1. [Introduction](#introduction)
+    1. [Links](#links)
+    1. [Overview](#overview)
 1. [Making Sights](#making-sights)
     1. [Atmospheric Refraction](#atmospheric-refraction)
     1. [Dip of Horizon](#dip-of-horizon)
@@ -55,39 +57,9 @@ In this picture we were located in Chicago.
 
 ![US Navy training in celestial navigation](pics/us-navy.jpg "US Navy Training in Celestial Navigation")
 
-This project contains a toolkit (written in Python) to be used for
-[celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation)
-together with some demos and documentation.
-You can use the toolkit on a mobile phone without internet connection.
-If you also have access to a solar powered battery (powerbank) you have a tool
-useful while traveling in remote places or on the ocean.
+## 1.1 Links <a name="links"></a>
 
-Sights (altitude measurements) have to be obtained using a sextant,
-a nautical almanac and an accurate chronometer.
-The toolkit takes care of the **sight reduction**
-(conversion to estimated location on Earth),
-a task that traditionally is performed with careful manual work using special
-tables (sight reduction tables), pen, dividers and specialized plotting charts.
-Using a calculator can speed up this manual task, and also reduce possible
-(human) errors.
-A **computer** (or mobile phone) can do it even quicker, and this toolkit will typically perform
-a sight reduction in 1-2 milliseconds.  
-
-* The toolkit supports **stationary** observations, i.e. when observations are
-  made from a single position,
-  using multiple sights where the position is determined from the
-  intersection(s) of the small circles of equal altitude.
-  For two sights you will get two possible coordinates.
-  For three or more sights you will get one coordinate
-  (calculated as a mean value).
-* There is also support for **dead reckoning** observations,
-  typically at sea on a moving ship. This also needs a working compass and a
-  chip log or similar.
-  See [below](#dead-reckoning) for more information.
-* As a bonus there is also support for **terrestrial navigation**.
-  See [below](#terrestrial) for more information.
-
-For more information on installation and usage of the Python scripts
+For more information on **installation** and usage of the Python scripts
 and the (experimental) mobile app [see here](INSTALL.md).
 
 A short explanation of the logical steps and algorithms used in this toolkit can
@@ -112,6 +84,41 @@ If you wonder why I wrote this in the first place, then see
 on more sources.
 
 If you want to contribute to the project then see [this page](CONTRIBUTING.md).
+
+## 1.2 Overview <a name="overview"></a>
+
+This project contains a toolkit (written in Python) to be used for
+[celestial navigation](https://en.wikipedia.org/wiki/Celestial_navigation)
+together with some demos and documentation.
+You can use the toolkit on a mobile phone without internet connection.
+If you also have access to a solar powered battery (powerbank) you have a tool
+useful while traveling in remote places or on the ocean.
+
+Sights (altitude measurements) have to be obtained using a sextant,
+a nautical almanac and an accurate chronometer.
+The toolkit takes care of the **sight reduction**
+(conversion to estimated location on Earth),
+a task that traditionally is performed with careful manual work using special
+tables (sight reduction tables), pen, dividers and specialized plotting charts.
+Using a calculator can speed up this manual task, and also reduce possible
+(human) errors.
+A **computer** (or mobile phone) can do it even quicker,
+and this toolkit will typically perform
+a sight reduction in 1-2 milliseconds.  
+
+* The toolkit supports **stationary** observations, i.e. when observations are
+  made from a single position,
+  using multiple sights where the position is determined from the
+  intersection(s) of the small circles of equal altitude.
+  For two sights you will get two possible coordinates.
+  For three or more sights you will get one coordinate
+  (calculated as a mean value).
+* There is also support for **dead reckoning** observations,
+  typically at sea on a moving ship. This also needs a working compass and a
+  chip log or similar.
+  See [below](#dead-reckoning) for more information.
+* As a bonus there is also support for **terrestrial navigation**.
+  See [below](#terrestrial) for more information.
 
 ## 2. Making sights <a name="making-sights"></a>
 

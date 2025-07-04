@@ -9,6 +9,8 @@ testing*
 .venv-buildozer/**
 .buildozer/**
 bin/**
+# These are used for deployment of the mobile app.
+# See DEVELOPMENT.md
 folium/**
 branca/**
 
