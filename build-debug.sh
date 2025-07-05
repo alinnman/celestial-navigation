@@ -10,7 +10,7 @@
 
 source .venv-buildozer/bin/activate
 
-# The libraries folium and branca are injected as pure python
+# The libraries folium, branca and jinja2 are injected as pure python
 # libraries and will be deployed into the private.tar asset
 
 pip install folium
@@ -23,10 +23,41 @@ rm -r branca
 mkdir branca
 cp -r .venv-buildozer/lib/python3.11/site-packages/branca/* branca
 
+pip install jinja2
+rm -r jinja2
+mkdir jinja2
+cp -r .venv-buildozer/lib/python3.11/site-packages/jinja2/* jinja2
+
+pip install markupsafe
+rm -r markupsafe
+mkdir markupsafe
+cp -r .venv-buildozer/lib/python3.11/site-packages/markupsafe/* markupsafe
+
+pip install xyzservices
+rm -r xyzservices
+mkdir xyzservices
+cp -r .venv-buildozer/lib/python3.11/site-packages/xyzservices/* xyzservices
+
+pip uninstall folium -y
+pip uninstall branca -y
+pip uninstall jinja2 -y
+pip uninstall markupsafe -y
+pip uninstall xyzservices -y
+
+pip install cython
+
 buildozer -v android debug
 
 rm -r folium
 rm -r branca
+rm -r jinja2
+rm -r markupsafe
+rm -r xyzservices
+
+
+
+
+
 
 
 

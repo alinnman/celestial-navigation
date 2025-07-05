@@ -13,6 +13,8 @@ bin/**
 # See DEVELOPMENT.md
 folium/**
 branca/**
+jinja2/**
+
 
 
 

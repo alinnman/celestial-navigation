@@ -11,8 +11,10 @@
 # pylint: disable=C0413
 # pylint: disable=C0411
 from types import NoneType
+import importlib
+import webbrowser
 from starfix import LatLonGeodetic, SightCollection, Sight, \
-    get_representation, IntersectError
+    get_representation, IntersectError, get_folium_load_error, show_or_display_file
 import json
 import kivy
 kivy.require('2.0.0')
@@ -139,23 +141,62 @@ class ExecButton (Button):
         the_form = instance.form
         assert isinstance(the_form, InputForm)
         the_form.extract_from_widgets()
-        sr, result, _, _ = sight_reduction()
+        sr, result, intersections, coll = sight_reduction()
         if result:
-            #assert isinstance (coll, SightCollection)
-            #try:
-            #    the_map = coll.render_folium (intersections)
-            #except BaseException as be:
-            #    the_form.results.text = str(be)
-            #    return
-            #file_name = "./map.html"
-            #the_map.save (file_name)
-            #the_link = show_or_display_file (file_name, return_link=True)
-            #assert isinstance (the_link, str)
-            #webbrowser.open (the_link)
+            assert isinstance (coll, SightCollection)
+            the_form.set_active_intersections(intersections, coll)
             dump_dict()
             the_form.results.text = "Your location = " + sr
         else:
             the_form.results.text = sr
+
+class ShowMapButton (Button):
+    ''' This button used to show the active map '''
+
+    def __init__(self, form, **kwargs):
+        super().__init__(**kwargs)
+        self.form = form
+        self.text = "No map data (yet)"
+# pylint: disable=E1101
+        self.bind(on_press=self.callback)
+# pylint: enable=E1101
+
+    @staticmethod
+    def callback(instance):
+        ''' This is a function for showing a map '''
+        assert isinstance(instance, ShowMapButton)
+        the_form = instance.form
+        assert isinstance(the_form, InputForm)
+        i, c = the_form.get_active_intersections ()
+        if i is not None and c is not None:
+            the_link = "FOO"
+            the_map = None
+            status = "A"
+            try:
+                the_map = c.render_folium (i)
+                file_name = "./map.html"
+                the_map.save (file_name)
+                status = "B"
+                the_link = show_or_display_file (file_name, return_link=True)
+                #the_link = "https://stackoverflow.com/"
+                status = "C"
+                assert isinstance (the_link, str)
+                try:
+                    #import android # type: ignore
+                    importlib.import_module("android")
+# pylint: disable=W0702
+                except:
+                    pass
+# pylint: enable=W0702
+                webbrowser.open (the_link)
+                status = "D"
+# pylint: disable=W0702
+            except:
+                if the_map is None:
+                    instance.text = get_folium_load_error()
+                else:
+                    instance.text = "Error in map generation. Code = " + status
+# pylint: enable=W0702
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
@@ -311,6 +352,9 @@ class InputForm(GridLayout):
 
         #Window.bind(on_request_close=self.end_func)
 
+        self.__active_intersections = None
+        self.__active_collection    = None
+
         self.data_widget_container = {}
 
         bl = FormRow()
@@ -424,6 +468,12 @@ class InputForm(GridLayout):
         bl.add_widget(self.results)
         self.add_widget(bl)
 
+        bl = FormRow()
+        butt = ShowMapButton(self)
+        bl.add_widget(butt)
+        self.add_widget(bl)
+        self.__show_map_button = butt
+
         # Omitting quit button, but keeping code for reference
         #bl = FormRow()
         #butt = QuitButton(self)
@@ -431,6 +481,16 @@ class InputForm(GridLayout):
         #self.add_widget(bl)
 
         self.populate_widgets()
+
+    def set_active_intersections (self, i, c):
+        ''' Save the set of active cel nav intersection objects '''
+        self.__active_intersections = i
+        self.__active_collection    = c
+        self.__show_map_button.text = "Show maps!"
+
+    def get_active_intersections (self):
+        ''' Return the set of active cel nav intersections objects '''
+        return self.__active_intersections, self.__active_collection
 
     def populate_widgets(self):
         ''' Read the data from json and populate all fields '''

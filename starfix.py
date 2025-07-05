@@ -11,7 +11,9 @@ from datetime import datetime, date, timedelta, timezone
 from types import NoneType
 from collections.abc import Callable
 
-import subprocess
+import http.server
+import socketserver
+
 from multiprocessing import Process
 import webbrowser
 from configparser import ConfigParser
@@ -39,15 +41,20 @@ except ModuleNotFoundError:
 #    pass
 
 FOLIUM_INITIALIZED = False
+FOLIUM_LOAD_ERROR = ""
 try:
 #pylint: disable=W0611
     import folium
 #pylint: enable=W0611
     FOLIUM_INITIALIZED = True
-except ModuleNotFoundError:
-    pass
-except ImportError:
-    pass
+except ModuleNotFoundError as mnfe:
+    FOLIUM_LOAD_ERROR = str(mnfe)
+except ImportError as ie:
+    FOLIUM_LOAD_ERROR = str(ie)
+
+def get_folium_load_error ():
+    ''' Check for possible errors loading folium (mainly for the Android setup) '''
+    return FOLIUM_LOAD_ERROR
 
 def check_folium ():
     ''' Check if folium is installed. Otherwise abort with exception '''
@@ -78,10 +85,13 @@ def __version_warning (min_major_ver : int, min_minor_ver : int):
 __version_warning (3, 11)
 
 def __run_http_server ():
-    #if __is_android() or __is_kivy_app():
-    subprocess.run (["python", "-m", "http.server", "8000"],\
-                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,\
-                    check=False)
+    port = 8000
+
+    Handler = http.server.SimpleHTTPRequestHandler
+
+    with socketserver.TCPServer(("", port), Handler) as httpd:
+        print("serving at port", port)
+        httpd.serve_forever()
 
 def __is_windows ():
     if os_name == 'nt':
@@ -122,6 +132,7 @@ http_server_running = False
 #pylint: enable=C0103
 
 def __start_http_server ():
+    ''' Start an http server for showing maps '''
 #pylint: disable=W0603
     global http_server_running
 #pylint: enable=W0603
