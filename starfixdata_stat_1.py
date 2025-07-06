@@ -10,7 +10,7 @@
 from time import time
 from starfix import Sight, SightCollection, get_representation,\
                     get_google_map_string, IntersectError, LatLonGeodetic,\
-                    show_or_display_file, exit_handler
+                    show_or_display_file
 
 def get_starfixes (drp_pos : LatLonGeodetic,
                    alt_sigma : float = 0.0,
