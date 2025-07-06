@@ -93,5 +93,5 @@ carefully before being able to run the app build script successfully.
 Check
 [this&nbsp;folder](https://drive.google.com/drive/folders/1QFcncVEuCQMnls8lyNElDtpTYruMgI0D?usp=drive_link)
 for a list of compiled APK files. These apps should run nicely
-but still have limited functionality (mapping support may be missing).
+but still have limited functionality and there may be bugs. 
 At the moment I have not yet finalized publishing on Google Play.
