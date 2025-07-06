@@ -25,7 +25,7 @@ to develop and run scripts and the kivy app on Windows, but the android cross-co
 
 A mobile app has been developed but it is still in alpha stage and not
 yet published on Google Play.<br>
-[Read more about the app and how to install it here](DEVELOPMENT.md)
+[Read more about the app and how to install it here](DEVELOPMENT.md#apps)
 
 ### Python scripts and notebooks
 

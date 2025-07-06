@@ -10,6 +10,8 @@ from random import gauss
 from datetime import datetime, date, timedelta, timezone
 from types import NoneType
 from collections.abc import Callable
+import pathlib
+import os 
 
 import http.server
 import socketserver
@@ -155,12 +157,13 @@ def __is_windows ():
 
 def show_or_display_file (filename : str, protocol : str = "file") :
     ''' Used to display a file (typically a map) '''
+    if __is_windows ():
+        protocol = "file"
+        cwd = os.getcwd()
+        absolute_path_string = cwd + "\\" + filename
+        filename = pathlib.Path(absolute_path_string).as_uri()
     if protocol == "http":
-        #if not http_server_running ():
         __start_http_server ()
-            #if not http_server_running ():
-            #    print ("Map can be found at : " + filename)
-            #    return
         webbrowser.open ("http://localhost:8000/"+filename)
     elif protocol == "file":
         webbrowser.open (filename)
@@ -215,9 +218,9 @@ def http_server_running () -> bool:
     #global running_http_server
     return running_http_server is not None
 
-def exit_handler ():
-    ''' Can be used on program/app exit '''
-    __kill_http_server_if_running ()
+#def exit_handler ():
+#    ''' Can be used on program/app exit '''
+#    __kill_http_server_if_running ()
 
 ################################################
 # Dimension of Earth

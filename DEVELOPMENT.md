@@ -62,7 +62,7 @@ You may of course edit the git ignore file to adjust to your needs.
 The files in the [test](test) folder contain unit tests which can
 be run in VSCode testing module.
 
-## App development and deployment
+## App development and deployment<a name="apps"></a>
 
 The file [main.py](main.py) contains a very simple
 app (Celeste) built on the Kivy framework. It can be used as a starter point

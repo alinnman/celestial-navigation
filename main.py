@@ -10,16 +10,14 @@
 '''
 # pylint: disable=C0413
 # pylint: disable=C0411
+from multiprocessing import freeze_support
 from types import NoneType
 import importlib
 from starfix import LatLonGeodetic, SightCollection, Sight, \
-    get_representation, IntersectError, get_folium_load_error, show_or_display_file, exit_handler
+    get_representation, IntersectError, get_folium_load_error, show_or_display_file
 import json
 import kivy
 kivy.require('2.0.0')
-# Omitting size specifications
-#kivy.config.Config.set('graphics', 'width', 400)
-#kivy.config.Config.set('graphics', 'height', 400)
 kivy.config.Config.set('graphics', 'resizable', False)
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -178,7 +176,7 @@ class ShowMapButton (Button):
                 status = "B"
                 assert isinstance (the_link, str)
                 try:
-                    #import android # type: ignore
+                    # Activate android libraries, needed for correct webbrowser functionality
                     importlib.import_module("android")
 # pylint: disable=W0702
                 except:
@@ -524,7 +522,8 @@ class InputForm(GridLayout):
                 NUM_DICT[e] = w.text
 
 if __name__ == '__main__':
+    freeze_support ()
     do_initialize()
     a = StarFixApp ()
     runTouchApp (a.get_root())
-    exit_handler ()
+    #exit_handler ()
