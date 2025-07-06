@@ -84,72 +84,140 @@ def __version_warning (min_major_ver : int, min_minor_ver : int):
 
 __version_warning (3, 11)
 
+
+################################################
+# HTTP Server support
+################################################
+
+#pylint: disable=C0413
+import threading
+#pylint: enable=C0413
+
+class MyTCPServer(socketserver.TCPServer):
+    ''' A modified tcp server with correct connection parameters'''
+    def server_bind(self):
+#pylint: disable=C0415
+        import socket
+#pylint: enable=C0415
+        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.socket.bind(self.server_address)
+
+server_address = ('', 8000)
+
+MASTER_HTTPD = None
+
+class MyHandler(http.server.SimpleHTTPRequestHandler):
+    ''' A modified handler able to handle shutdown requests '''
+
+    def do_GET(self):
+        if self.path.startswith('/kill_server'):
+            print ("Server is going down, run it again manually!")
+            def kill_me_please():
+                assert isinstance (MASTER_HTTPD, socketserver.TCPServer)
+                try:
+                    MASTER_HTTPD.shutdown()
+                    print ("Shutdown of thread succeeded") # TODO Remove
+#pylint: disable=W0718
+                except BaseException as _:
+                    print ("Shutdown of thread failed") # TODO Remove
+#pylint: enable=W0718
+            t = threading.Thread (target = kill_me_please)
+            t.start()
+            self.send_error(500)
+        else:
+            super().do_GET()
+# httpd = MyTCPServer(server_address, MyHandler)
+
 def __run_http_server ():
     port = 8000
 
-    Handler = http.server.SimpleHTTPRequestHandler
+    #Handler = http.server.SimpleHTTPRequestHandler
+    Handler = MyHandler
 
-    with socketserver.TCPServer(("", port), Handler) as httpd:
-        print("serving at port", port)
-        httpd.serve_forever()
+    try:
+        with MyTCPServer(("", port), Handler) as httpd:
+#pylint: disable=W0603
+            global MASTER_HTTPD
+#pylint: enable=W0603
+            MASTER_HTTPD = httpd
+            print("serving at port", port) # TODO Remove
+            httpd.serve_forever()
+            print ("http server exited!") # TODO Remove
+    except OSError as ose:
+        print ("HTTP server already running") # TODO Review
+        if ose.errno != 98:
+            raise ose
 
 def __is_windows ():
     if os_name == 'nt':
         return True
     return False
 
-#def __is_android () -> bool:
-#    if hasattr(sys, 'getandroidapilevel'):
-#        return True
-#    return False
-
-#def __is_kivy_app () -> bool:
-#pylint: disable=C0415
-#    try:
-#        from kivy.utils import platform
-#        if platform in ('linux'):
-#            return True
-#        return False
-#    except ModuleNotFoundError:
-#        return False
-#pylint: enable=C0415
-    #if platform in ('linux', 'win', 'macosx'):
-
-def show_or_display_file (filename : str, return_link : bool = False) -> str | NoneType:
+def show_or_display_file (filename : str, protocol : str = "file") :
     ''' Used to display a file (typically a map) '''
-    linkname = "http://localhost:8000/" + filename
-    if return_link:
-        return linkname
+    if protocol == "http":
+        #if not http_server_running ():
+        __start_http_server ()
+            #if not http_server_running ():
+            #    print ("Map can be found at : " + filename)
+            #    return
+        webbrowser.open ("http://localhost:8000/"+filename)
+    elif protocol == "file":
+        webbrowser.open (filename)
     else:
-        if not http_server_running:
-            print ("Map can be found at : " + filename)
-        else:
-            webbrowser.open (filename)
-        return None
+        raise ValueError ("Incorrect protocol <" + protocol + ">")
 
 #pylint: disable=C0103
-http_server_running = False
+running_http_server = None
 #pylint: enable=C0103
+
+def __kill_http_server_if_running ():
+#pylint: disable=C0415
+    import requests
+#pylint: enable=C0415
+    try:
+        requests.get ("http://localhost:8000/kill_server", timeout=1)
+#pylint: disable=W0718
+    except BaseException as be:
+        print (be) # TODO Remove
+#pylint: enable=W0718
+#pylint: disable=W0603
+    global running_http_server
+#pylint: enable=W0603
+    if running_http_server is not None:
+        assert isinstance (running_http_server, Process)
+        print ("CLOSING") # TODO Remove
+        running_http_server.kill ()
+        running_http_server = None
 
 def __start_http_server ():
     ''' Start an http server for showing maps '''
 #pylint: disable=W0603
-    global http_server_running
+    global running_http_server
 #pylint: enable=W0603
-    #if __is_android(): # or __is_kivy_app():
     if __is_windows():
         return
     try:
+        __kill_http_server_if_running ()
         p = Process(target=__run_http_server)
         p.start()
-        http_server_running = True
+        running_http_server = p
+        print ("Started new http process")  # TODO Remove
 #pylint: disable=W0702
     except:
-        pass
+        print ("Failed to start http server")
 #pylint: enable=W0702
 
-__start_http_server ()
+# __start_http_server ()
 
+def http_server_running () -> bool:
+    ''' Check if there is a http server running '''
+    #global running_http_server
+    return running_http_server is not None
+
+def exit_handler ():
+    ''' Can be used on program/app exit '''
+    __kill_http_server_if_running ()
 
 ################################################
 # Dimension of Earth

@@ -12,9 +12,8 @@
 # pylint: disable=C0411
 from types import NoneType
 import importlib
-import webbrowser
 from starfix import LatLonGeodetic, SightCollection, Sight, \
-    get_representation, IntersectError, get_folium_load_error, show_or_display_file
+    get_representation, IntersectError, get_folium_load_error, show_or_display_file, exit_handler
 import json
 import kivy
 kivy.require('2.0.0')
@@ -177,9 +176,6 @@ class ShowMapButton (Button):
                 file_name = "./map.html"
                 the_map.save (file_name)
                 status = "B"
-                the_link = show_or_display_file (file_name, return_link=True)
-                #the_link = "https://stackoverflow.com/"
-                status = "C"
                 assert isinstance (the_link, str)
                 try:
                     #import android # type: ignore
@@ -188,8 +184,9 @@ class ShowMapButton (Button):
                 except:
                     pass
 # pylint: enable=W0702
-                webbrowser.open (the_link)
-                status = "D"
+                show_or_display_file (file_name, protocol="http")
+                # webbrowser.open (the_link)
+                status = "C"
 # pylint: disable=W0702
             except:
                 if the_map is None:
@@ -262,7 +259,6 @@ class StarFixApp (App):
         root.add_widget(layout)
         self.m_root = root
 
-
     def build(self):
         # return a Scroll View as a root widget
         return self.m_root
@@ -271,8 +267,17 @@ class StarFixApp (App):
         ''' Return the root widget '''
         return self.m_root
 
-    #def stop (self, **kwargs):
-    #    super().stop()
+    #def on_pause(self):
+    #    print ("PAUSED")
+    #    return super().on_pause()
+
+    #def on_stop(self):
+    #    print ("STOPPED")
+    #    return super().on_stop()
+
+    #def on_start(self):
+    #    print ("STARTING")
+    #    return super().on_start()
 
 def initialize(fn: str, init_dict: dict):
     ''' Initialize the helper '''
@@ -474,13 +479,13 @@ class InputForm(GridLayout):
         self.add_widget(bl)
         self.__show_map_button = butt
 
-        # Omitting quit button, but keeping code for reference
-        #bl = FormRow()
-        #butt = QuitButton(self)
-        #bl.add_widget(butt)
-        #self.add_widget(bl)
-
         self.populate_widgets()
+
+        #self.bind(on_close=self.on_close)
+
+    #@staticmethod
+    #def on_close (instance):
+    #    print ("HEJ DÅ!")
 
     def set_active_intersections (self, i, c):
         ''' Save the set of active cel nav intersection objects '''
@@ -517,9 +522,9 @@ class InputForm(GridLayout):
                 NUM_DICT[e] = str(w.active)
             elif isinstance(w, LimbDropDown):
                 NUM_DICT[e] = w.text
-        #dump_dict()
 
 if __name__ == '__main__':
     do_initialize()
     a = StarFixApp ()
     runTouchApp (a.get_root())
+    exit_handler ()
