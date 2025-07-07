@@ -11,7 +11,7 @@ from datetime import datetime, date, timedelta, timezone
 from types import NoneType
 from collections.abc import Callable
 import pathlib
-import os 
+import os
 
 import http.server
 import socketserver
@@ -118,10 +118,9 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
                 assert isinstance (MASTER_HTTPD, socketserver.TCPServer)
                 try:
                     MASTER_HTTPD.shutdown()
-                    print ("Shutdown of thread succeeded") # TODO Remove
 #pylint: disable=W0718
                 except BaseException as _:
-                    print ("Shutdown of thread failed") # TODO Remove
+                    pass
 #pylint: enable=W0718
             t = threading.Thread (target = kill_me_please)
             t.start()
@@ -142,22 +141,20 @@ def __run_http_server ():
             global MASTER_HTTPD
 #pylint: enable=W0603
             MASTER_HTTPD = httpd
-            print("serving at port", port) # TODO Remove
             httpd.serve_forever()
-            print ("http server exited!") # TODO Remove
     except OSError as ose:
-        print ("HTTP server already running") # TODO Review
         if ose.errno != 98:
             raise ose
 
-def __is_windows ():
+def is_windows ():
+    ''' Simple check for running under MS Windows '''
     if os_name == 'nt':
         return True
     return False
 
 def show_or_display_file (filename : str, protocol : str = "file") :
     ''' Used to display a file (typically a map) '''
-    if __is_windows ():
+    if is_windows ():
         protocol = "file"
         cwd = os.getcwd()
         absolute_path_string = cwd + "\\" + filename
@@ -181,15 +178,14 @@ def __kill_http_server_if_running ():
     try:
         requests.get ("http://localhost:8000/kill_server", timeout=1)
 #pylint: disable=W0718
-    except BaseException as be:
-        print (be) # TODO Remove
+    except BaseException as _:
+        pass
 #pylint: enable=W0718
 #pylint: disable=W0603
     global running_http_server
 #pylint: enable=W0603
     if running_http_server is not None:
         assert isinstance (running_http_server, Process)
-        print ("CLOSING") # TODO Remove
         running_http_server.kill ()
         running_http_server = None
 
@@ -198,17 +194,16 @@ def __start_http_server ():
 #pylint: disable=W0603
     global running_http_server
 #pylint: enable=W0603
-    if __is_windows():
+    if is_windows():
         return
     try:
         __kill_http_server_if_running ()
         p = Process(target=__run_http_server)
         p.start()
         running_http_server = p
-        print ("Started new http process")  # TODO Remove
 #pylint: disable=W0702
     except:
-        print ("Failed to start http server")
+        pass
 #pylint: enable=W0702
 
 # __start_http_server ()
@@ -218,9 +213,9 @@ def http_server_running () -> bool:
     #global running_http_server
     return running_http_server is not None
 
-#def exit_handler ():
-#    ''' Can be used on program/app exit '''
-#    __kill_http_server_if_running ()
+def exit_handler ():
+    ''' Can be used on program/app exit '''
+    __kill_http_server_if_running ()
 
 ################################################
 # Dimension of Earth

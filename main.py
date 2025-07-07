@@ -14,7 +14,8 @@ from multiprocessing import freeze_support
 from types import NoneType
 import importlib
 from starfix import LatLonGeodetic, SightCollection, Sight, \
-    get_representation, IntersectError, get_folium_load_error, show_or_display_file
+    get_representation, IntersectError, get_folium_load_error, show_or_display_file, \
+    is_windows, exit_handler
 import json
 import kivy
 kivy.require('2.0.0')
@@ -114,6 +115,10 @@ def sight_reduction() -> tuple[str, bool, LatLonGeodetic | NoneType, SightCollec
         return get_representation(intersections, 1), True, intersections, collection
 
     except IntersectError as ve:
+        coll_object = None
+        if isinstance (ve.coll_object, SightCollection):
+            coll_object = ve.coll_object
+            return "Failed sight reduction. " + str (ve), False, None, coll_object
         return "Failed sight reduction. " + str (ve), False, None, None
     except KeyError as ve:
         return "Invalid parameters." + str (ve), False, None, None
@@ -145,6 +150,8 @@ class ExecButton (Button):
             dump_dict()
             the_form.results.text = "Your location = " + sr
         else:
+            if coll is not None:
+                the_form.set_active_intersections (None, coll)
             the_form.results.text = sr
 
 class ShowMapButton (Button):
@@ -165,7 +172,7 @@ class ShowMapButton (Button):
         the_form = instance.form
         assert isinstance(the_form, InputForm)
         i, c = the_form.get_active_intersections ()
-        if i is not None and c is not None:
+        if c is not None:
             the_link = "FOO"
             the_map = None
             status = "A"
@@ -522,8 +529,10 @@ class InputForm(GridLayout):
                 NUM_DICT[e] = w.text
 
 if __name__ == '__main__':
-    freeze_support ()
+    if is_windows():
+        freeze_support ()
     do_initialize()
     a = StarFixApp ()
     runTouchApp (a.get_root())
-    #exit_handler ()
+    if not is_windows():
+        exit_handler ()
