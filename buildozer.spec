@@ -29,7 +29,7 @@ source.exclude_dirs = .venv, .venv-buildozer, .vscode, colab, maths, nautical_al
 source.exclude_patterns = calibration.py, starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py, kivyapp.*.json, notebook.*.json
 
 # (str) Application versioning (method 1)
-version = 0.1.6
+version = 0.1.7
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]

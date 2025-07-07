@@ -95,7 +95,8 @@ def get_starfixes(drp_pos: LatLonGeodetic) -> SightCollection:
     return SightCollection(retval)
 
 
-def sight_reduction() -> tuple[str, bool, LatLonGeodetic | NoneType, SightCollection | NoneType]:
+def sight_reduction() -> \
+    tuple[str, bool, LatLonGeodetic | NoneType, SightCollection | Sight | NoneType]:
     ''' Perform a sight reduction given data entered above '''
     assert isinstance(NUM_DICT, dict)
     the_pos = LatLonGeodetic(lat=float(NUM_DICT["DrpLat"]),
@@ -116,7 +117,8 @@ def sight_reduction() -> tuple[str, bool, LatLonGeodetic | NoneType, SightCollec
 
     except IntersectError as ve:
         coll_object = None
-        if isinstance (ve.coll_object, SightCollection):
+        if isinstance (ve.coll_object, SightCollection) or\
+           isinstance (ve.coll_object, Sight):
             coll_object = ve.coll_object
             return "Failed sight reduction. " + str (ve), False, None, coll_object
         return "Failed sight reduction. " + str (ve), False, None, None
@@ -146,6 +148,10 @@ class ExecButton (Button):
         sr, result, intersections, coll = sight_reduction()
         if result:
             assert isinstance (coll, SightCollection)
+            print (type(intersections))  # TODO REMOVE
+            assert isinstance (intersections, tuple) or\
+                   isinstance (intersections, LatLonGeodetic) or\
+                   intersections is None
             the_form.set_active_intersections(intersections, coll)
             dump_dict()
             the_form.results.text = "Your location = " + sr
@@ -173,15 +179,15 @@ class ShowMapButton (Button):
         assert isinstance(the_form, InputForm)
         i, c = the_form.get_active_intersections ()
         if c is not None:
-            the_link = "FOO"
             the_map = None
-            status = "A"
             try:
-                the_map = c.render_folium (i)
+                if isinstance (c, SightCollection):
+                    the_map = c.render_folium (i)
+                elif isinstance (c, Sight):
+                    the_map = c.render_folium_new_map ()
+                assert the_map is not None
                 file_name = "./map.html"
                 the_map.save (file_name)
-                status = "B"
-                assert isinstance (the_link, str)
                 try:
                     # Activate android libraries, needed for correct webbrowser functionality
                     importlib.import_module("android")
@@ -191,13 +197,12 @@ class ShowMapButton (Button):
 # pylint: enable=W0702
                 show_or_display_file (file_name, protocol="http")
                 # webbrowser.open (the_link)
-                status = "C"
 # pylint: disable=W0702
             except:
                 if the_map is None:
                     instance.text = get_folium_load_error()
                 else:
-                    instance.text = "Error in map generation. Code = " + status
+                    instance.text = "Error in map generation."
 # pylint: enable=W0702
 
 class FormRow (BoxLayout):
@@ -492,13 +497,15 @@ class InputForm(GridLayout):
     #def on_close (instance):
     #    print ("HEJ DÅ!")
 
-    def set_active_intersections (self, i, c):
+    def set_active_intersections\
+        (self, i : tuple | LatLonGeodetic | NoneType, c : SightCollection | Sight | NoneType ):
         ''' Save the set of active cel nav intersection objects '''
         self.__active_intersections = i
         self.__active_collection    = c
-        self.__show_map_button.text = "Show maps!"
+        self.__show_map_button.text = "Show map!"
 
-    def get_active_intersections (self):
+    def get_active_intersections (self) ->\
+          tuple [tuple | LatLonGeodetic | NoneType, SightCollection | Sight | NoneType]:
         ''' Return the set of active cel nav intersections objects '''
         return self.__active_intersections, self.__active_collection
 

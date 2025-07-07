@@ -2031,7 +2031,7 @@ class Sight :
             Returns the azimuth in degrees (0-360)'''
         return get_azimuth (self.get_gp(), from_pos)
 
-    def render_folium (self, the_map : object, draw_markers = True):
+    def render_folium (self, the_map : object, draw_markers : bool = True):
         ''' Render this Sight object on a Folium Map object'''
 
         check_folium ()
@@ -2057,6 +2057,15 @@ class Sight :
             ).add_to(the_map)
 
         c.render_folium (the_map)
+
+    def render_folium_new_map (self, draw_markers : bool = True, zoom_start = 2) -> object:
+        ''' Render this Sight object on a newly created Folium Map object'''
+#pylint: disable=C0415
+        from folium import Map
+#pylint: enable=C0415
+        m = Map ([self.get_gp().get_lat(),self.get_gp().get_lon()], zoom_start=zoom_start)
+        self.render_folium (m, draw_markers=draw_markers)
+        return m
 
 #pylint: enable=R0902
 
@@ -2092,7 +2101,11 @@ class SightCollection:
 
     def __init__ (self, sf_list : list[Sight]):
         if len (sf_list) < 2:
-            raise IntersectError ("SightCollection should have at least two sights")
+            thrown_object = None
+            if len (sf_list) == 1:
+                thrown_object = sf_list [0]
+            raise IntersectError ("SightCollection should have at least two sights", thrown_object)
+            
         self.sf_list = sf_list
 
 #pylint: disable=R0912
