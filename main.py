@@ -127,11 +127,28 @@ def sight_reduction() -> \
     except ValueError as ve:
         return str(ve), False, None, None
 
-class ExecButton (Button):
+class AppButton (Button):
+    ''' Common base class for buttons '''
+
+    def __init__(self, active : bool, **kwargs):
+        print ("PÄRON")  # TODO Remove
+        self.set_active (active)
+        super().__init__(**kwargs)
+        #self.background_color = (1.0, 0.10, 0.10, 1)
+
+    def set_active (self, active : bool):
+        if active:
+            self.background_color = (1.0, 0.10, 0.10, 1)
+        else:
+            print ("BANANAS")  # TODO Remove
+            self.background_color = (0.9, 0.9, 0.9, 1)            
+
+
+class ExecButton (AppButton):
     ''' This is the button starting the sight reduction '''
 
     def __init__(self, form, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(active = True, **kwargs)
         self.form = form
         self.text = "Perform sight reduction!"
 # pylint: disable=E1101
@@ -160,11 +177,11 @@ class ExecButton (Button):
                 the_form.set_active_intersections (None, coll)
             the_form.results.text = sr
 
-class ShowMapButton (Button):
+class ShowMapButton (AppButton):
     ''' This button used to show the active map '''
 
     def __init__(self, form, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(active = False, **kwargs)
         self.form = form
         self.text = "No map data (yet)"
 # pylint: disable=E1101
@@ -205,6 +222,24 @@ class ShowMapButton (Button):
                     instance.text = "Error in map generation."
 # pylint: enable=W0702
 
+class OnlineHelpButton (AppButton):
+    ''' A button for showing online help '''
+
+
+    def __init__(self, **kwargs):
+        super().__init__(active = True, **kwargs)
+        self.text = "Show help!"
+# pylint: disable=E1101
+        self.bind(on_press=self.callback)
+# pylint: enable=E1101
+
+    @staticmethod
+    def callback(instance):
+        ''' This is a function for showing online help '''
+        file_name = "./APPDOC.html"
+        show_or_display_file (file_name, protocol="http")
+
+
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
 
@@ -214,7 +249,6 @@ class FormRow (BoxLayout):
         super().__init__(**kwargs)
         self.size_hint_y = None
         #self.size = (100, 28)
-
 
 class MyLabel (Label):
     ''' This is used for labels'''
@@ -373,6 +407,11 @@ class InputForm(GridLayout):
         self.data_widget_container = {}
 
         bl = FormRow()
+        butt = OnlineHelpButton()
+        bl.add_widget(butt)
+        self.add_widget(bl)        
+
+        bl = FormRow()
         bl.add_widget(MyLabel(text='DRP Latitude:'))
         self.drp_lat_input = MyTextInput()
         self.data_widget_container["DrpLat"] = self.drp_lat_input
@@ -489,6 +528,11 @@ class InputForm(GridLayout):
         self.add_widget(bl)
         self.__show_map_button = butt
 
+        bl = FormRow()
+        butt = OnlineHelpButton()
+        bl.add_widget(butt)
+        self.add_widget(bl)
+
         self.populate_widgets()
 
         #self.bind(on_close=self.on_close)
@@ -503,6 +547,7 @@ class InputForm(GridLayout):
         self.__active_intersections = i
         self.__active_collection    = c
         self.__show_map_button.text = "Show map!"
+        self.__show_map_button.set_active (True)
 
     def get_active_intersections (self) ->\
           tuple [tuple | LatLonGeodetic | NoneType, SightCollection | Sight | NoneType]:

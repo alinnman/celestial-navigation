@@ -46,6 +46,9 @@ pip uninstall xyzservices -y
 
 pip install cython
 
+# Convert the documentation file to HTML
+pandoc -o APPDOC.html APPDOC.md
+
 buildozer -v android debug
 
 rm -r folium

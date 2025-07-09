@@ -16,16 +16,20 @@ three-star fix. A Google account is necessary.
 
 ### About operating systems
 
-All development and testing has sofar been done on Linux (Ubuntu), Android and Google Colab.
+All development and testing has sofar been done on Linux (Ubuntu),
+Android and Google Colab.
 Nothing has (yet) been tested thourougly in MS Windows. You will likely be able
-to develop and run scripts and the kivy app on Windows, but the android cross-compiling kit
-(buildozer) has sofar only been executed under Linux. 
+to develop and run scripts and the kivy app on Windows,
+but the android cross-compiling kit
+(buildozer) has sofar only been executed under Linux.
 
 ### A mobile app (Android)
 
 A mobile app has been developed but it is still in alpha stage and not
 yet published on Google Play.<br>
 [Read more about the app and how to install it here](DEVELOPMENT.md#apps)
+
+[See here](APPDOC.md) for instructions on how to use the app.
 
 ### Python scripts and notebooks
 
@@ -50,8 +54,9 @@ will allow map generation without an internet connection. Requires Folium.)
 * [Kivy](https://kivy.org/)
 (*Optional*, for running the demo app.)
 
-NOTE: The Offline Folium package seems to have bugs, resulting in incorrect plotting.
-I have disabled it for now. 
+NOTE: The Offline Folium package seems to have bugs,
+resulting in incorrect plotting.
+I have disabled it for now.
 
 No other additional libraries are necessary.
 [This link](https://github.com/alinnman/celestial-navigation/archive/refs/heads/main.zip)
@@ -63,8 +68,8 @@ The python scripts could be installed in
 to allow for use on an Android mobile phone
 (with no need for internet access).
 To aid in installation a good file browser is recommended
-(for copying and decompressing of ZIP files) such as Cx File Explorer
-as [described here](https://play.google.com/store/apps/details?id=com.cxinventor.file.explorer&pcampaignid=web_share).
+(for copying and decompressing of ZIP files) such as Cx File Explorer as
+[described&nbsp;here](https://play.google.com/store/apps/details?id=com.cxinventor.file.explorer&pcampaignid=web_share).
 You are recommended to unzip the file to a specific directory
 (not a root directory).
 On Android you could create a directory in the "Documents" tree,
@@ -95,7 +100,8 @@ Currently PDF almanacs of [2024](nautical_almanacs/NAmod(A4)_2024.pdf),
 and [2028](nautical_almanacs/NAmod(A4)_2028.pdf)
 are bundled in the repository in a digital version.
 But you may of course use a hard-copy of the nautical almanac and
-these can be [ordered here](https://www.amazon.com/s?i=stripbooks&rh=p_27%3AU.K.+Hydrographic&s=relevancerank&text=U.K.+Hydrographic&ref=dp_byline_sr_book_1).
+these can be
+[ordered&nbsp;here](https://www.amazon.com/s?i=stripbooks&rh=p_27%3AU.K.+Hydrographic&s=relevancerank&text=U.K.+Hydrographic&ref=dp_byline_sr_book_1).
 New digital versions (PDF or machine-readable)
 can be prepared using some GitHub code repositories,
 such as [this one](https://github.com/alinnman/SkyAlmanac-Py3).
