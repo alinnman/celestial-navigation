@@ -34,6 +34,22 @@ Enter the latitude and longitude for your DRP in these fields.
 
 ### Star fixes
 
+The input form contains input field for **three** observations (star fixes).
+
+#### Selection of star fix
+
+You need to specify two or three star fixes. The check box **Use this sight**
+can be used to eliminate one star fix if you only have two. You can even
+use just one star fix but this will result in a failed sight reduction, but
+the map view (see below) can be used to present the actual circle of equal
+altitude and this can assist you in your work.
+
+#### Name of object
+
+#### Altitude
+
+#### Time
+
 ## Running a sight reduction
 
 ## Presenting a map

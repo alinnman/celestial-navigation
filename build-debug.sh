@@ -44,11 +44,14 @@ pip uninstall jinja2 -y
 pip uninstall markupsafe -y
 pip uninstall xyzservices -y
 
+# Cython seems to needed so we install it
 pip install cython
 
 # Convert the documentation file to HTML
-pandoc -s -o APPDOC.html APPDOC.md -c APPDOC.css --metadata title="Celeste"
+pandoc -s -o APPDOC.html APPDOC.md -c APPDOC.css 
+#--metadata title="Celeste App Documentation"
 
+# Now build the android app
 buildozer -v android debug
 
 rm -r folium
@@ -56,6 +59,10 @@ rm -r branca
 rm -r jinja2
 rm -r markupsafe
 rm -r xyzservices
+
+pip uninstall cython -y
+
+
 
 
 
