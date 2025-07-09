@@ -1,3 +1,8 @@
+#
+#    © August Linnman, 2025, email: august@linnman.net
+#    MIT License (see LICENSE file)
+#
+
 [app]
 
 # (str) Title of your application

@@ -445,10 +445,11 @@ class MyTextInput (TextInput):
 # New class to encapsulate a single Sight's input fields
 class SightInputSection(GridLayout):
     ''' New layout for sight input segment '''
+# pylint: disable=I1101
     sight_num = kivy.properties.NumericProperty(0) # For dynamic text in KV
+# pylint: enable=I1101
 
     def __init__(self, sight_num, **kwargs):
-        print (sight_num) # TODO Remove
         super().__init__(**kwargs)
         self.sight_num = sight_num
         self.ids.use_checkbox.bind(active=self.on_checkbox_active)
@@ -630,95 +631,6 @@ class InputForm(GridLayout):
                   sight_section.ids.pressure
 
             self.add_widget(sight_section)
-
-        USE_OLD_LAYOUT = False
-        if USE_OLD_LAYOUT:  #TODO Review
-            for sight in range(self.nr_of_sights):
-                bl = FormRow()
-                bl.add_widget(
-                    MyLabel(text='[b]Use '+str(sight+1)+':[/b]', markup=True))
-                x = CheckBox()
-                self.data_widget_container["Use"+str(sight+1)] = x
-                bl.add_widget(x)
-                self.add_widget(bl)
-
-                bl = FormRow()
-                bl.add_widget(MyLabel(text='Name '+str(sight+1)+':', indent=True))
-                x = MyTextInput()
-                self.data_widget_container["ObjectName"+str(sight+1)] = x
-                bl.add_widget(x)
-                self.add_widget(bl)
-
-                bl = FormRow()
-                bl.add_widget(MyLabel(text='Altitude ' +
-                            str(sight+1)+':', indent=True))
-                x = MyTextInput()
-                self.data_widget_container["Altitude"+str(sight+1)] = x
-                bl.add_widget(x)
-                self.add_widget(bl)
-
-                bl = FormRow()
-                bl.add_widget(MyLabel(text='Time '+str(sight+1)+':', indent=True))
-                x = MyTextInput()
-                self.data_widget_container["Time"+str(sight+1)] = x
-                bl.add_widget(x)
-                self.add_widget(bl)
-
-                bl = FormRow()
-                bl.add_widget(MyLabel(text='Index Error ' +
-                            str(sight+1)+':', indent=True))
-                x = MyTextInput()
-                self.data_widget_container["IndexError"+str(sight+1)] = x
-                bl.add_widget(x)
-                self.add_widget(bl)
-
-                bl = FormRow()
-                bl.add_widget(MyLabel(text='Limb correction ' +
-                            str(sight+1)+':', indent=True))
-                x = LimbDropDown()
-                self.data_widget_container["LimbCorrection"+str(sight+1)] = x
-                bl.add_widget(x)
-                self.add_widget(bl)
-
-                bl = FormRow()
-                bl.add_widget(MyLabel(text='Artificial Horizon ' +
-                            str(sight+1)+':', indent=True))
-                x = CheckBox()
-                self.data_widget_container["ArtificialHorizon"+str(sight+1)] = x
-                bl.add_widget(x)
-                self.add_widget(bl)
-
-                bl = FormRow()
-                bl.add_widget(MyLabel(text='Observer Height ' +
-                            str(sight+1)+":", indent=True))
-                x = MyTextInput()
-                self.data_widget_container["ObserverHeight"+str(sight+1)] = x
-                bl.add_widget(x)
-                self.add_widget(bl)
-
-                bl = FormRow()
-                bl.add_widget(MyLabel(text='Temperature ' +
-                            str(sight+1)+':', indent=True))
-                x = MyTextInput()
-                self.data_widget_container["Temperature"+str(sight+1)] = x
-                bl.add_widget(x)
-                self.add_widget(bl)
-
-                bl = FormRow()
-                bl.add_widget(MyLabel(text='Temp Gradient ' +
-                            str(sight+1)+':', indent=True))
-                x = MyTextInput()
-                self.data_widget_container["TemperatureGradient"+str(sight+1)] = x
-                bl.add_widget(x)
-                self.add_widget(bl)
-
-                bl = FormRow()
-                bl.add_widget(MyLabel(text='Pressure ' +
-                            str(sight+1)+':', indent=True))
-                x = MyTextInput()
-                self.data_widget_container["Pressure"+str(sight+1)] = x
-                bl.add_widget(x)
-                self.add_widget(bl)
 
         bl = FormRow()
         butt = ExecButton(self)

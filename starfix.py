@@ -2105,7 +2105,7 @@ class SightCollection:
             if len (sf_list) == 1:
                 thrown_object = sf_list [0]
             raise IntersectError ("SightCollection should have at least two sights", thrown_object)
-            
+
         self.sf_list = sf_list
 
 #pylint: disable=R0912

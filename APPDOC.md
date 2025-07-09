@@ -1,3 +1,8 @@
+<!---
+    © August Linnman, 2025, email: august@linnman.net
+    MIT License (see LICENSE file)
+-->
+
 # Using the Celeste app
 
 ## Installation and prerequisites

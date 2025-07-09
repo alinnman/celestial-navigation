@@ -1,3 +1,8 @@
+/*
+    © August Linnman, 2025, email: august@linnman.net
+    MIT License (see LICENSE file)
+*/
+
 /* Basic setup for mobile-first responsiveness */
 html {
     font-size: 100%; /* Ensures 1rem equals browser default font size */
