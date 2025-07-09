@@ -47,7 +47,7 @@ pip uninstall xyzservices -y
 pip install cython
 
 # Convert the documentation file to HTML
-pandoc -o APPDOC.html APPDOC.md
+pandoc -s -o APPDOC.html APPDOC.md -c APPDOC.css --metadata title="Celeste"
 
 buildozer -v android debug
 

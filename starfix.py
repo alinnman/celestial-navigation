@@ -1126,7 +1126,7 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
         type_info = ""
 #pylint: disable=C0123
         if type(intersections) == LatLonGeodetic:
-            type_info = "(Geodetic) "
+            type_info = "(WGS-84) "
         elif type(intersections) == LatLonGeocentric:
 #pylint: enable=C0123
             type_info = "(Geocentric) "
@@ -1161,7 +1161,7 @@ def get_representation\
             type_info = "(Geocentric) "
         elif type (ins) == LatLonGeodetic:
 #pylint: enable=C0123
-            type_info = "(Geodetic) "
+            type_info = "(WGS-84) "
         ins = ins.get_tuple ()
     if isinstance (ins, (float, int)):
         degrees = int (ins)
@@ -1308,7 +1308,7 @@ class LatLonGeodetic (LatLon):
         return LatLonGeocentric (rad_to_deg(lam_bda), self.get_lon())
 
     def __str__(self):
-        return "(Geodetic) LAT = " + str(round(self.get_lat(),4)) +\
+        return "(WGS-84) LAT = " + str(round(self.get_lat(),4)) +\
                "; LON = " + str(round(self.get_lon(),4))
 
 

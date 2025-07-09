@@ -485,18 +485,6 @@ class StarFixApp (App):
         ''' Return the root widget '''
         return self.m_root
 
-    #def on_pause(self):
-    #    print ("PAUSED")
-    #    return super().on_pause()
-
-    #def on_stop(self):
-    #    print ("STOPPED")
-    #    return super().on_stop()
-
-    #def on_start(self):
-    #    print ("STARTING")
-    #    return super().on_start()
-
 def initialize(fn: str, init_dict: dict):
     ''' Initialize the helper '''
 # pylint: disable=W0603
@@ -739,6 +727,7 @@ class InputForm(GridLayout):
 
         bl = FormRow()
         self.results = MyLabel(text='', markup=True, indent=False)
+        self.results.halign = "center"
         bl.add_widget(self.results)
         self.add_widget(bl)
 
@@ -798,8 +787,6 @@ class InputForm(GridLayout):
             elif isinstance(w, CheckBox):
                 NUM_DICT[e] = str(w.active)
             elif isinstance(w, LimbDropDown):
-                for x in LimbDropDown.text_labels:
-                    print (x)
                 for key, value in LimbDropDown.text_labels.items():
                     if w.text == value:
                         NUM_DICT[e] = str(key)

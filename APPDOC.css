@@ -1,0 +1,97 @@
+/* Basic setup for mobile-first responsiveness */
+html {
+    font-size: 100%; /* Ensures 1rem equals browser default font size */
+    -webkit-text-size-adjust: 100%; /* Prevent text zooming issues on mobile Safari */
+}
+
+body {
+    font-family: sans-serif; /* Or a preferred readable font */
+    line-height: 1.6;
+    color: #333;
+    background-color: #fff;
+    margin: 1em; /* Basic margin for mobile */
+    padding: 0;
+}
+
+/* Limit content width for better readability on larger screens */
+.container { /* You might need to add a div with class "container" around your main content using a Pandoc template */
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1em;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    font-family: serif; /* Or keep sans-serif for consistency */
+    line-height: 1.2;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+/* Paragraphs */
+p {
+    margin-bottom: 1em;
+}
+
+/* Images - make them fluid */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Remove extra space below images */
+    margin: 1em 0;
+}
+
+/* Tables - make them scrollable if they overflow */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+    display: block; /* Allows horizontal scrolling */
+    overflow-x: auto; /* Adds scrollbar if content overflows */
+    white-space: nowrap; /* Prevents wrapping in table cells */
+}
+table thead th {
+    border-bottom: 2px solid #ccc;
+    padding: 0.5em;
+    text-align: left;
+}
+table tbody td {
+    border-bottom: 1px solid #eee;
+    padding: 0.5em;
+}
+
+/* Code blocks */
+pre {
+    background-color: #f8f8f8;
+    padding: 1em;
+    overflow-x: auto; /* Horizontal scrolling for long lines */
+    font-family: monospace;
+    border-radius: 4px;
+}
+
+code {
+    font-family: monospace;
+    background-color: #f0f0f0;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+}
+
+/* Links */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Media queries for larger screens (e.g., tablets and desktops) */
+@media (min-width: 600px) {
+    body {
+        margin: 2em; /* Increase margins on larger screens */
+    }
+    .container {
+        padding: 2em;
+    }
+}
