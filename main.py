@@ -45,8 +45,10 @@ def str2bool(v):
 Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 
 # Set default color and sizes of the form
-Builder.load_string(
-    """
+USE_KV = False
+if USE_KV:
+    Builder.load_string(
+"""
 
 <FormRow>:
     canvas:
@@ -131,17 +133,16 @@ class AppButton (Button):
     ''' Common base class for buttons '''
 
     def __init__(self, active : bool, **kwargs):
-        print ("PÄRON")  # TODO Remove
         self.set_active (active)
         super().__init__(**kwargs)
         #self.background_color = (1.0, 0.10, 0.10, 1)
 
     def set_active (self, active : bool):
+        ''' Toggles the active state of the button '''
         if active:
             self.background_color = (1.0, 0.10, 0.10, 1)
         else:
-            print ("BANANAS")  # TODO Remove
-            self.background_color = (0.9, 0.9, 0.9, 1)            
+            self.background_color = (0.9, 0.9, 0.9, 1)
 
 
 class ExecButton (AppButton):
@@ -165,7 +166,6 @@ class ExecButton (AppButton):
         sr, result, intersections, coll = sight_reduction()
         if result:
             assert isinstance (coll, SightCollection)
-            print (type(intersections))  # TODO REMOVE
             assert isinstance (intersections, tuple) or\
                    isinstance (intersections, LatLonGeodetic) or\
                    intersections is None
@@ -234,7 +234,7 @@ class OnlineHelpButton (AppButton):
 # pylint: enable=E1101
 
     @staticmethod
-    def callback(instance):
+    def callback(_):
         ''' This is a function for showing online help '''
         file_name = "./APPDOC.html"
         show_or_display_file (file_name, protocol="http")
@@ -242,8 +242,6 @@ class OnlineHelpButton (AppButton):
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
-
-    background_color = (0.35, 0.35, 0.35, 1)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -282,6 +280,9 @@ class LimbDropDown (Button):
 
 class MyTextInput (TextInput):
     ''' The input field class used '''
+
+    color = (1.0, 1.0, 0.2, 1.0)
+
     def __init__(self, **kwargs):
         super().__init__(size_hint = (1,1), **kwargs)
 
@@ -399,8 +400,6 @@ class InputForm(GridLayout):
     def __init__(self, **kwargs):
         super().__init__(cols=1, spacing=2, **kwargs)
 
-        #Window.bind(on_request_close=self.end_func)
-
         self.__active_intersections = None
         self.__active_collection    = None
 
@@ -409,7 +408,7 @@ class InputForm(GridLayout):
         bl = FormRow()
         butt = OnlineHelpButton()
         bl.add_widget(butt)
-        self.add_widget(bl)        
+        self.add_widget(bl)
 
         bl = FormRow()
         bl.add_widget(MyLabel(text='DRP Latitude:'))
