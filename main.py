@@ -45,18 +45,172 @@ def str2bool(v):
 Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 
 # Set default color and sizes of the form
-USE_KV = False
+USE_KV = True
 if USE_KV:
     Builder.load_string(
-"""
-
-<FormRow>:
-    canvas:
+    """
+<FormSection@GridLayout>:
+    cols: 2
+    spacing: 5
+    padding: 5
+    canvas.before:
         Color:
-            rgba: root.background_color
+            rgba: 0.35, 0.35, 0.35, 1
         Rectangle:
             pos: self.pos
             size: self.size
+
+<MyLabel>:
+    size_hint_x: 0.4 # Adjust for a more balanced look in a two-column grid
+    halign: 'right'
+    valign: 'middle'
+    padding: 1
+    text_size: self.width, None
+    size_hint_x : 0.4    
+
+<MyTextInput>:
+    size_hint_x: 0.8 # The remaining space
+    valign: 'middle'    
+
+<LimbDropDown>:
+    size_hint_x: 0.8 # Same as TextInput
+
+<MyCheckbox@CheckBox>:
+    size_hint_x: 0.8 # Same as TextInput
+
+<SightInputSection@GridLayout>:
+    cols: 2
+    spacing: 5
+    padding: 10
+    size_hint_y: None
+    size_hint_x: 0.8 # The remaining space    
+    height : 800
+    canvas.before:
+        Color:
+            rgba: 0.25, 0.25, 0.25, 1 # Slightly darker background for individual sight sections
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Label:
+        text: '[b]Use this sight:[/b]'
+        markup: True
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None    
+        height : 100
+        size_hint_x : 0.4 
+    MyCheckbox:
+        id: use_checkbox
+        size_hint_x: 0.8 # The remaining space          
+    Label:
+        text: 'Name :'
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None
+        height : 100
+        size_hint_x : 0.4        
+    MyTextInput:
+        id: object_name
+        height : 100
+        size_hint_x: 0.8 # The remaining space                
+    Label:
+        text: 'Altitude :'
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None
+        height : 100
+        size_hint_x : 0.4                  
+    MyTextInput:
+        id: altitude
+        height : 100
+        size_hint_x: 0.8 # The remaining space                        
+    Label:
+        text: 'Time :'
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None
+        height : 100
+        size_hint_x : 0.4                 
+    MyTextInput:
+        id: set_time
+        height : 100
+        size_hint_x: 0.8 # The remaining space          
+    Label:
+        text: 'Index Error :'
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None
+        height : 100
+        size_hint_x : 0.4                  
+    MyTextInput:
+        id: index_error
+        height : 100
+        size_hint_x: 0.8 # The remaining space          
+    Label:
+        text: 'Limb correction :'
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None
+        height : 100
+        size_hint_x : 0.4                 
+    LimbDropDown:
+        id: limb_correction
+        height: 100
+        size_hint_x: 0.8 # The remaining space          
+    Label:
+        text: 'Artificial Horizon :'
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None
+        height : 100
+        size_hint_x : 0.4                 
+    MyCheckbox:
+        id: artificial_horizon
+        size_hint_x: 0.8 # The remaining space          
+    Label:
+        text: 'Observer Height :'
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None
+        height : 100
+        size_hint_x : 0.4                      
+    MyTextInput:
+        id: observer_height
+        height : 100
+        size_hint_x: 0.8 # The remaining space          
+    Label:
+        text: 'Temperature :'
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None
+        height : 100
+        size_hint_x : 0.4                  
+    MyTextInput:
+        id: temperature
+        height : 100
+        size_hint_x: 0.8 # The remaining space          
+    Label:
+        text: 'Temp Gradient :'
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None
+        height : 100
+        size_hint_x : 0.4                  
+    MyTextInput:
+        id: temperature_gradient
+        height : 100
+        size_hint_x: 0.8 # The remaining space          
+    Label:
+        text: 'Pressure :'
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None
+        height : 100
+        size_hint_x : 0.4                 
+    MyTextInput:
+        id: pressure
+        height : 100
+        size_hint_x: 0.8 # The remaining space          
 
 """)
 
@@ -260,11 +414,13 @@ class MyLabel (Label):
 class LimbDropDown (Button):
     ''' This is used for the limb correction dropdown'''
 
+    text_labels = {-1:"Lower", 0:"Center", 1:"Upper"}
+
     def __init__(self, **kwargs):
-        super().__init__(text="0", **kwargs)
+        super().__init__(text=self.text_labels[0], color = (0.8, 0.1, 0.1, 1.0), **kwargs)
         self.my_dropdown = DropDown()
         for index in [-1, 0, 1]:
-            btn = Button(text=str(index), size_hint_y=None, height=self.height/2)
+            btn = Button(text=str(self.text_labels[index]), size_hint_y=None, height=self.height/2)
 # pylint: disable=E1101
             btn.bind(on_release=lambda btn: self.my_dropdown.select(btn.text))
 # pylint: enable=E1101
@@ -285,6 +441,23 @@ class MyTextInput (TextInput):
 
     def __init__(self, **kwargs):
         super().__init__(size_hint = (1,1), **kwargs)
+
+# New class to encapsulate a single Sight's input fields
+class SightInputSection(GridLayout):
+    ''' New layout for sight input segment '''
+    sight_num = kivy.properties.NumericProperty(0) # For dynamic text in KV
+
+    def __init__(self, sight_num, **kwargs):
+        print (sight_num) # TODO Remove
+        super().__init__(**kwargs)
+        self.sight_num = sight_num
+        self.ids.use_checkbox.bind(active=self.on_checkbox_active)
+
+    def on_checkbox_active(self, instance, value):
+        ''' Disable/enable other inputs based on checkbox '''
+        for child in self.children:
+            if child is not instance and not isinstance(child, Label):
+                child.disabled = not value
 
 class StarFixApp (App):
     ''' The application class '''
@@ -410,106 +583,154 @@ class InputForm(GridLayout):
         bl.add_widget(butt)
         self.add_widget(bl)
 
-        bl = FormRow()
-        bl.add_widget(MyLabel(text='DRP Latitude:'))
+        #bl = FormRow()
+        #bl.add_widget(MyLabel(text='DRP Latitude:'))
+        #self.drp_lat_input = MyTextInput()
+        #self.data_widget_container["DrpLat"] = self.drp_lat_input
+        #bl.add_widget(self.drp_lat_input)
+        #self.add_widget(bl)
+
+        #bl = FormRow()
+        #bl.add_widget(MyLabel(text='DRP Longitude:'))
+        #self.drp_lon_input = MyTextInput()
+        #self.data_widget_container["DrpLon"] = self.drp_lon_input
+        #bl.add_widget(self.drp_lon_input)
+        #self.add_widget(bl)
+
+        # DRP Position Section
+        self.add_widget(Label(text='[b]DRP Position[/b]', markup=True, size_hint_y=None, height=90))
+        drp_section = GridLayout(cols=2, spacing=5, padding=5, size_hint_y=None, height=150)
+        drp_section.add_widget(MyLabel(text='Latitude:'))
         self.drp_lat_input = MyTextInput()
         self.data_widget_container["DrpLat"] = self.drp_lat_input
-        bl.add_widget(self.drp_lat_input)
-        self.add_widget(bl)
-
-        bl = FormRow()
-        bl.add_widget(MyLabel(text='DRP Longitude:'))
+        drp_section.add_widget(self.drp_lat_input)
+        drp_section.add_widget(MyLabel(text='Longitude:'))
         self.drp_lon_input = MyTextInput()
         self.data_widget_container["DrpLon"] = self.drp_lon_input
-        bl.add_widget(self.drp_lon_input)
-        self.add_widget(bl)
+        drp_section.add_widget(self.drp_lon_input)
+        self.add_widget(drp_section)
 
+        # Individual Sight Sections
         for sight in range(self.nr_of_sights):
-            bl = FormRow()
-            bl.add_widget(
-                MyLabel(text='[b]Use '+str(sight+1)+':[/b]', markup=True))
-            x = CheckBox()
-            self.data_widget_container["Use"+str(sight+1)] = x
-            bl.add_widget(x)
-            self.add_widget(bl)
+            self.add_widget\
+                (Label(text=f'[b]Sight {sight+1} Data[/b]', \
+                       markup=True, size_hint_y=None, height=40))
+            sight_section = SightInputSection(sight_num=sight+1)
 
-            bl = FormRow()
-            bl.add_widget(MyLabel(text='Name '+str(sight+1)+':', indent=True))
-            x = MyTextInput()
-            self.data_widget_container["ObjectName"+str(sight+1)] = x
-            bl.add_widget(x)
-            self.add_widget(bl)
+            # Store references to widgets within the SightInputSection
+            self.data_widget_container["Use"+str(sight+1)] =\
+                  sight_section.ids.use_checkbox
+            self.data_widget_container["ObjectName"+str(sight+1)] =\
+                  sight_section.ids.object_name
+            self.data_widget_container["Altitude"+str(sight+1)] =\
+                  sight_section.ids.altitude
+            self.data_widget_container["Time"+str(sight+1)] =\
+                  sight_section.ids.set_time
+            self.data_widget_container["IndexError"+str(sight+1)] =\
+                  sight_section.ids.index_error
+            self.data_widget_container["LimbCorrection"+str(sight+1)] =\
+                  sight_section.ids.limb_correction
+            self.data_widget_container["ArtificialHorizon"+str(sight+1)] =\
+                  sight_section.ids.artificial_horizon
+            self.data_widget_container["ObserverHeight"+str(sight+1)] =\
+                  sight_section.ids.observer_height
+            self.data_widget_container["Temperature"+str(sight+1)] =\
+                  sight_section.ids.temperature
+            self.data_widget_container["TemperatureGradient"+str(sight+1)] =\
+                  sight_section.ids.temperature_gradient
+            self.data_widget_container["Pressure"+str(sight+1)] =\
+                  sight_section.ids.pressure
 
-            bl = FormRow()
-            bl.add_widget(MyLabel(text='Altitude ' +
-                          str(sight+1)+':', indent=True))
-            x = MyTextInput()
-            self.data_widget_container["Altitude"+str(sight+1)] = x
-            bl.add_widget(x)
-            self.add_widget(bl)
+            self.add_widget(sight_section)
 
-            bl = FormRow()
-            bl.add_widget(MyLabel(text='Time '+str(sight+1)+':', indent=True))
-            x = MyTextInput()
-            self.data_widget_container["Time"+str(sight+1)] = x
-            bl.add_widget(x)
-            self.add_widget(bl)
+        USE_OLD_LAYOUT = False
+        if USE_OLD_LAYOUT:  #TODO Review
+            for sight in range(self.nr_of_sights):
+                bl = FormRow()
+                bl.add_widget(
+                    MyLabel(text='[b]Use '+str(sight+1)+':[/b]', markup=True))
+                x = CheckBox()
+                self.data_widget_container["Use"+str(sight+1)] = x
+                bl.add_widget(x)
+                self.add_widget(bl)
 
-            bl = FormRow()
-            bl.add_widget(MyLabel(text='Index Error ' +
-                          str(sight+1)+':', indent=True))
-            x = MyTextInput()
-            self.data_widget_container["IndexError"+str(sight+1)] = x
-            bl.add_widget(x)
-            self.add_widget(bl)
+                bl = FormRow()
+                bl.add_widget(MyLabel(text='Name '+str(sight+1)+':', indent=True))
+                x = MyTextInput()
+                self.data_widget_container["ObjectName"+str(sight+1)] = x
+                bl.add_widget(x)
+                self.add_widget(bl)
 
-            bl = FormRow()
-            bl.add_widget(MyLabel(text='Limb correction ' +
-                          str(sight+1)+':', indent=True))
-            x = LimbDropDown()
-            self.data_widget_container["LimbCorrection"+str(sight+1)] = x
-            bl.add_widget(x)
-            self.add_widget(bl)
+                bl = FormRow()
+                bl.add_widget(MyLabel(text='Altitude ' +
+                            str(sight+1)+':', indent=True))
+                x = MyTextInput()
+                self.data_widget_container["Altitude"+str(sight+1)] = x
+                bl.add_widget(x)
+                self.add_widget(bl)
 
-            bl = FormRow()
-            bl.add_widget(MyLabel(text='Artificial Horizon ' +
-                          str(sight+1)+':', indent=True))
-            x = CheckBox()
-            self.data_widget_container["ArtificialHorizon"+str(sight+1)] = x
-            bl.add_widget(x)
-            self.add_widget(bl)
+                bl = FormRow()
+                bl.add_widget(MyLabel(text='Time '+str(sight+1)+':', indent=True))
+                x = MyTextInput()
+                self.data_widget_container["Time"+str(sight+1)] = x
+                bl.add_widget(x)
+                self.add_widget(bl)
 
-            bl = FormRow()
-            bl.add_widget(MyLabel(text='Observer Height ' +
-                          str(sight+1)+":", indent=True))
-            x = MyTextInput()
-            self.data_widget_container["ObserverHeight"+str(sight+1)] = x
-            bl.add_widget(x)
-            self.add_widget(bl)
+                bl = FormRow()
+                bl.add_widget(MyLabel(text='Index Error ' +
+                            str(sight+1)+':', indent=True))
+                x = MyTextInput()
+                self.data_widget_container["IndexError"+str(sight+1)] = x
+                bl.add_widget(x)
+                self.add_widget(bl)
 
-            bl = FormRow()
-            bl.add_widget(MyLabel(text='Temperature ' +
-                          str(sight+1)+':', indent=True))
-            x = MyTextInput()
-            self.data_widget_container["Temperature"+str(sight+1)] = x
-            bl.add_widget(x)
-            self.add_widget(bl)
+                bl = FormRow()
+                bl.add_widget(MyLabel(text='Limb correction ' +
+                            str(sight+1)+':', indent=True))
+                x = LimbDropDown()
+                self.data_widget_container["LimbCorrection"+str(sight+1)] = x
+                bl.add_widget(x)
+                self.add_widget(bl)
 
-            bl = FormRow()
-            bl.add_widget(MyLabel(text='Temp Gradient ' +
-                          str(sight+1)+':', indent=True))
-            x = MyTextInput()
-            self.data_widget_container["TemperatureGradient"+str(sight+1)] = x
-            bl.add_widget(x)
-            self.add_widget(bl)
+                bl = FormRow()
+                bl.add_widget(MyLabel(text='Artificial Horizon ' +
+                            str(sight+1)+':', indent=True))
+                x = CheckBox()
+                self.data_widget_container["ArtificialHorizon"+str(sight+1)] = x
+                bl.add_widget(x)
+                self.add_widget(bl)
 
-            bl = FormRow()
-            bl.add_widget(MyLabel(text='Pressure ' +
-                          str(sight+1)+':', indent=True))
-            x = MyTextInput()
-            self.data_widget_container["Pressure"+str(sight+1)] = x
-            bl.add_widget(x)
-            self.add_widget(bl)
+                bl = FormRow()
+                bl.add_widget(MyLabel(text='Observer Height ' +
+                            str(sight+1)+":", indent=True))
+                x = MyTextInput()
+                self.data_widget_container["ObserverHeight"+str(sight+1)] = x
+                bl.add_widget(x)
+                self.add_widget(bl)
+
+                bl = FormRow()
+                bl.add_widget(MyLabel(text='Temperature ' +
+                            str(sight+1)+':', indent=True))
+                x = MyTextInput()
+                self.data_widget_container["Temperature"+str(sight+1)] = x
+                bl.add_widget(x)
+                self.add_widget(bl)
+
+                bl = FormRow()
+                bl.add_widget(MyLabel(text='Temp Gradient ' +
+                            str(sight+1)+':', indent=True))
+                x = MyTextInput()
+                self.data_widget_container["TemperatureGradient"+str(sight+1)] = x
+                bl.add_widget(x)
+                self.add_widget(bl)
+
+                bl = FormRow()
+                bl.add_widget(MyLabel(text='Pressure ' +
+                            str(sight+1)+':', indent=True))
+                x = MyTextInput()
+                self.data_widget_container["Pressure"+str(sight+1)] = x
+                bl.add_widget(x)
+                self.add_widget(bl)
 
         bl = FormRow()
         butt = ExecButton(self)
@@ -563,7 +784,7 @@ class InputForm(GridLayout):
             elif isinstance(w, CheckBox):
                 w.active = str2bool(NUM_DICT[entry])
             elif isinstance(w, LimbDropDown):
-                w.text = NUM_DICT[entry]
+                w.text = LimbDropDown.text_labels[int(NUM_DICT[entry])]
 
     def extract_from_widgets(self):
         ''' Extract all widget data and populate the json structure '''
@@ -577,7 +798,12 @@ class InputForm(GridLayout):
             elif isinstance(w, CheckBox):
                 NUM_DICT[e] = str(w.active)
             elif isinstance(w, LimbDropDown):
-                NUM_DICT[e] = w.text
+                for x in LimbDropDown.text_labels:
+                    print (x)
+                for key, value in LimbDropDown.text_labels.items():
+                    if w.text == value:
+                        NUM_DICT[e] = str(key)
+                        break
 
 if __name__ == '__main__':
     if is_windows():
