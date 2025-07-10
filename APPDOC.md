@@ -46,7 +46,7 @@ altitude and this can assist you in your work.
 
 #### Name of object
 
-You have to select **name** of the object.
+You have to select the **name** of the object.
 Choose one of the planets (mercury, venus, mars, jupiter or saturn)
 or a selected **navigational star**. You find a
 [list&nbsp;of&nbsp;these&nbsp;stars&nbsp;here](https://github.com/alinnman/celestial-navigation/blob/main/README.md#navstars).
@@ -74,28 +74,29 @@ the difference vs GMT.
 
 #### Index Error (optional)
 
-Specify the known index error of the sextant (in arcminutes).
+Specify the known **index error** of the sextant (in arcminutes).
 
 #### Limb Correction (optional)
 
-Select between "UPPER", "CENTRAL" or "LOWER". Specifies the location of your
-measurement. Note: This setting has no effect on stars, and very little effect
-on planets. It is mainly used for the Moon or the Sun.
+Select between "UPPER", "CENTRAL" or "LOWER". Specifies the location/**limb**
+of your measurement. Note: This setting has no effect on stars,
+and very little effect on planets. It is mainly used for the Moon or the Sun.
 
 #### Observer Height (optional)
 
-Specify your elevation above sea level (in meters)
+Specify your **elevation above sea level** (in meters)
 Note: You can use a non-zero observer height only if you are not using an
 artificial horizon.
 
 #### Temperature (optional)
 
-Specify the temperature (in degrees celsius). This setting affects the effects
-of atmospheric refraction.
+Specify the **temperature** (in degrees celsius). This setting affects the
+effects of atmospheric refraction.
 
 #### Temperature Gradient (optional)
 
-Specify how temperature changes with increasing elevation. Default is "-0.01"
+Specify how **temperature changes with increasing elevation**.
+Default is "-0.01",
 which means 1 degree celsius lower temperature for each 100 meters.
 If you have temperature inversions you may increase this parameter to
 a positive value ("0.1" for one degree temperature increase per 10 meters).
@@ -106,12 +107,16 @@ Specify **air pressure** (in kPa). Normal air pressure is "101".
 
 ## Running a sight reduction
 
-Press the button "Perform sight reduction!". The calculated position will be
+Press the button <tt>"Perform sight reduction!"</tt>.
+The calculated position will be
 presented in the underlying field. If the sight reduction fails you will see
-an error message.
+an error message. *The sight reduction does not depend on an active*
+*internet connection.*
 
 ## Presenting a map
 
-Press the button "Show map!" to see a map representing the last successful
-sight reduction. Even for failed sight reduction (and single sights) you will
-see a map. This map can assist you in troubleshooting your sextant readings.
+Press the button <tt>"Show map!"</tt> to see a map representing the last
+successful sight reduction. Even for failed sight reduction (and single sights)
+you will see a map. This map can assist you in troubleshooting your
+sextant readings.
+*The map interface requires an active internet connection.*
