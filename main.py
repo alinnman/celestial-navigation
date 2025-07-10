@@ -103,7 +103,8 @@ if USE_KV:
         id: use_checkbox
         size_hint_x: 0.8 # The remaining space          
     Label:
-        text: 'Name :'
+        text: '[b]Name :[/b]'
+        markup: True        
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
@@ -114,7 +115,8 @@ if USE_KV:
         height : 100
         size_hint_x: 0.8 # The remaining space                
     Label:
-        text: 'Altitude :'
+        text: '[b]Altitude :[/b]'
+        markup: True         
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
@@ -123,9 +125,21 @@ if USE_KV:
     MyTextInput:
         id: altitude
         height : 100
-        size_hint_x: 0.8 # The remaining space                        
+        size_hint_x: 0.8 # The remaining space
     Label:
-        text: 'Time :'
+        text: '[b]Artificial Horizon :[/b]'
+        markup: True        
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None
+        height : 100
+        size_hint_x : 0.4                 
+    MyCheckbox:
+        id: artificial_horizon
+        size_hint_x: 0.8 # The remaining space            
+    Label:
+        text: '[b]Time :[/b]'
+        markup: True         
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
@@ -156,17 +170,7 @@ if USE_KV:
     LimbDropDown:
         id: limb_correction
         height: 100
-        size_hint_x: 0.8 # The remaining space          
-    Label:
-        text: 'Artificial Horizon :'
-        halign: 'right'
-        valign: 'middle'
-        text_size: self.width, None
-        height : 100
-        size_hint_x : 0.4                 
-    MyCheckbox:
-        id: artificial_horizon
-        size_hint_x: 0.8 # The remaining space          
+        size_hint_x: 0.8 # The remaining space                
     Label:
         text: 'Observer Height :'
         halign: 'right'
@@ -571,20 +575,6 @@ class InputForm(GridLayout):
         butt = OnlineHelpButton()
         bl.add_widget(butt)
         self.add_widget(bl)
-
-        #bl = FormRow()
-        #bl.add_widget(MyLabel(text='DRP Latitude:'))
-        #self.drp_lat_input = MyTextInput()
-        #self.data_widget_container["DrpLat"] = self.drp_lat_input
-        #bl.add_widget(self.drp_lat_input)
-        #self.add_widget(bl)
-
-        #bl = FormRow()
-        #bl.add_widget(MyLabel(text='DRP Longitude:'))
-        #self.drp_lon_input = MyTextInput()
-        #self.data_widget_container["DrpLon"] = self.drp_lon_input
-        #bl.add_widget(self.drp_lon_input)
-        #self.add_widget(bl)
 
         # DRP Position Section
         self.add_widget(Label(text='[b]DRP Position[/b]', markup=True, size_hint_y=None, height=90))

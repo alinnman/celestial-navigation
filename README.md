@@ -73,7 +73,7 @@ A machine-readable nautical almanac (in CSV format) can be
 [found here](./sample_data/)
 
 A more detailed description of celestial navigation can be
-[found here](https://www.waypointamsterdam.com/Handy_stuf/Short_Guide_To_Astro_navigation.pdf).<br>
+[found&nbsp;here](https://www.waypointamsterdam.com/Handy_stuf/Short_Guide_To_Astro_navigation.pdf).<br>
 
 A historical document, the Admiralty Navigational Manual (1938),
 from His Majestys Stationary Office (UK) can be
@@ -421,7 +421,7 @@ $\phi = \left|\left|d_1 \times d_2\right|\right|$  ;  $0<=\phi<=1$
 Note: I have chosen to use an algorithm based on 3D cartesian vectors.
 Standard literature on sight reduction typically uses 2D spherical coordinates,
 such as **Longhand haversine sight reduction** as
-[described here](https://en.wikipedia.org/wiki/Sight_reduction#Longhand_haversine_sight_reduction).
+[described&nbsp;here](https://en.wikipedia.org/wiki/Sight_reduction#Longhand_haversine_sight_reduction).
 Such calculations in 2D are easier to carry out by hand but results in more
 complex computer software. The 3D/cartesian approach is more structurally
 simple and easier to convert to well-functioning software.
@@ -1012,7 +1012,7 @@ Jupiter<br>
 Saturn<br>
 </tt>
 
-### Navigational stars
+### Navigational stars<a name="navstars"></a>
 
 <tt>
 Alpheratz<br>
