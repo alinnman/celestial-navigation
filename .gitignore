@@ -8,6 +8,7 @@ testing*
 .venv/**
 .venv-buildozer/**
 .buildozer/**
+.idea/**
 bin/**
 # These are used for deployment of the mobile app.
 # See DEVELOPMENT.md
