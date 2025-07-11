@@ -28,15 +28,22 @@ do
     pip uninstall $i -y
 done
 
-# Cython seems to needed so we install it
+# Cython seems to be needed so we install it
 pip install cython
+
+# Also make sure buildozer is installed
+pip install buildozer==1.5.0
 
 # Convert the documentation file to HTML
 pandoc -s -o APPDOC.html APPDOC.md -c APPDOC.css 
-#--metadata title="Celeste App Documentation"
 
 # Now build the android app
-buildozer -v android debug
+if [ "$1" == "release" ]; then
+    buildozer -v android release
+else
+    buildozer -v android debug
+fi
+
 #buildozer -v android release
 
 for i in "${python_libs[@]}"

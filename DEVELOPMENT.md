@@ -81,7 +81,7 @@ Be careful to keep your work in the virtual environment. See above.
 Building the app is done using these commands:
 
     source .venv-buildozer/bin/activate
-    ./build-debug.sh
+    ./build.sh
 
 This executes a script preparing a debug APK file.
 
