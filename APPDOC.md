@@ -5,15 +5,6 @@
 
 # Using the Celeste app
 
-## Installation and prerequisites
-
-The application runs under Android 13 or higher. It is installed using
-APK files which you can
-[find&nbsp;here](https://drive.google.com/drive/folders/1QFcncVEuCQMnls8lyNElDtpTYruMgI0D?usp=sharing).
-
-See [this article](https://www.wikihow.com/Install-APK-Files-on-Android)
-for info on how to install APK files on Android.
-
 ## Entering data
 
 ### DRP position
@@ -120,3 +111,23 @@ successful sight reduction. Even for failed sight reduction (and single sights)
 you will see a map. This map can assist you in troubleshooting your
 sextant readings.
 *The map interface requires an active internet connection.*
+
+## Installation and prerequisites
+
+The application runs under Android 13 or higher. It is installed using
+APK files which you can
+[find&nbsp;here](https://drive.google.com/drive/folders/1QFcncVEuCQMnls8lyNElDtpTYruMgI0D?usp=sharing).
+
+See [this article](https://www.wikihow.com/Install-APK-Files-on-Android)
+for info on how to install APK files on Android.
+
+## More information
+
+This app is part of a software library for celestial navigation.
+You can find
+[more information here](https://github.com/alinnman/celestial-navigation)
+
+## License
+
+<tt>© August Linnman, 2025, email: august@linnman.net</tt><br>
+<tt>[MIT&nbsp;License](https://github.com/alinnman/celestial-navigation/blob/main/LICENSE)</tt>
