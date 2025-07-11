@@ -290,6 +290,7 @@ android.allow_backup = True
 
 # (str) The format used to package the app for release mode (aab or apk).
 android.release_artifact = apk
+#android.release_artifact = aab
 
 #
 # Python for android (p4a) specific

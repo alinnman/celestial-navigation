@@ -37,6 +37,7 @@ pandoc -s -o APPDOC.html APPDOC.md -c APPDOC.css
 
 # Now build the android app
 buildozer -v android debug
+#buildozer -v android release
 
 for i in "${python_libs[@]}"
 do
