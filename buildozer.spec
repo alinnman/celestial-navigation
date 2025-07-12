@@ -34,7 +34,7 @@ source.exclude_dirs = .venv, .venv-buildozer, .vscode, colab, maths, nautical_al
 source.exclude_patterns = calibration.py, starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py, kivyapp.*.json, notebook.*.json, map.html
 
 # (str) Application versioning (method 1)
-version = 0.1.11
+version = 0.1.12
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -42,7 +42,7 @@ version = 0.1.11
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = libffi,python3,pandas,kivy,cython,android
+requirements = python3,pandas,kivy,cython,android
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -115,9 +115,6 @@ android.sdk = 34
 # (str) Android NDK version to use
 #android.ndk = 25b
 android.ndk = 26
-
-# (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
-#android.ndk_api = 21
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
 #android.private_storage = True
