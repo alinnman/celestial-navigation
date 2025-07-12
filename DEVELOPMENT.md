@@ -42,7 +42,6 @@ virtual environment (.venv-buildozer).
 
     python -m venv .venv-buildozer
     source .venv/bin/activate
-    pip install git+https://github.com/misl6/buildozer.git@feat/aab-support
 
 ## The .gitignore file
 
@@ -69,11 +68,7 @@ app (Celeste) built on the Kivy framework. It can be used as a starter point
 for developing Android or iOS apps.
 
 A script solution based on [buildozer](https://github.com/kivy/buildozer)
-is available and it produces a working/running app (APK file) for Android 15.
-Currently I use a fork of
-[this tool](https://gist.github.com/Guhan-SenSam/35c5ed7da254a7c0141e6a8b6101eb33)
-which is documented here. This can also produce AAB files
-(for releases on Google Play)
+is available and it produces a working/running app (APK or AAB file).
 
 In order to use this you need to follow the installation instructions carefully.
 Be careful to keep your work in the virtual environment. See above.
@@ -83,10 +78,14 @@ Building the app is done using these commands:
     source .venv-buildozer/bin/activate
     ./build.sh
 
-This executes a script preparing a debug APK file.
+This executes the buildozer script and some other preparation steps.
 
 Note however that you probably need to fine-tune and adjust your enviroment
 carefully before being able to run the app build script successfully.
+For deployment vs later Android SDK levels you may need to carefully check
+the [python-for-android](https://github.com/kivy/python-for-android)
+setup, which may require forking and working with
+detailed configuration.
 
 ## App testing
 

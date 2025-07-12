@@ -33,6 +33,7 @@ pip install cython
 
 # Also make sure buildozer is installed
 pip install buildozer==1.5.0
+#pip install git+https://github.com/misl6/buildozer.git@feat/aab-support
 
 # Convert the documentation file to HTML
 pandoc -s -o APPDOC.html APPDOC.md -c APPDOC.css 

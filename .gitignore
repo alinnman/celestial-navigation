@@ -15,6 +15,9 @@ bin/**
 folium/**
 branca/**
 jinja2/**
+markupsafe/**
+xyzservices/**
+
 
 
 
