@@ -2437,7 +2437,7 @@ class SightCollection:
                 ).add_to(the_map)
         else:
             the_map = Map(location=(0,\
-                                    0), zoom_start=6)
+                                    0), zoom_start=2)
 
         if draw_azimuths:
             for s in the_sf_list:

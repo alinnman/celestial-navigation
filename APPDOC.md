@@ -121,6 +121,16 @@ APK files which you can
 See [this article](https://www.wikihow.com/Install-APK-Files-on-Android)
 for info on how to install APK files on Android.
 
+## Tips for testing without a sextant
+
+Download the app
+[GPS&nbsp;Anti&npsp;Spoof](https://play.google.com/store/apps/details?id=com.clockwk.GPSAntiSpoof&pcampaignid=web_share)
+and use it to collect altitude values.
+Make sure you use true sextant readings (Hs)
+and take careful notes on observed times.
+Insert the readings into the Celeste app, and you can check your position.
+Using three fixes you should reach 1-2 nautical miles accuracy.
+
 ## More information
 
 This app is part of a software library for celestial navigation.

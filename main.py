@@ -70,7 +70,8 @@ if USE_KV:
 
 <MyTextInput>:
     size_hint_x: 0.8 # The remaining space
-    valign: 'middle'    
+    valign: 'middle'
+    multiline: False 
 
 <LimbDropDown>:
     size_hint_x: 0.8 # Same as TextInput
@@ -113,9 +114,10 @@ if USE_KV:
     MyTextInput:
         id: object_name
         height : 100
-        size_hint_x: 0.8 # The remaining space                
+        size_hint_x: 0.8 # The remaining space
+        multiline: False               
     Label:
-        text: '[b]Altitude :[/b]'
+        text: '[b]Altitude (Hs) :[/b]'
         markup: True         
         halign: 'right'
         valign: 'middle'
@@ -126,6 +128,7 @@ if USE_KV:
         id: altitude
         height : 100
         size_hint_x: 0.8 # The remaining space
+        multiline: False
     Label:
         text: '[b]Artificial Horizon :[/b]'
         markup: True        
@@ -148,7 +151,8 @@ if USE_KV:
     MyTextInput:
         id: set_time
         height : 100
-        size_hint_x: 0.8 # The remaining space          
+        size_hint_x: 0.8 # The remaining space
+        multiline: False          
     Label:
         text: 'Index Error :'
         halign: 'right'
@@ -159,7 +163,8 @@ if USE_KV:
     MyTextInput:
         id: index_error
         height : 100
-        size_hint_x: 0.8 # The remaining space          
+        size_hint_x: 0.8 # The remaining space
+        multiline: False         
     Label:
         text: 'Limb correction :'
         halign: 'right'
@@ -181,7 +186,8 @@ if USE_KV:
     MyTextInput:
         id: observer_height
         height : 100
-        size_hint_x: 0.8 # The remaining space          
+        size_hint_x: 0.8 # The remaining space
+        multiline: False         
     Label:
         text: 'Temperature :'
         halign: 'right'
@@ -192,7 +198,8 @@ if USE_KV:
     MyTextInput:
         id: temperature
         height : 100
-        size_hint_x: 0.8 # The remaining space          
+        size_hint_x: 0.8 # The remaining space
+        multiline: False        
     Label:
         text: 'Temp Gradient :'
         halign: 'right'
@@ -203,7 +210,8 @@ if USE_KV:
     MyTextInput:
         id: temperature_gradient
         height : 100
-        size_hint_x: 0.8 # The remaining space          
+        size_hint_x: 0.8 # The remaining space
+        multiline: False         
     Label:
         text: 'Pressure :'
         halign: 'right'
@@ -214,7 +222,8 @@ if USE_KV:
     MyTextInput:
         id: pressure
         height : 100
-        size_hint_x: 0.8 # The remaining space          
+        size_hint_x: 0.8 # The remaining space
+        multiline: False         
 
 """)
 
