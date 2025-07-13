@@ -5,6 +5,14 @@
 
 # Using the Celeste app
 
+## About the screen, and how to switch window
+
+The app is configured as a full screen app. If your phone has
+soft buttons (home, back, program list) you can access them
+through swiping upwards from the bottom.
+
+The map and help functions invoke the default web browser.
+
 ## Entering data
 
 ### DRP position
@@ -15,7 +23,8 @@ intersection point.
 (A 2-star-fix will alway produce two intersections,
 and these can be located far away from each other)
 <br>For a **3-star-fix** sight reduction the DRP serves as a way to shorten the
-execution time of finding an accurate result.
+execution time of finding an accurate result
+(and in rare cases to eliminate false intersections).
 This effect is however small, but you are advised to
 use DRP values anyway. Normally you have at least a rough estimation of your
 actual position.
@@ -63,28 +72,28 @@ The last part is a timezone specification. Use "+00:00" for GMT time.
 Use "-HH:MM" for western timezones, and "+HH:MM" for eastern and specify
 the difference vs GMT.
 
-#### Index Error (optional)
+#### Index Error
 
 Specify the known **index error** of the sextant (in arcminutes).
 
-#### Limb Correction (optional)
+#### Limb Correction
 
 Select between "UPPER", "CENTRAL" or "LOWER". Specifies the location/**limb**
 of your measurement. Note: This setting has no effect on stars,
 and very little effect on planets. It is mainly used for the Moon or the Sun.
 
-#### Observer Height (optional)
+#### Observer Height
 
 Specify your **elevation above sea level** (in meters)
 Note: You can use a non-zero observer height only if you are not using an
 artificial horizon.
 
-#### Temperature (optional)
+#### Temperature
 
 Specify the **temperature** (in degrees celsius). This setting affects the
 effects of atmospheric refraction.
 
-#### Temperature Gradient (optional)
+#### Temperature Gradient
 
 Specify how **temperature changes with increasing elevation**.
 Default is "-0.01",
@@ -92,7 +101,7 @@ which means 1 degree celsius lower temperature for each 100 meters.
 If you have temperature inversions you may increase this parameter to
 a positive value ("0.1" for one degree temperature increase per 10 meters).
 
-#### Pressure (optional)
+#### Pressure
 
 Specify **air pressure** (in kPa). Normal air pressure is "101".
 
@@ -102,19 +111,19 @@ Press the button <tt>"Perform sight reduction!"</tt>.
 The calculated position will be
 presented in the underlying field. If the sight reduction fails you will see
 an error message. *The sight reduction does not depend on an active*
-*internet connection.*
+*internet or GPS connection.*
 
 ## Presenting a map
 
 Press the button <tt>"Show map!"</tt> to see a map representing the last
-successful sight reduction. Even for failed sight reduction (and single sights)
-you will see a map. This map can assist you in troubleshooting your
+successful sight reduction. Even for failed sight reductions (and single sights)
+you can display a map. This map can assist you in troubleshooting your
 sextant readings.
 *The map interface requires an active internet connection.*
 
 ## Installation and prerequisites
 
-The application runs under Android 13 or higher. It is installed using
+The application runs under Android 9 or higher. It is installed using
 APK files which you can
 [find&nbsp;here](https://drive.google.com/drive/folders/1QFcncVEuCQMnls8lyNElDtpTYruMgI0D?usp=sharing).
 
@@ -124,12 +133,17 @@ for info on how to install APK files on Android.
 ## Tips for testing without a sextant
 
 Download the app
-[GPS&nbsp;Anti&npsp;Spoof](https://play.google.com/store/apps/details?id=com.clockwk.GPSAntiSpoof&pcampaignid=web_share)
+[GPS&nbsp;Anti&nbsp;Spoof](https://play.google.com/store/apps/details?id=com.clockwk.GPSAntiSpoof&pcampaignid=web_share)
 and use it to collect altitude values.
-Make sure you use true sextant readings (Hs)
-and take careful notes on observed times.
+Make sure you use true sextant readings (Hs),
+take careful notes on limb positions used,
+and take notes on observed times.
 Insert the readings into the Celeste app, and you can check your position.
 Using three fixes you should reach 1-2 nautical miles accuracy.
+
+You can also use online star atlases such as
+[Stellarium](https://en.wikipedia.org/wiki/Stellarium_(software))
+but this is a little more time-consuming.
 
 ## More information
 

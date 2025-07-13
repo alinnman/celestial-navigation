@@ -337,6 +337,7 @@ class ExecButton (AppButton):
                    isinstance (intersections, LatLonGeodetic) or\
                    intersections is None
             the_form.set_active_intersections(intersections, coll)
+            the_form.extract_from_widgets()
             dump_dict()
             the_form.results.text = "Your location = " + sr
         else:
@@ -655,11 +656,11 @@ class InputForm(GridLayout):
 
         self.populate_widgets()
 
-        #self.bind(on_close=self.on_close)
-
-    #@staticmethod
-    #def on_close (instance):
-    #    print ("HEJ DÅ!")
+    def __update_drp (self, i : tuple | LatLonGeodetic | NoneType):
+        if i is None or isinstance (i, tuple):
+            return
+        self.drp_lat_input.text = str (round(i.get_lat(),2))
+        self.drp_lon_input.text = str (round(i.get_lon(),2))
 
     def set_active_intersections\
         (self, i : tuple | LatLonGeodetic | NoneType, c : SightCollection | Sight | NoneType ):
@@ -668,6 +669,7 @@ class InputForm(GridLayout):
         self.__active_collection    = c
         self.__show_map_button.text = "Show map!"
         self.__show_map_button.set_active (True)
+        self.__update_drp (i)
 
     def get_active_intersections (self) ->\
           tuple [tuple | LatLonGeodetic | NoneType, SightCollection | Sight | NoneType]:
