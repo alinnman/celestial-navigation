@@ -19,6 +19,10 @@ from starfix import LatLonGeodetic, SightCollection, Sight, \
 import json
 import kivy
 kivy.require('2.0.0')
+from kivy.core.audio import SoundLoader
+# Sound has to be loaded now directly
+# This seems to be due to a Kivy bug. Delaying sound loading leads to UI crashes.
+click_sound = SoundLoader.load('./sounds/mouse-click.mp3')
 kivy.config.Config.set('graphics', 'resizable', False)
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -28,6 +32,7 @@ from kivy.uix.button import Button
 from kivy.uix.dropdown import DropDown
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.scrollview import ScrollView
+
 from kivy.lang import Builder
 from kivy.app import App, runTouchApp
 from kivy.core.window import Window
@@ -40,7 +45,6 @@ Window.softinput_mode = 'below_target'
 def str2bool(v):
     ''' Simple conversion from bool to string '''
     return v.lower() in ("yes", "true", "t", "1")
-
 
 Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 
@@ -302,7 +306,6 @@ class AppButton (Button):
     def __init__(self, active : bool, **kwargs):
         self.set_active (active)
         super().__init__(**kwargs)
-        #self.background_color = (1.0, 0.10, 0.10, 1)
 
     def set_active (self, active : bool):
         ''' Toggles the active state of the button '''
@@ -310,7 +313,6 @@ class AppButton (Button):
             self.background_color = (1.0, 0.10, 0.10, 1)
         else:
             self.background_color = (0.9, 0.9, 0.9, 1)
-
 
 class ExecButton (AppButton):
     ''' This is the button starting the sight reduction '''
@@ -329,6 +331,7 @@ class ExecButton (AppButton):
         assert isinstance(instance, ExecButton)
         the_form = instance.form
         assert isinstance(the_form, InputForm)
+        StarFixApp.play_click_sound ()
         the_form.extract_from_widgets()
         sr, result, intersections, coll = sight_reduction()
         if result:
@@ -362,6 +365,7 @@ class ShowMapButton (AppButton):
         assert isinstance(instance, ShowMapButton)
         the_form = instance.form
         assert isinstance(the_form, InputForm)
+        StarFixApp.play_click_sound ()
         i, c = the_form.get_active_intersections ()
         if c is not None:
             the_map = None
@@ -381,7 +385,6 @@ class ShowMapButton (AppButton):
                     pass
 # pylint: enable=W0702
                 show_or_display_file (file_name, protocol="http")
-                # webbrowser.open (the_link)
 # pylint: disable=W0702
             except:
                 if the_map is None:
@@ -404,6 +407,7 @@ class OnlineHelpButton (AppButton):
     @staticmethod
     def callback(_):
         ''' This is a function for showing online help '''
+        StarFixApp.play_click_sound ()
         file_name = "./APPDOC.html"
         show_or_display_file (file_name, protocol="http")
 
@@ -414,7 +418,6 @@ class FormRow (BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size_hint_y = None
-        #self.size = (100, 28)
 
 class MyLabel (Label):
     ''' This is used for labels'''
@@ -477,8 +480,11 @@ class SightInputSection(GridLayout):
 class StarFixApp (App):
     ''' The application class '''
 
+    click_sound = None
+
     def __init__ (self, **kwargs):
         super().__init__(**kwargs)
+        StarFixApp.click_sound = None
         layout = InputForm(size_hint_y = None)
 # pylint: disable=E1101
         layout.bind(minimum_height=layout.setter('height'))
@@ -486,18 +492,18 @@ class StarFixApp (App):
 
         root = ScrollView(
             size_hint= (1,1)
-            #size_hint=(1, None),
-            #size=(Window.width, Window.height)
         )
         root.add_widget(layout)
         self.m_root = root
 
-    def build(self):
-        # return a Scroll View as a root widget
-        return self.m_root
+    @staticmethod
+    def play_click_sound ():
+        ''' Play the button click sound '''
+        if click_sound is not None:
+            click_sound.play ()
 
     def get_root (self):
-        ''' Return the root widget '''
+        ''' Return the root widget '''     
         return self.m_root
 
 def initialize(fn: str, init_dict: dict):
@@ -706,6 +712,7 @@ class InputForm(GridLayout):
                         break
 
 if __name__ == '__main__':
+
     if is_windows():
         freeze_support ()
     do_initialize()

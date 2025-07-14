@@ -10,13 +10,7 @@ testing*
 .buildozer/**
 .idea/**
 bin/**
-# These are used for deployment of the mobile app.
-# See DEVELOPMENT.md
-folium/**
-branca/**
-jinja2/**
-markupsafe/**
-xyzservices/**
+
 
 
 

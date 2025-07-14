@@ -361,9 +361,15 @@ def to_rectangular (latlon : LatLon) -> list [float]:
 def get_dms (angle : int | float) -> tuple[int, int, int | float]:
     ''' Convert an angle (in degrees) to a tuple of degrees, arc minutes and arc seconds '''
     degrees = int (angle)
-    minutes = int ((angle-degrees)*60)
-    seconds = (angle-degrees-minutes/60)*3600
+    minutes = abs(int ((angle-degrees)*60))
+    seconds = abs((angle-degrees-minutes/60)*3600)
     return degrees, minutes, seconds
+
+def get_dm (angle : int | float) -> tuple[int, int | float]:
+    ''' Convert an angle (in degrees) to a tuple of degrees and arc minutes '''    
+    degrees = int (angle)
+    minutes = abs((angle-degrees)*60)
+    return degrees, minutes
 
 def get_decimal_degrees (degrees : int | float, minutes : int | float, seconds : int | float)\
       -> float:
@@ -2459,21 +2465,69 @@ class SightCollection:
 
             lat_interval = 1
             lon_interval = 1
+            spread = 1
+
+            # Draw degree square(s)
 
             if isinstance (intersections, LatLon):
-                left_lon = int(intersections.get_lon() - 180)
-                right_lon = int(intersections.get_lon() + 181)
+                left_lon = int(intersections.get_lon() - spread + 1)
+                right_lon = int(intersections.get_lon() + spread)
+                down_lat = max(int(intersections.get_lat() - spread + 1),-90)
+                up_lat = min(int(intersections.get_lat() + spread),90)
+                draw_degrees = False
             else:
                 left_lon = -180
-                right_lon = 181
+                right_lon = 180
+                down_lat = -90
+                up_lat = 90
+                draw_degrees = True
 
-            for lat in range(-90, 91, lat_interval):
-                PolyLine([[lat, left_lon],[lat, right_lon]], weight=0.5, tooltip=str(lat)).\
-                    add_to(the_map)
+            if draw_degrees:
+                for lat in range(down_lat, up_lat+1, lat_interval):
+                    PolyLine([[lat, left_lon],[lat, right_lon]], weight=0.5,\
+                        tooltip=str(lat) + "°").\
+                        add_to(the_map)
 
-            for lon in range(left_lon, right_lon, lon_interval):
-                PolyLine([[-90, lon],[90, lon]], weight=0.5, tooltip=str(lon)).\
-                    add_to(the_map)
+                for lon in range(left_lon, right_lon+1, lon_interval):
+                    PolyLine([[down_lat, lon],[up_lat, lon]], weight=0.7,\
+                        tooltip=str(lon)+"°").\
+                        add_to(the_map)
+
+            # Draw minute lines
+
+            if isinstance (intersections, LatLon):
+                #Calculate lower left minute point
+                the_lon = intersections.get_lon ()
+                reduced_lon = int(the_lon * 60) / 60
+                the_lat = intersections.get_lat ()
+                reduced_lat = int(the_lat * 60) / 60
+
+                this_left_lon = reduced_lon - (10/60)
+                this_right_lon = reduced_lon + (10/60)
+                this_down_lat = reduced_lat - (10/60)
+                this_up_lat = reduced_lat + (10/60)
+
+                # Horizontal lines
+                for y in range (-10, 11):
+                    this_draw_lat = reduced_lat + (y/60)
+                    d,m = get_dm (this_draw_lat)
+                    m = abs(int(m))
+                    tooltip_string = str(d) + "° " + str(m) + "'"
+                    PolyLine([[this_draw_lat, this_left_lon],[this_draw_lat, this_right_lon]],\
+                              weight=0.5, color="green",\
+                              tooltip=tooltip_string).\
+                        add_to(the_map)
+
+                # Vertical lines
+                for x in range(-10,11):
+                    this_draw_lon = reduced_lon + (x/60)
+                    d,m = get_dm (this_draw_lon)
+                    m = abs(int(m))
+                    tooltip_string = str(d) + "° " + str(m) + "'"
+                    PolyLine([[this_down_lat, this_draw_lon],[this_up_lat, this_draw_lon]],\
+                              weight=0.5, color="green",\
+                              tooltip=tooltip_string).\
+                        add_to(the_map)
 
         return the_map
 #pylint: enable=R0914
