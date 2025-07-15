@@ -99,15 +99,18 @@ android.presplash_color = #555555
 
 # (list) Permissions
 android.permissions = INTERNET
+# INTERNET permission needed for the web browser interaction
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
 android.api = 35
+# Api level 35 = Android 15
 
 # (int) Minimum API your APK / AAB will support.
 android.minapi = 28
+# Api level 28 = Android 9
 
 # (int) Android SDK version to use
 android.sdk = 35

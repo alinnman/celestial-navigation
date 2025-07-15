@@ -5,6 +5,7 @@ __pycache__/*
 testing*
 *.html
 *.json
+*.jks
 .venv/**
 .venv-buildozer/**
 .buildozer/**
