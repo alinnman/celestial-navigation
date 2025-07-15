@@ -23,7 +23,7 @@ In this picture we were located in Chicago.
 
 ![Intersections of small circles](pics/folium.png "Intersections of small circles" )
 
-## Table of contents
+## Table of Contents
 
 1. [Introduction](#introduction)
     1. [Links](#links)

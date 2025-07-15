@@ -158,7 +158,7 @@ if USE_KV:
         size_hint_x: 0.8 # The remaining space
         multiline: False          
     Label:
-        text: 'Index Error :'
+        text: 'Index Error (am) :'
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
@@ -181,7 +181,7 @@ if USE_KV:
         height: 100
         size_hint_x: 0.8 # The remaining space                
     Label:
-        text: 'Observer Height :'
+        text: 'Elevation (m) :'
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
@@ -193,7 +193,7 @@ if USE_KV:
         size_hint_x: 0.8 # The remaining space
         multiline: False         
     Label:
-        text: 'Temperature :'
+        text: 'Temperature (°C):'
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
@@ -205,7 +205,7 @@ if USE_KV:
         size_hint_x: 0.8 # The remaining space
         multiline: False        
     Label:
-        text: 'Temp Gradient :'
+        text: 'Gradient (°C/m):'
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
@@ -217,7 +217,7 @@ if USE_KV:
         size_hint_x: 0.8 # The remaining space
         multiline: False         
     Label:
-        text: 'Pressure :'
+        text: 'Pressure (kPa):'
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
