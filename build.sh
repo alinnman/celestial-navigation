@@ -12,22 +12,6 @@
 
 source .venv-buildozer/bin/activate
 
-# This is a list of the pure python libraries we want to include
-#declare -a python_libs=("folium" "branca" "jinja2" "markupsafe" "xyzservices")
-
-#for i in "${python_libs[@]}"
-#do
-#    pip install $i
-#    rm -r $i
-#    mkdir $i
-#    cp -r .venv-buildozer/lib/python3.11/site-packages/$i/* $i
-#done
-
-#for i in "${python_libs[@]}"
-#do
-#    pip uninstall $i -y
-#done
-
 # Cython seems to be needed so we install it
 pip install cython
 
@@ -44,13 +28,6 @@ if [ "$1" == "release" ]; then
 else
     buildozer -v android debug
 fi
-
-#buildozer -v android release
-
-#for i in "${python_libs[@]}"
-#do
-#    rm -r $i
-#done
 
 pip uninstall cython -y
 

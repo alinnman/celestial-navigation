@@ -333,10 +333,11 @@ class ExecButton (AppButton):
         assert isinstance(instance, ExecButton)
         the_form = instance.form
         assert isinstance(the_form, InputForm)
-        StarFixApp.play_click_sound ()
+
         the_form.extract_from_widgets()
         sr, result, intersections, coll = sight_reduction()
         if result:
+            StarFixApp.play_click_sound ()            
             assert isinstance (coll, SightCollection)
             assert isinstance (intersections, tuple) or\
                    isinstance (intersections, LatLonGeodetic) or\
@@ -346,6 +347,7 @@ class ExecButton (AppButton):
             dump_dict()
             the_form.results.text = "Your location = " + sr
         else:
+            StarFixApp.play_error_sound ()
             if coll is not None:
                 the_form.set_active_intersections (None, coll)
             the_form.results.text = sr
@@ -401,7 +403,7 @@ class PasteConfigButton (AppButton):
     def __init__(self, form, **kwargs):
         super().__init__(active = True, **kwargs)
         self.form = form
-        self.text = "Paste config"
+        self.text = "Paste Config"
 # pylint: disable=E1101
         self.bind(on_press=self.callback)
 # pylint: enable=E1101
@@ -428,7 +430,6 @@ class PasteConfigButton (AppButton):
 class OnlineHelpButton (AppButton):
     ''' A button for showing online help '''
 
-
     def __init__(self, **kwargs):
         super().__init__(active = True, **kwargs)
         self.text = "Show help!"
@@ -442,7 +443,6 @@ class OnlineHelpButton (AppButton):
         StarFixApp.play_click_sound ()
         file_name = "./APPDOC.html"
         show_or_display_file (file_name, protocol="http")
-
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
@@ -458,7 +458,6 @@ class MyLabel (Label):
         left_hint = 0.45 if indent else 0.4
         super().__init__(size_hint=(left_hint, 1), **kwargs)
         # self.size_hint (0.2, 1)
-
 
 class LimbDropDown (Button):
     ''' This is used for the limb correction dropdown'''
@@ -563,7 +562,7 @@ def initialize(fn: str, init_dict: dict):
 
 def dump_dict():
     ''' Dumps the contents to a json file '''
-    j_dump = json.dumps(NUM_DICT)
+    j_dump = json.dumps(NUM_DICT, indent=4)
     Clipboard.copy (j_dump)
     assert isinstance(FILE_NAME, str)
     with open(FILE_NAME, "w", encoding="utf-8") as f:
@@ -678,14 +677,14 @@ class InputForm(GridLayout):
             self.add_widget(sight_section)
 
         bl = FormRow()
-        butt = ExecButton(self)
-        bl.add_widget(butt)
-        self.add_widget(bl)
-
-        bl = FormRow()
         self.results = MyLabel(text='', markup=True, indent=False)
         self.results.halign = "center"
         bl.add_widget(self.results)
+        self.add_widget(bl)
+
+        bl = FormRow()
+        butt = ExecButton(self)
+        bl.add_widget(butt)
         self.add_widget(bl)
 
         bl = FormRow()

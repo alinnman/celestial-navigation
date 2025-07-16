@@ -10,10 +10,10 @@ html {
 }
 
 body {
-    font-family: sans-serif; /* Or a preferred readable font */
+    font-family: serif; /* Or a preferred readable font */
     line-height: 1.6;
     color: #333;
-    background-color: #fff;
+    background-color: #ddd ;
     margin: 1em; /* Basic margin for mobile */
     padding: 0;
 }
@@ -28,10 +28,18 @@ body {
 
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
-    font-family: serif; /* Or keep sans-serif for consistency */
+    font-family: sans-serif; /* Or keep sans-serif for consistency */
     line-height: 1.2;
     margin-top: 1.5em;
     margin-bottom: 0.5em;
+}
+
+tt {
+    line-height: 1.4;
+}
+
+li {
+    font-family: sans-serif;
 }
 
 /* Paragraphs */
