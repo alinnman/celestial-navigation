@@ -60,7 +60,7 @@ You must also have access to a precise watch (**chronometer**).
 ### Screen visibility and Navigation<a name="visibility"></a>
 
 The app is configured as a full screen app. If your phone has
-soft buttons (home, back, program list) they will become **hidden**
+soft buttons (home, back, program list) they may become **hidden**
 but you can access them through swiping upwards from the bottom.
 
 The map and help functions invoke the default web browser.
@@ -80,7 +80,7 @@ regulate the volume button accordingly.
 DRP (Dead-Reckoning Position) is a rough estimation of your current position.
 <br>For a **2-star-fix** sight reduction it is used to select the correct
 intersection point.
-(A 2-star-fix will always produce two intersections,
+(A successful 2-star-fix sight reduction will produce two intersections,
 and these can be located far away from each other)
 <br>For a **3-star-fix** sight reduction the DRP serves as a way to shorten the
 execution time of finding an accurate result
@@ -91,6 +91,9 @@ actual position.
 
 At the top you see fields marked **DRP Latitude** and **DRP Longitude**.
 Enter the latitude and longitude for your DRP in these fields.
+
+Note: The values of these fields are automatically updated if you execute
+a successful sight reduction.
 
 ### Star Fixes<a name="star_fixes"></a>
 
@@ -111,6 +114,8 @@ Choose the Sun, one of the planets (mercury, venus, mars, jupiter or saturn)
 or a selected **navigational star**. You find a
 [list&nbsp;of&nbsp;these&nbsp;stars&nbsp;here](https://github.com/alinnman/celestial-navigation/blob/main/README.md#navstars).
 
+The name of the entered star is not case-sensitive.
+
 #### Altitude (Hs)<a name="altitude"></a>
 
 The **altitude** is the angle between the object and the horizon,
@@ -123,13 +128,14 @@ e.g. "23:15.2" or "33:21:5.6".
 #### Artificial Horizon<a name="artificial_horizon"></a>
 
 Check this box if you use an **artificial horizon**. The altitude value will
-be divided by 2.
+be divided by 2. (An artificial horizon is a simple mirror, often built using
+a water or mercury surface).
 
 #### Time<a name="time"></a>
 
 This is the **time** for the observation. It is specified in the ISO 8601
 format. A valid date string is "2025-04-23 22:33:05+00:00".
-The last part is a timezone specification. Use "+00:00" for GMT time.
+The last part is a timezone specification. Use "+00:00" or "Z" for GMT time.
 Use "-HH:MM" for western timezones, and "+HH:MM" for eastern and specify
 the difference vs GMT.
 
@@ -199,9 +205,10 @@ configuration you will hear an error sound.
 ## Workflow Tips<a name="workflow"></a>
 
 The app is simple and contains no support for managing your
-**configurations/parameters**. But using the clipboard support
+**configurations/parameters**. But through using the clipboard support
 (see [above](#configs)) you can easily build your own support using
-suitable tools (Google Docs may be a solution).
+suitable tools
+([Google Docs](https://en.wikipedia.org/wiki/Google_Docs) may be a solution).
 
 Regarding **maps**: To save maps you are advised to use the print functionality
 of your web browser, and use the "print to PDF" option if available.
@@ -230,7 +237,7 @@ There are however some implications from this:
 * The memory requirement is about 200 MB. Make sure your phone or tablet has
 enough memory.
 
-* On modern phones with up-to-date 64 bit processors the execution speed is
+* On modern phones with up-to-date 64 bit ARM processors the execution speed is
 good, but you may find the app a litte "sluggish" on older phones with simpler
 32-bit ARM processors.
 
