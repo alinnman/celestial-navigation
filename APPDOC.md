@@ -40,21 +40,22 @@
 This app is a tool for
 [**celestial navigation**](https://en.wikipedia.org/wiki/Celestial_navigation),
 i.e. finding your location with just a sextant and an accurate watch.
-This works even if you lose internet connection and/or a
+This works even if you lose internet connection and/or lose a
 correct GPS signal. It can be used if you are entering a zone
 of jammed GPS (which is more and more common today as part
-of signals warfare).
+of signals warfare) or simply as a backup for GPS.
 
 The app takes care of **sight reduction**, i.e. converting
 your sextant and clock readings into your position. This can
 also be done with analog methods (printed papers, plotting tools)
-and you are advised to at least get acquainted with classical methods
-for celestial navigation.
+and you are advised to at least
+[get&nbsp;acquainted](https://youtube.com/playlist?list=PLWcAZhCRTMByW_XEQ0y0OlGmxO3jp0LyE&si=Vzb2agqKltBIXQlA)
+with classical methods for celestial navigation.
 
-Testing this app can be done with a good sextant (which requires
+Testing this app can be done with a good **sextant** (which requires
 careful preparation and adjustments). You can also test it with
 "sextant simulators", see [below](#testing_tips).
-You must also have access to a precise watch (chronometer).
+You must also have access to a precise watch (**chronometer**).
 
 ### Screen visibility and Navigation<a name="visibility"></a>
 
@@ -210,9 +211,28 @@ of your web browser, and use the "print to PDF" option if available.
 The application runs under Android 9 or higher. It is installed using
 APK files which you can
 [find&nbsp;here](https://drive.google.com/drive/folders/1QFcncVEuCQMnls8lyNElDtpTYruMgI0D?usp=sharing).
+There is also an ongoing test program on Google Play.
+Concact the [author](mailto:august@linnman.net) if
+you want to participate. This test program will lead to a release of the
+app on Google Play.
 
 See [this article](https://www.wikihow.com/Install-APK-Files-on-Android)
 for info on how to install APK files on Android.
+
+Celeste is built on the P4A platform
+([Python for Android](https://github.com/kivy/python-for-android))
+and this is a convenient way of distributing apps coded in Python.
+The underlying code (and many used libraries) are written in Python
+and this has motivated this implementation choice.
+
+There are however some implications from this:
+
+* The memory requirement is about 200 MB. Make sure your phone or tablet has
+enough memory.
+
+* On modern phones with up-to-date 64 bit processors the execution speed is
+good, but you may find the app a litte "sluggish" on older phones with simpler
+32-bit ARM processors.
 
 ## Tips for Testing (without a sextant?)<a name="testing_tips"></a>
 
