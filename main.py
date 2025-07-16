@@ -23,6 +23,7 @@ from kivy.core.audio import SoundLoader
 # Sound has to be loaded now directly
 # This seems to be due to a Kivy bug. Delaying sound loading leads to UI crashes.
 click_sound = SoundLoader.load('./sounds/mouse-click.mp3')
+error_sound = SoundLoader.load('./sounds/error.mp3')
 kivy.config.Config.set('graphics', 'resizable', False)
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -35,6 +36,7 @@ from kivy.uix.scrollview import ScrollView
 
 from kivy.lang import Builder
 from kivy.app import App, runTouchApp
+from kivy.core.clipboard import Clipboard # Import the Clipboard module
 from kivy.core.window import Window
 
 Window.softinput_mode = 'below_target'
@@ -393,6 +395,36 @@ class ShowMapButton (AppButton):
                     instance.text = "Error in map generation."
 # pylint: enable=W0702
 
+class PasteConfigButton (AppButton):
+    ''' This button reads the JSON configuration from clipboard and repopulates all widgets '''
+
+    def __init__(self, form, **kwargs):
+        super().__init__(active = True, **kwargs)
+        self.form = form
+        self.text = "Paste config"
+# pylint: disable=E1101
+        self.bind(on_press=self.callback)
+# pylint: enable=E1101
+
+    @staticmethod
+    def callback(instance):
+        ''' Responds to button click and repopulates the configuration '''
+        config_string = Clipboard.paste ()
+        try:
+# pylint: disable=W0603
+            global NUM_DICT
+# pylint: enable=W0603
+            NUM_DICT = json.loads(config_string)
+            assert isinstance(instance, PasteConfigButton)
+            the_form = instance.form
+            assert isinstance(the_form, InputForm)
+            the_form.populate_widgets ()
+            StarFixApp.play_click_sound ()
+# pylint: disable=W0702
+        except:
+            StarFixApp.play_error_sound ()
+# pylint: enable=W0702
+
 class OnlineHelpButton (AppButton):
     ''' A button for showing online help '''
 
@@ -502,6 +534,12 @@ class StarFixApp (App):
         if click_sound is not None:
             click_sound.play ()
 
+    @staticmethod
+    def play_error_sound ():
+        ''' Play the error sound '''
+        if error_sound is not None:
+            error_sound.play ()
+
     def get_root (self):
         ''' Return the root widget '''     
         return self.m_root
@@ -526,6 +564,7 @@ def initialize(fn: str, init_dict: dict):
 def dump_dict():
     ''' Dumps the contents to a json file '''
     j_dump = json.dumps(NUM_DICT)
+    Clipboard.copy (j_dump)
     assert isinstance(FILE_NAME, str)
     with open(FILE_NAME, "w", encoding="utf-8") as f:
         f.write(j_dump)
@@ -656,6 +695,11 @@ class InputForm(GridLayout):
         self.__show_map_button = butt
 
         bl = FormRow()
+        butt = PasteConfigButton(self)
+        bl.add_widget(butt)
+        self.add_widget(bl)
+
+        bl = FormRow()
         butt = OnlineHelpButton()
         bl.add_widget(butt)
         self.add_widget(bl)
@@ -684,6 +728,7 @@ class InputForm(GridLayout):
 
     def populate_widgets(self):
         ''' Read the data from json and populate all fields '''
+        #global NUM_DICT
         assert isinstance(NUM_DICT, dict)
         for entry in NUM_DICT:
             w = self.data_widget_container[entry]
@@ -696,6 +741,7 @@ class InputForm(GridLayout):
 
     def extract_from_widgets(self):
         ''' Extract all widget data and populate the json structure '''
+        #global NUM_DICT
         assert isinstance(NUM_DICT, dict)
         for entry in self.data_widget_container.items():
             e = entry[0]
