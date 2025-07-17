@@ -126,8 +126,12 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             t.start()
             self.send_error(500)
         else:
-            super().do_GET()
-# httpd = MyTCPServer(server_address, MyHandler)
+            try:
+                super().do_GET()
+#pylint: disable=W0702
+            except:
+                pass
+#pylint: enable=W0702
 
 def __run_http_server ():
     port = 8000
@@ -160,7 +164,7 @@ def show_or_display_file (filename : str, protocol : str = "file") :
         absolute_path_string = cwd + "\\" + filename
         filename = pathlib.Path(absolute_path_string).as_uri()
     if protocol == "http":
-        __start_http_server ()
+        start_http_server ()
         webbrowser.open ("http://localhost:8000/"+filename)
     elif protocol == "file":
         webbrowser.open (filename)
@@ -175,21 +179,22 @@ def __kill_http_server_if_running ():
 #pylint: disable=C0415
     import requests
 #pylint: enable=C0415
-    try:
-        requests.get ("http://localhost:8000/kill_server", timeout=1)
-#pylint: disable=W0718
-    except BaseException as _:
-        pass
+
 #pylint: enable=W0718
 #pylint: disable=W0603
     global running_http_server
 #pylint: enable=W0603
     if running_http_server is not None:
+        try:
+            requests.get ("http://localhost:8000/kill_server", timeout=1)
+#pylint: disable=W0718
+        except BaseException as _:
+            pass        
         assert isinstance (running_http_server, Process)
         running_http_server.kill ()
         running_http_server = None
 
-def __start_http_server ():
+def start_http_server (kill_existing : bool = False):
     ''' Start an http server for showing maps '''
 #pylint: disable=W0603
     global running_http_server
@@ -197,10 +202,13 @@ def __start_http_server ():
     if is_windows():
         return
     try:
-        __kill_http_server_if_running ()
-        p = Process(target=__run_http_server)
-        p.start()
-        running_http_server = p
+        if kill_existing:            
+            if running_http_server is not None: # TODO Review
+                __kill_http_server_if_running ()
+        if running_http_server is None:
+            p = Process(target=__run_http_server)
+            p.start()
+            running_http_server = p
 #pylint: disable=W0702
     except:
         pass

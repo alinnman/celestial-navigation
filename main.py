@@ -15,7 +15,7 @@ from types import NoneType
 import importlib
 from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError, get_folium_load_error, show_or_display_file, \
-    is_windows, exit_handler
+    is_windows, exit_handler, start_http_server
 import json
 import kivy
 kivy.require('2.0.0')
@@ -760,6 +760,7 @@ if __name__ == '__main__':
 
     if is_windows():
         freeze_support ()
+    start_http_server ()
     do_initialize()
     a = StarFixApp ()
     runTouchApp (a.get_root())

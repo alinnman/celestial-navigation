@@ -18,7 +18,7 @@ package.domain = linnman.net
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,csv,properties,js,json,html,css,mp3
+source.include_exts = py,csv,properties,js,json,html,css,mp3,ico
 
 # (list) List of inclusions using pattern matching
 source.include_patterns = sample_data/*
