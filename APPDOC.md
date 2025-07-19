@@ -273,6 +273,8 @@ accurate enough for precise navigation.
 Do you have problems getting a correct sight reduction?
 In such case just use two fixes (sights), by unselecting
 <tt>Use this sight</tt> for one of the sights.
+You can also use just one sight through unselecting the check
+box for two sights.
 Watch the map carefully to pinpoint any incorrect input.
 Also note that the map function is available also after a
 failed sight reduction.
