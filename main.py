@@ -245,26 +245,33 @@ def get_starfixes(drp_pos: LatLonGeodetic) -> SightCollection:
     Sight.set_estimated_position(drp_pos)
     retval = []
     assert isinstance(NUM_DICT, dict)
-    # assert isinstance (TYPE_ARRAY, list)
+
+    def str2float_or_default (val : str, default : float | int) -> float | int:
+        if len(val) == 0:
+            retval = default
+        else:
+            retval = float(val)
+        return retval
+
     for i in range(3):
         if str2bool(NUM_DICT["Use"+str(i+1)]):
             retval.append(
                 Sight(object_name=NUM_DICT["ObjectName"+str(i+1)],
                       measured_alt=NUM_DICT["Altitude"+str(i+1)],
                       set_time=NUM_DICT["Time"+str(i+1)],
-                      index_error_minutes=float(
-                          NUM_DICT["IndexError"+str(i+1)]),
+                      index_error_minutes=str2float_or_default(
+                          NUM_DICT["IndexError"+str(i+1)],0),
                       limb_correction=int(
                           NUM_DICT["LimbCorrection"+str(i+1)]),
                       artificial_horizon=str2bool(
                           NUM_DICT["ArtificialHorizon"+str(i+1)]),
-                      observer_height=float(
-                          NUM_DICT["ObserverHeight"+str(i+1)]),
-                      temperature=float(
-                          NUM_DICT["Temperature"+str(i+1)]),
-                      dt_dh=float(
-                          NUM_DICT["TemperatureGradient"+str(i+1)]),
-                      pressure=float(NUM_DICT["Pressure"+str(i+1)])
+                      observer_height=str2float_or_default(
+                          NUM_DICT["ObserverHeight"+str(i+1)],0),
+                      temperature=str2float_or_default(
+                          NUM_DICT["Temperature"+str(i+1)],10),
+                      dt_dh=str2float_or_default(
+                          NUM_DICT["TemperatureGradient"+str(i+1)],-0.01),
+                      pressure=str2float_or_default(NUM_DICT["Pressure"+str(i+1)],101)
             ))
 
     return SightCollection(retval)
@@ -637,11 +644,11 @@ class InputForm(GridLayout):
         # DRP Position Section
         self.add_widget(Label(text='[b]DRP Position[/b]', markup=True, size_hint_y=None, height=90))
         drp_section = GridLayout(cols=2, spacing=5, padding=5, size_hint_y=None, height=150)
-        drp_section.add_widget(MyLabel(text='Latitude:'))
+        drp_section.add_widget(MyLabel(text='[b]Latitude:[/b]', markup=True))
         self.drp_lat_input = MyTextInput()
         self.data_widget_container["DrpLat"] = self.drp_lat_input
         drp_section.add_widget(self.drp_lat_input)
-        drp_section.add_widget(MyLabel(text='Longitude:'))
+        drp_section.add_widget(MyLabel(text='[b]Longitude:[/b]', markup=True))
         self.drp_lon_input = MyTextInput()
         self.data_widget_container["DrpLon"] = self.drp_lon_input
         drp_section.add_widget(self.drp_lon_input)
