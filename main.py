@@ -493,6 +493,13 @@ class LimbDropDown (Button):
                               x: setattr(self, 'text', x))
 # pylint: enable=E1101
 
+    def set_active (self,active_state : bool):
+        ''' Set the active state for this dropdown element '''
+        self.disabled = not active_state
+        for c in self.my_dropdown.children:
+            if isinstance (c, Button):
+                c.disabled = not active_state
+
 class MyTextInput (TextInput):
     ''' The input field class used '''
 
@@ -520,11 +527,13 @@ class SightInputSection(GridLayout):
     def on_checkbox_active(self, instance, value):
         ''' Disable/enable other inputs based on checkbox '''
         assert isinstance (instance, CheckBox)
-        print (instance.active)
         for child in self.children:
-            if child is not instance and not isinstance(child, Label)\
-                and not isinstance(child, CheckBox): # TODO Review
-                child.disabled = not value
+
+            if child != instance:
+                if isinstance (child, LimbDropDown):
+                    child.set_active (value)
+                else:
+                    child.disabled = not value
 
 class StarFixApp (App):
     ''' The application class '''
