@@ -123,7 +123,7 @@ Choose the Sun, one of the planets (mercury, venus, mars, jupiter or saturn)
 or a selected **navigational star**. You find a
 [list&nbsp;of&nbsp;these&nbsp;stars&nbsp;here](https://github.com/alinnman/celestial-navigation/blob/main/README.md#navstars).
 
-The name of the entered star is not case-sensitive.
+The name of the entered celestial object isn't case-sensitive.
 
 #### Altitude (Hs)<a name="altitude"></a>
 
@@ -137,12 +137,15 @@ e.g. "23:15.2" or "33:21:5.6".
 #### Artificial Horizon<a name="artificial_horizon"></a>
 
 Check this box if you use an **artificial horizon**. The altitude value will
-be divided by 2. (An artificial horizon is a simple mirror, often built using
-a water or mercury surface).
+be divided by 2. (*An artificial horizon is a simple mirror, often built using*
+*a water or metal (mercury) surface.*
+*It can be used whenever you don't have access*
+*to a physical horizon*).
 
 #### Time<a name="time"></a>
 
-This is the **time** for the observation. It is specified in the ISO 8601
+This is the **time** for the observation.
+It is specified in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
 format. A valid date string is "2025-04-23 22:33:05+00:00".
 The last part is a timezone specification. Use "+00:00" or "Z" for GMT time.
 Use "-HH:MM" for western timezones, and "+HH:MM" for eastern and specify
@@ -155,7 +158,7 @@ Specify the known **index error** of the sextant (in arcminutes).
 #### Limb Correction<a name="limb_correction"></a>
 
 Select between "UPPER", "CENTRAL" or "LOWER". Specifies the location/**limb**
-of your measurement. Note: This setting has no effect on stars,
+of your sextant measurement. Note: This setting has no effect on stars,
 and very little effect on planets. It is mainly used for the Moon or the Sun.
 
 #### Observer Elevation<a name="observer_elevation"></a>
@@ -198,18 +201,22 @@ Press the button <tt>"Show map!"</tt> to see a map representing the last
 successful sight reduction. Even for failed sight reductions (and single sights)
 you can display a map. This map can assist you in troubleshooting your
 sextant readings.
-*The map interface requires an active internet connection.*
+*The map interface requires an active internet connection to present*
+*full map displays. Without an internet connection you will only see*
+*the circles of equal altitude, local coordinate grid, GP:s and intersections*
 
 ## Working with configurations<a name="configs"></a>
 
 Whenever you execute a succesful sight reduction the active configuration
 (settings of all fields) will be saved on the **clipboard** (in JSON format).
 You can use this to save your work easily, using a document solution of
-your own choice. Just paste the contents into a suitable document, and save.
+your own choice. Just paste the contents into a suitable document
+in another app, and save.
 
 When you press the button <tt>Paste Config</tt> you can transfer back a saved
-configuration through the clipboard. If the clipboard does not contain a valid
-configuration you will hear an error sound.
+configuration from another app through the clipboard.
+If the clipboard does not contain a valid configuration
+you will hear an error sound.
 
 ## Workflow Tips<a name="workflow"></a>
 
