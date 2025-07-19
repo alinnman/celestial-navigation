@@ -10,6 +10,7 @@
 1. [Read this first](#read_this_first)
     1. [What is this app?](#what_is_it)
     1. [Screen Visibility and Navigation](#visibility)
+    1. [Astrometric Data](#astrometry)
     1. [Sound Feedback](#sound)
 1. [Entering Data](#entering_data)
     1. [DRP Position](#drp_position)
@@ -66,12 +67,12 @@ but you can access them through swiping upwards from the bottom.
 The map and help functions invoke the default web browser.
 Go back to the Celeste app with the back button.
 
-### Astrometric Data
+### Astrometric Data<a name="astrometry"></a>
 
 The app is pre-packaged with astrometric data from 2024 to 2028.
 Entering dates outside this range will result in an error.
 If you want to do sight reductions for historical or future (beyond 2028)
-observation you can use the
+observations you can use the
 [script&nbsp;solution&nbsp;or&nbsp;the&nbsp;Google&nbsp;Colab&nbsp;app](https://github.com/alinnman/celestial-navigation/blob/main/INSTALL.md).
 
 ### Sound Feedback <a name="sound"></a>
