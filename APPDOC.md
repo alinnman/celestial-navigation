@@ -73,7 +73,7 @@ The app is pre-packaged with astrometric data from 2024 to 2028.
 Entering dates outside this range will result in an error.
 If you want to do sight reductions for historical or future (beyond 2028)
 observations you can use the
-[script&nbsp;solution&nbsp;or&nbsp;the&nbsp;Google&nbsp;Colab&nbsp;app](https://github.com/alinnman/celestial-navigation/blob/main/INSTALL.md).
+[script&nbsp;solution](https://github.com/alinnman/celestial-navigation/blob/main/INSTALL.md).
 
 ### Sound Feedback <a name="sound"></a>
 
