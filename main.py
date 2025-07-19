@@ -511,12 +511,19 @@ class SightInputSection(GridLayout):
     def __init__(self, sight_num, **kwargs):
         super().__init__(**kwargs)
         self.sight_num = sight_num
-        self.ids.use_checkbox.bind(active=self.on_checkbox_active)
+
+        cb = self.ids.use_checkbox
+        assert isinstance (cb, CheckBox)
+        cb.bind(active=self.on_checkbox_active)
+        self.on_checkbox_active (cb, cb.active)
 
     def on_checkbox_active(self, instance, value):
         ''' Disable/enable other inputs based on checkbox '''
+        assert isinstance (instance, CheckBox)
+        print (instance.active)
         for child in self.children:
-            if child is not instance and not isinstance(child, Label):
+            if child is not instance and not isinstance(child, Label)\
+                and not isinstance(child, CheckBox): # TODO Review
                 child.disabled = not value
 
 class StarFixApp (App):
