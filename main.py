@@ -337,23 +337,27 @@ class ExecButton (AppButton):
         the_form.extract_from_widgets()
         sr, result, intersections, coll = sight_reduction()
         if result:
-            StarFixApp.play_click_sound ()            
+            # Successful sight reduction
+            StarFixApp.play_click_sound ()
             assert isinstance (coll, SightCollection)
             assert isinstance (intersections, tuple) or\
                    isinstance (intersections, LatLonGeodetic) or\
                    intersections is None
+            # Save collection and intersections (to be used in map presentation)
             the_form.set_active_intersections(intersections, coll)
             the_form.extract_from_widgets()
             dump_dict()
             the_form.results.text = "Your location = " + sr
         else:
+            # Failed sight reduction
             StarFixApp.play_error_sound ()
             if coll is not None:
+                # Save the collection (without intersections) on error
                 the_form.set_active_intersections (None, coll)
             the_form.results.text = sr
 
 class ShowMapButton (AppButton):
-    ''' This button used to show the active map '''
+    ''' This button is used to show the active map '''
 
     def __init__(self, form, **kwargs):
         super().__init__(active = False, **kwargs)
@@ -544,7 +548,7 @@ class StarFixApp (App):
         return self.m_root
 
 def initialize(fn: str, init_dict: dict):
-    ''' Initialize the helper '''
+    ''' Initialize the configuration dict '''
 # pylint: disable=W0603
     global FILE_NAME
     global NUM_DICT

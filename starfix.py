@@ -128,10 +128,11 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         else:
             try:
                 super().do_GET()
-#pylint: disable=W0702
-            except:
-                pass
-#pylint: enable=W0702
+                print ("GET " + self.path + " - OK")
+#pylint: disable=W0718
+            except BaseException as be:
+                print ("Http server failure : " + str(be))
+#pylint: enable=W0718
 
 def __run_http_server ():
     port = 8000
@@ -189,9 +190,10 @@ def __kill_http_server_if_running ():
             requests.get ("http://localhost:8000/kill_server", timeout=1)
 #pylint: disable=W0718
         except BaseException as _:
-            pass        
+            pass
         assert isinstance (running_http_server, Process)
         running_http_server.kill ()
+        running_http_server.join ()
         running_http_server = None
 
 def start_http_server (kill_existing : bool = False):
@@ -202,8 +204,8 @@ def start_http_server (kill_existing : bool = False):
     if is_windows():
         return
     try:
-        if kill_existing:            
-            if running_http_server is not None: # TODO Review
+        if kill_existing:
+            if running_http_server is not None:
                 __kill_http_server_if_running ()
         if running_http_server is None:
             p = Process(target=__run_http_server)
@@ -641,8 +643,9 @@ class Circle:
         # assert isinstance (self, Circle)
         degrees_step = 0
         last_lon = None
+
         while degrees_step <= 360 * steps_per_degree:
-            # A PolyLine with 0.1 degrees separation is smooth enough
+
             angle = degrees_step / float (steps_per_degree)
             degrees_step += 1
             real_tangent =\
@@ -681,13 +684,14 @@ class Circle:
                         ([y_target.get_lat(), this_lon])
             last_lon = this_lon
         coordinates.append (sub_coord)
-        PolyLine(
-            locations=coordinates,
-            color=color,
-            weight=5,
-            popup=popup,
-            dash_array = dash_argument
-        ).add_to(the_map)
+        if (len(coordinates[0])) >= 1:
+            PolyLine(
+                locations=coordinates,
+                color=color,
+                weight=5,
+                popup=popup,
+                dash_array = dash_argument
+            ).add_to(the_map)
 #pylint: enable=R0914
 #pylint: enable=R0913
 #pylint: enable=R0917
@@ -1900,7 +1904,7 @@ class Sight :
         if limb_correction == Sight.LIMB_CENTRAL:
             semi_diameter_correction = 0
         elif limb_correction in [Sight.LIMB_LOWER,Sight.LIMB_UPPER]:
-            if self.get_object_name() in ["Sun", "Moon"]:
+            if self.get_object_name() in ["sun", "moon"]:
                 qq = get_mr_item (self.get_object_name(),
                                   str(q_replace(self.set_time_dt_hour)),
                                   ObsTypes.SD)
@@ -1913,7 +1917,7 @@ class Sight :
         if semi_diameter_correction != 0:
             self.__correct_semi_diameter (semi_diameter_correction)
         if horizontal_parallax is None:
-            if self.get_object_name() == "Moon":
+            if self.get_object_name() == "moon":
                 qq = get_mr_item (self.get_object_name(),
                                   str(q_replace(self.set_time_dt_hour)),
                                   ObsTypes.HP)
@@ -1965,7 +1969,7 @@ class Sight :
 
     def get_object_name (self) -> str:
         ''' Returns the object name (celestial object name) of the sight '''
-        return self.__object_name
+        return (self.__object_name).lower()
 
     def get_time (self) -> datetime:
         ''' Returns the timestamp of this sight '''
@@ -2069,7 +2073,6 @@ class Sight :
                 popup=the_object_name + "\n" + time_string + "\n" + str(c_latlon_d),
                 icon=Icon(icon="star"),
             ).add_to(the_map)
-
         c.render_folium (the_map)
 
     def render_folium_new_map (self, draw_markers : bool = True, zoom_start = 2) -> object:
