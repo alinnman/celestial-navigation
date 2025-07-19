@@ -247,9 +247,8 @@ There are however some implications from this:
 * The memory requirement is about 200 MB. Make sure your phone or tablet has
 enough memory.
 
-* On modern phones with up-to-date 64 bit ARM processors the execution speed is
-good, but you may find the app a litte "sluggish" on older phones with simpler
-32-bit ARM processors.
+* On modern phones or tablets the execution speed is
+good, but you may find the app a litte "sluggish" on older phones/tablets.
 
 ## Tips for Testing (without a sextant?)<a name="testing_tips"></a>
 
