@@ -202,7 +202,7 @@ successful sight reduction. Even for failed sight reductions (and single sights)
 you can display a map. This map can assist you in troubleshooting your
 sextant readings. 
 
-*Note: For a failed sight reduction the circles may not touch your location precisely. This is a result of the need for adjustments to the oblateness of the Earth.*
+*Note: For a map with a single sight the circle may not touch your location precisely, if your DRP is inaccurate. This is a result of the need for adjustments to the oblateness of the Earth.*
 
 *The map interface requires an active internet connection to present*
 *full map displays. Without an internet connection you will only see*
