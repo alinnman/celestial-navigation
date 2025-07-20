@@ -165,12 +165,12 @@ and very little effect on planets. It is mainly used for the Moon or the Sun.
 
 Specify your **elevation above the horizon** (in meters)
 Note: You can use a non-zero observer elevation only if you are not using an
-artificial horizon.
+artificial horizon. *This setting takes care of the effect of the dip of the horizon*.
 
 #### Temperature<a name="temperature"></a>
 
-Specify the **temperature** (in degrees celsius). This setting affects the
-effects of atmospheric refraction.
+Specify the **temperature** (in degrees celsius). *This setting affects the
+effects of atmospheric refraction*.
 
 #### Temperature Gradient<a name="temperature_gradient"></a>
 
@@ -179,12 +179,12 @@ Default is "-0.01",
 which means 1 degree celsius lower temperature for each 100 meters.
 If you have temperature inversions you may increase this parameter to
 a positive value ("0.1" for one degree temperature increase per 10 meters).
-This setting affects the effects of atmospheric refraction.
+*This setting affects the effects of atmospheric refraction*.
 
 #### Pressure<a name="pressure"></a>
 
 Specify **air pressure** (in kPa). Normal air pressure is "101".
-This setting affects the effects of atmospheric refraction.
+*This setting affects the effects of atmospheric refraction*.
 
 ## Running a sight reduction<a name="running_sight_reduction"></a>
 
