@@ -163,7 +163,7 @@ and very little effect on planets. It is mainly used for the Moon or the Sun.
 
 #### Observer Elevation<a name="observer_elevation"></a>
 
-Specify your **elevation above sea level** (in meters)
+Specify your **elevation above the horizon** (in meters)
 Note: You can use a non-zero observer elevation only if you are not using an
 artificial horizon.
 
