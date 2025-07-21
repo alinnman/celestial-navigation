@@ -2513,17 +2513,21 @@ class SightCollection:
                 the_lat = intersections.get_lat ()
                 reduced_lat = int(the_lat * 60) / 60
 
-                this_left_lon = reduced_lon - (10/60)
-                this_right_lon = reduced_lon + (10/60)
-                this_down_lat = reduced_lat - (10/60)
-                this_up_lat = reduced_lat + (10/60)
+                this_left_lon = reduced_lon  - (1/6)
+                this_right_lon = reduced_lon + (1/6)
+                this_down_lat = reduced_lat  - (1/6)
+                this_up_lat = reduced_lat    + (1/6)
 
                 # Horizontal lines
                 for y in range (-10, 11):
                     this_draw_lat = reduced_lat + (y/60)
                     d,m = get_dm (this_draw_lat)
-                    m = abs(int(m))
-                    tooltip_string = str(d) + "° " + str(m+1) + "'"
+                    m = abs(int(round(m,0)))-1
+                    if d < 0:
+                        prefix_string = "S"
+                    else:
+                        prefix_string = "N"
+                    tooltip_string = prefix_string + " " + str(abs(d)) + "° " + str(m+1) + "'"
                     PolyLine([[this_draw_lat, this_left_lon],[this_draw_lat, this_right_lon]],\
                               weight=0.5, color="green",\
                               tooltip=tooltip_string).\
@@ -2533,8 +2537,12 @@ class SightCollection:
                 for x in range(-10,11):
                     this_draw_lon = reduced_lon + (x/60)
                     d,m = get_dm (this_draw_lon)
-                    m = abs(int(m))
-                    tooltip_string = str(d) + "° " + str(m) + "'"
+                    m = abs(int(round(m,0)))
+                    if d < 0:
+                        prefix_string = "W"
+                    else:
+                        prefix_string = "E"
+                    tooltip_string = prefix_string + " " + str(abs(d)) + "° " + str(m) + "'"
                     PolyLine([[this_down_lat, this_draw_lon],[this_up_lat, this_draw_lon]],\
                               weight=0.5, color="green",\
                               tooltip=tooltip_string).\
