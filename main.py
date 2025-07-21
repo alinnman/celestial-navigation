@@ -532,6 +532,10 @@ class SightInputSection(GridLayout):
             if child != instance:
                 if isinstance (child, LimbDropDown):
                     child.set_active (value)
+                    if value:
+                        child.color = (1.0, 1.0, 1.0, 1)
+                    else:
+                        child.color = (0.2, 0.2, 0.2, 1)
                 else:
                     child.disabled = not value
 

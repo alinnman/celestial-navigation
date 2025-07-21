@@ -2523,7 +2523,7 @@ class SightCollection:
                     this_draw_lat = reduced_lat + (y/60)
                     d,m = get_dm (this_draw_lat)
                     m = abs(int(m))
-                    tooltip_string = str(d) + "° " + str(m) + "'"
+                    tooltip_string = str(d) + "° " + str(m+1) + "'"
                     PolyLine([[this_draw_lat, this_left_lon],[this_draw_lat, this_right_lon]],\
                               weight=0.5, color="green",\
                               tooltip=tooltip_string).\
