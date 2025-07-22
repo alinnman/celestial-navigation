@@ -19,7 +19,10 @@
         1. [Name of Object](#name-of-object)
         1. [Altitude](#altitude-hs)
         1. [Artificial Horizon](#artificial-horizon)
-        1. [Time](#time)
+        1. [Time parameters](#time-parameters)
+            1. [Date](#date)
+            1. [Time](#time)
+            1. [Timezone](#timezone)
         1. [Index Error](#index-error)
         1. [Limb Correction](#limb-correction)
         1. [Observer Elevation](#observer-elevation)
@@ -142,11 +145,23 @@ be divided by 2. (*An artificial horizon is a simple mirror, often built using*
 *It can be used whenever you don't have access*
 *to a physical horizon*).
 
-#### Time<a name="time"></a>
+#### Time parameters<a name="timeparameters"></a>
 
-This is the **time** for the observation.
-It is specified in the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
-format. A valid date string is "2025-04-23 22:33:05+00:00".
+These specify the **time** for the observation.
+Time parameters are based on the
+[ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+format.
+
+##### Date<a name="date"></a>
+
+Date is specified as "YYYY-MM-DD"
+
+##### Time<a name="time"></a>
+
+Time is specified as "HH24:MM:SS"
+
+##### Timezone <a name="timezone"></a>
+
 The last part is a timezone specification. Use "+00:00" or "Z" for GMT time.
 Use "-HH:MM" for western timezones, and "+HH:MM" for eastern and specify
 the difference vs GMT.
@@ -165,7 +180,8 @@ and very little effect on planets. It is mainly used for the Moon or the Sun.
 
 Specify your **elevation above the horizon** (in meters)
 Note: You can use a non-zero observer elevation only if you are not using an
-artificial horizon. *This setting takes care of the effect of the dip of the horizon*.
+artificial horizon.
+*This setting takes care of the effect of the dip of the horizon*.
 
 #### Temperature<a name="temperature"></a>
 
@@ -200,9 +216,11 @@ an error message (and hear an error sound).
 Press the button <tt>"Show map!"</tt> to see a map representing the last
 successful sight reduction. Even for failed sight reductions (and single sights)
 you can display a map. This map can assist you in troubleshooting your
-sextant readings. 
+sextant readings.
 
-*Note: For a map with a single sight the circle may not touch your location precisely, if your DRP is inaccurate. This is a result of the need for adjustments to the oblateness of the Earth.*
+*Note: For a map with a single sight the circle may not touch your*
+*location precisely, if your DRP is inaccurate.*
+*This is a result of the need for adjustments to the oblateness of the Earth.*
 
 *The map interface requires an active internet connection to present*
 *full map displays. Without an internet connection you will only see*

@@ -33,6 +33,9 @@ from kivy.uix.button import Button
 from kivy.uix.dropdown import DropDown
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.scrollview import ScrollView
+from kivy.uix.popup import Popup
+from kivy.clock import Clock
+from functools import partial
 
 from kivy.lang import Builder
 from kivy.app import App, runTouchApp
@@ -55,6 +58,7 @@ USE_KV = True
 if USE_KV:
     Builder.load_string(
     """
+
 <FormSection@GridLayout>:
     cols: 2
     spacing: 5
@@ -108,7 +112,7 @@ if USE_KV:
         size_hint_x : 0.4 
     MyCheckbox:
         id: use_checkbox
-        size_hint_x: 0.8 # The remaining space          
+        size_hint_x: 0.8 # The remaining space         
     Label:
         text: '[b]Name :[/b]'
         markup: True        
@@ -145,7 +149,20 @@ if USE_KV:
         size_hint_x : 0.4                 
     MyCheckbox:
         id: artificial_horizon
-        size_hint_x: 0.8 # The remaining space            
+        size_hint_x: 0.8 # The remaining space               
+    Label:
+        text: '[b]Date :[/b]'
+        markup: True         
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None
+        height : 100
+        size_hint_x : 0.4                 
+    MyTextInput:
+        id: set_time_date
+        height : 100
+        size_hint_x: 0.8 # The remaining space
+        multiline: False
     Label:
         text: '[b]Time :[/b]'
         markup: True         
@@ -158,7 +175,20 @@ if USE_KV:
         id: set_time
         height : 100
         size_hint_x: 0.8 # The remaining space
-        multiline: False          
+        multiline: False                   
+    Label:
+        text: '[b]Timezone :[/b]'
+        markup: True         
+        halign: 'right'
+        valign: 'middle'
+        text_size: self.width, None
+        height : 100
+        size_hint_x : 0.4                 
+    MyTextInput:
+        id: set_time_tz
+        height : 100
+        size_hint_x: 0.8 # The remaining space
+        multiline: False                    
     Label:
         text: 'Index Error (am) :'
         halign: 'right'
@@ -255,10 +285,15 @@ def get_starfixes(drp_pos: LatLonGeodetic) -> SightCollection:
 
     for i in range(3):
         if str2bool(NUM_DICT["Use"+str(i+1)]):
+            time_string = NUM_DICT["Date"+str(i+1)]+" "+\
+                          NUM_DICT["Time"+str(i+1)]+\
+                          NUM_DICT["TimeZone"+str(i+1)]
+            assert isinstance (time_string, str)
+            time_string = time_string.strip().upper()
             retval.append(
                 Sight(object_name=NUM_DICT["ObjectName"+str(i+1)],
                       measured_alt=NUM_DICT["Altitude"+str(i+1)],
-                      set_time=NUM_DICT["Time"+str(i+1)],
+                      set_time=time_string,
                       index_error_minutes=str2float_or_default(
                           NUM_DICT["IndexError"+str(i+1)],0),
                       limb_correction=int(
@@ -422,21 +457,11 @@ class PasteConfigButton (AppButton):
     @staticmethod
     def callback(instance):
         ''' Responds to button click and repopulates the configuration '''
+        assert isinstance (instance, PasteConfigButton)
         config_string = Clipboard.paste ()
-        try:
-# pylint: disable=W0603
-            global NUM_DICT
-# pylint: enable=W0603
-            NUM_DICT = json.loads(config_string)
-            assert isinstance(instance, PasteConfigButton)
-            the_form = instance.form
-            assert isinstance(the_form, InputForm)
-            the_form.populate_widgets ()
-            StarFixApp.play_click_sound ()
-# pylint: disable=W0702
-        except:
-            StarFixApp.play_error_sound ()
-# pylint: enable=W0702
+        assert isinstance (NUM_DICT, dict)
+        _initialize_from_string (config_string, NUM_DICT)
+        StarFixApp.play_click_sound ()
 
 class OnlineHelpButton (AppButton):
     ''' A button for showing online help '''
@@ -543,6 +568,7 @@ class StarFixApp (App):
     ''' The application class '''
 
     click_sound = None
+    initialized = False
 
     def __init__ (self, **kwargs):
         super().__init__(**kwargs)
@@ -558,6 +584,8 @@ class StarFixApp (App):
         root.add_widget(layout)
         self.m_root = root
 
+        StarFixApp.initialized = True
+
     @staticmethod
     def play_click_sound ():
         ''' Play the button click sound '''
@@ -570,9 +598,58 @@ class StarFixApp (App):
         if error_sound is not None:
             error_sound.play ()
 
+    @staticmethod
+    def _error_popup_doer (msg : str, *_):
+        StarFixApp.play_error_sound ()
+        if StarFixApp.initialized:
+            popup = Popup(title='Error',
+                          content=Label(text=msg+"\n\nClick outside to close."),
+                          size_hint=(0.5, 0.5))
+            popup.open (animation=False)
+
+    @staticmethod
+    def error_popup (msg : str):
+        ''' Produce a warning/error message popup '''
+        if not StarFixApp.initialized:
+            Clock.schedule_once(partial(StarFixApp._error_popup_doer, msg), 0.1)
+            return
+        StarFixApp._error_popup_doer (msg)
+
+
     def get_root (self):
-        ''' Return the root widget '''     
+        ''' Return the root widget '''
         return self.m_root
+
+def _initialize_from_string (s:str, init_dict : dict):
+# pylint: disable=W0603
+    global NUM_DICT
+# pylint: enable=W0603
+    def handle_error (msg : str):
+        StarFixApp.error_popup (msg)
+
+    error_msg = "Error loading JSON file"
+    format_ok = True
+    try:
+        NUM_DICT = json.loads(s)
+# pylint: disable=W0718
+    except BaseException as be:
+        handle_error (error_msg + "\n" + str(be))
+        format_ok = False
+# pylint: enable=W0718
+    if format_ok:
+        assert isinstance (NUM_DICT, dict)
+        the_format = ""
+        error_msg = "Invalid JSON file, restoring defaults"
+        try:
+            the_format = NUM_DICT ["Format"]
+        except KeyError:
+            handle_error (error_msg)
+            format_ok = False
+        if the_format != "celeste.1":
+            handle_error (error_msg)
+            format_ok = False
+    if not format_ok:
+        NUM_DICT = init_dict
 
 def initialize(fn: str, init_dict: dict):
     ''' Initialize the configuration dict '''
@@ -585,14 +662,19 @@ def initialize(fn: str, init_dict: dict):
     try:
         # First see if we have a saved json file
         with open(FILE_NAME, "r", encoding="utf-8") as f:
+
+            assert isinstance (NUM_DICT, dict) or\
+                   NUM_DICT is None
             s = f.read()
-            NUM_DICT = json.loads(s)
+            _initialize_from_string (s, init_dict)
+
     except FileNotFoundError:
         # If no file present, then load the defaults
         NUM_DICT = init_dict
 
 def dump_dict():
     ''' Dumps the contents to a json file '''
+
     j_dump = json.dumps(NUM_DICT, indent=4)
     Clipboard.copy (j_dump)
     assert isinstance(FILE_NAME, str)
@@ -604,7 +686,9 @@ def do_initialize ():
     initialize("kivyapp.1.json",
             {"ObjectName1": "Sun",
                 "Altitude1": "55:8:1.1",
-                "Time1": "2024-05-05 15:55:18+00:00",
+                "Date1": "2024-05-05",                
+                "Time1": "15:55:18",
+                "TimeZone1" : "Z",
                 "LimbCorrection1": "0",
                 "IndexError1": "0",
                 "ArtificialHorizon1": "False",
@@ -615,7 +699,9 @@ def do_initialize ():
 
                 "ObjectName2": "Sun",
                 "Altitude2": "19:28:19",
-                "Time2": "2024-05-05 23:01:19+00:00",
+                "Date2": "2024-05-05",
+                "Time2": "23:01:19",
+                "TimeZone2" : "Z",
                 "LimbCorrection2": "0",
                 "IndexError2": "0",
                 "ArtificialHorizon2": "False",
@@ -626,7 +712,9 @@ def do_initialize ():
 
                 "ObjectName3": "Vega",
                 "Altitude3": "30:16:23.7",
-                "Time3": "2024-05-06 04:04:13+00:00",
+                "Date3": "2024-05-06",
+                "Time3": "04:04:13",
+                "TimeZone3" : "Z",
                 "LimbCorrection3": "0",
                 "IndexError3": "0",
                 "ArtificialHorizon3": "False",
@@ -640,8 +728,8 @@ def do_initialize ():
 
                 "Use1": "True",
                 "Use2": "True",
-                "Use3": "True"})
-
+                "Use3": "True",
+                "Format": "celeste.1"})
 
 class InputForm(GridLayout):
     ''' This is the input form '''
@@ -684,12 +772,16 @@ class InputForm(GridLayout):
             # Store references to widgets within the SightInputSection
             self.data_widget_container["Use"+str(sight+1)] =\
                   sight_section.ids.use_checkbox
-            self.data_widget_container["ObjectName"+str(sight+1)] =\
-                  sight_section.ids.object_name
             self.data_widget_container["Altitude"+str(sight+1)] =\
                   sight_section.ids.altitude
+            self.data_widget_container["ObjectName"+str(sight+1)] =\
+                  sight_section.ids.object_name
+            self.data_widget_container["Date"+str(sight+1)] =\
+                  sight_section.ids.set_time_date
             self.data_widget_container["Time"+str(sight+1)] =\
                   sight_section.ids.set_time
+            self.data_widget_container["TimeZone"+str(sight+1)] =\
+                  sight_section.ids.set_time_tz
             self.data_widget_container["IndexError"+str(sight+1)] =\
                   sight_section.ids.index_error
             self.data_widget_container["LimbCorrection"+str(sight+1)] =\
@@ -761,6 +853,8 @@ class InputForm(GridLayout):
         #global NUM_DICT
         assert isinstance(NUM_DICT, dict)
         for entry in NUM_DICT:
+            if entry == "Format":
+                continue
             w = self.data_widget_container[entry]
             if isinstance(w, TextInput):
                 w.text = NUM_DICT[entry]
@@ -771,7 +865,6 @@ class InputForm(GridLayout):
 
     def extract_from_widgets(self):
         ''' Extract all widget data and populate the json structure '''
-        #global NUM_DICT
         assert isinstance(NUM_DICT, dict)
         for entry in self.data_widget_container.items():
             e = entry[0]
