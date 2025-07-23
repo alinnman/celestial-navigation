@@ -16,6 +16,7 @@ import importlib
 from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError, get_folium_load_error, show_or_display_file, \
     is_windows, exit_handler, start_http_server
+import os
 import json
 import kivy
 kivy.require('2.0.0')
@@ -392,7 +393,8 @@ class ExecButton (AppButton):
             dump_dict()
             the_form.results.text = "Your location = " + sr
             StarFixApp.message_popup ("You have made a successful sight reduction!\n"
-                                      "Use the \"Show map!\" button to see the result!",\
+                                      "Use the \"Show map!\" button to see the result!\n"
+                                      "The settings have been copied to the clipboard.",\
                                       StarFixApp.MSG_ID_SIGHT_REDUCTION_SUCCESS)
         else:
             # Failed sight reduction
@@ -400,7 +402,18 @@ class ExecButton (AppButton):
             if coll is not None:
                 # Save the collection (without intersections) on error
                 the_form.set_active_intersections (None, coll)
+                StarFixApp.message_popup ("You have made a failed sight reduction!\n"
+                                          "The circles of equal altitude don't intersect properly\n"
+                                          "Use the \"Show map!\" button for troubleshooting!",\
+                                          StarFixApp.MSG_ID_SIGHT_REDUCTION_FAILURE)
+            else:
+                StarFixApp.message_popup ("You have made a failed sight reduction!\n"
+                                          "No sights have been specified!\n",\
+                                          StarFixApp.MSG_ID_SIGHT_REDUCTION_FAILURE)
+                StarFixApp.reset_messages()
             the_form.results.text = sr
+
+
 
 class ShowMapButton (AppButton):
     ''' This button is used to show the active map '''
@@ -419,7 +432,6 @@ class ShowMapButton (AppButton):
         assert isinstance(instance, ShowMapButton)
         the_form = instance.form
         assert isinstance(the_form, InputForm)
-        StarFixApp.play_click_sound ()
         i, c = the_form.get_active_intersections ()
         if c is not None:
             the_map = None
@@ -428,6 +440,7 @@ class ShowMapButton (AppButton):
                     the_map = c.render_folium (i)
                 elif isinstance (c, Sight):
                     the_map = c.render_folium_new_map ()
+                StarFixApp.play_click_sound()
                 assert the_map is not None
                 file_name = "./map.html"
                 the_map.save (file_name)
@@ -438,9 +451,15 @@ class ShowMapButton (AppButton):
                 except:
                     pass
 # pylint: enable=W0702
+                #StarFixApp.message_popup ("You have generated a map.\n"
+                #                          "It is visible in a web brower window.\n"
+                #                          "It shows the last sight reduction\n"
+                #                          "(successful or not)",
+                #                          StarFixApp.MSG_ID_SHOW_MAP)
                 show_or_display_file (file_name, protocol="http")
 # pylint: disable=W0702
             except:
+                StarFixApp.play_error_sound()
                 if the_map is None:
                     instance.text = get_folium_load_error()
                 else:
@@ -467,6 +486,9 @@ class PasteConfigButton (AppButton):
         format_ok = _initialize_from_string (config_string, NUM_DICT)
         if format_ok:
             StarFixApp.play_click_sound ()
+            instance.form.populate_widgets ()
+        else:
+            StarFixApp.play_error_sound ()
 
 class OnlineHelpButton (AppButton):
     ''' A button for showing online help '''
@@ -649,11 +671,13 @@ class StarFixApp (App):
 
     Builder.load_string(message_kv_string)
 
-    message_store_name = 'message_settings.json'
+    message_store_name = "message_settings.json"
     message_store = JsonStore(message_store_name)
 
     MSG_ID_INTRO                   = "MSG_ID_INTRO"
     MSG_ID_SIGHT_REDUCTION_SUCCESS = "MSG_ID_SIGHT_REDUCTION_SUCCESS"
+    MSG_ID_SIGHT_REDUCTION_FAILURE = "MSG_ID_SIGHT_REDUCTION_FAILURE"
+    #MSG_ID_SHOW_MAP                = "MSG_ID_SHOW_MAP"
 
     class MessagePopup (Popup) :
         ''' This is a simple popup for the message functionality '''
@@ -671,6 +695,17 @@ class StarFixApp (App):
             StarFixApp.message_store.put (self.msg_id, dont_show_again=active)
 
     @staticmethod
+    def reset_messages ():
+        ''' Restore all messages '''
+        try:
+            os.remove (StarFixApp.message_store_name)
+            StarFixApp.message_store = JsonStore (StarFixApp.message_store_name)
+# pylint: disable=W0702
+        except:
+            pass
+# pylint: enable=W0702
+
+    @staticmethod
     def _message_popup_doer (msg : str, msg_id : str, *_):
 
         show_popup = False
@@ -682,7 +717,6 @@ class StarFixApp (App):
             show_popup = True
 
         if show_popup:
-            StarFixApp.play_click_sound ()
             mp = StarFixApp.MessagePopup (msg, msg_id)
             mp.open ()
 

@@ -11,7 +11,9 @@
     1. [What is this app?](#what_is_it)
     1. [Screen Visibility and Navigation](#visibility)
     1. [Astrometric Data](#astrometry)
-    1. [Sound Feedback](#sound)
+    1. [Feedback](#feedback)
+        1. [Sound Feedback](#sound)
+        1. [Messages](#messages)
 1. [Entering Data](#entering_data)
     1. [DRP Position](#drp_position)
     1. [Star Fixes](#star-fixes)
@@ -78,12 +80,23 @@ If you want to do sight reductions for historical or future (beyond 2028)
 observations you can use the
 [script&nbsp;solution](https://github.com/alinnman/celestial-navigation/blob/main/INSTALL.md).
 
-### Sound Feedback <a name="sound"></a>
+### Feedback <a name="feedback"></a>
+
+#### Sound Feedback <a name="sound"></a>
 
 The app is simple and designed for use in a noisy environment
 (typically a boat). Sound effects are used for feedback instead of subtle
 visual effects. The sounds are loud and you are advised to
 regulate the volume button accordingly.
+
+#### Messages <a name="messages"></a>
+
+When you run the app for the first time you will see messages appear,
+explaining briefly the mechanisms and what to expect and do.
+You can press the checkbox <tt>Don't show this message again</tt>
+to get rid of a particular message.
+*Note: In order to re-instate the messages you can perform a sight reduction*
+*with zero (0) active sights*.
 
 ## Entering data<a name="entering_data"></a>
 

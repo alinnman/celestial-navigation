@@ -34,7 +34,7 @@ source.exclude_dirs = .venv, .venv-buildozer, .vscode, colab, maths, nautical_al
 source.exclude_patterns = calibration.py, starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py, kivyapp.*.json, notebook.*.json, map.html
 
 # (str) Application versioning (method 1)
-version = 0.2.3
+version = 0.2.4
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -43,6 +43,8 @@ version = 0.2.3
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
 requirements = pandas,kivy,cython,android,folium,branca,jinja2,markupsafe,xyzservices
+# Note: The requirements "folium,branca,jinja2,markupsafe,xyzservices"
+# are all needed for folium (pure python libraries needed)
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
