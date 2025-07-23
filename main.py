@@ -604,7 +604,7 @@ class StarFixApp (App):
         if StarFixApp.initialized:
             popup = Popup(title='Error',
                           content=Label(text=msg+"\n\nClick outside to close."),
-                          size_hint=(0.5, 0.5))
+                          size_hint=(1, 0.5))
             popup.open (animation=False)
 
     @staticmethod
@@ -639,7 +639,7 @@ def _initialize_from_string (s:str, init_dict : dict):
     if format_ok:
         assert isinstance (NUM_DICT, dict)
         the_format = ""
-        error_msg = "Invalid JSON file, restoring defaults"
+        error_msg = "Invalid JSON file,\nrestoring defaults"
         try:
             the_format = NUM_DICT ["Format"]
         except KeyError:

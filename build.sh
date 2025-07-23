@@ -29,7 +29,7 @@ else
     buildozer -v android debug
 fi
 
-pip uninstall cython -y
+# pip uninstall cython -y
 
 
 
