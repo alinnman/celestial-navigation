@@ -1,9 +1,8 @@
 ''' 
-    Simple skeleton demo app for celestial navigation. 
-    Based on Kivy.
-    Can be used for more elaborate apps, including on Android and iOS, Protype now working.. 
-
-    *** WORK IN PROGRESS ***
+    Basic app for celestial navigation. 
+    Based on Kivy, and runnable on Android.
+    See APPDOC.md for more info.
+    See buildozer.spec and build.sh for deployment information. 
 
     © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
