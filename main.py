@@ -35,6 +35,7 @@ from kivy.uix.checkbox import CheckBox
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
+from kivy.storage.jsonstore import JsonStore
 from functools import partial
 
 from kivy.lang import Builder
@@ -390,6 +391,9 @@ class ExecButton (AppButton):
             the_form.extract_from_widgets()
             dump_dict()
             the_form.results.text = "Your location = " + sr
+            StarFixApp.message_popup ("You have made a successful sight reduction!\n"
+                                      "Use the \"Show map!\" button to see the result!",\
+                                      StarFixApp.MSG_ID_SIGHT_REDUCTION_SUCCESS)
         else:
             # Failed sight reduction
             StarFixApp.play_error_sound ()
@@ -599,12 +603,104 @@ class StarFixApp (App):
         if error_sound is not None:
             error_sound.play ()
 
+    message_kv_string = """
+<MessagePopup>:
+    size_hint: 1, 0.6
+    auto_dismiss: False  # Prevent dismissing by clicking outside
+    title: 'Message'
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        Label:
+            id: message_label
+            text: root.message
+            markup: True
+            text_size: self.width, None
+            halign: 'center'
+            valign: 'middle'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(40)
+            spacing: 10
+
+            CheckBox:
+                id: dont_show_checkbox
+                size_hint_x: None
+                width: dp(40)
+                on_active: root.toggle_dont_show_again(self.active)
+
+            Label:
+                text: "Don't show this message again"
+                text_size: self.width, None
+                halign: 'left'
+                valign: 'middle'
+
+        Button:
+            text: 'Close'
+            size_hint_y: None
+            height: dp(50)
+            on_release: root.dismiss()
+"""
+
+    Builder.load_string(message_kv_string)
+
+    message_store_name = 'message_settings.json'
+    message_store = JsonStore(message_store_name)
+
+    MSG_ID_INTRO                   = "MSG_ID_INTRO"
+    MSG_ID_SIGHT_REDUCTION_SUCCESS = "MSG_ID_SIGHT_REDUCTION_SUCCESS"
+
+    class MessagePopup (Popup) :
+        ''' This is a simple popup for the message functionality '''
+
+        def __init__ (self, msg : str, msg_id : str, **kwargs):
+
+            self.show_popup = True
+            self.message = msg
+            self.msg_id = msg_id
+            super().__init__ (**kwargs)
+
+        def toggle_dont_show_again (self, active : bool):
+            ''' Toggle the active state for the "dont show again" state '''
+            self.show_popup = not active
+            StarFixApp.message_store.put (self.msg_id, dont_show_again=active)
+
+    @staticmethod
+    def _message_popup_doer (msg : str, msg_id : str, *_):
+
+        show_popup = False
+        if StarFixApp.message_store.exists(msg_id):
+            b = StarFixApp.message_store.get(msg_id)
+            the_val = b ["dont_show_again"]
+            show_popup = not the_val
+        else:
+            show_popup = True
+
+        if show_popup:
+            StarFixApp.play_click_sound ()
+            mp = StarFixApp.MessagePopup (msg, msg_id)
+            mp.open ()
+
+    @staticmethod
+    def message_popup (msg : str, msg_id : str):
+        ''' Produce an informational message popup '''
+        if not StarFixApp.initialized:
+            Clock.schedule_once(partial(StarFixApp._message_popup_doer, msg, msg_id), 0.1)
+            return
+        StarFixApp._message_popup_doer (msg, msg_id)
+
     @staticmethod
     def _error_popup_doer (msg : str, *_):
         StarFixApp.play_error_sound ()
         if StarFixApp.initialized:
             popup = Popup(title='Error',
-                          content=Label(text=msg+"\n\nClick outside to close."),
+                          content=Label(text=msg+"\n\nClick outside to close.",\
+                                        markup=True),
                           size_hint=(1, 0.5))
             popup.open (animation=False)
 
@@ -615,7 +711,6 @@ class StarFixApp (App):
             Clock.schedule_once(partial(StarFixApp._error_popup_doer, msg), 0.1)
             return
         StarFixApp._error_popup_doer (msg)
-
 
     def get_root (self):
         ''' Return the root widget '''
@@ -888,6 +983,11 @@ if __name__ == '__main__':
         freeze_support ()
     start_http_server ()
     do_initialize()
+    StarFixApp.message_popup\
+          ("[b]Welcome to Celeste![/b]\n"+\
+           "This is an app for celestial navigation\n"+\
+           "Use the \"Show help!\" button\nfor online documentation",
+           StarFixApp.MSG_ID_INTRO)
     a = StarFixApp ()
     runTouchApp (a.get_root())
     if not is_windows():
