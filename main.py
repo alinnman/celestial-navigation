@@ -460,8 +460,9 @@ class PasteConfigButton (AppButton):
         assert isinstance (instance, PasteConfigButton)
         config_string = Clipboard.paste ()
         assert isinstance (NUM_DICT, dict)
-        _initialize_from_string (config_string, NUM_DICT)
-        StarFixApp.play_click_sound ()
+        format_ok = _initialize_from_string (config_string, NUM_DICT)
+        if format_ok:
+            StarFixApp.play_click_sound ()
 
 class OnlineHelpButton (AppButton):
     ''' A button for showing online help '''
@@ -620,7 +621,7 @@ class StarFixApp (App):
         ''' Return the root widget '''
         return self.m_root
 
-def _initialize_from_string (s:str, init_dict : dict):
+def _initialize_from_string (s:str, init_dict : dict) -> bool:
 # pylint: disable=W0603
     global NUM_DICT
 # pylint: enable=W0603
@@ -650,6 +651,7 @@ def _initialize_from_string (s:str, init_dict : dict):
             format_ok = False
     if not format_ok:
         NUM_DICT = init_dict
+    return format_ok
 
 def initialize(fn: str, init_dict: dict):
     ''' Initialize the configuration dict '''
