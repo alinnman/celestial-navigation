@@ -600,7 +600,7 @@ class Circle:
     def render_folium (self, the_map : object, color : str = "#FF0000",
                        adjust_geodetic : bool = True, dashed = False,
                        steps_per_degree = 10,
-                       popup = "Circle", lon_adjustment = 0):
+                       popup = "Circle", lon_adjustment : int = 0):
         ''' Renders a circle on a folium map 
             The circle is drawn in several consecutive steps.
             The steps_per_degree parameter is used to get the needed accuracy.
@@ -2049,7 +2049,8 @@ class Sight :
             Returns the azimuth in degrees (0-360)'''
         return get_azimuth (self.get_gp(), from_pos)
 
-    def render_folium (self, the_map : object, draw_markers : bool = True, lon_adjustment = 0):
+    def render_folium (self, the_map : object, draw_markers : bool = True, lon_adjustment = 0,\
+                       sight_num : int | NoneType = None):
         ''' Render this Sight object on a Folium Map object'''
 
         check_folium ()
@@ -2066,15 +2067,19 @@ class Sight :
 #pylint: enable=C0415
         assert isinstance (the_map, Map)
         # Set a marker for a GP
+        num_string = ""
+        if sight_num is not None:
+            num_string = "#" + str(sight_num) +". "
         if draw_markers:
             Marker(
-                location=[c_latlon_d.get_lat(), c_latlon_d.get_lon() + lon_adjustment],
-                tooltip=the_object_name,
-                popup=the_object_name + "\n" + time_string + "\n" +\
+                location = [c_latlon_d.get_lat(), c_latlon_d.get_lon() + lon_adjustment],
+                tooltip = num_string + the_object_name,
+                popup = num_string + the_object_name + "\n" + time_string + "\n" +\
                       get_representation(c_latlon_d,1),
-                icon=Icon(icon="star"),
+                icon = Icon(icon="star"),
             ).add_to(the_map)
-        c.render_folium (the_map, lon_adjustment=lon_adjustment)
+        label_string = num_string + the_object_name
+        c.render_folium (the_map, lon_adjustment = lon_adjustment, popup = label_string)
 
     def render_folium_new_map (self, draw_markers : bool = True, zoom_start = 2) -> object:
         ''' Render this Sight object on a newly created Folium Map object'''
@@ -2487,6 +2492,7 @@ class SightCollection:
                     gcr.render_folium (the_map, color='#AAAAFF', dashed=True)
 
         base_lon = the_sf_list[0].get_gp().get_lon()
+        sight_num = 0
         for s in the_sf_list:
             # Make sure the sights are plotted close to each other
             lon_diff = s.get_gp().get_lon() - base_lon
@@ -2495,8 +2501,10 @@ class SightCollection:
                 this_s_lon_adjustment = -360
             elif lon_diff < -180:
                 this_s_lon_adjustment = 360
+            sight_num += 1
             s.render_folium (the_map, draw_markers=draw_markers,\
-                             lon_adjustment=this_s_lon_adjustment)
+                             lon_adjustment=this_s_lon_adjustment,\
+                             sight_num=sight_num)
 
         if draw_grid:
 
