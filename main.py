@@ -14,7 +14,7 @@ from types import NoneType
 import importlib
 from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError, get_folium_load_error, show_or_display_file, \
-    is_windows, exit_handler, start_http_server
+    is_windows, exit_handler, start_http_server, parse_angle_string
 import os
 import json
 import kivy
@@ -317,8 +317,10 @@ def sight_reduction() -> \
     tuple[str, bool, LatLonGeodetic | NoneType, SightCollection | Sight | NoneType]:
     ''' Perform a sight reduction given data entered above '''
     assert isinstance(NUM_DICT, dict)
-    the_pos = LatLonGeodetic(lat=float(NUM_DICT["DrpLat"]),
-                             lon=float(NUM_DICT["DrpLon"]))
+    real_lat = parse_angle_string (NUM_DICT["DrpLat"])
+    real_lon = parse_angle_string (NUM_DICT["DrpLon"])
+    the_pos = LatLonGeodetic(lat=float(real_lat),
+                             lon=float(real_lon))
 
     intersections = None
     collection = None

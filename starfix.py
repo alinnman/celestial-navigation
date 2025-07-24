@@ -600,7 +600,7 @@ class Circle:
     def render_folium (self, the_map : object, color : str = "#FF0000",
                        adjust_geodetic : bool = True, dashed = False,
                        steps_per_degree = 10,
-                       popup = "Circle"):
+                       popup = "Circle", lon_adjustment = 0):
         ''' Renders a circle on a folium map 
             The circle is drawn in several consecutive steps.
             The steps_per_degree parameter is used to get the needed accuracy.
@@ -681,7 +681,7 @@ class Circle:
                 last_lon = None
             else:
                 sub_coord.append\
-                        ([y_target.get_lat(), this_lon])
+                        ([y_target.get_lat(), this_lon + lon_adjustment])
             last_lon = this_lon
         coordinates.append (sub_coord)
         if (len(coordinates[0])) >= 1:
@@ -2003,7 +2003,7 @@ class Sight :
     def __correct_dip_of_horizon (self):
         if self.observer_height == 0:
             return
-        self.measured_alt += get_dip_of_horizon (self.observer_height, self.temperature,\
+        self.measured_alt -= get_dip_of_horizon (self.observer_height, self.temperature,\
                                                  self.dt_dh, self.pressure)/60
 
     def __correct_for_refraction (self):
@@ -2049,7 +2049,7 @@ class Sight :
             Returns the azimuth in degrees (0-360)'''
         return get_azimuth (self.get_gp(), from_pos)
 
-    def render_folium (self, the_map : object, draw_markers : bool = True):
+    def render_folium (self, the_map : object, draw_markers : bool = True, lon_adjustment = 0):
         ''' Render this Sight object on a Folium Map object'''
 
         check_folium ()
@@ -2068,12 +2068,12 @@ class Sight :
         # Set a marker for a GP
         if draw_markers:
             Marker(
-                location=[c_latlon_d.get_lat(), c_latlon_d.get_lon()],
+                location=[c_latlon_d.get_lat(), c_latlon_d.get_lon() + lon_adjustment],
                 tooltip=the_object_name,
                 popup=the_object_name + "\n" + time_string + "\n" + str(c_latlon_d),
                 icon=Icon(icon="star"),
             ).add_to(the_map)
-        c.render_folium (the_map)
+        c.render_folium (the_map, lon_adjustment=lon_adjustment)
 
     def render_folium_new_map (self, draw_markers : bool = True, zoom_start = 2) -> object:
         ''' Render this Sight object on a newly created Folium Map object'''
@@ -2425,16 +2425,32 @@ class SightCollection:
         from folium import Map, Circle as Folium_Circle, PolyLine, Marker, Icon
 #pylint: enable=C0415
 
+
+        lon_adjustment = 0
         if isinstance (intersections, LatLon):
+
+            # See if we need to adjust the position of the intersection on the map
+            count = 0
+            lon_sum = 0
+            for s in the_sf_list:
+                lon_sum += s.get_gp().get_lon()
+                count += 1
+            lon_average = lon_sum / count
+
             int_geodetic = LatLonGeodetic (ll=intersections.get_latlon())
 
+            if int_geodetic.get_lon() - lon_average > 180:
+                lon_adjustment = -360
+            elif lon_average - int_geodetic.get_lon () > 180:
+                lon_adjustment = 360
+
             the_map = Map(location=(int_geodetic.get_lat(),\
-                                    int_geodetic.get_lon()), zoom_start=12)
+                                    int_geodetic.get_lon()+lon_adjustment), zoom_start=12)
 
             radius = accuracy
             Folium_Circle(
                 location=[int_geodetic.get_lat(),\
-                        int_geodetic.get_lon()],
+                        int_geodetic.get_lon()+lon_adjustment],
                 radius=radius,
                 color="black",
                 weight=1,
@@ -2447,9 +2463,9 @@ class SightCollection:
             ).add_to(the_map)
             if draw_markers:
                 Marker(
-                    location=[int_geodetic.get_lat(), int_geodetic.get_lon()],
+                    location=[int_geodetic.get_lat(), int_geodetic.get_lon()+lon_adjustment],
                     tooltip=label_text,
-                    popup= label_text + " " + str (intersections),
+                    popup= label_text + " " + get_representation(intersections,2),
                     icon=Icon(icon="user"),
                 ).add_to(the_map)
         else:
@@ -2469,8 +2485,17 @@ class SightCollection:
                     gcr = get_great_circle_route (gp, int2)
                     gcr.render_folium (the_map, color='#AAAAFF', dashed=True)
 
+        base_lon = the_sf_list[0].get_gp().get_lon()
         for s in the_sf_list:
-            s.render_folium (the_map, draw_markers=draw_markers)
+            # Make sure the sights are plotted close to each other
+            lon_diff = s.get_gp().get_lon() - base_lon
+            this_s_lon_adjustment = 0
+            if lon_diff > 180:
+                this_s_lon_adjustment = -360
+            elif lon_diff < -180:
+                this_s_lon_adjustment = 360
+            s.render_folium (the_map, draw_markers=draw_markers,\
+                             lon_adjustment=this_s_lon_adjustment)
 
         if draw_grid:
 
@@ -2495,12 +2520,14 @@ class SightCollection:
 
             if draw_degrees:
                 for lat in range(down_lat, up_lat+1, lat_interval):
-                    PolyLine([[lat, left_lon],[lat, right_lon]], weight=0.5,\
+                    PolyLine([[lat, left_lon  + lon_adjustment],\
+                              [lat, right_lon + lon_adjustment]], weight=0.5,\
                         tooltip=str(lat) + "°").\
                         add_to(the_map)
 
                 for lon in range(left_lon, right_lon+1, lon_interval):
-                    PolyLine([[down_lat, lon],[up_lat, lon]], weight=0.7,\
+                    PolyLine([[down_lat, lon + lon_adjustment],\
+                              [up_lat,   lon + lon_adjustment]], weight=0.7,\
                         tooltip=str(lon)+"°").\
                         add_to(the_map)
 
@@ -2528,7 +2555,8 @@ class SightCollection:
                     else:
                         prefix_string = "N"
                     tooltip_string = prefix_string + " " + str(abs(d)) + "° " + str(m+1) + "'"
-                    PolyLine([[this_draw_lat, this_left_lon],[this_draw_lat, this_right_lon]],\
+                    PolyLine([[this_draw_lat, this_left_lon  + lon_adjustment],\
+                              [this_draw_lat, this_right_lon + lon_adjustment]],\
                               weight=0.5, color="green",\
                               tooltip=tooltip_string).\
                         add_to(the_map)
@@ -2543,7 +2571,8 @@ class SightCollection:
                     else:
                         prefix_string = "E"
                     tooltip_string = prefix_string + " " + str(abs(d)) + "° " + str(m) + "'"
-                    PolyLine([[this_down_lat, this_draw_lon],[this_up_lat, this_draw_lon]],\
+                    PolyLine([[this_down_lat, this_draw_lon + lon_adjustment],\
+                              [this_up_lat, this_draw_lon + lon_adjustment]],\
                               weight=0.5, color="green",\
                               tooltip=tooltip_string).\
                         add_to(the_map)
