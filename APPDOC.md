@@ -316,6 +316,10 @@ Another option is testing with a sextant app, such as
 Note however that a mobile phone sextant app will never produce readings
 accurate enough for precise navigation.
 
+You may of course also borrow sights from other navigators, and you
+can easily find groups on Facebook and other social media where
+sextant/chronometer readings are shared.
+
 Do you have problems getting a correct sight reduction?
 In such case just use two fixes (sights), by unselecting
 <tt>Use this sight</tt> for one of the sights.
