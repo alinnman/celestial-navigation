@@ -117,6 +117,11 @@ actual position.
 At the top you see fields marked **DRP Latitude** and **DRP Longitude**.
 Enter the latitude and longitude for your DRP in these fields.
 
+The format used is "DD:MM:SS", "DD:MM" or "DD" (degrees, arcminutes, arcseconds)
+Decimal values can be used. Use negative degrees for southern latitudes
+or western longitudes.
+("59", "-35", "-120:34" and "23:34.2" are valid inputs)
+
 Note: The values of these fields are automatically updated if you execute
 a successful sight reduction.
 
