@@ -61,7 +61,7 @@ with classical methods for celestial navigation.
 Testing this app can be done with a good **sextant** (which requires
 careful preparation and adjustments). You can also test it with
 "sextant simulators", see [below](#testing_tips).
-You must also have access to a precise watch (**chronometer**).
+You must also have access to a precise watch/clock (**chronometer**).
 
 ### Screen visibility and Navigation<a name="visibility"></a>
 
