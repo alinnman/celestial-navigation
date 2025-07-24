@@ -1162,7 +1162,7 @@ def get_google_map_string (intersections : tuple | LatLon, num_decimals : int) -
 #pylint: disable=R0912
 def get_representation\
     (ins : LatLon | tuple | list [float] | float | int, num_decimals : int,
-     lat : bool =False) -> str:
+     lat : bool = False, use_prefix : bool= False) -> str:
     ''' Converts coordinate(s) to a string representation 
     
         Parameters: 
@@ -1174,11 +1174,11 @@ def get_representation\
     assert num_decimals >= 0
     type_info = ""
     if isinstance (ins, LatLon):
-#pylint: disable=C0123
-        if type (ins) == LatLonGeocentric:
+        if not use_prefix:
+            type_info = ""
+        elif isinstance (ins, LatLonGeocentric):
             type_info = "(Geocentric) "
-        elif type (ins) == LatLonGeodetic:
-#pylint: enable=C0123
+        elif isinstance (ins, LatLonGeodetic):
             type_info = "(WGS-84) "
         ins = ins.get_tuple ()
     if isinstance (ins, (float, int)):
@@ -2070,7 +2070,8 @@ class Sight :
             Marker(
                 location=[c_latlon_d.get_lat(), c_latlon_d.get_lon() + lon_adjustment],
                 tooltip=the_object_name,
-                popup=the_object_name + "\n" + time_string + "\n" + str(c_latlon_d),
+                popup=the_object_name + "\n" + time_string + "\n" +\
+                      get_representation(c_latlon_d,1),
                 icon=Icon(icon="star"),
             ).add_to(the_map)
         c.render_folium (the_map, lon_adjustment=lon_adjustment)
@@ -2465,7 +2466,7 @@ class SightCollection:
                 Marker(
                     location=[int_geodetic.get_lat(), int_geodetic.get_lon()+lon_adjustment],
                     tooltip=label_text,
-                    popup= label_text + " " + get_representation(intersections,2),
+                    popup= label_text + " " + get_representation(intersections,1),
                     icon=Icon(icon="user"),
                 ).add_to(the_map)
         else:
@@ -2725,7 +2726,7 @@ class SightTrip:
             if draw_markers:
                 Marker (icon=Icon(color='lightgray', icon='home', prefix='fa'),
                         tooltip = "Starting point",
-                        popup = "Starting point " + str(intersections[1]),
+                        popup = "Starting point " + get_representation(intersections[1],1),
                         location=[intersections[1].get_lat(),\
                                 intersections[1].get_lon()]).add_to(retval)
             draw_arrow (retval, intersections [1], intersections [0])
@@ -2747,7 +2748,7 @@ class SightTrip:
             if draw_markers:
                 Marker (icon=Icon(color='lightgray', icon='home', prefix='fa'),
                         tooltip = "Starting point",
-                        popup = "Starting point " + str(start_pos_d),
+                        popup = "Starting point " + get_representation(start_pos_d,1),
                         location=[start_pos_d.get_lat(),\
                                 start_pos_d.get_lon()]).add_to(draw_map)
             end_pos_d = LatLonGeodetic (ll = self.end_pos)
@@ -2756,7 +2757,7 @@ class SightTrip:
             if draw_markers:
                 Marker (icon=Icon(color='blue', icon='user', prefix='fa'),
                         tooltip = "Target",
-                        popup = "Target " + str(end_pos_d),
+                        popup = "Target " + get_representation(end_pos_d,1),
                         location=[end_pos_d.get_lat(),\
                                 end_pos_d.get_lon()]).add_to(draw_map)
             draw_arrow (draw_map, start_pos_d, end_pos_d)
