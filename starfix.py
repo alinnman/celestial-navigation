@@ -125,14 +125,35 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             t = threading.Thread (target = kill_me_please)
             t.start()
             self.send_error(500)
+
         else:
             try:
+                # Only allowed requests are for "html", "css" and "ico"
+                for p in ["html", "css", "ico"]:
+                    if self.path.lower().endswith (p):
+                        break
+                    self.send_error (404, "Document not accessible")
+
                 super().do_GET()
                 print ("GET " + self.path + " - OK")
 #pylint: disable=W0718
             except BaseException as be:
                 print ("Http server failure : " + str(be))
 #pylint: enable=W0718
+
+#pylint: disable=C0103
+    def do_POST(self):
+        ''' Do not allow POST '''
+        self.send_error(405, "Method Not Allowed")
+
+    def do_PUT(self):
+        ''' Do not allow PUT '''
+        self.send_error(405, "Method Not Allowed")
+
+    def do_DELETE(self):
+        ''' Do not allow DELETE '''
+        self.send_error(405, "Method Not Allowed")
+#pylint: enable=C0103
 
 def __run_http_server ():
     port = 8000
@@ -141,7 +162,8 @@ def __run_http_server ():
     Handler = MyHandler
 
     try:
-        with MyTCPServer(("", port), Handler) as httpd:
+        host_name = "127.0.0.1" # Explicitly bind to localhost
+        with MyTCPServer((host_name, port), Handler) as httpd:
 #pylint: disable=W0603
             global MASTER_HTTPD
 #pylint: enable=W0603
