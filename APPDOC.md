@@ -37,7 +37,7 @@
 1. [Installation and prerequisites](#installation-and-prerequisites)
 1. [Tips for Testing (without a sextant?)](#testing_tips)
 1. [More Information](#more_information)
-1. [License](#license)
+1. [Licenses](#license)
 
 ## Read this first<a name="read_this_first"></a>
 
@@ -335,7 +335,9 @@ This app is part of an open-source software library for celestial navigation.
 You can find
 [more information here](https://github.com/alinnman/celestial-navigation).
 
-## License<a name="license"></a>
+## Licenses<a name="license"></a>
 
 <tt>© August Linnman, 2025, email: august@linnman.net</tt><br>
-<tt>[MIT&nbsp;License](https://github.com/alinnman/celestial-navigation/blob/main/LICENSE)</tt>
+<tt>[MIT&nbsp;License](https://github.com/alinnman/celestial-navigation/blob/main/LICENSE)</tt><br>
+[Licenses for used software and services](https://github.com/alinnman/celestial-navigation/blob/main/OTHER-LICENSES.md)
+

@@ -28,8 +28,6 @@ In order to create this environment you should execute these commands:
     pip install pandas
     pip install jupyter
     pip install folium
-    pip install offline-folium
-    python -m offline_folium
     pip install kivy
 
 After having created this you can use VSCode to define

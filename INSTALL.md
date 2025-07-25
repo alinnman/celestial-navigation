@@ -48,9 +48,6 @@ or higher with core libraries.
 * [Jupyter](https://jupyter.org/) (*Optional*, needed for running notebooks.)
 * [Folium](https://github.com/python-visualization/folium)
 (*Optional*, needed for high-quality mapping)
-* [Offline Folium](https://github.com/robintw/offline_folium)
-(*Optional*,
-will allow map generation without an internet connection. Requires Folium.)
 * [Kivy](https://kivy.org/)
 (*Optional*, for running the demo app.)
 
