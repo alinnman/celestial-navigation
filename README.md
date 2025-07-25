@@ -52,6 +52,7 @@ In this picture we were located in Chicago.
     1. [Handling errors](#handling)
     1. [Algorithm errors](#algorithm)
 1. [The machine-readable nautical almanac](#mr)
+1. [Licenses](#licenses)
 
 ## 1. Introduction <a name="introduction"></a>
 
@@ -1075,3 +1076,9 @@ Fomalhaut<br>
 Scheat<br>
 Markab<br>
 </tt>
+
+## 10. Licenses <a name="licenses"></a>
+
+<tt>© August Linnman, 2025, email: august@linnman.net</tt><br>
+<tt>[MIT&nbsp;License](https://github.com/alinnman/celestial-navigation/blob/main/LICENSE)</tt><br>
+<tt>[Licenses for used software and services](https://github.com/alinnman/celestial-navigation/blob/main/OTHER-LICENSES.md)</tt>

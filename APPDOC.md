@@ -339,5 +339,5 @@ You can find
 
 <tt>© August Linnman, 2025, email: august@linnman.net</tt><br>
 <tt>[MIT&nbsp;License](https://github.com/alinnman/celestial-navigation/blob/main/LICENSE)</tt><br>
-[Licenses for used software and services](https://github.com/alinnman/celestial-navigation/blob/main/OTHER-LICENSES.md)
+<tt>[Licenses for used software and services](https://github.com/alinnman/celestial-navigation/blob/main/OTHER-LICENSES.md)</tt>
 
