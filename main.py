@@ -409,7 +409,7 @@ class ExecButton (AppButton):
                                           StarFixApp.MSG_ID_SIGHT_REDUCTION_FAILURE)
             else:
                 StarFixApp.message_popup ("You have made a failed sight reduction!\n"
-                                          "No sights have been specified!\n",\
+                                          "See the message in the field above for more information!\n",\
                                           StarFixApp.MSG_ID_SIGHT_REDUCTION_FAILURE)
                 StarFixApp.reset_messages()
             the_form.results.text = sr
