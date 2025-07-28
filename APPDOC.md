@@ -192,13 +192,15 @@ Specify the known **index error** of the sextant (in arcminutes).
 #### Limb Correction<a name="limb_correction"></a>
 
 Select between "UPPER", "CENTRAL" or "LOWER". Specifies the location/**limb**
-of your sextant measurement. Note: This setting has no effect on stars,
+of your sextant measurement, i.e. if you are measuring towards the center or
+the lower or upper edge of the Moon or the Sun.
+Note: This setting has no effect on stars,
 and very little effect on planets. It is mainly used for the Moon or the Sun.
 
 #### Observer Elevation<a name="observer_elevation"></a>
 
 Specify your **elevation above the horizon** (in meters)
-Note: You can use a non-zero observer elevation only if you are not using an
+Note: You can use a non-zero observer elevation only if you are **not** using an
 artificial horizon.
 *This setting takes care of the effect of the dip of the horizon*.
 
