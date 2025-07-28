@@ -23,6 +23,9 @@ In this picture we were located in Chicago.
 
 ![Intersections of small circles](pics/folium.png "Intersections of small circles" )
 
+A simple calculator for this can be
+[found&nbsp;here](https://colab.research.google.com/drive/1tCY3mvpLlzUKot2Rul3I4ZobVCzzRBtT?usp=sharing)
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
