@@ -105,14 +105,15 @@ to get rid of a particular message.
 DRP (Dead-Reckoning Position) is a rough estimation of your current position.
 <br>For a **2-star-fix** sight reduction it is used to select the correct
 intersection point.
-(A successful 2-star-fix sight reduction will produce two intersections,
-and these can be located far away from each other)
+A successful 2-star-fix sight reduction will produce two intersections,
+and these can be located far away from each other. The DRP selects the
+closest intersection.
 <br>For a **3-star-fix** sight reduction the DRP serves as a way to shorten the
-execution time of finding an accurate result
-(and in rare cases to eliminate false intersections).
-This effect is however small, but you are advised to
-use DRP values anyway. Normally you have at least a rough estimation of your
-actual position.
+execution time of finding an accurate result.
+Normally you should have at least a rough estimation of your
+actual position. Sometimes a grossly incorrect DRP (1000s km off)
+may result in a failed sight reduction,
+due to a conflicting false intersection (which can be located very far away).
 
 At the top you see fields marked **DRP Latitude** and **DRP Longitude**.
 Enter the latitude and longitude for your DRP in these fields.
