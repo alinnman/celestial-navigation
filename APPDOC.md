@@ -94,9 +94,9 @@ regulate the volume button accordingly.
 
 When you run the app for the first time you will see messages appear,
 explaining briefly the mechanisms and what to expect and do.
-You can press the checkbox <tt>Don't show this message again</tt>
+You can press the checkbox <tt><b>"Don't show this message again"</b></tt>
 to get rid of a particular message.
-*Note: In order to re-instate the messages you can perform a sight reduction*
+*Note: In order to re-instate all messages you can perform a sight reduction*
 *with zero (0) active sights*.
 
 ## Entering data<a name="entering_data"></a>
@@ -131,13 +131,14 @@ a successful sight reduction.
 
 Your sextant work and the selected DRP might not be very accurate.
 If you suspect non-accurate input you may **increase** this threshold value.
-The normal default is 100 km, and this will put on these restrictions:
+The normal default is "100" (km), and this will put on these restrictions:
 
-* The intersections be must located at most 100 km from each other.
+* The intersections be must located at most 100 km from each other in order
+  to be included in the calculation.
 * For a three-star fix: The DRP must be within 100 km from each intersection.
 
 If you are a beginner, or insecure about your readings you may increase
-this value to "1000" or more.
+this threshold to a higher value, "1000" (km) or more.
 
 ### Star Fixes<a name="star_fixes"></a>
 
@@ -154,7 +155,7 @@ altitude and this can assist you in your work.
 #### Name of Object<a name="name"></a>
 
 You have to select the **name** of the object.
-Choose the Sun, one of the planets (mercury, venus, mars, jupiter or saturn)
+Choose the Sun, one of the planets (venus, mars, jupiter or saturn)
 or a selected **navigational star**. You find a
 [list&nbsp;of&nbsp;these&nbsp;stars&nbsp;here](https://github.com/alinnman/celestial-navigation/blob/main/README.md#navstars).
 
@@ -212,15 +213,16 @@ and very little effect on planets. It is mainly used for the Moon or the Sun.
 
 #### Observer Elevation<a name="observer_elevation"></a>
 
-Specify your **elevation above the horizon** (in meters)
+Specify your **elevation above the horizon** (in meters), or more specifically:
+the elevation of your **eye**.
 Note: You can use a non-zero observer elevation only if you are **not** using an
 artificial horizon.
 *This setting takes care of the effect of the dip of the horizon*.
 
 #### Temperature<a name="temperature"></a>
 
-Specify the **temperature** (in degrees celsius). *This setting affects the
-effects of atmospheric refraction*.
+Specify the **temperature** (in degrees celsius).
+*This setting affects the effects of atmospheric refraction*.
 
 #### Temperature Gradient<a name="temperature_gradient"></a>
 
@@ -238,7 +240,7 @@ Specify **air pressure** (in kPa). Normal air pressure is "101".
 
 ## Running a sight reduction<a name="running_sight_reduction"></a>
 
-Press the button <tt>"Perform sight reduction!"</tt>.
+Press the button <tt><b>"Perform sight reduction!"</b></tt>.
 The calculated position will be
 presented in the underlying field. If the sight reduction fails you will see
 an error message (and hear an error sound).
@@ -247,7 +249,7 @@ an error message (and hear an error sound).
 
 ## Presenting a map<a name="presenting_map"></a>
 
-Press the button <tt>"Show map!"</tt> to see a map representing the last
+Press the button <tt><b>"Show map!"</b></tt> to see a map representing the last
 successful sight reduction. Even for failed sight reductions (and single sights)
 you can display a map. This map can assist you in troubleshooting your
 sextant readings.
@@ -268,7 +270,7 @@ You can use this to save your work easily, using a document solution of
 your own choice. Just paste the contents into a suitable document
 in another app, and save.
 
-When you press the button <tt>Paste Config</tt> you can transfer back a saved
+When you press the button <tt><b>"Paste Config"</b></tt> you can transfer back a saved
 configuration from another app through the clipboard.
 If the clipboard does not contain a valid configuration
 you will hear an error sound.
@@ -316,6 +318,8 @@ good, but you may find the app a litte "sluggish" on older phones/tablets.
 
 Download the app
 [GPS&nbsp;Anti&nbsp;Spoof](https://play.google.com/store/apps/details?id=com.clockwk.GPSAntiSpoof&pcampaignid=web_share)
+or
+[GPS&nbsp;Anti&nbsp;Spoof&nbsp;Pro](https://play.google.com/store/apps/details?id=com.clockwk.GPSAntiSpoofPro)
 and use it to collect altitude values.
 Make sure you use true sextant readings (Hs),
 take careful notes on limb positions used,
@@ -334,15 +338,18 @@ accurate enough for precise navigation.
 
 You may of course also borrow sights from other navigators, and you
 can easily find groups on Facebook and other social media where
-sextant/chronometer readings are shared.
+sextant/chronometer readings are shared. Another source is using
+courses and training material. And finally you can of
+course test your own skills with a real sextant.
 
 Do you have problems getting a correct sight reduction?
 In such case just use two fixes (sights), by unselecting
-<tt>Use this sight</tt> for one of the sights.
+<tt><b>"Use this sight"</b></tt> for one of the sights.
 You can also use just one sight through unselecting the check
-box for two sights.
+box for two sights. This will result in an error, but you
+can watch the map output anyway afterwards.
 Watch the map carefully to pinpoint any incorrect input.
-Also note that the map function is available also after a
+Note: the map function is available also after a
 failed sight reduction.
 
 ## More Information<a name="more_information"></a>

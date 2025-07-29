@@ -226,6 +226,9 @@ For more information about the formula above please refer to
 * Refraction correction is simple (see above), but probably good enough for
 basic celestial navigation.
 
+* More elaborate geodetic corrections have not been applied,
+  such as detailed geoids taking care of deviations of the gravitational field.
+
 See [more about future plans](CONTRIBUTING.md).
 
 ## 3. Sight reduction (Stationary observer)<a name="sight-reduction"></a>

@@ -10,7 +10,8 @@
     "allowed_elements": [
       "a",
       "br",
-      "tt"
+      "tt",
+      "b"
     ]
   }
 }
