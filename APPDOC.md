@@ -270,10 +270,10 @@ You can use this to save your work easily, using a document solution of
 your own choice. Just paste the contents into a suitable document
 in another app, and save.
 
-When you press the button <tt><b>"Paste Config"</b></tt> you can transfer back a saved
-configuration from another app through the clipboard.
+When you press the button <tt><b>"Paste Config"</b></tt> you can transfer
+back a saved configuration from another app through the clipboard.
 If the clipboard does not contain a valid configuration
-you will hear an error sound.
+you will hear an error sound, and the paste operation will be aborted.
 
 ## Workflow Tips<a name="workflow"></a>
 
