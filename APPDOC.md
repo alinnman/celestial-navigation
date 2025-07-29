@@ -16,7 +16,7 @@
         1. [Messages](#messages)
 1. [Entering Data](#entering_data)
     1. [DRP Position](#drp_position)
-    1. [Sight/DRP Quality](#drp_quality)
+    1. [Sight Quality](#drp_quality)
     1. [Star Fixes](#star-fixes)
         1. [Selection of star fix](#selection-of-star-fix)
         1. [Name of Object](#name-of-object)
@@ -127,10 +127,10 @@ or western longitudes.
 Note: The values of these fields are automatically updated if you execute
 a successful sight reduction.
 
-### Sight/DRP Quality<a name="drp_quality"></a>
+### Sight Quality<a name="drp_quality"></a>
 
 Your sextant work and the selected DRP might not be very accurate.
-If you suspect non-accurate input you may **increase** this threhold value.
+If you suspect non-accurate input you may **increase** this threshold value.
 The normal default is 100 km, and this will put on these restrictions:
 
 * The intersections be must located at most 100 km from each other.
