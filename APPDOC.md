@@ -16,6 +16,7 @@
         1. [Messages](#messages)
 1. [Entering Data](#entering_data)
     1. [DRP Position](#drp_position)
+    1. [Sight/DRP Quality](#drp_quality)
     1. [Star Fixes](#star-fixes)
         1. [Selection of star fix](#selection-of-star-fix)
         1. [Name of Object](#name-of-object)
@@ -125,6 +126,18 @@ or western longitudes.
 
 Note: The values of these fields are automatically updated if you execute
 a successful sight reduction.
+
+### Sight/DRP Quality<a name="drp_quality"></a>
+
+Your sextant work and the selected DRP might not be very accurate.
+If you suspect non-accurate input you may **increase** this threhold value.
+The normal default is 100 km, and this will put on these restrictions:
+
+* The intersections be must located at most 100 km from each other.
+* For a three-star fix: The DRP must be within 100 km from each intersection.
+
+If you are a beginner, or insecure about your readings you may increase
+this value to "1000" or more.
 
 ### Star Fixes<a name="star_fixes"></a>
 
@@ -343,4 +356,3 @@ You can find
 <tt>© August Linnman, 2025, email: august@linnman.net</tt><br>
 <tt>[MIT&nbsp;License](https://github.com/alinnman/celestial-navigation/blob/main/LICENSE)</tt><br>
 <tt>[Licenses for used software and services](https://github.com/alinnman/celestial-navigation/blob/main/OTHER-LICENSES.md)</tt>
-

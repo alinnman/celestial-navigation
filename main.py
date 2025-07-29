@@ -329,7 +329,8 @@ def sight_reduction() -> \
             SightCollection.get_intersections_conv(return_geodetic=True,
                                                    estimated_position=the_pos,
                                                    get_starfixes=get_starfixes,
-                                                   assume_good_estimated_position=True)
+                                                   assume_good_estimated_position=True,
+                                                   limit=float(NUM_DICT["DrpQuality"]))
 
         assert isinstance (intersections, LatLonGeodetic)
         assert isinstance (collection, SightCollection)
@@ -409,7 +410,8 @@ class ExecButton (AppButton):
                                           StarFixApp.MSG_ID_SIGHT_REDUCTION_FAILURE)
             else:
                 StarFixApp.message_popup ("You have made a failed sight reduction!\n"
-                                          "See the message in the field above for more information!\n",\
+                                          "See the message in the field above for more"+\
+                                          "information!\n",\
                                           StarFixApp.MSG_ID_SIGHT_REDUCTION_FAILURE)
                 StarFixApp.reset_messages()
             the_form.results.text = sr
@@ -758,6 +760,18 @@ def _initialize_from_string (s:str, init_dict : dict) -> bool:
     def handle_error (msg : str):
         StarFixApp.error_popup (msg)
 
+    def _fill_in_defaults ():
+
+        def _check_default (key : str, value : str):
+            assert isinstance (NUM_DICT, dict)
+            try:
+                the_val = NUM_DICT [key]
+            except KeyError:
+                the_val = value
+                NUM_DICT [key] = the_val
+
+        _check_default ("DrpQuality", "100")
+
     error_msg = "Error loading JSON file"
     format_ok = True
     try:
@@ -779,6 +793,7 @@ def _initialize_from_string (s:str, init_dict : dict) -> bool:
         if the_format != "celeste.1":
             handle_error (error_msg)
             format_ok = False
+        _fill_in_defaults ()
     if not format_ok:
         NUM_DICT = init_dict
     return format_ok
@@ -857,6 +872,7 @@ def do_initialize ():
 
                 "DrpLat": "40",
                 "DrpLon": "-90",
+                "DrpQuality": "100",
 
                 "Use1": "True",
                 "Use2": "True",
@@ -883,7 +899,7 @@ class InputForm(GridLayout):
 
         # DRP Position Section
         self.add_widget(Label(text='[b]DRP Position[/b]', markup=True, size_hint_y=None, height=90))
-        drp_section = GridLayout(cols=2, spacing=5, padding=5, size_hint_y=None, height=150)
+        drp_section = GridLayout(cols=2, spacing=5, padding=5, size_hint_y=None, height=200)
         drp_section.add_widget(MyLabel(text='[b]Latitude:[/b]', markup=True))
         self.drp_lat_input = MyTextInput()
         self.data_widget_container["DrpLat"] = self.drp_lat_input
@@ -892,6 +908,13 @@ class InputForm(GridLayout):
         self.drp_lon_input = MyTextInput()
         self.data_widget_container["DrpLon"] = self.drp_lon_input
         drp_section.add_widget(self.drp_lon_input)
+
+        # DRP quality button
+        drp_section.add_widget(MyLabel(text='Sight quality (km)'))
+        self.drp_quality_input = MyTextInput()
+        self.data_widget_container["DrpQuality"] = self.drp_quality_input
+        drp_section.add_widget (self.drp_quality_input)
+
         self.add_widget(drp_section)
 
         # Individual Sight Sections
