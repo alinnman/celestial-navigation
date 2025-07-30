@@ -1923,6 +1923,11 @@ class Sight :
         if self.measured_alt < 0 or self.measured_alt >= 90:
             raise ValueError ("Altitude value must be within (0,90]")
 
+        if not ho_obs:
+            self.__correct_for_refraction ()
+            if not no_dip:
+                self.__correct_dip_of_horizon ()
+
         if limb_correction == Sight.LIMB_CENTRAL:
             semi_diameter_correction = 0
         elif limb_correction in [Sight.LIMB_LOWER,Sight.LIMB_UPPER]:
@@ -1950,10 +1955,7 @@ class Sight :
                 horizontal_parallax = 0
         if horizontal_parallax != 0:
             self.__correct_for_horizontal_parallax (horizontal_parallax)
-        if not ho_obs:
-            self.__correct_for_refraction ()
-            if not no_dip:
-                self.__correct_dip_of_horizon ()
+
         self.__gp = self.__calculate_gp ()
 
         if estimated_position is None:
