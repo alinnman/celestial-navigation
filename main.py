@@ -325,7 +325,7 @@ def sight_reduction() -> \
     intersections = None
     collection = None
     try:
-        intersections, _, _, collection =\
+        intersections, _, _, collection, calculated_diff =\
             SightCollection.get_intersections_conv(return_geodetic=True,
                                                    estimated_position=the_pos,
                                                    get_starfixes=get_starfixes,
@@ -334,7 +334,13 @@ def sight_reduction() -> \
 
         assert isinstance (intersections, LatLonGeodetic)
         assert isinstance (collection, SightCollection)
-        return get_representation(intersections, 1), True, intersections, collection
+        repr_string = get_representation(intersections, 1)
+        km_per_nautical_mile = 1.852
+        if calculated_diff > 0:
+            diff_string = " ±" + str(round(calculated_diff/km_per_nautical_mile,1)) + " nm"
+        else:
+            diff_string = ""
+        return repr_string + diff_string, True, intersections, collection
 
     except IntersectError as ve:
         coll_object = None

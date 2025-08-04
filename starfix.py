@@ -2163,7 +2163,7 @@ class SightCollection:
           estimated_position : NoneType | LatLon = None,
           assume_good_estimated_position = True,
           diagnostics : bool = False) \
-            -> tuple[LatLon | tuple[LatLon, LatLon], float, str]:
+            -> tuple[LatLon | tuple[LatLon, LatLon], float, str, float]:
         ''' Get an intersection from the collection of sights. 
             A mean value and sorting algorithm is applied. '''
         if estimated_position is None:
@@ -2191,7 +2191,7 @@ class SightCollection:
                     ret_intersections = LatLonGeodetic (ll=intersections)
             else:
                 ret_intersections = intersections
-            return ret_intersections, fitness, diag_output
+            return ret_intersections, fitness, diag_output, 0
         #elif nr_of_fixes >= 3:
         # For >= 3 star fixes perform pairwise calculation on every pair of fixes
         # and then run a sorting algorithm
@@ -2310,9 +2310,16 @@ class SightCollection:
                 mult_scalar_vect ((1/nr_of_chosen_points)*fitness_here, rect_vec))
         summation_vec = normalize_vect (summation_vec)
         ret_latlon = to_latlon (summation_vec)
+        calculated_diff = 0
+        diff_sum_2 = 0
+        for cp in chosen_points:
+            selected_coord = coords [cp][0]
+            distance_diff = spherical_distance (ret_latlon, selected_coord)
+            diff_sum_2 += distance_diff**2
+        calculated_diff = sqrt (diff_sum_2)
         if return_geodetic:
-            return LatLonGeodetic(ll=ret_latlon), fitness_sum, diag_output
-        return ret_latlon, fitness_sum, diag_output
+            return LatLonGeodetic(ll=ret_latlon), fitness_sum, diag_output, calculated_diff
+        return ret_latlon, fitness_sum, diag_output, calculated_diff
 #pylint: enable=R0912
 #pylint: enable=R0914
 #pylint: enable=R0915
@@ -2349,7 +2356,7 @@ class SightCollection:
             assert isinstance (sc, SightCollection)
             intersections = None
             try:
-                intersections, _, _ = \
+                intersections, _, _, _ = \
                 sc.get_intersections (return_geodetic=return_geodetic,
                                       limit=limit,
                                       estimated_position=estimated_position,
@@ -2401,7 +2408,7 @@ class SightCollection:
             diagnostics : bool = False,
             max_iter : int = 10,
             dist_limit : float = 0.001) ->\
-            tuple[LatLon | tuple[LatLon, LatLon], float, str, object]:
+            tuple[LatLon | tuple[LatLon, LatLon], float, str, object, float]:
         ''' Returns an intersection based on improved algorithm.
             Successively searches for (iterates) to get the correct
             position. Each iteration improves the DRP (using the result
@@ -2413,12 +2420,13 @@ class SightCollection:
         fitness = None
         diag = None
         counter = 0
+        calculated_diff = 0
         while not ready:
             # This loop will repeat the sight reduction with successively more
             # accurate DR positions
             collection = get_starfixes (estimated_position)
             assert isinstance (collection, SightCollection)
-            intersections, fitness, diag =\
+            intersections, fitness, diag, calculated_diff =\
             collection.get_intersections (return_geodetic=return_geodetic,
                                           limit=limit,
                                           diagnostics=diagnostics,
@@ -2436,7 +2444,7 @@ class SightCollection:
         assert intersections is not None
         assert fitness is not None
         assert diag is not None
-        return intersections, fitness, diag, collection
+        return intersections, fitness, diag, collection, calculated_diff
 #pylint: enable=R0913
 #pylint: enable=R0917
 #pylint: enable=R0914
@@ -2444,7 +2452,7 @@ class SightCollection:
 #pylint: disable=R0914
     def render_folium\
           (self, intersections : tuple [LatLon, LatLon] | LatLon | NoneType = None,\
-           accuracy : float = 1000, label_text = "Intersection",
+           accuracy : float = 1, label_text = "Intersection",
            draw_grid = True, draw_markers = True, draw_azimuths = False) -> object:
         ''' Renders a folium object (Map) to be used for map plotting'''
 
@@ -2481,15 +2489,15 @@ class SightCollection:
             Folium_Circle(
                 location=[int_geodetic.get_lat(),\
                         int_geodetic.get_lon()+lon_adjustment],
-                radius=radius,
+                radius=radius*1852,
                 color="black",
                 weight=1,
                 fill_opacity=0.6,
                 opacity=1,
                 fill_color="lightgreen",
                 fill=False,  # gets overridden by fill_color
-                popup = "Radius = " + str(radius) + " meters",
-                tooltip="Radius : " + str(accuracy) + " m."
+                popup = "Radius = " + str(radius) + " nm",
+                tooltip="Radius : " + str(accuracy) + " nm."
             ).add_to(the_map)
             if draw_markers:
                 Marker(

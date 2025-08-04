@@ -259,8 +259,8 @@ sextant readings.
 *This is a result of the need for adjustments to the oblateness of the Earth.*
 
 *The map interface requires an active internet connection to present*
-*full map displays. Without an internet connection you will only see*
-*the circles of equal altitude, local coordinate grid, GP:s and intersections*
+*full map displays. Without an internet connection you will get*
+*unpredictable results.*
 
 ## Working with configurations<a name="configs"></a>
 
