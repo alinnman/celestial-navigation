@@ -33,7 +33,8 @@ class NMEAClient:
 
         try:
             # Handle longitude (DDDMM.MMMM) vs latitude (DDMM.MMMM)
-            if len(coord_str) > 9:  # Longitude format
+            # if len(coord_str) > 9:  # Longitude format
+            if len(coord_str) >= 9: # BUG Correction
                 degrees = int(coord_str[:3])
                 minutes = float(coord_str[3:])
             else:  # Latitude format

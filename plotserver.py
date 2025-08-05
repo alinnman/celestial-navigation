@@ -26,7 +26,8 @@ class NMEAServer:
     def calculate_checksum(self, sentence):
         """Calculate NMEA checksum (XOR of all characters between $ and *)"""
         checksum = 0
-        for char in sentence[1:]:  # Skip the $
+        # for char in sentence[1:]:  # Skip the $
+        for char in sentence[0:]:  # BUG Correction
             checksum ^= ord(char)
         return f"{checksum:02X}"
 
