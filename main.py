@@ -9,7 +9,9 @@
 '''
 # pylint: disable=C0413
 # pylint: disable=C0411
-from multiprocessing import Process, Queue, freeze_support
+# from multiprocessing import Process, Queue, freeze_support # TODO Review
+from multiprocessing import freeze_support
+from queue import Queue
 import threading
 from types import NoneType
 import importlib
@@ -56,6 +58,34 @@ def str2bool(v):
     return v.lower() in ("yes", "true", "t", "1")
 
 Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
+
+from kivy.utils import platform
+
+def request_android_permissions():
+    """Request Android permissions only when running on Android"""
+    if platform == 'android':
+        try:
+            # Dynamically import Android-specific modules
+            android_permissions = importlib.import_module('android.permissions')
+
+            # Get the functions/classes we need
+            request_permissions = android_permissions.request_permissions
+            permission = android_permissions.Permission
+
+            # Now request the permissions
+            request_permissions([
+                permission.INTERNET,
+                permission.ACCESS_NETWORK_STATE,
+                permission.ACCESS_WIFI_STATE,
+                permission.CHANGE_NETWORK_STATE
+            ])
+
+            print("Android permissions requested")
+
+        except ImportError as e:
+            print(f"Could not import Android permissions: {e}")
+    else:
+        print("Not running on Android, skipping permission request")
 
 # Set default color and sizes of the form
 USE_KV = True
@@ -346,7 +376,8 @@ def start_plotserver ():
     global COMM_QUEUE
 # pylint: enable=W0603
     COMM_QUEUE = Queue ()
-    plot_process = Process (target = run_plotserver, args = (COMM_QUEUE,))
+    # plot_process = Process (target = run_plotserver, args = (COMM_QUEUE,))
+    plot_process = threading.Thread (target = run_plotserver, args = (COMM_QUEUE,), daemon=True)
     plot_process.start ()
 
 def kill_plotserver ():
@@ -1090,6 +1121,7 @@ class InputForm(GridLayout):
 
 if __name__ == '__main__':
 
+    request_android_permissions ()
     if is_windows():
         freeze_support ()
     start_http_server ()

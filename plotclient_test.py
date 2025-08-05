@@ -307,7 +307,8 @@ def main():
 #pylint: enable=C0415
 
     # Default connection parameters
-    host = 'localhost'
+    #host = 'localhost'
+    host = '192.168.0.241'
     port = 10110
 
     # Parse command line arguments

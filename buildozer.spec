@@ -31,7 +31,7 @@ source.exclude_dirs = .venv, .venv-buildozer, .vscode, colab, maths, nautical_al
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
-source.exclude_patterns = calibration.py, starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py, kivyapp.*.json, notebook.*.json, map.html
+source.exclude_patterns = calibration.py, starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py, plotclient_test.py, kivyapp.*.json, notebook.*.json, map.html
 
 # (str) Application versioning (method 1)
 version = 0.2.9
@@ -100,7 +100,7 @@ android.presplash_color = #555555
 #icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
 
 # (list) Permissions
-android.permissions = INTERNET
+android.permissions = android.permissions = INTERNET,ACCESS_NETWORK_STATE,ACCESS_WIFI_STATE,CHANGE_NETWORK_STATE,FOREGROUND_SERVICE,FOREGROUND_SERVICE_DATA_SYNC
 # INTERNET permission needed for the web browser interaction
 
 # (list) features (adds uses-feature -tags to manifest)
@@ -186,7 +186,7 @@ android.ndk_api = 33
 
 # (list) List of Java files to add to the android project (can be java or a
 # directory containing the files)
-#android.add_src =
+android.add_src = java/
 
 # (list) Android AAR archives to add
 #android.add_aars =
@@ -237,6 +237,8 @@ android.ndk_api = 33
 
 # (str) launchMode to set for the main activity
 #android.manifest.launch_mode = standard
+
+android.manifest.allow_backup = true
 
 # (list) Android additional libraries to copy into libs/armeabi
 #android.add_libs_armeabi = libs/android/*.so
@@ -290,7 +292,7 @@ android.allow_backup = True
 # you can do so with the manifestPlaceholders property.
 # This property takes a map of key-value pairs. (via a string)
 # Usage example : android.manifest_placeholders = [myCustomUrl:\"org.kivy.customurl\"]
-# android.manifest_placeholders = [:]
+android.manifest_placeholders = [:]
 
 # (bool) disables the compilation of py to pyc/pyo files when packaging
 # android.no-compile-pyo = True

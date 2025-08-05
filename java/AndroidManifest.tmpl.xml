@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="{{ args.package }}"
+    android:versionCode="{{ args.numeric_version }}"
+    android:versionName="{{ args.version }}"
+    android:installLocation="auto">
+
+    <application
+        android:label="@string/app_name"
+        android:icon="@drawable/icon"
+        android:usesCleartextTraffic="true">
+        <!-- Your activities will be added here by buildozer -->
+    </application>
+</manifest>
