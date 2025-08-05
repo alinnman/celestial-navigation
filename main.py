@@ -9,7 +9,8 @@
 '''
 # pylint: disable=C0413
 # pylint: disable=C0411
-from multiprocessing import freeze_support
+from multiprocessing import Process, Queue, freeze_support
+import threading
 from types import NoneType
 import importlib
 from starfix import LatLonGeodetic, SightCollection, Sight, \
@@ -42,6 +43,8 @@ from kivy.lang import Builder
 from kivy.app import App, runTouchApp
 from kivy.core.clipboard import Clipboard # Import the Clipboard module
 from kivy.core.window import Window
+
+from plotserver import NMEAServer
 
 Window.softinput_mode = 'below_target'
 
@@ -312,6 +315,49 @@ def get_starfixes(drp_pos: LatLonGeodetic) -> SightCollection:
 
     return SightCollection(retval)
 
+def run_plotserver(cq : Queue):
+    ''' Running the plot server worker '''
+    server = NMEAServer(host='0.0.0.0', port=10110)
+    # print (str(cq)) # TODO Remove
+    try:
+        # Start server in a separate thread
+        server_thread = threading.Thread(target=server.start, daemon=True)
+        server_thread.start()
+
+        # Simulate position updates (you would get these from your celestial nav calculations)
+        while True:
+            check_string = cq.get ()
+            assert isinstance (check_string, str)
+            if check_string == "STOP":
+                break
+            strs = check_string.split (";")
+            lat = float (strs[0])
+            lon = float (strs[1])
+            server.update_position (lat, lon)
+
+    finally:
+        server.stop()
+
+COMM_QUEUE = None
+
+def start_plotserver ():
+    ''' Start the plot server'''
+# pylint: disable=W0603
+    global COMM_QUEUE
+# pylint: enable=W0603
+    COMM_QUEUE = Queue ()
+    plot_process = Process (target = run_plotserver, args = (COMM_QUEUE,))
+    plot_process.start ()
+
+def kill_plotserver ():
+    ''' Kill the plot server'''
+    if COMM_QUEUE is not None:
+        COMM_QUEUE.put ("STOP")
+
+def update_plot_position (lat : float, lon : float):
+    ''' Update the plot server with new coordinates '''
+    if COMM_QUEUE is not None:
+        COMM_QUEUE.put (str(lat)+";"+str(lon))
 
 def sight_reduction() -> \
     tuple[str, bool, LatLonGeodetic | NoneType, SightCollection | Sight | NoneType]:
@@ -340,6 +386,7 @@ def sight_reduction() -> \
             diff_string = " ±" + str(round(calculated_diff/km_per_nautical_mile,1)) + " nm"
         else:
             diff_string = ""
+        update_plot_position (intersections.get_lat(), intersections.get_lon())
         return repr_string + diff_string, True, intersections, collection
 
     except IntersectError as ve:
@@ -1047,6 +1094,7 @@ if __name__ == '__main__':
         freeze_support ()
     start_http_server ()
     do_initialize()
+    start_plotserver ()
     StarFixApp.message_popup\
           ("[b]Welcome to Celeste![/b]\n"+\
            "This is an app for celestial navigation\n"+\
@@ -1054,5 +1102,6 @@ if __name__ == '__main__':
            StarFixApp.MSG_ID_INTRO)
     a = StarFixApp ()
     runTouchApp (a.get_root())
+    kill_plotserver ()
     if not is_windows():
         exit_handler ()

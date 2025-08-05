@@ -81,7 +81,7 @@ class NMEAServer:
         checksum = self.calculate_checksum(sentence)
         return f"${sentence}*{checksum}\r\n"
 
-    def update_position(self, latitude, longitude):
+    def update_position(self, latitude : float, longitude : float):
         """Update the current position"""
         self.latitude = latitude
         self.longitude = longitude
