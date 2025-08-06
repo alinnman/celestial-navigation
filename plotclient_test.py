@@ -300,15 +300,20 @@ class NMEAClient:
             print(f"📊 Session complete: {self.messages_received} messages in {uptime}")
 
 
-def main():
+def main(host = None):
     """Main function with command line interface"""
 #pylint: disable=C0415
     import sys
 #pylint: enable=C0415
 
     # Default connection parameters
-    #host = 'localhost'
-    host = '192.168.0.241'
+
+    if host is None:
+        host = '192.168.0.241'
+    else:
+        host = sys.argv[1:]
+    assert isinstance (host, str)
+
     port = 10110
 
     # Parse command line arguments
