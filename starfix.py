@@ -16,7 +16,7 @@ import os
 import http.server
 import socketserver
 
-from multiprocessing import Process
+from threading import Thread
 import webbrowser
 from configparser import ConfigParser
 
@@ -213,8 +213,8 @@ def __kill_http_server_if_running ():
 #pylint: disable=W0718
         except BaseException as _:
             pass
-        assert isinstance (running_http_server, Process)
-        running_http_server.kill ()
+        # assert isinstance (running_http_server, Process)
+        assert isinstance (running_http_server, Thread)
         running_http_server.join ()
         running_http_server = None
 
@@ -230,7 +230,7 @@ def start_http_server (kill_existing : bool = False):
             if running_http_server is not None:
                 __kill_http_server_if_running ()
         if running_http_server is None:
-            p = Process(target=__run_http_server)
+            p = Thread (target=__run_http_server)
             p.start()
             running_http_server = p
 #pylint: disable=W0702
