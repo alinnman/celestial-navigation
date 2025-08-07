@@ -36,6 +36,9 @@
 1. [Running a sight reduction](#running-a-sight-reduction)
 1. [Presenting a Map](#presenting-a-map)
 1. [Plotting (NMEA 0183 interface)](#plotting)
+    1. [Using standard Wi-Fi](#standard-wifi)
+    1. [Using a Mobile Hotspot](#hotspot)
+    1. [Specific app configuration](#app-configurations)
 1. [Working with configurations](#configs)
 1. [Installation and prerequisites](#installation-and-prerequisites)
 1. [Tips for Testing (without a sextant?)](#testing_tips)
@@ -273,7 +276,7 @@ without internet connection if you have a plotting device available.
 
 ## Plotting (NMEA-0183 interface) <a name="plotting"></a>
 
-### Using stardad Wi-Fi connection
+### Using standard Wi-Fi connection <a name="standard-wifi"></a>
 
 If you have access to a marine chart plotter or similar device you
 can easily use the Celeste app as an information source for the
@@ -293,15 +296,22 @@ is connected.
 NOTE: This allows for use (mapping) in scenarios where you lack internet
 connection!
 
-### Using a Mobile Hotspot
+### Using a Mobile Hotspot <a name="hotspot"></a>
 
-Connecting through Wi-Fi as described above requires a separate Wi-Fi **router**.
+Connecting through Wi-Fi as described above requires
+a separate Wi-Fi **router**.
 You may also try using a connection based on a Mobile Hotspot. Unfortunately
 the exact way of doing this varies between vendors and device models,
 making it difficult to provide exact instructions here.
-If you use the Celeste device as a Mobile Hotspot server you need to 
-find the "router address" it and attempt connect to it from your plotter 
-devices. Another option is using a second phone as Mobile Hotspot server. 
+If you use the Celeste device as a Mobile Hotspot server you need to
+find the "router address" it and attempt connect to it from your plotter
+devices. Another option is using a second phone as a Mobile Hotspot server.
+
+### Specific configurations for plot server <a name="app-configurations">
+
+You are recommended to make turn off the battery saving functions in android
+for Celeste if you use the plotter server functionality. Otherwise the
+plotter device will lose connection after a while if you hide the app.
 
 ## Working with configurations<a name="configs"></a>
 

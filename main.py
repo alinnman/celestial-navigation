@@ -9,13 +9,13 @@
 '''
 # pylint: disable=C0413
 # pylint: disable=C0411
-# from multiprocessing import Process, Queue, freeze_support # TODO Review
 from multiprocessing import freeze_support
 from queue import Queue
 import threading
 from types import NoneType
 import importlib
 import socket
+import time
 from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError, get_folium_load_error, show_or_display_file, \
     is_windows, exit_handler, start_http_server, parse_angle_string
@@ -40,13 +40,12 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
 from kivy.storage.jsonstore import JsonStore
-from functools import partial
-
 from kivy.lang import Builder
 from kivy.app import App, runTouchApp
 from kivy.core.clipboard import Clipboard # Import the Clipboard module
 from kivy.core.window import Window
 
+from functools import partial
 from plotserver import NMEAServer
 
 Window.softinput_mode = 'below_target'
@@ -60,7 +59,9 @@ def str2bool(v):
 
 Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 
+# pylint: disable=C0412
 from kivy.utils import platform
+# pylint: enable=C0412
 
 def request_android_permissions():
     """Request Android permissions only when running on Android"""
@@ -362,7 +363,6 @@ def get_local_ip():
 def run_plotserver(cq : Queue):
     ''' Running the plot server worker '''
     server = NMEAServer(host='0.0.0.0', port=10110)
-    # print (str(cq)) # TODO Remove
     try:
         # Start server in a separate thread
         server_thread = threading.Thread(target=server.start, daemon=True)
@@ -1080,17 +1080,37 @@ class InputForm(GridLayout):
         self.add_widget(bl)
 
         bl = FormRow()
-        ip_address = get_local_ip ()
-        if ip_address == "127.0.0.1":
-            ip_address = "No network connection"
-        else:
-            ip_address = "IP address = " + ip_address
-        self.ip_adress_status = MyLabel(text=ip_address, markup=True, indent=False)
+
+        def get_ip_code ():
+            ip_address = get_local_ip ()
+            if ip_address == "127.0.0.1":
+                ip_address = "No network connection"
+            else:
+                ip_address = "IP address = " + ip_address
+            return ip_address
+
+        def renewer_thread (field : MyLabel):
+            while True:
+                time.sleep (1.0)
+                code = get_ip_code ()
+                field.text = code
+
+        def start_ip_renewer (field : MyLabel) -> threading.Thread:
+            rt = threading.Thread (target = renewer_thread, args=(field,), daemon=True)
+            rt.start ()
+            return rt
+
+        self.ip_adress_status = MyLabel(text=get_ip_code(), markup=True, indent=False)
+        self.renewer_thread = start_ip_renewer (self.ip_adress_status)
         self.ip_adress_status.halign = "center"
         bl.add_widget(self.ip_adress_status)
-        self.add_widget(bl)        
+        self.add_widget(bl)
 
         self.populate_widgets()
+
+    def __del__ (self):
+        if self.renewer_thread is not None:
+            self.renewer_thread.join ()
 
     def __update_drp (self, i : tuple | LatLonGeodetic | NoneType):
         if i is None or isinstance (i, tuple):
@@ -1114,7 +1134,6 @@ class InputForm(GridLayout):
 
     def populate_widgets(self):
         ''' Read the data from json and populate all fields '''
-        #global NUM_DICT
         assert isinstance(NUM_DICT, dict)
         for entry in NUM_DICT:
             if entry == "Format":
@@ -1133,7 +1152,6 @@ class InputForm(GridLayout):
         for entry in self.data_widget_container.items():
             e = entry[0]
             w = entry[1]
-            # w = self.data_widget_container [entry]
             if isinstance(w, TextInput):
                 NUM_DICT[e] = w.text
             elif isinstance(w, CheckBox):
@@ -1149,8 +1167,11 @@ if __name__ == '__main__':
     request_android_permissions ()
     if is_windows():
         freeze_support ()
-    start_http_server ()
+    if not is_windows ():
+        # Start http server
+        start_http_server ()
     do_initialize()
+    # Start NMEA 0138 server
     start_plotserver ()
     StarFixApp.message_popup\
           ("[b]Welcome to Celeste![/b]\n"+\
@@ -1160,6 +1181,8 @@ if __name__ == '__main__':
            StarFixApp.MSG_ID_INTRO)
     a = StarFixApp ()
     runTouchApp (a.get_root())
+    # Kill NMEA 0138 server
     kill_plotserver ()
     if not is_windows():
+        # Kill http server
         exit_handler ()
