@@ -1129,8 +1129,9 @@ if __name__ == '__main__':
     start_plotserver ()
     StarFixApp.message_popup\
           ("[b]Welcome to Celeste![/b]\n"+\
-           "This is an app for celestial navigation\n"+\
-           "Use the \"Show help!\" button\nfor online documentation",
+           "This is an app for celestial navigation.\n"+\
+           "It is open source (MIT License)\nand comes with [b]NO WARRANTY[/b].\n"+\
+           "Use the \"Show help!\" button for documentation.",
            StarFixApp.MSG_ID_INTRO)
     a = StarFixApp ()
     runTouchApp (a.get_root())

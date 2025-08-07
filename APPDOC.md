@@ -8,6 +8,7 @@
 ## Table of Contents
 
 1. [Read this first](#read_this_first)
+    1. [Warranty and liability](#legal)
     1. [What is this app?](#what_is_it)
     1. [Screen Visibility and Navigation](#visibility)
     1. [Astrometric Data](#astrometry)
@@ -41,6 +42,12 @@
 1. [Licenses](#license)
 
 ## Read this first<a name="read_this_first"></a>
+
+### Warranty and liability <a name="legal"></a>
+
+The code is open source, and comes with **no warranty or liability**.
+Read more in the
+[license&nbsp;description](https://github.com/alinnman/celestial-navigation/blob/main/LICENSE).
 
 ### What is this app? <a name="what_is_it"></a>
 
