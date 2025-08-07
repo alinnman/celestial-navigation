@@ -285,7 +285,7 @@ Celeste using the following connection parameters.
 * Direction : Input
 
 If the presented ip address is "No network connection" the you need
-to connect your phone/tablet to the Wi-Fi where your plottin devices
+to connect your phone/tablet to the Wi-Fi where your plotting device
 is connected.
 
 NOTE: This allows for use (mapping) in scenarios where you lack internet
