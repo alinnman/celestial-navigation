@@ -64,7 +64,7 @@ A simple calculator for this can be
 ## 1.1 Links <a name="links"></a>
 
 For more information on **installation** and usage of the Python scripts
-and the (experimental) mobile app [see here](INSTALL.md).
+and the Celeste mobile app [see here](INSTALL.md).
 
 A short explanation of the logical steps and algorithms used in this toolkit can
 be [found here](WORKFLOW.md).

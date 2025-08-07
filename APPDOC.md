@@ -35,6 +35,7 @@
         1. [Pressure](#pressure)
 1. [Running a sight reduction](#running-a-sight-reduction)
 1. [Presenting a Map](#presenting-a-map)
+1. [Plotting (NMEA 0183 interface)](#plotting)
 1. [Working with configurations](#configs)
 1. [Installation and prerequisites](#installation-and-prerequisites)
 1. [Tips for Testing (without a sextant?)](#testing_tips)
@@ -261,13 +262,34 @@ successful sight reduction. Even for failed sight reductions (and single sights)
 you can display a map. This map can assist you in troubleshooting your
 sextant readings.
 
+The map interface requires an active internet connection to present
+full map displays. NOTE: Without an internet connection you will get
+unpredictable results. Use [plotting](#plotting) for active navigation
+without internet connection if you have a plotting device available.
+
 *Note: For a map with a single sight the circle may not touch your*
 *location precisely, if your DRP is inaccurate.*
 *This is a result of the need for adjustments to the oblateness of the Earth.*
 
-*The map interface requires an active internet connection to present*
-*full map displays. Without an internet connection you will get*
-*unpredictable results.*
+## Plotting (NMEA-0183 interface) <a name="plotting"></a>
+
+If you have access to a marine chart plotter or similar device you
+can easily use the Celeste app as an information source for the
+coordinate resolved by sight reduction. Connect the plotting device with
+Celeste using the following connection parameters.
+
+* Connection type : NMEA 0183
+* IP adress : Use the adress you see in the bottom field of the app.  
+* Port : 10110
+* Protocol : TCP
+* Direction : Input
+
+If the presented ip address is "No network connection" the you need
+to connect your phone/tablet to the Wi-Fi where your plottin devices
+is connected.
+
+NOTE: This allows for use (mapping) in scenarios where you lack internet
+connection!
 
 ## Working with configurations<a name="configs"></a>
 

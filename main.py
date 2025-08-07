@@ -15,6 +15,7 @@ from queue import Queue
 import threading
 from types import NoneType
 import importlib
+import socket
 from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError, get_folium_load_error, show_or_display_file, \
     is_windows, exit_handler, start_http_server, parse_angle_string
@@ -344,6 +345,19 @@ def get_starfixes(drp_pos: LatLonGeodetic) -> SightCollection:
             ))
 
     return SightCollection(retval)
+
+def get_local_ip():
+    """Get local IP without internet connectivity"""
+    try:
+        # Create socket but don't actually connect
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            # Use a non-routable address - doesn't need to be reachable
+            s.connect(('192.168.1.1', 80))  # Local network address
+            return s.getsockname()[0]
+# pylint: disable=W0702
+    except:
+        return "127.0.0.1"
+# pylint: enable=W0702
 
 def run_plotserver(cq : Queue):
     ''' Running the plot server worker '''
@@ -1065,6 +1079,17 @@ class InputForm(GridLayout):
         bl.add_widget(butt)
         self.add_widget(bl)
 
+        bl = FormRow()
+        ip_address = get_local_ip ()
+        if ip_address == "127.0.0.1":
+            ip_address = "No network connection"
+        else:
+            ip_address = "IP address = " + ip_address
+        self.ip_adress_status = MyLabel(text=ip_address, markup=True, indent=False)
+        self.ip_adress_status.halign = "center"
+        bl.add_widget(self.ip_adress_status)
+        self.add_widget(bl)        
+
         self.populate_widgets()
 
     def __update_drp (self, i : tuple | LatLonGeodetic | NoneType):
@@ -1132,7 +1157,6 @@ if __name__ == '__main__':
            "This is an app for celestial navigation.\n"+\
            "It is open source (MIT License)\nand comes with [b]NO WARRANTY[/b].\n"+\
            "Use the \"Show help!\" button for documentation.",
-    
            StarFixApp.MSG_ID_INTRO)
     a = StarFixApp ()
     runTouchApp (a.get_root())
