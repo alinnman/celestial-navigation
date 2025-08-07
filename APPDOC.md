@@ -317,7 +317,7 @@ of your web browser, and use the "print to PDF" option if available.
 
 ## Installation and Prerequisites<a name="installation"></a>
 
-The application runs under Android 13 or higher.
+The application runs under Android versions 13-16.
 A 64-bit ARM processor is required.
 It is installed using APK files which you can
 [find&nbsp;here](https://drive.google.com/drive/folders/1QFcncVEuCQMnls8lyNElDtpTYruMgI0D?usp=sharing).

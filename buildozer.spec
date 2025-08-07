@@ -107,8 +107,8 @@ android.permissions = INTERNET,ACCESS_NETWORK_STATE,ACCESS_WIFI_STATE,CHANGE_NET
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-android.api = 35
-# Api level 35 = Android 15
+android.api = 36
+# Api level 36 = Android 16
 
 # (int) Minimum API your APK / AAB will support.
 # android.minapi = 28
@@ -117,7 +117,8 @@ android.minapi = 33
 # Api level 33 = Android 13
 
 # (int) Android SDK version to use
-android.sdk = 35
+# This setting is deprecated
+# android.sdk = 36
 
 # (str) Android NDK version to use
 android.ndk = 25c
