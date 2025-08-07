@@ -273,6 +273,8 @@ without internet connection if you have a plotting device available.
 
 ## Plotting (NMEA-0183 interface) <a name="plotting"></a>
 
+### Using stardad Wi-Fi connection
+
 If you have access to a marine chart plotter or similar device you
 can easily use the Celeste app as an information source for the
 coordinate resolved by sight reduction. Connect the plotting device with
@@ -290,6 +292,16 @@ is connected.
 
 NOTE: This allows for use (mapping) in scenarios where you lack internet
 connection!
+
+### Using a Mobile Hotspot
+
+Connecting through Wi-Fi as described above requires a separate Wi-Fi **router**.
+You may also try using a connection based on a Mobile Hotspot. Unfortunately
+the exact way of doing this varies between vendors and device models,
+making it difficult to provide exact instructions here.
+If you use the Celeste device as a Mobile Hotspot server you need to 
+find the "router address" it and attempt connect to it from your plotter 
+devices. Another option is using a second phone as Mobile Hotspot server. 
 
 ## Working with configurations<a name="configs"></a>
 
