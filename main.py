@@ -1132,6 +1132,7 @@ if __name__ == '__main__':
            "This is an app for celestial navigation.\n"+\
            "It is open source (MIT License)\nand comes with [b]NO WARRANTY[/b].\n"+\
            "Use the \"Show help!\" button for documentation.",
+    
            StarFixApp.MSG_ID_INTRO)
     a = StarFixApp ()
     runTouchApp (a.get_root())
