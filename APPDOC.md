@@ -265,10 +265,32 @@ successful sight reduction. Even for failed sight reductions (and single sights)
 you can display a map. This map can assist you in troubleshooting your
 sextant readings.
 
-The map interface requires an active internet connection to present
-full map displays. NOTE: Without an internet connection you will get
-unpredictable results. Use [plotting](#plotting) for active navigation
+The map interface requires a **browser** and
+an **active internet connection** to present
+full map displays. NOTE: Without an internet connection you may
+have less good results. Se the list below.
+Use [plotting](#plotting) for active navigation
 without internet connection if you have a plotting device available.
+
+<a name="browser-list"></a>
+
+Different browsers behave differently. This is a list of test
+results for some browsers.
+We show support for online (internet active) and offline
+(no internet). The background tile will not work properly when
+offline (the base map), but older tiles may be cached.
+We also see if it is possible to touch the minute grid
+around the intersection point, since this can be a help for hybrid work
+with paper charts.
+
+| Browser | Works Online | Works Offline | Supports touch of minute gridlines |
+| :------ | :----------- | :------------ | :--------------------------|
+| MS Edge | YES          | YES           | YES                        |
+| Samsung Internet | YES | YES           | YES                        |
+| Chrome  | YES          | <span style="color: red;">NO</span>   | YES  |
+| Firefox | YES          | YES           | <span style="color: red;">NO<span> |
+| Opera   | YES          | YES           | <span style="color: red;">NO</span>  |
+| DuckDuckGo | <span style="color: red;">NO</span> | <span style="color: red;">NO</span>  | <span style="color: red;">NO</span> |
 
 *Note: For a map with a single sight the circle may not touch your*
 *location precisely, if your DRP is inaccurate.*
@@ -337,6 +359,9 @@ suitable tools
 Regarding **maps**: To save maps you are advised to use the print functionality
 of your web browser, and use the "print to PDF" option if available.
 
+If you use and **external plotter** you are advised to use it to build
+routes, document waypoints etc.
+
 ## Installation and Prerequisites<a name="installation"></a>
 
 The application runs under Android versions 13-16.
@@ -350,6 +375,10 @@ app on Google Play.
 
 See [this article](https://www.wikihow.com/Install-APK-Files-on-Android)
 for info on how to install APK files on Android.
+
+You will need a **Web Browser** for the mapping function.
+See the [list&nbsp;here](#browser-list) for a list of browsers
+and potential issues.
 
 Celeste is built on the P4A platform
 ([Python for Android](https://github.com/kivy/python-for-android))
