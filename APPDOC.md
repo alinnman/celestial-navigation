@@ -289,7 +289,7 @@ with paper charts.
 | Samsung Internet | YES | YES           | YES                        |
 | Chrome  | YES          | <span style="color: red;">NO</span>   | YES  |
 | Firefox | YES          | YES           | <span style="color: red;">NO<span> |
-| Opera   | YES          | YES           | <span style="color: red;">NO</span>  |
+| Opera   | <span style="color: red;">NO</span> | <span style="color: red;">NO</span> | <span style="color: red;">NO</span>  |
 | DuckDuckGo | <span style="color: red;">NO</span> | <span style="color: red;">NO</span>  | <span style="color: red;">NO</span> |
 
 *Note: For a map with a single sight the circle may not touch your*
