@@ -126,7 +126,7 @@ class MyLimbDropdown (widgets.Dropdown):
         raise NotImplementedError
 
     def __deepcopy__ (self, _):
-        raise NotImplementedError        
+        raise NotImplementedError
 
     def handle_event (self, change):
         ''' Event terminator '''

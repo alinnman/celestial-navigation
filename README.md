@@ -70,9 +70,7 @@ A short explanation of the logical steps and algorithms used in this toolkit can
 be [found here](WORKFLOW.md).
 
 Digital versions of the Nautical Almanac (in PDF format)
-for [2024](nautical_almanacs/NAmod(A4)_2024.pdf)
-and [2025](nauticak_almanacs/NAmod(A4)_2025.pdf)
-are included in this repository.
+are [included in this repository](./nautical_almanacs/).
 A machine-readable nautical almanac (in CSV format) can be
 [found here](./sample_data/)
 
@@ -99,7 +97,7 @@ If you also have access to a solar powered battery (powerbank) you have a tool
 useful while traveling in remote places or on the ocean. An Android app
 with the toolkit embedded is available for this.
 The toolkit (or the mobile phone app) can be useful in a scenario
-where you are the victim of 
+where you are the victim of
 [GPS Spoofing](https://en.wikipedia.org/wiki/GNSS_spoofing).
 The app can be connected to marine plotting equipment as a
 fallback to GPS receivers.
