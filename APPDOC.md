@@ -60,7 +60,8 @@ This app is a tool for
 i.e. finding your location with just a sextant and an accurate watch.
 This works even if you lose internet connection and/or lose a
 correct GPS signal. It can be used if you are entering a zone
-of jammed GPS (which is more and more common today as part
+of [jammed GPS]((https://en.wikipedia.org/wiki/GNSS_spoofing))
+(which is more and more common today as part
 of signals warfare) or simply as a backup for GPS.
 
 The app takes care of **sight reduction**, i.e. converting
