@@ -96,10 +96,16 @@ This project contains a toolkit (written in Python) to be used for
 together with some demos and documentation.
 You can use the toolkit on a mobile phone without internet connection.
 If you also have access to a solar powered battery (powerbank) you have a tool
-useful while traveling in remote places or on the ocean.
+useful while traveling in remote places or on the ocean. An Android app
+with the toolkit embedded is available for this.
+The toolkit (or the mobile phone app) can be useful in a scenario
+where you are the victim of 
+[GPS Spoofing](https://en.wikipedia.org/wiki/GNSS_spoofing).
+The app can be connected to marine plotting equipment as a
+fallback to GPS receivers.
 
 Sights (altitude measurements) have to be obtained using a sextant,
-a nautical almanac and an accurate chronometer.
+a nautical almanac (printed or digital) and an accurate chronometer.
 The toolkit takes care of the **sight reduction**
 (conversion to estimated location on Earth),
 a task that traditionally is performed with careful manual work using special
@@ -125,6 +131,10 @@ a sight reduction in 1-2 milliseconds.
   See [below](#terrestrial) for more information.
 
 ## 2. Making sights <a name="making-sights"></a>
+
+The description below focuses on writing code for the python scripts directly.
+We also go through the underlying maths.
+For using the Android app see [this description](APPDOC.md).
 
 You create a sight with code like this (for the Sun). You specify data from your
 sextant and chronometer. You also add tabular data from the
