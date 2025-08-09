@@ -22,6 +22,10 @@ pip install buildozer==1.5.0
 # Convert the documentation file to HTML
 pandoc -s -o APPDOC.html APPDOC.md -c APPDOC.css 
 
+echo "You NEED to setup the offline tiles directory with download_tiles.py "
+echo "But to avoid lockouts this will not be done in the build script."
+echo "You must do this at a convenient time. Once."
+
 # Now build the android app
 if [ "$1" == "release" ]; then
     buildozer -v android release

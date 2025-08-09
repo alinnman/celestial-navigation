@@ -12,6 +12,7 @@ from types import NoneType
 from collections.abc import Callable
 import pathlib
 import os
+import socket
 
 import http.server
 import socketserver
@@ -98,9 +99,6 @@ import threading
 class MyTCPServer(socketserver.TCPServer):
     ''' A modified tcp server with correct connection parameters'''
     def server_bind(self):
-#pylint: disable=C0415
-        import socket
-#pylint: enable=C0415
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.socket.bind(self.server_address)
 
@@ -128,10 +126,13 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
         else:
             try:
-                # Only allowed requests are for "html", "css" and "ico"
-                for p in ["html", "css", "ico"]:
+                # Only allowed requests are for these file formats
+                matched = False
+                for p in ["html", "css", "ico", "js", "png", "jpg", "jpeg", "json", "webp"]:
                     if self.path.lower().endswith (p):
+                        matched = True
                         break
+                if not matched:
                     self.send_error (404, "Document not accessible")
 
                 super().do_GET()
@@ -248,6 +249,60 @@ def http_server_running () -> bool:
 def exit_handler ():
     ''' Can be used on program/app exit '''
     __kill_http_server_if_running ()
+
+
+def is_online(timeout=3):
+    """Check if internet is available by testing DNS resolution"""
+    try:
+        # Try to resolve a reliable hostname
+        socket.setdefaulttimeout(timeout)
+        socket.gethostbyname("google.com")  # Google server
+        return True
+    except (socket.gaierror, socket.timeout, OSError):
+        return False
+    finally:
+        socket.setdefaulttimeout(None)  # Reset to default
+
+################################################
+# Basic generation of folium maps and tile handling
+################################################
+
+def get_folium_map (location : list | tuple,
+                    zoom_start_offline : int = 2,
+                    zoom_start_online : int = 11,
+                    max_zoom : int = 15) -> object:
+    ''' This is a general function for generating a map object
+        It will check for internet connectivity and either
+        generate an online map object or a map based on the 
+        internally available (coarse) tiles.
+    '''
+# pylint: disable=C0415
+    from folium import raster_layers, Map
+# pylint: enable=C0415
+
+    if is_online ():
+        the_map = Map(location=location,
+                      zoom_start=zoom_start_online,
+                      max_zoom=max_zoom)
+    else:
+        base_url = "http://localhost:8000/tiles"
+        tiles_url = f"{base_url}/{{z}}/{{x}}/{{y}}.png"
+
+        the_map = Map(location=location,
+                      zoom_start=zoom_start_offline,
+                      tiles=None,
+                      max_zoom=max_zoom)
+
+        raster_layers.TileLayer(
+            tiles=tiles_url,
+            attr='© Esri contributors | Offline tiles',  # This is required!
+            name='Offline Map',
+            overlay=False,
+            control=True,
+            max_native_zoom=zoom_start_offline,
+            max_zoom=max_zoom
+        ).add_to(the_map)
+    return the_map
 
 ################################################
 # Dimension of Earth
@@ -739,10 +794,7 @@ class CircleCollection:
                        steps_per_degree = 10) -> object :
         ''' Render this circle collection in Folium '''
         check_folium ()
-#pylint: disable=C0415
-        from folium import Map
-#pylint: enable=C0415
-        the_map = Map (location=[center_pos.get_lat(), center_pos.get_lon()])
+        the_map = get_folium_map (location=[center_pos.get_lat(), center_pos.get_lon()])
         l = len (self.c_list)
         for i in range (l):
             color = "#FF0000"
@@ -2107,10 +2159,9 @@ class Sight :
 
     def render_folium_new_map (self, draw_markers : bool = True, zoom_start = 2) -> object:
         ''' Render this Sight object on a newly created Folium Map object'''
-#pylint: disable=C0415
-        from folium import Map
-#pylint: enable=C0415
-        m = Map ([self.get_gp().get_lat(),self.get_gp().get_lon()], zoom_start=zoom_start)
+        m = get_folium_map ([self.get_gp().get_lat(),self.get_gp().get_lon()],
+                            zoom_start_online=zoom_start,
+                            zoom_start_offline=zoom_start)
         self.render_folium (m, draw_markers=draw_markers)
         return m
 
@@ -2482,8 +2533,11 @@ class SightCollection:
             elif lon_average - int_geodetic.get_lon () > 180:
                 lon_adjustment = 360
 
-            the_map = Map(location=(int_geodetic.get_lat(),\
-                                    int_geodetic.get_lon()+lon_adjustment), zoom_start=12)
+            the_map = get_folium_map (location=(int_geodetic.get_lat(),\
+                                                int_geodetic.get_lon()+lon_adjustment),
+                                      zoom_start_online = 11,
+                                      zoom_start_offline = 2)
+            assert isinstance (the_map, Map)
 
             radius = accuracy
             Folium_Circle(
@@ -2507,8 +2561,10 @@ class SightCollection:
                     icon=Icon(icon="user"),
                 ).add_to(the_map)
         else:
-            the_map = Map(location=(0,\
-                                    0), zoom_start=2)
+            the_map = get_folium_map (location = (0,0),
+                                      zoom_start_offline=2,
+                                      zoom_start_online=2)
+            assert isinstance (the_map, Map)
 
         if draw_azimuths:
             for s in the_sf_list:
@@ -2776,8 +2832,9 @@ class SightTrip:
         assert isinstance (self.start_pos, LatLon)
         assert isinstance (self.end_pos, LatLon)
         end_pos_d   = LatLonGeodetic (ll = self.end_pos)
-        draw_map = Map (location = [end_pos_d.get_lat(),\
+        draw_map = get_folium_map (location = [end_pos_d.get_lat(),\
                                     end_pos_d.get_lon()])
+        assert isinstance (draw_map, Map)
         self.sight_end.render_folium (draw_map)
 
 

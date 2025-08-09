@@ -18,16 +18,16 @@ package.domain = linnman.net
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,csv,properties,js,json,html,css,mp3,ico
+source.include_exts = py,csv,properties,js,json,html,css,mp3,ico,png
 
 # (list) List of inclusions using pattern matching
-source.include_patterns = sample_data/*
+source.include_patterns = sample_data/*, tiles/*
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = .venv, .venv-buildozer, .vscode, colab, maths, nautical_almanacs, test, xtras
+source.exclude_dirs = .venv, .venv-buildozer, .vscode, colab, maths, nautical_almanacs, test, xtras, pics
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
