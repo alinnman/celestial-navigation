@@ -71,6 +71,16 @@ and you are advised to at least
 [get&nbsp;acquainted](https://youtube.com/playlist?list=PLWcAZhCRTMByW_XEQ0y0OlGmxO3jp0LyE&si=Vzb2agqKltBIXQlA)
 with classical methods for celestial navigation.
 
+The sight reduction can be viewed in three different ways:
+
+1. The coordinate is presented in the app window.
+1. [You can present a **map**](#presenting-a-map)
+in the browser of your Android unit.
+1. You can connect an [external device](#plotting)
+(plotter, GPS unit or similar) and see the
+coordinate on a map display.
+This is useful for marine operations and/or when using outdoor handheld devices.
+
 Testing this app can be done with a good **sextant** (which requires
 careful preparation and adjustments). You can also test it with
 "sextant simulators", see [below](#testing_tips).
@@ -268,15 +278,17 @@ sextant readings.
 
 The map interface requires a **browser** and
 an **active internet connection** to present
-full map displays. NOTE: Without an internet connection you may
-have less good results. Se the list below.
+full map displays with full detail.
+Without an internet connection you will see
+a much coarser map on a continental scale.
 Use [plotting](#plotting) for active navigation
 without internet connection if you have a plotting device available.
 
 <a name="browser-list"></a>
 
 Different browsers behave differently. This is a list of test
-results for some browsers.
+results for some browsers, when tested on a Samsung Galaxy S23 unit.
+(Other devices may show different results!)
 We show support for online (internet active) and offline
 (no internet). The background tile will not work properly when
 offline (the base map), but older tiles may be cached.
@@ -312,12 +324,12 @@ Celeste using the following connection parameters.
 * Protocol : TCP
 * Direction : Input
 
-If the presented ip address is "No network connection" the you need
+If the presented ip address is "No network connection" then you need
 to connect your phone/tablet to the Wi-Fi where your plotting device
 is connected.
 
-NOTE: This allows for use (mapping) in scenarios where you lack internet
-connection!
+NOTE: This allows for use (detailed mapping) in scenarios where you lack
+internet connection!
 
 ### Using a Mobile Hotspot <a name="hotspot"></a>
 

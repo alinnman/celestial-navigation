@@ -34,7 +34,7 @@ source.exclude_dirs = .venv, .venv-buildozer, .vscode, colab, maths, nautical_al
 source.exclude_patterns = calibration.py, starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py, plotclient_test.py, kivyapp.*.json, notebook.*.json, map.html
 
 # (str) Application versioning (method 1)
-version = 0.2.13
+version = 0.2.14
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -301,6 +301,11 @@ android.manifest_placeholders = [:]
 # (str) The format used to package the app for release mode (aab or apk).
 android.release_artifact = apk
 #android.release_artifact = aab
+
+# Signing configuration  
+# android.debug_keystore = ~/.android/debug.keystore
+# android.release_keystore = path/to/your-release-keystore.jks
+# android.release_keystore_alias = your-key-alias
 
 #
 # Python for android (p4a) specific

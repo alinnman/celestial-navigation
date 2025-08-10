@@ -14,12 +14,18 @@ tile_sources = {
     'cartodb_positron': 'https://cartodb-basemaps.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
     'opentopomap': 'https://tile.opentopomap.org/{z}/{x}/{y}.png',
     'esri_world': 
-    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
+    'usgs':'https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}'
 }
 # pylint: enable=C0301
 
+CHOSEN_TILES = 'usgs'
+# NOTE: The USGS data is *public domain* and can be freely used.
+# You are strongly advised to check legal requirements before using *any*
+# other map data source for the Celeste app.
+
 def download_world_tiles(max_zoom=2,
-                         base_url=tile_sources['esri_world'],
+                         base_url=tile_sources[CHOSEN_TILES],
                          output_dir="tiles"):
     """Download world tiles up to specified zoom level"""
 

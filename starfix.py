@@ -295,7 +295,7 @@ def get_folium_map (location : list | tuple,
 
         raster_layers.TileLayer(
             tiles=tiles_url,
-            attr='© Esri contributors | Offline tiles',  # This is required!
+            attr='Map data courtesy of U.S. Geological Survey | Offline tiles',  # This is required!
             name='Offline Map',
             overlay=False,
             control=True,
