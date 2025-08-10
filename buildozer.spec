@@ -42,7 +42,7 @@ version = 0.2.14
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = pandas,kivy,cython,android,folium,branca,jinja2,markupsafe,xyzservices
+requirements = pandas,kivy,android,folium,branca,jinja2,markupsafe,xyzservices
 # Note: The requirements "folium,branca,jinja2,markupsafe,xyzservices"
 # are all needed for folium (pure python libraries needed)
 
@@ -301,11 +301,6 @@ android.manifest_placeholders = [:]
 # (str) The format used to package the app for release mode (aab or apk).
 android.release_artifact = apk
 #android.release_artifact = aab
-
-# Signing configuration  
-# android.debug_keystore = ~/.android/debug.keystore
-# android.release_keystore = path/to/your-release-keystore.jks
-# android.release_keystore_alias = your-key-alias
 
 #
 # Python for android (p4a) specific
