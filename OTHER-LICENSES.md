@@ -12,7 +12,8 @@ below before doing any more elaborate work, or sharing of the software.
 | Software | Location | Used for | License type |
 | :------------- | :------------- | :------------- | :------------- |
 | Folium | [GitHub](https://github.com/python-visualization/folium) | Software for mapping of sight reductions| [MIT type license](https://github.com/python-visualization/folium/blob/main/LICENSE.txt) |
-| OpenStreetMap | [openstreetmap.org](https://www.openstreetmap.org) | Map overlays | [Open Data Commons Open Database License (ODbL)](https://www.openstreetmap.org/copyright)|
+| OpenStreetMap | [openstreetmap.org](https://www.openstreetmap.org) | Map overlays (detailed) | [Open Data Commons Open Database License (ODbL)](https://www.openstreetmap.org/copyright)|
+| US Geological Survey (USGS) | [usgs.gov](https://www.usgs.gov) | Map overlays (coarse) | [Public Domain](https://creativecommons.org/publicdomain/zero/1.0/deed.en)|
 | Pandas | [GitHub](https://github.com/pandas-dev/pandas) | Handling of nautical almanacs | [BSD 3-Clause "New" or "Revised" License](https://github.com/pandas-dev/pandas/blob/main/LICENSE) |
 | Kivy | [GitHub](https://github.com/kivy/kivy) | Android app development | [MIT license](https://github.com/kivy/kivy/blob/master/LICENSE) |
 | Buildozer | [GitHub](https://github.com/kivy/buildozer) | Android app deployment | [MIT license](https://github.com/kivy/buildozer/blob/master/LICENSE)
