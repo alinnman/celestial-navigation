@@ -25,11 +25,10 @@ but the android cross-compiling kit
 
 ### A mobile app (Android)
 
-A mobile app has been developed but it is still in alpha stage and not
+A mobile app has been developed but it is still in beta stage and not
 yet published on Google Play.<br>
+[See here](APPDOC.md) for instructions on how to **use** the app.<br>
 [Read more about the app and how to install it here](DEVELOPMENT.md#apps)
-
-[See here](APPDOC.md) for instructions on how to use the app.
 
 ### Python scripts and notebooks
 
