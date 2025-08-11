@@ -138,7 +138,7 @@ actual position. Sometimes a grossly incorrect DRP (1000s km off)
 may result in a failed sight reduction,
 due to a conflicting false intersection (which can be located very far away).
 
-At the top you see fields marked **DRP Latitude** and **DRP Longitude**.
+At the top you see fields marked **Latitude** and **Longitude**.
 Enter the latitude and longitude for your DRP in these fields.
 
 The format used is "DD:MM:SS", "DD:MM" or "DD" (degrees, arcminutes, arcseconds)
@@ -147,7 +147,8 @@ or western longitudes.
 ("59", "-35", "-120:34" and "23:34.2" are valid inputs)
 
 Note: The values of these fields are automatically updated if you execute
-a successful sight reduction.
+a successful sight reduction. The newly computed coordinate will be your
+new DRP.
 
 ### Sight Quality<a name="drp_quality"></a>
 
@@ -213,7 +214,7 @@ Date is specified as "YYYY-MM-DD"
 
 ##### Time<a name="time"></a>
 
-Time is specified as "HH24:MM:SS"
+Time is specified as "HH24:MM:SS" (Hours in 24-hour format. PM/AM not used.)
 
 ##### Timezone <a name="timezone"></a>
 
@@ -235,8 +236,8 @@ and very little effect on planets. It is mainly used for the Moon or the Sun.
 
 #### Observer Elevation<a name="observer_elevation"></a>
 
-Specify your **elevation above the horizon** (in meters), or more specifically:
-the elevation of your **eye**.
+Specify your **elevation above the sea surface** (in meters),
+or more specifically: the elevation of your **eye**.
 Note: You can use a non-zero observer elevation only if you are **not** using an
 artificial horizon.
 *This setting takes care of the effect of the dip of the horizon*.
@@ -249,7 +250,7 @@ Specify the **temperature** (in degrees celsius).
 #### Temperature Gradient<a name="temperature_gradient"></a>
 
 Specify how **temperature changes with increasing elevation**.
-Default is "-0.01",
+Default is "-0.01" (normal atmospheric conditions),
 which means 1 degree celsius lower temperature for each 100 meters.
 If you have temperature inversions you may increase this parameter to
 a positive value ("0.1" for one degree temperature increase per 10 meters).
@@ -257,15 +258,18 @@ a positive value ("0.1" for one degree temperature increase per 10 meters).
 
 #### Pressure<a name="pressure"></a>
 
-Specify **air pressure** (in kPa). Normal air pressure is "101".
+Specify **air pressure** (in kPa). Normal air pressure is "101" (kPa).
 *This setting affects the effects of atmospheric refraction*.
 
 ## Running a sight reduction<a name="running_sight_reduction"></a>
 
 Press the button <tt><b>"Perform sight reduction!"</b></tt>.
 The calculated position will be
-presented in the underlying field. If the sight reduction fails you will see
-an error message (and hear an error sound).
+presented in the field above the button. If you are using a 3-star fix you will
+also see an estimation of the accuracy (in nautical miles) based on the
+proximity of the three central intersections.
+If the sight reduction fails you will see an error message
+(and hear an error sound).
 *The sight reduction does not depend on an active*
 *internet or GPS connection.*
 
@@ -281,7 +285,7 @@ an **active internet connection** to present
 full map displays with full detail.
 Without an internet connection you will see
 a much coarser map on a continental scale.
-Use [plotting](#plotting) for active navigation
+Use [plotting](#plotting) for active navigation and map display
 without internet connection if you have a plotting device available.
 
 <a name="browser-list"></a>
