@@ -1,8 +1,10 @@
-#!/usr/bin/env python3
-"""
-NMEA 0183 TCP Server for Marine GPS/Plotter Integration
-Broadcasts position data in NMEA format over TCP connection
-"""
+'''
+    NMEA 0183 TCP Server for Marine GPS/Plotter Integration.
+    Broadcasts position data in NMEA format over TCP connection.
+
+    © August Linnman, 2025, email: august@linnman.net
+    MIT License (see LICENSE file)  
+'''
 
 import socket
 import threading
@@ -26,8 +28,7 @@ class NMEAServer:
     def calculate_checksum(self, sentence):
         """Calculate NMEA checksum (XOR of all characters between $ and *)"""
         checksum = 0
-        # for char in sentence[1:]:  # Skip the $
-        for char in sentence[0:]:  # BUG Correction
+        for char in sentence[0:]:
             checksum ^= ord(char)
         return f"{checksum:02X}"
 

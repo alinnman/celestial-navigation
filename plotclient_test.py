@@ -1,11 +1,11 @@
-#!/usr/bin/env python3
-"""
+'''
     NMEA 0183 TCP Client for Testing
-    Connects to NMEA server and displays received navigation data
+    Connects to NMEA server and displays received navigation data.
+    Used for testing only (simulates a real plotter).
 
     © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)     
-"""
+'''
 
 import socket
 import threading
