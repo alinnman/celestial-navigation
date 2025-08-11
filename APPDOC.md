@@ -339,14 +339,16 @@ You may also try using a connection based on a Mobile Hotspot. Unfortunately
 the exact way of doing this varies between vendors and device models,
 making it difficult to provide exact instructions here.
 If you use the Celeste device as a Mobile Hotspot server you need to
-find the "router address" it and attempt connect to it from your plotter
+find the "router address" of it and attempt connect to it from your plotter
 devices. Another option is using a second phone as a Mobile Hotspot server.
 
-### Specific configurations for plot server <a name="app-configurations">
+### Specific configurations for plot server <a name="app-configurations"></a>
 
-You are recommended to make turn off the battery saving functions in android
-for Celeste if you use the plotter server functionality. Otherwise the
-plotter device will lose connection after a while if you hide the app.
+You are recommended to
+[turn off the battery saving functions](https://youtu.be/zCqOzQjQ97Q?si=loZCNxzxlBNL9CQP)
+in android for Celeste if you use the plotter server functionality.
+Otherwise the plotter device will lose connection after a while
+if you hide the app.
 
 ## Working with configurations<a name="configs"></a>
 
@@ -372,7 +374,7 @@ suitable tools
 Regarding **maps**: To save maps you are advised to use the print functionality
 of your web browser, and use the "print to PDF" option if available.
 
-If you use and **external plotter** you are advised to use it to build
+If you use an **external plotter** you can use it to build
 routes, document waypoints etc.
 
 ## Installation and Prerequisites<a name="installation"></a>
@@ -391,7 +393,9 @@ for info on how to install APK files on Android.
 
 You will need a **Web Browser** for the mapping function.
 See the [list&nbsp;here](#browser-list) for a list of browsers
-and potential issues.
+and potential issues. But you will likely have to check and test
+browsers yourself and choose the best one for your device and
+configuration.
 
 Celeste is built on the P4A platform
 ([Python for Android](https://github.com/kivy/python-for-android))
