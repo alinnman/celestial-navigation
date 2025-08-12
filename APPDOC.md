@@ -15,6 +15,7 @@
     1. [Feedback](#feedback)
         1. [Sound Feedback](#sound)
         1. [Messages](#messages)
+    1. [Units of measurement](#units)
 1. [Entering Data](#entering_data)
     1. [DRP Position](#drp_position)
     1. [Sight Quality](#drp_quality)
@@ -119,7 +120,14 @@ explaining briefly the mechanisms and what to expect and do.
 You can press the checkbox <tt><b>"Don't show this message again"</b></tt>
 to get rid of a particular message.
 *Note: In order to re-instate all messages you can perform a sight reduction*
-*with zero (0) active sights*.
+*with zero (0) active sights. Disable all three sights and click*
+*"Perform Sight Reduction"*.
+
+### Units of measurement <a name="units"></a>
+
+The app uses the metric system for all input and presented data,
+with the exception for distance which is measured in **nautical miles** (nm).
+A nautical mile = 1.852 km = 1.151 miles.
 
 ## Entering data<a name="entering_data"></a>
 
@@ -154,14 +162,14 @@ new DRP.
 
 Your sextant work and the selected DRP might not be very accurate.
 If you suspect non-accurate input you may **increase** this threshold value.
-The normal default is "100" (km), and this will put on these restrictions:
+The normal default is "100" (nm), and this will put on these restrictions:
 
-* The intersections be must located at most 100 km from each other in order
+* The intersections be must located at most 100 nm from each other in order
   to be included in the calculation.
-* For a three-star fix: The DRP must be within 100 km from each intersection.
+* For a three-star fix: The DRP should be within 100 nm from each intersection.
 
 If you are a beginner, or insecure about your readings you may increase
-this threshold to a higher value, "1000" (km) or more.
+this threshold to a higher value, "1000" (nm) or more.
 
 ### Star Fixes<a name="star_fixes"></a>
 

@@ -368,7 +368,6 @@ def run_plotserver(cq : Queue):
         server_thread = threading.Thread(target=server.start, daemon=True)
         server_thread.start()
 
-        # Simulate position updates (you would get these from your celestial nav calculations)
         while True:
             check_string = cq.get ()
             assert isinstance (check_string, str)
@@ -416,12 +415,13 @@ def sight_reduction() -> \
     intersections = None
     collection = None
     try:
+        the_limit = float(NUM_DICT["DrpQuality"]) * 1.852 # Convert from nm to km
         intersections, _, _, collection, calculated_diff =\
             SightCollection.get_intersections_conv(return_geodetic=True,
                                                    estimated_position=the_pos,
                                                    get_starfixes=get_starfixes,
                                                    assume_good_estimated_position=True,
-                                                   limit=float(NUM_DICT["DrpQuality"]))
+                                                   limit=the_limit)
 
         assert isinstance (intersections, LatLonGeodetic)
         assert isinstance (collection, SightCollection)
@@ -996,7 +996,8 @@ class InputForm(GridLayout):
         self.add_widget(bl)
 
         # DRP Position Section
-        self.add_widget(Label(text='[b]DRP Position[/b]', markup=True, size_hint_y=None, height=90))
+        self.add_widget(Label(text='[b]DRP Position[/b]', markup=True, size_hint_y=None, height = 70,\
+                              color = (0.9, 0.5, 0.5, 1.0)))
         drp_section = GridLayout(cols=2, spacing=5, padding=5, size_hint_y=None, height=200)
         drp_section.add_widget(MyLabel(text='[b]Latitude:[/b]', markup=True))
         self.drp_lat_input = MyTextInput()
@@ -1008,10 +1009,13 @@ class InputForm(GridLayout):
         drp_section.add_widget(self.drp_lon_input)
 
         # DRP quality button
-        drp_section.add_widget(MyLabel(text='Sight quality (km)'))
+        drp_section.add_widget(MyLabel(text='Sight quality (nm)'))
         self.drp_quality_input = MyTextInput()
         self.data_widget_container["DrpQuality"] = self.drp_quality_input
         drp_section.add_widget (self.drp_quality_input)
+
+        # Empty label
+        drp_section.add_widget(MyLabel(text='',size_hint_y=0.4))
 
         self.add_widget(drp_section)
 
@@ -1019,7 +1023,7 @@ class InputForm(GridLayout):
         for sight in range(self.nr_of_sights):
             self.add_widget\
                 (Label(text=f'[b]Sight {sight+1} Data[/b]', \
-                       markup=True, size_hint_y=None, height=40))
+                       markup=True, size_hint_y=None, height=40, color=(0.5, 0.9, 0.5, 1.0)))
             sight_section = SightInputSection(sight_num=sight+1)
 
             # Store references to widgets within the SightInputSection

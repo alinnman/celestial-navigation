@@ -2484,6 +2484,7 @@ class SightCollection:
                                           assume_good_estimated_position=\
                                           assume_good_estimated_position)
             assert isinstance (intersections, LatLon)
+            print ("INTERSECTIONS = " + str(intersections))  # TODO Remove
             the_distance = spherical_distance (estimated_position, intersections)
             if the_distance < dist_limit:
                 ready = True
