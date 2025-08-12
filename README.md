@@ -5,7 +5,7 @@
 
 # celestial-navigation
 
-## Reaching out for beta testers!
+## Reaching out for beta testers
 
 Want to join the development of robust celestial navigation
 software packaged in a internet-independent Android app?<br>
