@@ -997,7 +997,7 @@ class InputForm(GridLayout):
 
         # DRP Position Section
         self.add_widget(Label(text='[b]DRP Position[/b]', markup=True, size_hint_y=None, height = 70,\
-                              color = (0.9, 0.5, 0.5, 1.0)))
+                              color = (0.8, 0.8, 1.0, 1.0)))
         drp_section = GridLayout(cols=2, spacing=5, padding=5, size_hint_y=None, height=200)
         drp_section.add_widget(MyLabel(text='[b]Latitude:[/b]', markup=True))
         self.drp_lat_input = MyTextInput()
