@@ -38,6 +38,7 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.popup import Popup
+from kivy.metrics import dp
 from kivy.clock import Clock
 from kivy.storage.jsonstore import JsonStore
 from kivy.lang import Builder
@@ -97,8 +98,8 @@ if USE_KV:
 
 <FormSection@GridLayout>:
     cols: 2
-    spacing: 5
-    padding: 5
+    spacing: dp(5)
+    padding: dp(5)
     canvas.before:
         Color:
             rgba: 0.35, 0.35, 0.35, 1
@@ -110,7 +111,7 @@ if USE_KV:
     size_hint_x: 0.4 # Adjust for a more balanced look in a two-column grid
     halign: 'right'
     valign: 'middle'
-    padding: 1
+    padding: dp(1)
     text_size: self.width, None
     size_hint_x : 0.4    
 
@@ -127,11 +128,8 @@ if USE_KV:
 
 <SightInputSection@GridLayout>:
     cols: 2
-    spacing: 5
-    padding: 10
     size_hint_y: None
     size_hint_x: 0.8 # The remaining space    
-    height : 800
     canvas.before:
         Color:
             rgba: 0.25, 0.25, 0.25, 1 # Slightly darker background for individual sight sections
@@ -144,7 +142,6 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None    
-        height : 100
         size_hint_x : 0.4 
     MyCheckbox:
         id: use_checkbox
@@ -155,11 +152,9 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        height : 100
         size_hint_x : 0.4        
     MyTextInput:
         id: object_name
-        height : 100
         size_hint_x: 0.8 # The remaining space
         multiline: False               
     Label:
@@ -168,11 +163,9 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        height : 100
         size_hint_x : 0.4                  
     MyTextInput:
         id: altitude
-        height : 100
         size_hint_x: 0.8 # The remaining space
         multiline: False
     Label:
@@ -181,7 +174,6 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        height : 100
         size_hint_x : 0.4                 
     MyCheckbox:
         id: artificial_horizon
@@ -192,11 +184,9 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        height : 100
         size_hint_x : 0.4                 
     MyTextInput:
         id: set_time_date
-        height : 100
         size_hint_x: 0.8 # The remaining space
         multiline: False
     Label:
@@ -205,11 +195,9 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        height : 100
         size_hint_x : 0.4                 
     MyTextInput:
         id: set_time
-        height : 100
         size_hint_x: 0.8 # The remaining space
         multiline: False                   
     Label:
@@ -218,11 +206,9 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        height : 100
         size_hint_x : 0.4                 
     MyTextInput:
         id: set_time_tz
-        height : 100
         size_hint_x: 0.8 # The remaining space
         multiline: False                    
     Label:
@@ -230,11 +216,9 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        height : 100
         size_hint_x : 0.4                  
     MyTextInput:
         id: index_error
-        height : 100
         size_hint_x: 0.8 # The remaining space
         multiline: False         
     Label:
@@ -242,22 +226,18 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        height : 100
         size_hint_x : 0.4                 
     LimbDropDown:
         id: limb_correction
-        height: 100
         size_hint_x: 0.8 # The remaining space                
     Label:
         text: 'Elevation (m) :'
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        height : 100
         size_hint_x : 0.4                      
     MyTextInput:
         id: observer_height
-        height : 100
         size_hint_x: 0.8 # The remaining space
         multiline: False         
     Label:
@@ -265,11 +245,9 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        height : 100
         size_hint_x : 0.4                  
     MyTextInput:
         id: temperature
-        height : 100
         size_hint_x: 0.8 # The remaining space
         multiline: False        
     Label:
@@ -277,11 +255,9 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        height : 100
         size_hint_x : 0.4                  
     MyTextInput:
         id: temperature_gradient
-        height : 100
         size_hint_x: 0.8 # The remaining space
         multiline: False         
     Label:
@@ -289,11 +265,9 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        height : 100
         size_hint_x : 0.4                 
     MyTextInput:
         id: pressure
-        height : 100
         size_hint_x: 0.8 # The remaining space
         multiline: False         
 
@@ -632,7 +606,7 @@ class LimbDropDown (Button):
         super().__init__(text=self.text_labels[0], color = (0.8, 0.1, 0.1, 1.0), **kwargs)
         self.my_dropdown = DropDown()
         for index in [-1, 0, 1]:
-            btn = Button(text=str(self.text_labels[index]), size_hint_y=None, height=self.height/2)
+            btn = Button(text=str(self.text_labels[index]), size_hint_y=None, height=dp(30))
 # pylint: disable=E1101
             btn.bind(on_release=lambda btn: self.my_dropdown.select(btn.text))
 # pylint: enable=E1101
@@ -734,8 +708,8 @@ class StarFixApp (App):
 
     BoxLayout:
         orientation: 'vertical'
-        padding: 10
-        spacing: 10
+        padding: dp(10)
+        spacing: dp(10)
 
         Label:
             id: message_label
@@ -749,7 +723,7 @@ class StarFixApp (App):
             orientation: 'horizontal'
             size_hint_y: None
             height: dp(40)
-            spacing: 10
+            spacing: dp(10)
 
             CheckBox:
                 id: dont_show_checkbox
@@ -983,7 +957,7 @@ class InputForm(GridLayout):
     nr_of_sights = 3
 
     def __init__(self, **kwargs):
-        super().__init__(cols=1, spacing=2, **kwargs)
+        super().__init__(cols=1, spacing=dp(5), **kwargs)
 
         self.__active_intersections = None
         self.__active_collection    = None
@@ -995,15 +969,22 @@ class InputForm(GridLayout):
         bl.add_widget(butt)
         self.add_widget(bl)
 
+        # drp_cell_height = 40 TODO Remove
         # DRP Position Section
-        self.add_widget(Label(text='[b]DRP Position[/b]', markup=True, size_hint_y=None, height = 70,\
-                              color = (0.8, 0.8, 1.0, 1.0)))
-        drp_section = GridLayout(cols=2, spacing=5, padding=5, size_hint_y=None, height=200)
+        self.add_widget(Label(text='[b]DRP Position[/b]', markup=True, size_hint_y=None,\
+                              color = (0.8, 0.8, 1.0, 1.0), height=dp(40)))
+#pylint: disable=C0103
+        ELEMENT_HEIGHT = 35
+        DRP_NUM = 3
+        DRP_SECTION_HEIGHT = ELEMENT_HEIGHT * DRP_NUM
+#pylint: enable=C0103
+        drp_section = GridLayout(cols=2, spacing=dp(2), padding=dp(2), size_hint_y=None,\
+                                 height=dp(DRP_SECTION_HEIGHT))
         drp_section.add_widget(MyLabel(text='[b]Latitude:[/b]', markup=True))
         self.drp_lat_input = MyTextInput()
         self.data_widget_container["DrpLat"] = self.drp_lat_input
         drp_section.add_widget(self.drp_lat_input)
-        drp_section.add_widget(MyLabel(text='[b]Longitude:[/b]', markup=True))
+        drp_section.add_widget(MyLabel(text='[b]Longitude:[/b]',markup=True))
         self.drp_lon_input = MyTextInput()
         self.data_widget_container["DrpLon"] = self.drp_lon_input
         drp_section.add_widget(self.drp_lon_input)
@@ -1015,16 +996,24 @@ class InputForm(GridLayout):
         drp_section.add_widget (self.drp_quality_input)
 
         # Empty label
-        drp_section.add_widget(MyLabel(text='',size_hint_y=0.4))
+        # drp_section.add_widget(MyLabel(text='',size_hint_y=0.4))
 
         self.add_widget(drp_section)
 
         # Individual Sight Sections
         for sight in range(self.nr_of_sights):
+
             self.add_widget\
                 (Label(text=f'[b]Sight {sight+1} Data[/b]', \
-                       markup=True, size_hint_y=None, height=40, color=(0.5, 0.9, 0.5, 1.0)))
-            sight_section = SightInputSection(sight_num=sight+1)
+                       markup=True, size_hint_y=None, height=dp(40), color=(0.5, 0.9, 0.5, 1.0)))
+#pylint: disable=C0103
+            SIGHT_NUM = 13
+            SIGHT_SECTION_HEIGHT = ELEMENT_HEIGHT * SIGHT_NUM
+#pylint: enable=C0103
+            sight_section = SightInputSection(sight_num=sight+1,\
+                                              height=dp(SIGHT_SECTION_HEIGHT),
+                                              spacing=dp(2),
+                                              padding=dp(2))
 
             # Store references to widgets within the SightInputSection
             self.data_widget_container["Use"+str(sight+1)] =\
@@ -1055,6 +1044,15 @@ class InputForm(GridLayout):
                   sight_section.ids.pressure
 
             self.add_widget(sight_section)
+
+#pylint: disable=C0103
+        # Keeping this code fragment for upcoming review of screen sizing
+        # BUTTON_NUM = 6
+        # BUTTON_HEIGHT = 50
+        # BUTTON_SECTION_HEIGHT = BUTTON_HEIGHT * BUTTON_NUM
+#pylint: enable=C0103
+        #button_section = GridLayout(cols=1, spacing=dp(2), padding=dp(2), size_hint_y=None,\
+        #                            height=dp(BUTTON_SECTION_HEIGHT))
 
         bl = FormRow()
         self.results = MyLabel(text='', markup=True, indent=False)
@@ -1109,6 +1107,8 @@ class InputForm(GridLayout):
         self.ip_adress_status.halign = "center"
         bl.add_widget(self.ip_adress_status)
         self.add_widget(bl)
+
+        # self.add_widget (button_section)
 
         self.populate_widgets()
 

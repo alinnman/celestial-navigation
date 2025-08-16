@@ -34,7 +34,7 @@ source.exclude_dirs = .venv, .venv-buildozer, .vscode, colab, maths, nautical_al
 source.exclude_patterns = calibration.py, starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py, plotclient_test.py, kivyapp.*.json, notebook.*.json, map.html
 
 # (str) Application versioning (method 1)
-version = 0.2.18
+version = 0.2.19
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -100,7 +100,10 @@ android.presplash_color = #555555
 #icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
 
 # (list) Permissions
+# Removed FOREGROUND_SERVICE_DATA_SYNC after being requested by Google to provide a video
+# This *may* have adverse effects on the app. 
 # android.permissions = INTERNET,ACCESS_NETWORK_STATE,ACCESS_WIFI_STATE,CHANGE_NETWORK_STATE,FOREGROUND_SERVICE,FOREGROUND_SERVICE_DATA_SYNC
+
 android.permissions = INTERNET,ACCESS_NETWORK_STATE,ACCESS_WIFI_STATE,CHANGE_NETWORK_STATE,FOREGROUND_SERVICE
 # INTERNET permission needed for the web browser interaction
 
@@ -277,7 +280,10 @@ android.manifest.allow_backup = true
 
 # (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
 # In past, was `android.arch` as we weren't supporting builds for multiple archs at the same time.
-# android.archs = arm64-v8a, armeabi-v7a
+
+# For emulators
+# android.archs = x86_64
+# For production (Android units)
 android.archs = arm64-v8a
 
 # (int) overrides automatic versionCode computation (used in build.gradle)
