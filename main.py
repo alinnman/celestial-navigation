@@ -10,7 +10,7 @@
 # pylint: disable=C0413
 # pylint: disable=C0411
 from multiprocessing import freeze_support
-from queue import Queue
+from queue import Queue, Empty
 import threading
 from types import NoneType
 import importlib
@@ -48,6 +48,14 @@ from kivy.core.window import Window
 
 from functools import partial
 from plotserver import NMEAServer
+
+# pylint: disable=W0702
+try:
+    # Activate android libraries, needed for correct webbrowser functionality
+    importlib.import_module("android")
+# pylint: disable=W0702
+except:
+    pass
 
 Window.softinput_mode = 'below_target'
 
@@ -334,18 +342,29 @@ def get_local_ip():
         return "127.0.0.1"
 # pylint: enable=W0702
 
-def run_plotserver(cq : Queue):
+COMM_QUEUE = None
+KILL_QUEUE = None
+
+def run_plotserver():
     ''' Running the plot server worker '''
+# pylint: disable=W0603
+    global COMM_QUEUE
+# pylint: enable=W0603
     server = NMEAServer(host='0.0.0.0', port=10110)
+    server_thread = None
     try:
         # Start server in a separate thread
         server_thread = threading.Thread(target=server.start, daemon=True)
         server_thread.start()
 
         while True:
-            check_string = cq.get ()
+#pylint: disable=E0601
+            assert isinstance (COMM_QUEUE, Queue)
+#pylint: enable=E0601
+            check_string = COMM_QUEUE.get ()
             assert isinstance (check_string, str)
             if check_string == "STOP":
+                # The plot server will now terminate
                 break
             strs = check_string.split (";")
             lat = float (strs[0])
@@ -354,18 +373,84 @@ def run_plotserver(cq : Queue):
 
     finally:
         server.stop()
+        if server_thread is not None:
+            server_thread.join ()
+        COMM_QUEUE = None
 
-COMM_QUEUE = None
+def run_killserver ():
+    ''' Running a separate "kill" server responsible for removing the NMEA server 
+        This is needed to avoid Androids aggressive thread management which seems
+        to cause hangups if the NMEA server is allowed to live for a longer time. 
+    '''
+    timestamp = 0
+    has_waited = False
+    while True:
+        try:
+# pylint: disable=W0603
+            global KILL_QUEUE
+# pylint: enable=W0603
+            assert KILL_QUEUE is not None
+            do_wait = False
+            # Here we wait for the kill signal
+            timestamp = KILL_QUEUE.get (block=False)
+            # We got a kill signal, with a timestamp
+            if not KILL_QUEUE.empty:
+                pass
+                # There is more data on the kill queue. Ignore this post.
+            else:
+                # No more data on the kill queue. Now we should wait
+                do_wait = True
+            if do_wait:
+                # Calculate the real time difference, and add 20 seconds
+                wait_time = timestamp - time.time() + 20
+                if wait_time < 0:
+                    wait_time = 0
+                # If we have a positive net waiting time, then waut
+                if wait_time > 0:
+                    time.sleep (wait_time)
+                else:
+                    pass
+                    # We cot an overdue kill request
+                # Now remember we have waited
+                has_waited = True
+        except Empty:
+            # We have an empty kill queue. See if it is time to actually kill the plot server.
+            if has_waited:
+                # Time to kill
+                global COMM_QUEUE
+                if COMM_QUEUE is not None:
+                    # Sending kill command
+                    COMM_QUEUE.put ("STOP")
+                    # Graceful wait for 1 sec
+                    time.sleep (1)
+                    # Clean up
+                    COMM_QUEUE = None
+                    KILL_QUEUE = None
+                    # We are done
+                    return
+            else:
+                pass
 
 def start_plotserver ():
     ''' Start the plot server'''
 # pylint: disable=W0603
-    global COMM_QUEUE
+    global COMM_QUEUE, KILL_QUEUE
 # pylint: enable=W0603
-    COMM_QUEUE = Queue ()
-    # plot_process = Process (target = run_plotserver, args = (COMM_QUEUE,))
-    plot_process = threading.Thread (target = run_plotserver, args = (COMM_QUEUE,), daemon=True)
-    plot_process.start ()
+    if COMM_QUEUE is None:
+        COMM_QUEUE = Queue ()
+        plot_process = threading.Thread (target = run_plotserver, args = (), daemon=True)
+        plot_process.start ()
+    if KILL_QUEUE is None:
+        KILL_QUEUE = Queue ()
+        kill_process = threading.Thread (target=run_killserver, args = (), daemon=True)
+        kill_process.start ()
+    try:
+        while True:
+            KILL_QUEUE.get(False)
+    except Empty:
+        pass
+    # KILL_QUEUE.put (20)
+    KILL_QUEUE.put (time.time())
 
 def kill_plotserver ():
     ''' Kill the plot server'''
@@ -405,6 +490,7 @@ def sight_reduction() -> \
             diff_string = " ±" + str(round(calculated_diff/km_per_nautical_mile,1)) + " nm"
         else:
             diff_string = ""
+        start_plotserver ()
         update_plot_position (intersections.get_lat(), intersections.get_lon())
         return repr_string + diff_string, True, intersections, collection
 
@@ -519,13 +605,6 @@ class ShowMapButton (AppButton):
                 assert the_map is not None
                 file_name = "./map.html"
                 the_map.save (file_name)
-                try:
-                    # Activate android libraries, needed for correct webbrowser functionality
-                    importlib.import_module("android")
-# pylint: disable=W0702
-                except:
-                    pass
-# pylint: enable=W0702
                 #StarFixApp.message_popup ("You have generated a map.\n"
                 #                          "It is visible in a web brower window.\n"
                 #                          "It shows the last sight reduction\n"
@@ -1176,7 +1255,7 @@ if __name__ == '__main__':
         start_http_server ()
     do_initialize()
     # Start NMEA 0138 server
-    start_plotserver ()
+    # start_plotserver ()
     StarFixApp.message_popup\
           ("[b]Welcome to Celeste![/b]\n"+\
            "This is an app for celestial navigation.\n"+\

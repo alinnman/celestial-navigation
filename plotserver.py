@@ -176,6 +176,10 @@ class NMEAServer:
 
     def stop(self):
         """Stop the NMEA server"""
+
+        if not self.running:
+            return
+
         print("Stopping NMEA server...")
         self.running = False
 
@@ -186,7 +190,11 @@ class NMEAServer:
 
         # Close server socket
         if self.server_socket:
-            self.server_socket.close()
+            try:
+                self.server_socket.shutdown (socket.SHUT_RDWR)
+                self.server_socket.close()
+            except OSError:
+                pass
 
         print("NMEA server stopped")
 

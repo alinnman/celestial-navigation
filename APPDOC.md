@@ -343,6 +343,11 @@ is connected.
 NOTE: This allows for use (detailed mapping) in scenarios where you lack
 internet connection!
 
+NOTE: The NMEA server is active for 20 seconds after you have performed
+a successful sight reduction. You are advised to check for the position
+update on your plotter, and maybe make an additional marker to save the
+position.
+
 ### Using a Mobile Hotspot <a name="hotspot"></a>
 
 Connecting through Wi-Fi as described above requires
