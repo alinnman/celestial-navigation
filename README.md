@@ -8,7 +8,7 @@
 ## Reaching out for beta testers
 
 Want to join the development of robust celestial navigation
-software packaged in a internet-independent Android app?<br>
+software packaged in an internet-independent Android app?<br>
 [Read more here!](https://github.com/alinnman/celestial-navigation/discussions/29)
 
 ## Online Demo
