@@ -2516,6 +2516,8 @@ class SightCollection:
 
 
         lon_adjustment = 0
+        lon_average = None
+        map_center_lon = None
         if isinstance (intersections, LatLon):
 
             # See if we need to adjust the position of the intersection on the map
@@ -2524,14 +2526,20 @@ class SightCollection:
             for s in the_sf_list:
                 lon_sum += s.get_gp().get_lon()
                 count += 1
+
+            lon_sum += intersections.get_lon()
+            count += 1
+
             lon_average = lon_sum / count
 
-            int_geodetic = LatLonGeodetic (ll=intersections.get_latlon())
+            int_geodetic = LatLonGeodetic (ll=intersections)
 
             if int_geodetic.get_lon() - lon_average > 180:
                 lon_adjustment = -360
             elif lon_average - int_geodetic.get_lon () > 180:
                 lon_adjustment = 360
+
+            map_center_lon = int_geodetic.get_lon()+lon_adjustment
 
             the_map = get_folium_map (location=(int_geodetic.get_lat(),\
                                                 int_geodetic.get_lon()+lon_adjustment),
@@ -2561,6 +2569,7 @@ class SightCollection:
                     icon=Icon(icon="user"),
                 ).add_to(the_map)
         else:
+            map_center_lon = 0
             the_map = get_folium_map (location = (0,0),
                                       zoom_start_offline=2,
                                       zoom_start_online=2)
@@ -2579,7 +2588,10 @@ class SightCollection:
                     gcr = get_great_circle_route (gp, int2)
                     gcr.render_folium (the_map, color='#AAAAFF', dashed=True)
 
-        base_lon = the_sf_list[0].get_gp().get_lon()
+        if map_center_lon is not None:
+            base_lon = map_center_lon
+        else:
+            base_lon = 0
         sight_num = 0
         for s in the_sf_list:
             # Make sure the sights are plotted close to each other
@@ -2796,7 +2808,7 @@ class SightTrip:
 #pylint: enable=R0914
 
     def render_folium (self, intersections : tuple [LatLon, LatLon] | LatLon,\
-                       accuracy : float = 1000, draw_grid = True, draw_markers = True):
+                       accuracy : float = 1, draw_grid = True, draw_markers = True):
         ''' Renders this object as a Folium Map object '''
 
         check_folium ()

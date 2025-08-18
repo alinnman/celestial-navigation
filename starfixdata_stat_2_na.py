@@ -59,7 +59,7 @@ def main ():
 
     intersections = collection = taken_ms = None
     try:
-        intersections, _, _, collection =\
+        intersections, _, _, collection, _=\
               SightCollection.get_intersections_conv (return_geodetic=True,
                                                       estimated_position=the_pos,
                                                       get_starfixes=get_starfixes)
