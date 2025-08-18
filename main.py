@@ -91,7 +91,7 @@ if USE_KV:
     valign: 'middle'
     padding: dp(1)
     text_size: self.width, None
-    size_hint_x : 0.4    
+    size_hint_x : 0.45    
 
 <MyTextInput>:
     size_hint_x: 0.8 # The remaining space
@@ -120,7 +120,7 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None    
-        size_hint_x : 0.4 
+        size_hint_x : 0.45
     MyCheckbox:
         id: use_checkbox
         size_hint_x: 0.8 # The remaining space         
@@ -130,7 +130,7 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.4        
+        size_hint_x : 0.45       
     MyTextInput:
         id: object_name
         size_hint_x: 0.8 # The remaining space
@@ -141,7 +141,7 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.4                  
+        size_hint_x : 0.45                 
     MyTextInput:
         id: altitude
         size_hint_x: 0.8 # The remaining space
@@ -152,7 +152,7 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.4                 
+        size_hint_x : 0.45                
     MyCheckbox:
         id: artificial_horizon
         size_hint_x: 0.8 # The remaining space               
@@ -162,7 +162,7 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.4                 
+        size_hint_x : 0.45                
     MyTextInput:
         id: set_time_date
         size_hint_x: 0.8 # The remaining space
@@ -173,7 +173,7 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.4                 
+        size_hint_x : 0.45                 
     MyTextInput:
         id: set_time
         size_hint_x: 0.8 # The remaining space
@@ -184,7 +184,7 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.4                 
+        size_hint_x : 0.45                
     MyTextInput:
         id: set_time_tz
         size_hint_x: 0.8 # The remaining space
@@ -194,7 +194,7 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.4                  
+        size_hint_x : 0.45                 
     MyTextInput:
         id: index_error
         size_hint_x: 0.8 # The remaining space
@@ -204,7 +204,7 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.4                 
+        size_hint_x : 0.45                
     LimbDropDown:
         id: limb_correction
         size_hint_x: 0.8 # The remaining space                
@@ -213,7 +213,7 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.4                      
+        size_hint_x : 0.45                     
     MyTextInput:
         id: observer_height
         size_hint_x: 0.8 # The remaining space
@@ -223,7 +223,7 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.4                  
+        size_hint_x : 0.45                
     MyTextInput:
         id: temperature
         size_hint_x: 0.8 # The remaining space
@@ -233,7 +233,7 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.4                  
+        size_hint_x : 0.45                  
     MyTextInput:
         id: temperature_gradient
         size_hint_x: 0.8 # The remaining space
@@ -243,7 +243,7 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.4                 
+        size_hint_x : 0.45
     MyTextInput:
         id: pressure
         size_hint_x: 0.8 # The remaining space
@@ -648,7 +648,6 @@ class MyLabel (Label):
     def __init__(self, indent: bool = False, **kwargs):
         left_hint = 0.45 if indent else 0.4
         super().__init__(size_hint=(left_hint, 1), **kwargs)
-        # self.size_hint (0.2, 1)
 
 class LimbDropDown (Button):
     ''' This is used for the limb correction dropdown'''
