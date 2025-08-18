@@ -68,36 +68,6 @@ def str2bool(v):
 
 Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 
-# pylint: disable=C0412
-from kivy.utils import platform
-# pylint: enable=C0412
-
-def request_android_permissions():
-    """Request Android permissions only when running on Android"""
-    if platform == 'android':
-        try:
-            # Dynamically import Android-specific modules
-            android_permissions = importlib.import_module('android.permissions')
-
-            # Get the functions/classes we need
-            request_permissions = android_permissions.request_permissions
-            permission = android_permissions.Permission
-
-            # Now request the permissions
-            request_permissions([
-                permission.INTERNET,
-                permission.ACCESS_NETWORK_STATE,
-                permission.ACCESS_WIFI_STATE,
-                permission.CHANGE_NETWORK_STATE
-            ])
-
-            print("Android permissions requested")
-
-        except ImportError as e:
-            print(f"Could not import Android permissions: {e}")
-    else:
-        print("Not running on Android, skipping permission request")
-
 # Set default color and sizes of the form
 USE_KV = True
 if USE_KV:
@@ -346,14 +316,17 @@ COMM_QUEUE = None
 KILL_QUEUE = None
 
 def run_plotserver():
-    ''' Running the plot server worker '''
+    ''' Running the plot server worker 
+        This thread starts the NMEA server, listens for position updates
+        and also STOP commands for killing the NMEA server.
+    '''
 # pylint: disable=W0603
     global COMM_QUEUE
 # pylint: enable=W0603
     server = NMEAServer(host='0.0.0.0', port=10110)
     server_thread = None
     try:
-        # Start server in a separate thread
+        # Start NMEA server in a separate thread
         server_thread = threading.Thread(target=server.start, daemon=True)
         server_thread.start()
 
@@ -605,6 +578,7 @@ class ShowMapButton (AppButton):
                 assert the_map is not None
                 file_name = "./map.html"
                 the_map.save (file_name)
+                # Keeping this message to possible future use
                 #StarFixApp.message_popup ("You have generated a map.\n"
                 #                          "It is visible in a web brower window.\n"
                 #                          "It shows the last sight reduction\n"
@@ -981,6 +955,9 @@ def dump_dict():
 
 def do_initialize ():
     ''' Initialize data from json '''
+
+    # Pick up last configuration
+    # If no config found then use the Chicago sights
     initialize("kivyapp.1.json",
             {"ObjectName1": "Sun",
                 "Altitude1": "55:8:1.1",
@@ -1031,7 +1008,7 @@ def do_initialize ():
                 "Format": "celeste.1"})
 
 class InputForm(GridLayout):
-    ''' This is the input form '''
+    ''' This is the main input form '''
 
     nr_of_sights = 3
 
@@ -1073,9 +1050,6 @@ class InputForm(GridLayout):
         self.drp_quality_input = MyTextInput()
         self.data_widget_container["DrpQuality"] = self.drp_quality_input
         drp_section.add_widget (self.drp_quality_input)
-
-        # Empty label
-        # drp_section.add_widget(MyLabel(text='',size_hint_y=0.4))
 
         self.add_widget(drp_section)
 
@@ -1124,15 +1098,6 @@ class InputForm(GridLayout):
 
             self.add_widget(sight_section)
 
-#pylint: disable=C0103
-        # Keeping this code fragment for upcoming review of screen sizing
-        # BUTTON_NUM = 6
-        # BUTTON_HEIGHT = 50
-        # BUTTON_SECTION_HEIGHT = BUTTON_HEIGHT * BUTTON_NUM
-#pylint: enable=C0103
-        #button_section = GridLayout(cols=1, spacing=dp(2), padding=dp(2), size_hint_y=None,\
-        #                            height=dp(BUTTON_SECTION_HEIGHT))
-
         bl = FormRow()
         self.results = MyLabel(text='', markup=True, indent=False)
         self.results.halign = "center"
@@ -1170,30 +1135,18 @@ class InputForm(GridLayout):
                 ip_address = "IP address = " + ip_address
             return ip_address
 
-        def renewer_thread (field : MyLabel):
-            while True:
-                time.sleep (1.0)
-                code = get_ip_code ()
-                field.text = code
-
-        def start_ip_renewer (field : MyLabel) -> threading.Thread:
-            rt = threading.Thread (target = renewer_thread, args=(field,), daemon=True)
-            rt.start ()
-            return rt
+        def check_ip_address (_):
+            code = get_ip_code ()
+            self.ip_adress_status.text = code
 
         self.ip_adress_status = MyLabel(text=get_ip_code(), markup=True, indent=False)
-        self.renewer_thread = start_ip_renewer (self.ip_adress_status)
+        # Check for ip address changes every second
+        Clock.schedule_interval(check_ip_address, 1.0)
         self.ip_adress_status.halign = "center"
         bl.add_widget(self.ip_adress_status)
         self.add_widget(bl)
 
-        # self.add_widget (button_section)
-
         self.populate_widgets()
-
-    def __del__ (self):
-        if self.renewer_thread is not None:
-            self.renewer_thread.join ()
 
     def __update_drp (self, i : tuple | LatLonGeodetic | NoneType):
         if i is None or isinstance (i, tuple):
@@ -1247,15 +1200,13 @@ class InputForm(GridLayout):
 
 if __name__ == '__main__':
 
-    request_android_permissions ()
     if is_windows():
         freeze_support ()
     if not is_windows ():
         # Start http server
         start_http_server ()
+    # Initialize all configuration data
     do_initialize()
-    # Start NMEA 0138 server
-    # start_plotserver ()
     StarFixApp.message_popup\
           ("[b]Welcome to Celeste![/b]\n"+\
            "This is an app for celestial navigation.\n"+\
@@ -1263,8 +1214,9 @@ if __name__ == '__main__':
            "Use the \"Show help!\" button for documentation.",
            StarFixApp.MSG_ID_INTRO)
     a = StarFixApp ()
+    # Run the application
     runTouchApp (a.get_root())
-    # Kill NMEA 0138 server
+    # Kill NMEA 0138 server (if active)
     kill_plotserver ()
     if not is_windows():
         # Kill http server
