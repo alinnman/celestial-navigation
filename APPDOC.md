@@ -475,15 +475,6 @@ You can find
 ## Licenses<a name="license"></a>
 
 <tt>© August Linnman, 2025, email: august@linnman.net</tt><br>
-<tt>[MIT&nbsp;License](https://github.com/alinnman/celestial-navigation/blob/main/LICENSE)</tt><br>
-<tt>[Licenses for used software and services](https://github.com/alinnman/celestial-navigation/blob/main/OTHER-LICENSES.md)</tt><br>
-<tt>Splash image: PACIFIC OCEAN (April 23, 2018)
-Quartermaster 3rd Class Rachel Dill, from Elgin, Ill., practices
-using a sextant as part of a navigation training aboard the amphibious
-assault ship USS Bonhomme Richard (LHD 6). Bonhomme Richard,
- which had been forward-deployed since 2012 as the Amphibious Force
- 7th Fleet flagship, is transiting to San Diego as part of a homeport change
- and where it is scheduled to undergo upgrades to operate the
- F-35B Lightning II. (U.S. Navy photo by Mass Communication Specialist Seaman
- Gavin Shields/Released)<br>
-[Public Domain](https://commons.wikimedia.org/wiki/File:180423-N-DL434-149_(27894845758).jpg?uselang=en#Licensing)</tt>
+<tt>[Celeste Software: MIT&nbsp;License](https://github.com/alinnman/celestial-navigation/blob/main/LICENSE)</tt><br>
+<tt>[Licenses for used software libraries and services](https://github.com/alinnman/celestial-navigation/blob/main/OTHER-LICENSES.md)</tt><br>
+<tt>[Splash Image](https://commons.wikimedia.org/wiki/File:180423-N-DL434-149_(27894845758).jpg?uselang=en#Licensing)</tt>
