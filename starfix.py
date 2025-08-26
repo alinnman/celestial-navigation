@@ -159,7 +159,6 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 def __run_http_server ():
     port = 8000
 
-    #Handler = http.server.SimpleHTTPRequestHandler
     Handler = MyHandler
 
     try:
@@ -214,7 +213,6 @@ def __kill_http_server_if_running ():
 #pylint: disable=W0718
         except BaseException as _:
             pass
-        # assert isinstance (running_http_server, Process)
         assert isinstance (running_http_server, Thread)
         running_http_server.join ()
         running_http_server = None
@@ -243,7 +241,6 @@ def start_http_server (kill_existing : bool = False):
 
 def http_server_running () -> bool:
     ''' Check if there is a http server running '''
-    #global running_http_server
     return running_http_server is not None
 
 def exit_handler ():
@@ -329,7 +326,6 @@ class LatLon:
     def __init__ (self, lat : float | int, lon : float | int):
         if lat > 90 or lat < -90:
             raise ValueError ("Latitude must be between -90 and 90.")
-        #assert -90 <= lat <= 90
         self.__lat = lat
         self.__lon = mod_lon(lon)
 
@@ -717,7 +713,6 @@ class Circle:
         east_tangent = normalize_vect(cross_product (north_pole, b))
         north_tangent = normalize_vect (cross_product (b, east_tangent))
         c_latlon = self.get_latlon ()
-        # assert isinstance (self, Circle)
         degrees_step = 0
         last_lon = None
 
@@ -827,18 +822,6 @@ def get_great_circle_route\
     assert isinstance (direction, (float, int))
     if start.get_lat() in (90,-90):
         raise ValueError ("Cannot take a course from any of the poles")
-
-    #new_implementation = False
-    # Made a new (simpler) implementation
-    #if new_implementation:
-    #    assert isinstance (start, LatLonGeocentric)
-    #    assert isinstance (direction, (float, int))
-    #    goto_pos = takeout_course (start, direction, 1, 1)
-    #    start_xyz = to_rectangular (start)
-    #    goto_xyz  = to_rectangular (goto_pos)
-    #    cp = cross_product (start_xyz, goto_xyz)
-    #    cp_pos = to_latlon (cp)
-    #    return Circle (latlon = cp_pos, angle=90)
 
     # Leaving old implementation here
     north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
@@ -1639,11 +1622,11 @@ class ObsType:
 #pylint: disable=R0903
 class ObsTypes:
     ''' These are the observation types we can handle '''
-    GHA = ObsType ("GHA")
+    GHA  = ObsType ("GHA")
     DECL = ObsType ("DECL")
-    HP = ObsType ("HP")
-    SHA = ObsType ("SHA")
-    SD = ObsType ("SD")
+    HP   = ObsType ("HP")
+    SHA  = ObsType ("SHA")
+    SD   = ObsType ("SD")
 #pylint: enable=R0903
 
 #pylint: disable=R0903
@@ -2132,7 +2115,6 @@ class Sight :
         check_folium ()
 
         the_object_name = self.get_object_name()
-        #assert isinstance (s, Sight)
         c = self.get_circle (geodetic=False)
         c_latlon = c.get_latlon()
         c_latlon_d = LatLonGeodetic (ll = c_latlon)
@@ -2243,7 +2225,6 @@ class SightCollection:
             else:
                 ret_intersections = intersections
             return ret_intersections, fitness, diag_output, 0
-        #elif nr_of_fixes >= 3:
         # For >= 3 star fixes perform pairwise calculation on every pair of fixes
         # and then run a sorting algorithm
         coords = list[tuple[LatLonGeocentric, float]]()
@@ -2782,7 +2763,6 @@ class SightTrip:
             return (taken_out, rotated), fitness, diag_output
 
         ### Calculate a trip from a timestamp (with estimated position) to Sight
-        # isinstance (self.sight_start, datetime) == True
         taken_out = takeout_course (self.estimated_starting_point,\
                                     self.course_degrees,\
                                     self.speed_knots, self.time_hours)
