@@ -34,15 +34,6 @@ try:
 except ModuleNotFoundError:
     pass
 
-#try:
-#pylint: disable=W0611
-#    from offline_folium import offline
-#pylint: enable=W0611
-#except ModuleNotFoundError:
-#    pass
-#except ImportError:
-#    pass
-
 FOLIUM_INITIALIZED = False
 FOLIUM_LOAD_ERROR = ""
 try:
@@ -86,7 +77,6 @@ def __version_warning (min_major_ver : int, min_minor_ver : int):
             output_warning ()
 
 __version_warning (3, 11)
-
 
 ################################################
 # HTTP Server support
