@@ -19,8 +19,8 @@
 1. [Entering Data](#entering_data)
     1. [DRP Position](#drp_position)
     1. [Sight Quality](#drp_quality)
-    1. [Star Fixes](#star-fixes)
-        1. [Selection of star fix](#selection-of-star-fix)
+    1. [Sights](#star-fixes)
+        1. [Selection of sight](#selection-of-star-fix)
         1. [Name of Object](#name-of-object)
         1. [Altitude](#altitude-hs)
         1. [Artificial Horizon](#artificial-horizon)
@@ -135,12 +135,12 @@ A nautical mile = 1.852 km = 1.151 miles.
 ### DRP position<a name="drp_position"></a>
 
 DRP (Dead-Reckoning Position) is a rough estimation of your current position.
-<br>For a **2-star-fix** sight reduction it is used to select the correct
+<br>For a **2-star** sight reduction it is used to select the correct
 intersection point.
-A successful 2-star-fix sight reduction will produce two intersections,
+A successful 2-star sight reduction will produce two intersections,
 and these can be located far away from each other. The DRP selects the
 closest intersection.
-<br>For a **3-star-fix** sight reduction the DRP serves as a way to shorten the
+<br>For a **3-star** sight reduction the DRP serves as a way to shorten the
 execution time of finding an accurate result.
 Normally you should have at least a rough estimation of your
 actual position. Sometimes a grossly incorrect DRP (1000s km off)
@@ -167,20 +167,20 @@ The normal default is "100" (nm), and this will put on these restrictions:
 
 * The intersections be must located at most 100 nm from each other in order
   to be included in the calculation.
-* For a three-star fix: The DRP should be within 100 nm from each intersection.
+* For a three sights: The DRP should be within 100 nm from each intersection.
 
 If you are a beginner, or insecure about your readings you may increase
 this threshold to a higher value, "1000" (nm) or more.
 
-### Star Fixes<a name="star_fixes"></a>
+### Sights<a name="star_fixes"></a>
 
-The input form contains input field for **three** observations (star fixes).
+The input form contains input field for **three** observations (sights).
 
-#### Selection of star fix<a name="star_fix_selection"></a>
+#### Selection of sight<a name="star_fix_selection"></a>
 
-You need to specify two or three star fixes. The check box **Use this sight**
-can be used to eliminate one star fix if you only have two. You can even
-use just one star fix but this will result in a failed sight reduction, but
+You need to specify two or three sights. The check box **Use this sight**
+can be used to eliminate one sight if you only have two. You can even
+use just one sight but this will result in a failed sight reduction, but
 the map view (see below) can be used to present the actual circle of equal
 altitude and this can assist you in your work.
 
@@ -274,7 +274,7 @@ Specify **air pressure** (in kPa). Normal air pressure is "101" (kPa).
 
 Press the button <tt><b>"Perform sight reduction!"</b></tt>.
 The calculated position will be
-presented in the field above the button. If you are using a 3-star fix you will
+presented in the field above the button. If you are using 3 stars you will
 also see an estimation of the accuracy (in nautical miles) based on the
 proximity of the three central intersections.
 If the sight reduction fails you will see an error message
@@ -440,7 +440,7 @@ Make sure you use true sextant readings (Hs),
 take careful notes on limb positions used,
 and take notes on observed times.
 Insert the readings into the Celeste app, and you can check your position.
-Using three fixes you should reach 1-2 nautical miles accuracy.
+Using three sights you should reach 1-2 nautical miles accuracy.
 
 You can also use online star atlases such as
 [Stellarium](https://en.wikipedia.org/wiki/Stellarium_(software))
@@ -458,7 +458,7 @@ courses and training material. And finally you can of
 course test your own skills with a real sextant.
 
 Do you have problems getting a correct sight reduction?
-In such case just use two fixes (sights), by unselecting
+In such case just use two sights, by unselecting
 <tt><b>"Use this sight"</b></tt> for one of the sights.
 You can also use just one sight through unselecting the check
 box for two sights. This will result in an error, but you
