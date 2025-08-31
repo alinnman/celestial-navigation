@@ -66,7 +66,7 @@ def main ():
         # Check azimuth
         assert isinstance (intersections, LatLonGeodetic)
         counter = 0
-        for s in collection.sf_list:
+        for s in collection.get_sf_list ():
             counter += 1
             az = s.get_azimuth (intersections)
             print ("Azimuth " + str(counter) + " = " + str(round(az,2)))
@@ -74,7 +74,7 @@ def main ():
         # Diagnostics for map rendering etc.
         print ("Some useful data follows")
         counter = 0
-        for s in collection.sf_list:
+        for s in collection.get_sf_list ():
             assert isinstance (s, Sight)
             counter += 1
             print (str(counter) + " radius = " +\

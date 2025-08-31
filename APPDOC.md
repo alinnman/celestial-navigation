@@ -43,6 +43,7 @@
 1. [Working with configurations](#configs)
 1. [Installation and prerequisites](#installation-and-prerequisites)
 1. [Tips for Testing (without a sextant?)](#testing_tips)
+1. [Troubleshooting](#troubleshooting)
 1. [More Information](#more_information)
 1. [Licenses](#license)
 
@@ -465,6 +466,20 @@ can watch the map output anyway afterwards.
 Watch the map carefully to pinpoint any incorrect input.
 Note: the map function is available also after a
 failed sight reduction.
+
+## Troubleshooting<a name="troubleshooting"></a>
+
+Entering parameters requires accuracy. Here is a list of common errors
+
+* You forget to specify the correct **limb correction**. <br>
+  This will typically result in a circle being about 15 nautical miles off and a bad sight reduction.
+* Your time zone is off. <br>
+  This will typically lead to failed sight reductions. <br>
+  --> Carefully check the [timezone](#timezone)
+* Various typos. <br>
+  Names of celestial objects, timestamps and angles must be specfied correctly. <br>
+  You will often get an error message in the coordinate output field. <br>
+  --> Check the error message and correct your input. 
 
 ## More Information<a name="more_information"></a>
 

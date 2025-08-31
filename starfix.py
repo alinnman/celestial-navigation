@@ -643,7 +643,7 @@ class Circle:
                 angle         : angle of circle in degrees, for a great circle set to 90
                 circumference : the circumference of the sphere (Earth)
         '''
-        self.__latlon                 = latlon
+        self.__latlon               = latlon
         self.__angle                = angle
         self.__circumference        = circumference
 
@@ -1810,24 +1810,29 @@ class Sight :
     '''  Object representing a sight (star fix) '''
 
     # This is a cached value for the estimated_position parameter
-    estimated_position_hold = None
-    alt_diff_hold           = 0.0
-    time_diff_hold          = 0.0
+    __estimated_position_hold = None
+    __alt_diff_hold           = 0.0
+    __time_diff_hold          = 0.0
 
     @staticmethod
     def set_estimated_position (drp : LatLon):
         ''' Set the estimated position value (DRP) '''
-        Sight.estimated_position_hold = drp
+        Sight.__estimated_position_hold = drp
+
+    @staticmethod
+    def get_estimated_position () -> LatLon | NoneType:
+        ''' Get the estimated position value (DRP) '''
+        return Sight.__estimated_position_hold
 
     @staticmethod
     def set_alt_diff (alt_diff : float):
         ''' Set the alt sigma (used in Monte Carlo simulation) '''
-        Sight.alt_diff_hold = alt_diff
+        Sight.__alt_diff_hold = alt_diff
 
     @staticmethod
     def set_time_diff (time_diff : float):
         ''' Set the time sigma (used in Monte Carlo simulations) '''
-        Sight.time_diff_hold = time_diff
+        Sight.__time_diff_hold = time_diff
 
     MR_DEBUG = False
 
@@ -1868,84 +1873,84 @@ class Sight :
             q = q.replace (tzinfo=None)
             return q
 
-        self.temperature          = temperature
-        self.dt_dh                = dt_dh
-        self.pressure             = pressure
+        self.__temperature        = temperature
+        self.__dt_dh              = dt_dh
+        self.__pressure           = pressure
         self.__object_name        = object_name
         self.__set_time_dt        = datetime.fromisoformat (set_time)
-        self.set_time_dt_hour     = self.__set_time_dt.replace\
+        self.__set_time_dt_hour   = self.__set_time_dt.replace\
                                       (second=0, microsecond=0, minute=0,
                                        hour=self.__set_time_dt.hour,\
                                        tzinfo=self.__set_time_dt.tzinfo)
-        if Sight.time_diff_hold != 0.0:
-            diff = gauss(0, Sight.time_diff_hold)
+        if Sight.__time_diff_hold != 0.0:
+            diff = gauss(0, Sight.__time_diff_hold)
             new_time = self.get_time() + timedelta(seconds=diff)
-            self.set_time_dt = new_time
+            self.__set_time_dt = new_time
         if gha_time_0 is None:
 
             gha_time_0 = get_mr_item (self.get_object_name(),
-                                      str(q_replace(self.set_time_dt_hour)),
+                                      str(q_replace(self.__set_time_dt_hour)),
                                       ObsTypes.GHA)
             if Sight.MR_DEBUG:
                 print ("GHA_0 = " + gha_time_0)
-        self.gha_time_0           = parse_angle_string (gha_time_0)
+        self.__gha_time_0         = parse_angle_string (gha_time_0)
         if gha_time_1 is None:
 
             gha_time_1 = get_mr_item (self.get_object_name(),
-                                      str(q_replace(self.set_time_dt_hour)),
+                                      str(q_replace(self.__set_time_dt_hour)),
                                       ObsTypes.GHA,
                                       offset_hours=1)
             if Sight.MR_DEBUG:
                 print ("GHA_1 = " + gha_time_1)
-        self.gha_time_1           = parse_angle_string (gha_time_1)
-        if self.gha_time_1 < self.gha_time_0:
-            self.gha_time_1 += 360
+        self.__gha_time_1         = parse_angle_string (gha_time_1)
+        if self.__gha_time_1 < self.__gha_time_0:
+            self.__gha_time_1 += 360
         if decl_time_1 is None:
             decl_time_1 = decl_time_0
         if decl_time_0 is None:
 
             decl_time_0 = get_mr_item (self.get_object_name(),
-                                      str(q_replace(self.set_time_dt_hour)),
+                                      str(q_replace(self.__set_time_dt_hour)),
                                       ObsTypes.DECL)
             if Sight.MR_DEBUG:
                 print ("DECL_0 = " + decl_time_0)
-        self.decl_time_0          = parse_angle_string (decl_time_0)
+        self.__decl_time_0          = parse_angle_string (decl_time_0)
         if decl_time_1 is None:
 
             decl_time_1 = get_mr_item (self.get_object_name(),
-                                      str(q_replace(self.set_time_dt_hour)),
+                                      str(q_replace(self.__set_time_dt_hour)),
                                       ObsTypes.DECL,
                                       offset_hours=1)
             if Sight.MR_DEBUG:
                 print ("DECL_1 = " + decl_time_1)
-        self.decl_time_1          = parse_angle_string (decl_time_1)
-        if self.decl_time_0 < -90 or self.decl_time_0 > 90 or \
-           self.decl_time_1 < -90 or self.decl_time_1 > 90:
+        self.__decl_time_1          = parse_angle_string (decl_time_1)
+        if self.__decl_time_0 < -90 or self.__decl_time_0 > 90 or \
+           self.__decl_time_1 < -90 or self.__decl_time_1 > 90:
             raise ValueError ("Declination values must be within [-90,90]")
-        self.measured_alt         = parse_angle_string (measured_alt)
-        if Sight.alt_diff_hold != 0.0:
-            diff                  = gauss (0, Sight.alt_diff_hold) / 60
-            self.measured_alt     += diff
+        self.__measured_alt       = parse_angle_string (measured_alt)
+        if Sight.__alt_diff_hold != 0.0:
+            diff                  = gauss (0, Sight.__alt_diff_hold) / 60
+            self.__measured_alt   += diff
             # Take care if the altitude extends outside [0,90]
-            if self.measured_alt < 0:
-                self.measured_alt = 0
-            if self.measured_alt >= 90:
-                self.measured_alt = 89.999999
+            if self.__measured_alt < 0:
+                self.__measured_alt = 0
+            if self.__measured_alt >= 90:
+                self.__measured_alt = 89.999999
         if sha_diff is not None:
-            self.sha_diff         = parse_angle_string (sha_diff)
+            self.__sha_diff         = parse_angle_string (sha_diff)
         elif MrKindStar.is_star (self.get_object_name()):
             qq = get_mr_item (self.get_object_name(),
-                                str(q_replace(self.set_time_dt_hour)),
+                                str(q_replace(self.__set_time_dt_hour)),
                                 ObsTypes.SHA)
             if Sight.MR_DEBUG:
                 print ("SHA = " + qq)
-            self.sha_diff = parse_angle_string (qq)
+            self.__sha_diff = parse_angle_string (qq)
         else:
-            self.sha_diff         = 0
-        self.observer_height      = observer_height
-        if self.observer_height != 0 and artificial_horizon is True:
+            self.__sha_diff       = 0
+        self.__observer_height    = observer_height
+        if self.__observer_height != 0 and artificial_horizon is True:
             raise ValueError ("Observer_height should be == 0 when artificial_horizon == True")
-        if self.observer_height < 0:
+        if self.__observer_height < 0:
             raise ValueError ("Observer_height should be >= 0")
         if sextant is not None:
             self.__correct_for_error (sextant)
@@ -1955,7 +1960,7 @@ class Sight :
             self.__correct_for_index_error (index_error_minutes)
         if artificial_horizon:
             self.__correct_for_artficial_horizon ()
-        if self.measured_alt < 0 or self.measured_alt >= 90:
+        if self.__measured_alt < 0 or self.__measured_alt >= 90:
             raise ValueError ("Altitude value must be within (0,90]")
 
         if not ho_obs:
@@ -1968,7 +1973,7 @@ class Sight :
         elif limb_correction in [Sight.LIMB_LOWER,Sight.LIMB_UPPER]:
             if self.get_object_name() in ["sun", "moon"]:
                 qq = get_mr_item (self.get_object_name(),
-                                  str(q_replace(self.set_time_dt_hour)),
+                                  str(q_replace(self.__set_time_dt_hour)),
                                   ObsTypes.SD)
                 q = float (qq)
                 semi_diameter_correction = -1 * limb_correction * q
@@ -1981,7 +1986,7 @@ class Sight :
         if horizontal_parallax is None:
             if self.get_object_name() == "moon":
                 qq = get_mr_item (self.get_object_name(),
-                                  str(q_replace(self.set_time_dt_hour)),
+                                  str(q_replace(self.__set_time_dt_hour)),
                                   ObsTypes.HP)
                 if Sight.MR_DEBUG:
                     print ("HP = " + qq)
@@ -1995,25 +2000,25 @@ class Sight :
 
         if estimated_position is None:
             # Use previously used parameter value
-            if Sight.estimated_position_hold is None:
+            if Sight.__estimated_position_hold is None:
                 raise ValueError ("A DRP (Estimated position) is needed!")
-            self.estimated_position = Sight.estimated_position_hold
+            self.__estimated_position = Sight.__estimated_position_hold
         else:
-            self.estimated_position = estimated_position
+            self.__estimated_position = estimated_position
 
         # Saving the specified estimated position for later use (calls with no parameter specified)
-        Sight.estimated_position_hold = self.estimated_position
+        Sight.__estimated_position_hold = self.__estimated_position
 
-        self.raw_measured_alt = self.measured_alt
-        if isinstance (self.estimated_position, LatLonGeodetic):
+        self.__raw_measured_alt = self.__measured_alt
+        if isinstance (self.__estimated_position, LatLonGeodetic):
             # We must convert the sextant altitude (geodetic) to a geocentric value
-            self.measured_alt =\
-                get_geocentric_alt (self.estimated_position,\
-                                    self.measured_alt, self.get_gp())
+            self.__measured_alt =\
+                get_geocentric_alt (self.__estimated_position,\
+                                    self.__measured_alt, self.get_gp())
         # At this point the altitude values are saved
-        # self.measured_alt     = A corrected *geocentrical* altitude
+        # self.__measured_alt     = A corrected *geocentrical* altitude
         #      This value is used for all intersection work
-        # self.raw_measured_alt = A corrected *geodetical* altitude
+        # self.__raw_measured_alt = A corrected *geodetical* altitude
         #      This value is used for all mapping work
         # self.gp               = The geographical point in *geocentrical* system
         #      The gp must be converted to geodetical wherever needed.
@@ -2035,56 +2040,55 @@ class Sight :
         return self.__set_time_dt
 
     def __correct_set_time (self, chronometer : Chronometer):
-        dt1 = self.set_time_dt
+        dt1 = self.__set_time_dt
         dt2 = chronometer.get_corrected_time (dt1)
-        self.set_time_dt = dt2
+        self.__set_time_dt = dt2
 
     def __correct_for_error (self, sextant : Sextant):
-        #self.measured_alt /= sextant.graduation_error
-        #self.measured_alt -= sextant.index_error/60
-        self.measured_alt -= sextant.index_error/60
-        self.measured_alt /= sextant.graduation_error
+        self.__measured_alt -= sextant.index_error/60
+        self.__measured_alt /= sextant.graduation_error
         # Proposed change. See https://github.com/alinnman/celestial-navigation/discussions/3
         # TODO Review this.
 
     def __correct_semi_diameter (self, sd : int | float):
-        self.measured_alt += sd/60
+        self.__measured_alt += sd/60
 
     def __correct_for_horizontal_parallax (self, hp : int | float):
-        self.measured_alt += hp/60 * sin(deg_to_rad(90 - self.measured_alt))
+        self.__measured_alt += hp/60 * sin(deg_to_rad(90 - self.__measured_alt))
 
     def __correct_for_index_error (self, ie : int | float):
-        self.measured_alt -= ie/60
+        self.__measured_alt -= ie/60
 
     def __correct_for_artficial_horizon (self):
-        self.measured_alt /= 2
+        self.__measured_alt /= 2
 
     def __correct_dip_of_horizon (self):
-        if self.observer_height == 0:
+        if self.__observer_height == 0:
             return
-        self.measured_alt -= get_dip_of_horizon (self.observer_height, self.temperature,\
-                                                 self.dt_dh, self.pressure)/60
+        self.__measured_alt -= get_dip_of_horizon (self.__observer_height, self.__temperature,\
+                                                   self.__dt_dh, self.__pressure)/60
 
     def __correct_for_refraction (self):
-        self.measured_alt -= get_refraction (self.measured_alt, self.temperature, self.pressure)/60
+        self.__measured_alt -= get_refraction\
+            (self.__measured_alt, self.__temperature, self.__pressure)/60
 
     def __calculate_gp (self) -> LatLonGeocentric:
-        min_sec_contribution = (self.__set_time_dt - self.set_time_dt_hour).total_seconds() / 3600
+        min_sec_contribution = (self.__set_time_dt - self.__set_time_dt_hour).total_seconds() / 3600
 
         result_lon = mod_lon (- \
-        ((self.gha_time_0 + self.sha_diff) + \
-        ((self.gha_time_1 - self.gha_time_0))*min_sec_contribution))
+        ((self.__gha_time_0 + self.__sha_diff) + \
+        ((self.__gha_time_1 - self.__gha_time_0))*min_sec_contribution))
 
         result_lat = \
-        self.decl_time_0 + (self.decl_time_1 - self.decl_time_0)*min_sec_contribution
+        self.__decl_time_0 + (self.__decl_time_1 - self.__decl_time_0)*min_sec_contribution
 
         return LatLonGeocentric (result_lat, result_lon)
 
     def get_angle (self, geodetic : bool) -> float:
         ''' Returns the (Earth-based) angle of the sight '''
         if geodetic:
-            return 90-self.raw_measured_alt
-        return 90-self.measured_alt
+            return 90-self.__raw_measured_alt
+        return 90-self.__measured_alt
 
     def get_circle (self, geodetic : bool) -> Circle:
         ''' Return a circle object corresponding to this Sight '''
@@ -2153,8 +2157,8 @@ class Sight :
 class SightPair:
     ''' Represents a pair of sights, needed for making a sight reduction '''
     def __init__ (self, sf1 : Sight, sf2 : Sight):
-        self.sf1 = sf1
-        self.sf2 = sf2
+        self.__sf1 = sf1
+        self.__sf2 = sf2
 
     def get_intersections\
                       (self, return_geodetic : bool,
@@ -2166,8 +2170,8 @@ class SightPair:
         ''' Return the two intersections for this sight pair. 
             The parameter estimated_position can be used to eliminate the false intersection '''
 
-        circle1 = self.sf1.get_circle (geodetic = return_geodetic)
-        circle2 = self.sf2.get_circle (geodetic = return_geodetic)
+        circle1 = self.__sf1.get_circle (geodetic = return_geodetic)
+        circle2 = self.__sf2.get_circle (geodetic = return_geodetic)
         retval = get_intersections (circle1, circle2,
                                 estimated_position=estimated_position,\
                                 diagnostics = diagnostics,
@@ -2186,7 +2190,10 @@ class SightCollection:
                 thrown_object = sf_list [0]
             raise IntersectError ("SightCollection should have at least two sights", thrown_object)
 
-        self.sf_list = sf_list
+        self.__sf_list = sf_list
+
+    def get_sf_list (self) -> list[Sight]:
+        return self.__sf_list
 
 #pylint: disable=R0912
 #pylint: disable=R0914
@@ -2200,16 +2207,16 @@ class SightCollection:
         ''' Get an intersection from the collection of sights. 
             A mean value and sorting algorithm is applied. '''
         if estimated_position is None:
-            estimated_position = Sight.estimated_position_hold
+            estimated_position = Sight.get_estimated_position ()
         diag_output = ""
-        nr_of_fixes = len(self.sf_list)
+        nr_of_fixes = len(self.__sf_list)
         assert nr_of_fixes >= 2
         if nr_of_fixes == 2:
             # For two star fixes just use the algorithm of SightPair.getIntersections
             try:
                 intersections, fitness, diag_output =\
-                    SightPair (self.sf_list[0],\
-                                self.sf_list[1]).get_intersections\
+                    SightPair (self.__sf_list[0],\
+                               self.__sf_list[1]).get_intersections\
                                             (return_geodetic=False,
                                             estimated_position=estimated_position,\
                                             diagnostics = diagnostics)
@@ -2232,7 +2239,7 @@ class SightCollection:
         intersection_count = 0
         for i in range (nr_of_fixes):
             for j in range (i+1, nr_of_fixes):
-                p = SightPair (self.sf_list [i], self.sf_list [j])
+                p = SightPair (self.__sf_list [i], self.__sf_list [j])
                 intersection_count += 1
                 try:
                     if assume_good_estimated_position:
@@ -2489,7 +2496,7 @@ class SightCollection:
         ''' Renders a folium object (Map) to be used for map plotting'''
 
         check_folium ()
-        the_sf_list = self.sf_list
+        the_sf_list = self.__sf_list
 
 #pylint: disable=C0415
         from folium import Map, Circle as Folium_Circle, PolyLine, Marker, Icon
@@ -2681,23 +2688,23 @@ class SightTrip:
                        estimated_starting_point : LatLonGeodetic,
                        course_degrees : int | float,
                        speed_knots : int | float):
-        self.sight_start              = sight_start
-        self.sight_end                = sight_end
-        self.estimated_starting_point = estimated_starting_point.get_latlon()
-        self.course_degrees           = course_degrees
-        self.speed_knots              = speed_knots
+        self.__sight_start              = sight_start
+        self.__sight_end                = sight_end
+        self.__estimated_starting_point = estimated_starting_point.get_latlon()
+        self.__course_degrees           = course_degrees
+        self.__speed_knots              = speed_knots
         self.__calculate_time_hours ()
-        self.movement_vec             = None
-        self.start_pos                = None
-        self.end_pos                  = None
+        self.__movement_vec             = None
+        self.__start_pos                = None
+        self.__end_pos                  = None
 #pylint: enable=R0913
 
     def __calculate_time_hours (self):
-        if isinstance (self.sight_start, Sight):
-            dt1 = self.sight_start.get_time()
+        if isinstance (self.__sight_start, Sight):
+            dt1 = self.__sight_start.get_time()
         else:
-            dt1 = self.sight_start
-        dt2 = self.sight_end.get_time()
+            dt1 = self.__sight_start
+        dt2 = self.__sight_end.get_time()
         self.time_hours = calculate_time_hours (dt1, dt2)
 
     def __calculate_distance_to_target (self, angle : int | float,
@@ -2706,12 +2713,12 @@ class SightTrip:
         rotation_angle = deg_to_rad (angle)
         rotated_vec = rotate_vector (b_vec, a_vec, rotation_angle)
         rotated_latlon = to_latlon (rotated_vec)
-        taken_out = takeout_course (rotated_latlon, self.course_degrees,\
-                                   self.speed_knots, self.time_hours)
+        taken_out = takeout_course (rotated_latlon, self.__course_degrees,\
+                                    self.__speed_knots, self.time_hours)
 
         dbp = spherical_distance\
-              (taken_out, self.sight_end.get_gp())\
-                  - self.sight_end.get_circle(geodetic=False).get_radius()
+              (taken_out, self.__sight_end.get_gp())\
+                  - self.__sight_end.get_circle(geodetic=False).get_radius()
         return dbp, taken_out, rotated_latlon
 
 #pylint: disable=R0914
@@ -2720,16 +2727,16 @@ class SightTrip:
         ''' Get the intersections for this sight trip object '''            
 
         ### Calculate a trip from Sight to Sight
-        if isinstance (self.sight_start, Sight):
+        if isinstance (self.__sight_start, Sight):
 
             # Calculate intersections
-            pair = SightPair (self.sight_start, self.sight_end)
+            pair = SightPair (self.__sight_start, self.__sight_end)
             best_intersection, fitness, diag_output = pair.get_intersections\
                 (return_geodetic=False,
-                 estimated_position = self.estimated_starting_point,\
+                 estimated_position = self.__estimated_starting_point,\
                  diagnostics = diagnostics)
             # Determine angle of the intersection point on sight_start small circle
-            a_vec = to_rectangular (self.sight_start.get_gp())
+            a_vec = to_rectangular (self.__sight_start.get_gp())
             assert isinstance (best_intersection, LatLonGeocentric)
             b_vec = to_rectangular (best_intersection)
 
@@ -2755,33 +2762,33 @@ class SightTrip:
                 raise IntersectError ("Cannot calculate a trip vector")
             assert taken_out is not None
             assert rotated is not None
-            self.start_pos = rotated
-            self.end_pos   = taken_out
+            self.__start_pos = rotated
+            self.__end_pos   = taken_out
             if return_geodetic:
                 taken_out = LatLonGeodetic (ll=taken_out)
                 rotated   = LatLonGeodetic (ll=rotated)
             return (taken_out, rotated), fitness, diag_output
 
         ### Calculate a trip from a timestamp (with estimated position) to Sight
-        taken_out = takeout_course (self.estimated_starting_point,\
-                                    self.course_degrees,\
-                                    self.speed_knots, self.time_hours)
+        taken_out = takeout_course (self.__estimated_starting_point,\
+                                    self.__course_degrees,\
+                                    self.__speed_knots, self.time_hours)
         assert isinstance (taken_out, LatLonGeocentric)
-        circle1 = Circle (self.sight_end.get_gp(),
-                          self.sight_end.get_angle(geodetic = False),
+        circle1 = Circle (self.__sight_end.get_gp(),
+                          self.__sight_end.get_angle(geodetic = False),
                           EARTH_CIRCUMFERENCE)
 
-        circle2 = get_great_circle_route (taken_out, self.sight_end.get_gp())
+        circle2 = get_great_circle_route (taken_out, self.__sight_end.get_gp())
 
         assert isinstance (circle2, Circle)
-        self.movement_vec = circle2.get_latlon()
+        self.__movement_vec = circle2.get_latlon()
         gi, fitness, diag = get_intersections \
                            (circle1, circle2,
                             estimated_position=taken_out)
 
         assert isinstance (gi, LatLonGeocentric)
-        self.start_pos = self.estimated_starting_point
-        self.end_pos = gi
+        self.__start_pos = self.__estimated_starting_point
+        self.__end_pos = gi
         if return_geodetic:
             gi = LatLonGeodetic (ll=gi)
         return gi, fitness, diag
@@ -2803,9 +2810,9 @@ class SightTrip:
                            [to_point.get_lat(),   to_point.get_lon()]]
             ).add_to(m)
 
-        if isinstance (self.sight_start, Sight):
+        if isinstance (self.__sight_start, Sight):
             assert isinstance (intersections, tuple)
-            s_c = SightCollection ([self.sight_start, self.sight_end])
+            s_c = SightCollection ([self.__sight_start, self.__sight_end])
             retval = s_c.render_folium (intersections=intersections[0],\
                                         accuracy=accuracy,\
                                         label_text="Target",\
@@ -2820,27 +2827,27 @@ class SightTrip:
             draw_arrow (retval, intersections [1], intersections [0])
             return retval
 
-        assert isinstance (self.movement_vec, LatLonGeocentric)
-        assert isinstance (self.start_pos, LatLon)
-        assert isinstance (self.end_pos, LatLon)
-        end_pos_d   = LatLonGeodetic (ll = self.end_pos)
+        assert isinstance (self.__movement_vec, LatLonGeocentric)
+        assert isinstance (self.__start_pos, LatLon)
+        assert isinstance (self.__end_pos, LatLon)
+        end_pos_d   = LatLonGeodetic (ll = self.__end_pos)
         draw_map = get_folium_map (location = [end_pos_d.get_lat(),\
                                     end_pos_d.get_lon()])
         assert isinstance (draw_map, Map)
-        self.sight_end.render_folium (draw_map)
+        self.__sight_end.render_folium (draw_map)
 
 
         # Handle/plot markers
-        if isinstance (self.start_pos, LatLonGeocentric) and \
-           isinstance (self.end_pos, LatLonGeocentric):
-            start_pos_d = LatLonGeodetic (ll = self.start_pos)
+        if isinstance (self.__start_pos, LatLonGeocentric) and \
+           isinstance (self.__end_pos, LatLonGeocentric):
+            start_pos_d = LatLonGeodetic (ll = self.__start_pos)
             if draw_markers:
                 Marker (icon=Icon(color='lightgray', icon='home', prefix='fa'),
                         tooltip = "Starting point",
                         popup = "Starting point " + get_representation(start_pos_d,1),
                         location=[start_pos_d.get_lat(),\
                                 start_pos_d.get_lon()]).add_to(draw_map)
-            end_pos_d = LatLonGeodetic (ll = self.end_pos)
+            end_pos_d = LatLonGeodetic (ll = self.__end_pos)
             Folium_Circle (location = [end_pos_d.get_lat(), end_pos_d.get_lon()],
                            radius=accuracy).add_to (draw_map)
             if draw_markers:

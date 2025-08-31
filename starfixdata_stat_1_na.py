@@ -69,7 +69,7 @@ def main ():
     # The exact position is 41°51'00.1"N 87°39'00.2"W
     intersections = collection = taken_ms = None
     try:
-        intersections, _, _, collection =\
+        intersections, _, _, collection, _ =\
               SightCollection.get_intersections_conv (return_geodetic=True,
                                                       estimated_position=the_pos,
                                                       get_starfixes=get_starfixes,
@@ -86,7 +86,7 @@ def main ():
         # Check azimuth
         assert isinstance (intersections, LatLonGeodetic)
         counter = 0
-        for s in collection.sf_list:
+        for s in collection.get_sf_list ():
             counter += 1
             az = s.get_azimuth (intersections)
             print ("Azimuth " + str(counter) + " = " + str(round(az,2)))
@@ -94,7 +94,7 @@ def main ():
         # Diagnostics for map rendering etc.
         print ("Some useful data follows")
         counter = 0
-        for s in collection.sf_list:
+        for s in collection.get_sf_list ():
             assert isinstance (s, Sight)
             counter += 1
             print (str(counter) + " radius = " +\
