@@ -135,12 +135,12 @@ All confirm the same fundamental relationship that proves Earth's sphericity.
 
 ## Implementation Notes
 
-*For software development:*
+*For software development and practical work:*
 
 - **Atmospheric Corrections**: Apply refraction and dip corrections before sight reduction
 - **Interpolation**: Use linear interpolation for almanac data between tabulated hours
 - **Coordinate Conversion**: Ensure proper conversion between spherical (latitude/longitude) and Cartesian (x,y,z) coordinates
-- **Precision**: Modern GPS requires meter-level accuracy, demanding careful handling of all corrections
+- **Precision**: Modern GPS requires meter-level accuracy, but celestial navigation will only reach about 1 nautical miles accuracy, due to the simple mechanical devices (sextant and clock). This requires careful manual work. 
 
 The algorithm's success in providing accurate positioning for centuries demonstrates that Earth must indeed be spherical, as any other geometry would cause systematic errors that would accumulate and render the method useless.
 
