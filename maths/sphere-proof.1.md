@@ -103,7 +103,9 @@ $$\mathbf{q} = N((\mathbf{a} \times \mathbf{b}) \times (\mathbf{a} \cos \beta - 
 where $N(\mathbf{x}) = \frac{\mathbf{x}}{|\mathbf{x}|}$
 
 **Calculate Rotation Parameters:**
+
 $$\mathbf{r} = (\mathbf{a} \times \mathbf{b}) \times \mathbf{q}$$
+
 $$\rho = \arccos\left(\frac{\cos \alpha}{\mathbf{a} \cdot \mathbf{q}}\right)$$
 
 **Apply Rodrigues' Rotation Formula:**
