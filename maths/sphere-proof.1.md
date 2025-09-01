@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Celestial navigation provides both practical positioning methods and fundamental geometric proof of Earth's spherical nature. This document presents both the theoretical proof that Earth must be spherical based on observational data, and the practical vector-algebraic algorithm used in modern celestial navigation software.
+Celestial navigation provides both practical positioning methods and fundamental geometric proof of Earth's spherical nature. This document presents both the theoretical proof that Earth must be spherical based on observational data, and the practical vector-algebraic algorithm which can be used in modern celestial navigation software (such as [this toolkit](../README.md)).
 
 ## Part I: Theoretical Proof of Earth's Sphericity
 
