@@ -118,20 +118,20 @@ The horizon dip phenomenon and its geometric relationship to Earth's spherical s
 #### Mathematical Relationships
 The mathematical relationship between observer height and horizon dip for spherical surfaces is well-established:
 
-> "If we can regard the ray OH as an arc of a circle, with a curvature k times the Earth's curvature (that is, the radius of curvature of the ray is R/k), then the above result is still true if we just replace R in the original expressions (without refraction) with R/(1 − k)."
+> "If we can regard the ray $OH$ as an arc of a circle, with a curvature $k$ times the Earth's curvature (that is, the radius of curvature of the ray is $R/k$), then the above result is still true if we just replace $R$ in the original expressions (without refraction) with $R/(1 - k)$."
 
 *Source*: [Dip of the Horizon](https://aty.sdsu.edu/explain/atmos_refr/dip.html)
 
 #### Spherical Uniqueness Results
 Liebmann's theorem provides a related uniqueness result:
 
-> "Liebmann's theorem (1900) answered Minding's question. The only regular (of class C²) closed surfaces in R³ with constant positive Gaussian curvature are spheres."
+> "Liebmann's theorem (1900) answered Minding's question. The only regular (of class $C^2$) closed surfaces in $\mathbb{R}^3$ with constant positive Gaussian curvature are spheres."
 
 *Source*: [Gaussian curvature - Wikipedia](https://en.wikipedia.org/wiki/Gaussian_curvature)
 
 ### Novel Conclusions
 
-The specific topological proof that the horizon dip formula θ ∝ √h **uniquely** determines spherical geometry is a novel conclusion, combining these established results in a new way. This cannot be established explicitly by known sources, but can be
+The specific topological proof that the horizon dip formula $\theta \propto \sqrt{h}$ **uniquely** determines spherical geometry is a novel conclusion, combining these established results in a new way. This cannot be established explicitly by known sources, but can be
 concluded from combining supporting documents and sources. 
 
 ### Conclusion
