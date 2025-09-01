@@ -9,7 +9,7 @@ The article can be summarized as the experimental findings which are given here 
 
 1. The altitude of any celestial object increases 1 degree for each 111.1 km you travel towards its GP. 
 1. There is a dip of the horizon and it follows this formula: $\Theta ≈ 1.93 \times \sqrt{h}$ <br>
-   (where θ is dip in arcminutes, h is elevation in meters)
+   (where $\Theta$ is dip in arcminutes, $h$ is elevation in meters)
 
 From this you can do the reasoning **a priori** (using maths) to prove that the findings above are **only possible on a sphere**
 
