@@ -100,7 +100,7 @@ $$B = \{\mathbf{p} \in \mathbb{R}^3 \mid \mathbf{p} \cdot \mathbf{b} = \cos \bet
 **Calculate Intersection Midpoint:**
 $$\mathbf{q} = N((\mathbf{a} \times \mathbf{b}) \times (\mathbf{a} \cos \beta - \mathbf{b} \cos \alpha))$$
 
-where $N(\mathbf{x}) = \frac{\mathbf{x}}{|\mathbf{x}|}$
+where<br>$N(\mathbf{x}) = \frac{\mathbf{x}}{|\mathbf{x}|}$
 
 **Calculate Rotation Parameters:**
 
