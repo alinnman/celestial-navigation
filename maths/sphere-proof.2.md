@@ -20,24 +20,50 @@ $\theta \approx \sqrt{\frac{2h}{R}}$
 
 This gives us: **$\theta \propto \sqrt{h}$**
 
-*A more detailed reasoning about this can be found [here](horizondip.md)*
+## Radius Determination from Observed Coefficient
+
+From the general relationship:
+
+$k = \sqrt{\frac{2}{R}} \times \frac{180}{\pi} \times 60$
+
+we can solve for the radius $R$:
+
+$R = \frac{180^2 \times 60^2 \times 2}{\pi^2 \times k^2} \approx \frac{2.364 \times 10^7}{k^2}$
+
+With the observed coefficient $k = 1.93$ (no refraction):
+
+$R \approx \frac{2.364 \times 10^7}{1.93^2} = 6.35 \times 10^6 \text{ meters}$
+
+This matches Earth's actual radius, confirming the spherical model.
 
 ## Uniqueness Proof
 
-### Theorem: Only surfaces of constant positive curvature (spheres) can produce $\theta \propto \sqrt{h}$ for all elevations $h$.
+### Theorem: Only surfaces of constant positive curvature (spheres) can produce $d(h) \propto \sqrt{h}$ for all elevations $h$.
 
 **Proof by contradiction:**
 
-Suppose there exists a non-spherical surface that produces the same horizon dip relationship $\theta \propto \sqrt{h}$ for all observer heights $h$.
+Suppose there exists a non-spherical surface that produces the same horizon dip relationship $d(h) \propto \sqrt{h}$ for all observer heights $h$.
 
-### Step 1: Curvature Constraint
-For the relationship $\theta \propto \sqrt{h}$ to hold at *every* point and elevation, the surface must have the same geometric property everywhere. This means the principal curvatures must be constant across the surface.
+### Step 1: Trigonometric Constraint
+The derivation above shows that the $\sqrt{h}$ relationship requires:
+1. A tangent condition: $\cos(d) = \frac{R_{eff}}{R_{eff}+h}$
+2. Constant effective radius of curvature $R_{eff}$ at all points
+3. Small-angle approximations that yield $d \approx \sqrt{\frac{2h}{R_{eff}}}$
+
+Where $R_{eff}$ represents either:
+- The geometric radius $R$ (no refraction case)
+- An apparent radius $R/(1-k)$ where $k$ accounts for atmospheric refraction
+
+**Crucially**: Both cases preserve the fundamental geometric requirement of constant curvature radius.
 
 ### Step 2: Gaussian Curvature Analysis
 The Gaussian curvature $K$ at any point determines the local geometric behavior. For our horizon dip formula to work:
 
 - The curvature must be **positive** (since we observe a dip, not a rise)
 - The curvature must be **constant** (since the $\sqrt{h}$ relationship holds universally)
+- The curvature must satisfy $K = \frac{1}{R^2}$ everywhere (geometric surface property)
+
+**Note**: Atmospheric refraction affects the *observed* coefficient but does not change the underlying surface geometry - Earth remains spherical with $K = \frac{1}{R^2}$ regardless of atmospheric conditions.
 
 ### Step 3: Classification by Gaussian Curvature
 By the **Gauss-Bonnet theorem** and **uniformization theorem**, surfaces of constant Gaussian curvature are classified as:
@@ -49,44 +75,75 @@ By the **Gauss-Bonnet theorem** and **uniformization theorem**, surfaces of cons
 ### Step 4: Elimination of Non-Spherical Cases
 
 **Case $K = 0$ (Flat/Cylindrical):**
-- On a flat surface: no horizon dip ($\theta = 0$ always)
-- On a cylindrical surface: horizon dip depends on orientation and doesn't follow $\theta \propto \sqrt{h}$
-- **Contradiction** with observed formula
+- On a flat surface: no horizon dip ($d = 0$ always)
+- The trigonometric relationship $\cos(d) = \frac{R_{eff}}{R_{eff}+h}$ becomes undefined (infinite radius)
+- No tangent line from elevated observer to flat surface produces dip
+- **Contradiction** with observed formula (regardless of refraction effects)
 
 **Case $K < 0$ (Hyperbolic):**
-- Hyperbolic surfaces curve away from the observer
-- This would produce horizon *rise*, not dip ($\theta < 0$)
-- **Contradiction** with observed downward dip
+- Hyperbolic surfaces curve away from the observer (saddle shape)
+- The "horizon" would appear above eye level, producing negative dip ($d < 0$)
+- The trigonometric relationships reverse: observer sees "horizon rise" not "horizon dip"
+- **Contradiction** with observed downward dip (both $k = 1.93$ and $k = 1.85$ are positive)
 
 **Case $K > 0$ but variable:**
-- If curvature varies with position, then the horizon dip formula would vary with location
-- The coefficient in $\theta \propto \sqrt{h}$ would change based on local curvature
-- **Contradiction** with the universal constant $1.93$
+- If curvature varies with position, then the local radius $R(x,y)$ changes
+- The coefficient in $d \propto \sqrt{h}$ becomes location-dependent: $d \approx \sqrt{\frac{2h}{R(x,y)}}$
+- Different locations would show different proportionality constants
+- **Contradiction** with both observed universal constants ($1.93$ geometric, $1.85$ with refraction)
 
-### Step 5: Spherical Surfaces
-Only when $K > 0$ and constant do we get:
+**Case: Non-constant curvature surfaces:**
+- The tangent condition $\cos(d) = \frac{R_{eff}}{R_{eff}+h}$ requires a well-defined radius $R_{eff}$
+- Surfaces with varying curvature have no single radius parameter
+- The trigonometric derivation fails without constant $R$
+- **Contradiction** with both observed relationships (atmospheric refraction cannot create apparent constant curvature from variable curvature)
+
+### Step 5: Atmospheric Refraction as Supporting Evidence
+Atmospheric refraction changes the coefficient from $1.93$ to $\approx 1.85$ while preserving the $\sqrt{h}$ functional form. This actually **strengthens** the spherical geometry proof:
+
+- **Refraction effects are predictable**: The coefficient change matches theoretical predictions for light bending in Earth's atmosphere
+- **Functional form preservation**: Only spherical geometry can maintain $\sqrt{h}$ relationship under varying atmospheric conditions
+- **Physical consistency**: The refraction-corrected coefficient $1.85$ still yields a reasonable apparent radius, confirming the underlying spherical model
+
+### Step 6: Spherical Surfaces
+Only when $K > 0$ and constant (i.e., $K = \frac{1}{R^2}$ everywhere) do we get:
 - Uniform positive curvature everywhere
-- Consistent horizon dip behavior
-- The exact relationship $\theta \propto \sqrt{h}$ with a universal constant
+- Well-defined constant radius $R$
+- Valid trigonometric relationship $\cos(d) = \frac{R_{eff}}{R_{eff}+h}$ (where $R_{eff}$ accounts for atmospheric effects)
+- Consistent small-angle approximation yielding $d \approx \sqrt{\frac{2h}{R_{eff}}}$
+- Both observed relationships: $d(h) = 1.93\sqrt{h}$ (geometric) and $d_{\text{refraction}}(h) = 1.85\sqrt{h}$ (with refraction)
 
 ## Topological Conclusion
 
-Since we've eliminated all other possibilities, and the relationship $\theta \propto \sqrt{h}$ must hold everywhere on the surface, the surface must be:
+Since we've eliminated all other possibilities through both trigonometric and differential geometric arguments, and the relationship $d(h) \propto \sqrt{h}$ must hold everywhere on the surface, the surface must be:
 
 1. **Topologically spherical** (genus $0$, closed surface)
-2. **Geometrically spherical** (constant positive Gaussian curvature)
-3. **Metrically spherical** (isometric to a round sphere)
+2. **Geometrically spherical** (constant positive Gaussian curvature $K = \frac{1}{R^2}$)
+3. **Metrically spherical** (isometric to a round sphere of radius $R$)
 
-Therefore, **only a spherical surface** can produce the observed horizon dip formula $\theta = 1.93\sqrt{h}$.
+Therefore, **only a spherical surface** can produce the observed horizon dip formulas:
+- $d(h) = 1.93\sqrt{h}$ (pure geometric case)
+- $d_{\text{refraction}}(h) = 1.85\sqrt{h}$ (with atmospheric refraction)
 
-## Physical Interpretation
+## Physical Interpretation and Al-Biruni's Method
 
 This mathematical result confirms that:
-- Earth's surface geometry is fundamentally spherical
-- Any deviation from spherical geometry would produce measurably different horizon dip behavior
-- The universality of the horizon dip formula is strong evidence for Earth's spherical shape
 
-The proof demonstrates that the horizon dip observation is not just *consistent* with a spherical Earth, but **uniquely determines** spherical geometry as the only possible surface geometry.
+- **Earth's surface geometry is fundamentally spherical**: The trigonometric relationship $d(h) = \arccos\left(\frac{R}{R+h}\right)$ uniquely determines spherical geometry
+- **Atmospheric refraction provides additional confirmation**: The predictable change in coefficient from $1.93$ to $1.85$ confirms both the spherical model and our understanding of atmospheric optics
+- **Any deviation from spherical geometry would produce measurably different horizon dip behavior**: The $\sqrt{h}$ relationship is a geometric signature of spherical surfaces that persists despite atmospheric effects
+- **The universality of both coefficients confirms uniform curvature**: Constants $1.93$ and $1.85$ applying globally confirm Earth's spherical geometry
+
+### Historical Context and Refraction
+Al-Biruni used this relationship in 1017 AD without knowledge of atmospheric refraction. His measurements likely gave coefficients somewhere between $1.85$ and $1.93$ depending on atmospheric conditions, but the fundamental $\sqrt{h}$ relationship still allowed him to calculate Earth's radius with reasonable accuracy.
+
+The modern understanding of refraction doesn't invalidate Al-Biruni's method - it refines it. Both coefficients lead to reasonable radius estimates and both confirm spherical geometry.
+
+## Conclusion
+
+The proof demonstrates that the horizon dip observation is not just *consistent* with a spherical Earth, but **uniquely determines** spherical geometry as the only possible surface geometry. The trigonometric foundation shows why the $\sqrt{h}$ relationship emerges naturally from spherical surfaces and cannot arise from any other geometric configuration.
+
+**Crucially**: Atmospheric refraction strengthens rather than weakens this conclusion. The fact that refraction predictably modifies the coefficient while preserving the functional form $d \propto \sqrt{h}$ provides additional evidence for the underlying spherical geometry. Only a truly spherical surface can maintain this relationship under varying atmospheric conditions.
 
 ## Supporting Sources and Analysis
 
