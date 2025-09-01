@@ -115,8 +115,8 @@ The horizon dip phenomenon and its geometric relationship to Earth's spherical s
 
 *Source*: [5. Horizon dip angle – 100 Proofs that the Earth is a Globe](https://www.mezzacotta.net/100proofs/archives/127)
 
-#### Mathematical Relationships
-The mathematical relationship between observer height and horizon dip for spherical surfaces is well-established:
+#### Mathematical Relationships (with correction for refraction)
+The mathematical relationship between observer height and horizon dip for spherical surfaces is well-established. This also includes reasoning based on refraction where the radius of the Earth $R$ can be replaced by a corrected value:
 
 > "If we can regard the ray $OH$ as an arc of a circle, with a curvature $k$ times the Earth's curvature (that is, the radius of curvature of the ray is $R/k$), then the above result is still true if we just replace $R$ in the original expressions (without refraction) with $R/(1 - k)$."
 
@@ -131,8 +131,7 @@ Liebmann's theorem provides a related uniqueness result:
 
 ### Novel Conclusions
 
-The specific topological proof that the horizon dip formula $\theta \propto \sqrt{h}$ **uniquely** determines spherical geometry is a novel conclusion, combining these established results in a new way. This cannot be established explicitly by known sources, but can be
-concluded from combining supporting documents and sources. 
+The specific topological proof that the horizon dip formula $\theta \propto \sqrt{h}$ **uniquely** determines spherical geometry is a novel conclusion, combining these established results in a new way. This cannot be established explicitly by known sources, but can be concluded from combining supporting documents and sources. 
 
 ### Conclusion
 
