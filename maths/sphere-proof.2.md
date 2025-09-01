@@ -131,7 +131,7 @@ Liebmann's theorem provides a related uniqueness result:
 
 ### Novel Conclusions
 
-The specific topological proof that the horizon dip formula θ ∝ √h **uniquely** determines spherical geometry is a novel conclusions, combining these established results in a new way. This cannot be established explicitly by known sources, but can be
+The specific topological proof that the horizon dip formula θ ∝ √h **uniquely** determines spherical geometry is a novel conclusion, combining these established results in a new way. This cannot be established explicitly by known sources, but can be
 concluded from combining supporting documents and sources. 
 
 ### Conclusion
