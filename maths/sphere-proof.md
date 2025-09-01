@@ -15,8 +15,8 @@ From this you can do the reasoning **a priori** (using maths) to prove that the 
 
 I present here two rigorous proofs for this:
 
-[1. Proof that Eratosthenes assumption and Celestial Navigation only works on a sphere](sphere-proof1.md) <br>
-[2. Proof that Al-Biruni's finding and the square root relation of dip and elevation only works on a sphere](sphere-proof2.md)
+[1. Proof that Eratosthenes assumption and Celestial Navigation only works on a sphere](sphere-proof.1.md1.md) <br>
+[2. Proof that Al-Biruni's finding and the square root relation of dip and elevation only works on a sphere](sphere-proof.2.md2.md)
 
 1000 years ago this could have earned a "PhD" or similar in the academic world. Today this is very basic science, 
 but presented here as a counter-argument against pseudoscience advocating a Flat Earth.
