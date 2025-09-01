@@ -64,7 +64,7 @@ $$R = \frac{180 \times 111.1}{\pi} \approx 6371 \text{ km}$$
 
 ## Part II: Practical Sight Reduction Algorithm
 
-*The following describes the vector-algebraic algorithm used in modern celestial navigation software to determine position from celestial observations.*
+*The following describes the vector-algebraic algorithm used in modern celestial navigation software (such as [this toolkit](../README.md)) to determine position from celestial observations.*
 
 ### Workflow Overview
 
