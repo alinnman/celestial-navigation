@@ -21,4 +21,9 @@ I present here two rigorous proofs for this:
 1000 years ago this could have earned a "PhD" or similar in the academic world. Today this is very basic science, 
 but presented here as a counter-argument against pseudoscience advocating a Flat Earth.
 
+Confronting the proofs given above can be done in two ways:
+
+1. Refuting the observational findings (a posteriori), preferrably through producing well-documented and peer-reviewed experimental results ("no horizon dip", "refute the linear relation of the altitude of celestial objects").
+2. Refuting the mathematical proofs (a priori). Then you will have to wrestle against titans such as [Carl Friedrich Gauss](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss).
+
 I leave it here for anyone to use. 
