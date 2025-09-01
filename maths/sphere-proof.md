@@ -26,4 +26,6 @@ Confronting the proofs given above can be done in two ways:
 1. Refuting the observational findings (a posteriori), preferrably through producing well-documented and peer-reviewed experimental results ("no horizon dip", "refute the linear relation of the altitude of celestial objects").
 2. Refuting the mathematical proofs (a priori). Then you will have to wrestle against titans such as [Carl Friedrich Gauss](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss).
 
+I say Good Luck to anyone taking the challenge to do such a confrontation!
+
 I leave it here for anyone to use. 
