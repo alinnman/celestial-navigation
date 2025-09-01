@@ -42,3 +42,7 @@ I have also prepared a simple Google Colab
 to be used in discussions
 with flat earthers, to show how celestial navigation works and how powerful
 its mechanism is to give evidence for a spheric Earth.
+
+If you want more **rigorous** proofs (including maths) for a spherical Earth you can 
+take a look [here](maths/sphere-proof.md)
+
