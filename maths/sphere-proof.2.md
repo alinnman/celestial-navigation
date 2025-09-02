@@ -1,7 +1,7 @@
 # Proof 2: Only Spherical Surfaces Produce the Observed Horizon Dip Formula
 
 ## Given Information
-- Observed horizon dip formula: **$d \approx k\sqrt{h}$** (where $\theta$ is in arcminutes, $h$ is elevation in meters, $1.85 < k < 1.93$)
+- Observed horizon dip formula: **$d \approx k\sqrt{h}$** (where $d$ is in arcminutes, $h$ is elevation in meters, $1.85 < k < 1.93$)
 - For actual observations (with refraction) we can establish $k \approx 1.85$. 
 - This corresponds to a sphere of radius $R \approx 6300$ km
 - We need to prove this relationship uniquely determines spherical geometry
