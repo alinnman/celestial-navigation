@@ -118,6 +118,10 @@ $$\mathbf{p}_{\text{rot}} = \mathbf{q} \cos \rho + (\mathbf{r} \times \mathbf{q}
 **Final Result:**
 Apply the formula for both $+\rho$ and $-\rho$ to get two intersection points $\mathbf{p}_1$ and $\mathbf{p}_2$. Convert back to spherical coordinates - one represents your physical location.
 
+**Note:**
+The result we get above is a pure **spherical** sight reduction, performed on the unit sphere. In reality the Earth is an oblate spheroid, and you also need to enter corrections
+for atmospheric refraction and horizon dip. These are added as (smaller) coorections in a real-world implementation. 
+
 ## Part III: Mathematical Connection
 
 ### Why the Algorithm Requires a Spherical Earth
