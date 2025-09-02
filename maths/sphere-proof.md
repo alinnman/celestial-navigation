@@ -1,7 +1,7 @@
 # Rigorous proof of Earth sphericity
 
 1000 years ago we knew a lot less about science, but we had already quite a good grasp of the shape of the Earth. 
-The spherical shape of the Earth was first discovered in antiquity by Greek scholars, and then passed over to Romans and Arabs. 
+The spherical shape of the Earth was first established in antiquity by Greek scholars through some very strong observations and conjectures, and then passed over to Romans and Arabs. 
 In [this "pop-science" article](https://earthform.linnman.net/the-earth-is-a-sphere-and-it-can-easily-be-proved) I give a simple explanation of two of the oldest and most fundamental experiments for determining the **spherical** shape of the Earth:
 **Celestial Navigation** and **Al-Biruni's experiment**.
 
