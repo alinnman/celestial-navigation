@@ -108,7 +108,7 @@ $$\mathbf{r} = (\mathbf{a} \times \mathbf{b}) \times \mathbf{q}$$
 
 $$\rho = \arccos\left(\frac{\cos \alpha}{\mathbf{a} \cdot \mathbf{q}}\right)$$
 
-**Apply Rodrigues' Rotation Formula:**
+**Apply [Rodrigues' Rotation Formula](https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula):**
 $$\mathbf{p}_{\text{rot}} = \mathbf{q} \cos \rho + (\mathbf{r} \times \mathbf{q}) \sin \rho + \mathbf{r}(\mathbf{r} \cdot \mathbf{q})(1 - \cos \rho)$$
 
 **Final Result:**
