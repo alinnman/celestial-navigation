@@ -1,7 +1,8 @@
 # Proof 2: Only Spherical Surfaces Produce the Observed Horizon Dip Formula
 
 ## Given Information
-- Observed horizon dip formula: **$\theta \approx 1.93\sqrt{h}$** (where $\theta$ is in arcminutes, $h$ is elevation in meters)
+- Observed horizon dip formula: **$\theta \approx k\sqrt{h}$** (where $\theta$ is in arcminutes, $h$ is elevation in meters, $1.85 < k < 1.93$)
+- For actual observations (with refraction) we can establish $k \approx 1.85$. 
 - This corresponds to a sphere of radius $R \approx 6300$ km
 - We need to prove this relationship uniquely determines spherical geometry
 
@@ -9,32 +10,84 @@
 
 For any smooth surface, let's consider an observer at height $h$ above the surface. The horizon dip angle $\theta$ is determined by the tangent line from the observer's position to the surface.
 
-### Key Geometric Relationship
+## Radius Determination from Coefficient (geometric case)
 
-For the tangent condition to hold, if we place the observer at distance $(R + h)$ from the center of curvature, and the tangent touches the surface at distance $R$ from the center, then:
+The dip of the horizon on a sphere can be calculated with the
+exact geometric formula
 
-$\cos(\theta) = \frac{R}{R + h}$
+$d(h) = \arccos \left( \frac{R}{R+h}\right)$
 
-For small angles and small $h$ relative to $R$:
-$\theta \approx \sqrt{\frac{2h}{R}}$
+where $R$ is the radius. For the Earth it is ${6.378}\times{10^6}$ m.<br>
+$h$ is observer elevation.
 
-This gives us: **$\theta \propto \sqrt{h}$**
+This expression can also (using simple trigonometrics and application
+of Pythagoras' formula) be written as:
 
-## Radius Determination from Observed Coefficient
+$d(h) = \arctan \sqrt{\frac{h^2 + 2h}{R}}$
+
+A common observation for lower elevations over Earth's surface is seeing the dip
+well approximated by this formula, when measuring with a level,
+theodolite or similar:<br>
+
+$d_{\text{amR}}(h) \approx 1.75 \times \sqrt{h}$
+
+Where $d_{\text{amR}}$ is the observed dip in arcminutes.
+
+Now let us deduce this approximation.
+
+Let's see what happens for small values of $h$:
+
+$d(h)=\arctan\sqrt\frac{h^2 + 2h}{R} \approx \arctan \sqrt\frac{{2h}}{R}$
+(when $h$ is small)
+
+It is easy to see that $\arctan$ behaves like a linear function
+with derivative $=1$ for low values of $h$:
+
+$\frac{d}{dh}\arctan(h) \approx 1$ (when $h$ is small)<br>
+$\arctan(0) = 0$
+
+From which we get
+
+$\arctan(h) \approx h$ (when $h$ is small)
+
+From this we can deduce the approximation:
+
+$d(h) \approx \sqrt{\frac{2}{R}} \times \sqrt{h}$
+
+From this we get the dip in arcminutes:
+
+$d_{\text{am}}(h) \approx \sqrt{\frac{2}{R}} \times \frac{180}{\pi}
+\times 60 \times \sqrt{h}$
+
+Calculating this gives this formula where there is **no refraction**:
+
+$d_{\text{am}}(h) \approx 1.93 \times \sqrt{h}$
+
+So we see a difference, for no refraction ($d_{\text{am}}$)
+vs refraction ($d_{\text{amR}}$),
+with coefficients $1.93$ vs $1.85$ respectively.
+This can easily be explained through a larger "perceived radius" of
+the Earth [when refraction is active](https://en.wikipedia.org/wiki/Atmospheric_refraction#Terrestrial_refraction),
+and this leads to a lower coeffient in
+the formula applicable for refraction above.
+
+This gives us: $d(h) \propto \sqrt{h}$
 
 From the general relationship:
 
-$k = \sqrt{\frac{2}{R}} \times \frac{180}{\pi} \times 60$
+$k = \sqrt{\frac{2}{R}} \times \frac{180}{\pi} \times 60 \approx 1.93$
 
-we can solve for the radius $R$:
+which gives the value of the coefficient for **no refraction** (geometrical case)
+
+We can solve for the radius $R$:
 
 $R = \frac{180^2 \times 60^2 \times 2}{\pi^2 \times k^2} \approx \frac{2.364 \times 10^7}{k^2}$
 
-With the observed coefficient $k = 1.93$ (no refraction):
+With the observed coefficient $k = 1.93$ (refraction):
 
-$R \approx \frac{2.364 \times 10^7}{1.93^2} = 6.35 \times 10^6 \text{ meters}$
+$R \approx \frac{2.364 \times 10^7}{1.93^2} = 6.30 \times 10^6 \text{ meters}$
 
-This matches Earth's actual radius, confirming the spherical model.
+This matches Earth's actual radius well, confirming the spherical model.
 
 ## Uniqueness Proof
 
@@ -111,7 +164,7 @@ Only when $K > 0$ and constant (i.e., $K = \frac{1}{R^2}$ everywhere) do we get:
 - Well-defined constant radius $R$
 - Valid trigonometric relationship $\cos(d) = \frac{R_{eff}}{R_{eff}+h}$ (where $R_{eff}$ accounts for atmospheric effects)
 - Consistent small-angle approximation yielding $d \approx \sqrt{\frac{2h}{R_{eff}}}$
-- Both observed relationships: $d(h) = 1.93\sqrt{h}$ (geometric) and $d_{\text{refraction}}(h) = 1.85\sqrt{h}$ (with refraction)
+- Both observed relationships: $d_{\text{am}}(h) = 1.93\sqrt{h}$ (geometric) and $d_{\text{amR}}(h) = 1.85\sqrt{h}$ (with refraction)
 
 ## Topological Conclusion
 
@@ -122,8 +175,8 @@ Since we've eliminated all other possibilities through both trigonometric and di
 3. **Metrically spherical** (isometric to a round sphere of radius $R$)
 
 Therefore, **only a spherical surface** can produce the observed horizon dip formulas:
-- $d(h) = 1.93\sqrt{h}$ (pure geometric case)
-- $d_{\text{refraction}}(h) = 1.85\sqrt{h}$ (with atmospheric refraction)
+- $d_{\text{am}}(h) = 1.93\sqrt{h}$ (pure geometric case)
+- $d_{\text{amR}}(h) = 1.85\sqrt{h}$ (with atmospheric refraction)
 
 ## Physical Interpretation and Al-Biruni's Method
 
