@@ -7,7 +7,7 @@ In [this "pop-science" article](https://earthform.linnman.net/the-earth-is-a-sph
 
 The article can be summarized as the experimental findings which are given here as [**a posterori**](https://en.wikipedia.org/wiki/A_priori_and_a_posteriori#A_posteriori) (observational) knowledge.
 
-1. The altitude of any celestial object increases 1 degree for each 111.1 km you travel towards its GP (Celestial Navigation / Eratosthenes)
+1. The altitude of any celestial object increases 1 degree for each 111.1 km you travel towards its [GP](https://www.britannica.com/technology/ground-position) (Celestial Navigation / Eratosthenes)
 1. There is a dip of the horizon and it follows this formula: $\Theta ≈ 1.93 \times \sqrt{h}$ <br>
    (where $\Theta$ is dip in arcminutes, $h$ is elevation in meters) (Al-Biruni)
 
