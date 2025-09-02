@@ -1,18 +1,18 @@
 # Proof 2: Only Spherical Surfaces Produce the Observed Horizon Dip Formula
 
 ## Given Information
-- Observed horizon dip formula: **$\theta \approx k\sqrt{h}$** (where $\theta$ is in arcminutes, $h$ is elevation in meters, $1.85 < k < 1.93$)
+- Observed horizon dip formula: **$d \approx k\sqrt{h}$** (where $\theta$ is in arcminutes, $h$ is elevation in meters, $1.85 < k < 1.93$)
 - For actual observations (with refraction) we can establish $k \approx 1.85$. 
 - This corresponds to a sphere of radius $R \approx 6300$ km
 - We need to prove this relationship uniquely determines spherical geometry
 
 ## Mathematical Setup
 
-For any smooth surface, let's consider an observer at height $h$ above the surface. The horizon dip angle $\theta$ is determined by the tangent line from the observer's position to the surface.
+For any smooth surface, let's consider an observer at height $h$ above the surface. The horizon dip angle $d$ is determined by the tangent line from the observer's position to the surface.
 
-## Radius Determination from Coefficient (geometric case)
+## Radius Determination from Coefficient (geometric case on a sphere)
 
-The dip of the horizon on a sphere can be calculated with the
+The dip of the horizon on a **sphere** can be calculated with the
 exact geometric formula
 
 $d(h) = \arccos \left( \frac{R}{R+h}\right)$
