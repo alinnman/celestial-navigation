@@ -11,7 +11,7 @@ The article can be summarized as the experimental findings which are given here 
 1. There is a dip of the horizon and it follows this formula: $\Theta ≈ 1.93 \times \sqrt{h}$ <br>
    (where $\Theta$ is dip in arcminutes, $h$ is elevation in meters) (Al-Biruni)
 
-From this you start reasoning [**a priori**](https://en.wikipedia.org/wiki/A_priori_and_a_posteriori#A_priori) (using maths) to prove that the findings above are **only possible on a sphere**.
+From this you start reasoning [**a priori**](https://en.wikipedia.org/wiki/A_priori_and_a_posteriori#A_priori) (using maths in this case) to prove that the findings above are **only possible on a sphere**.
 
 *The method used is typical for basic science: First find observable facts in nature with predictable outcomes, then try to*
 *fit them into a model and/or make a priori reasoning to draw conclusions.*
