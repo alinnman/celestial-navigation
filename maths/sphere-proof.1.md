@@ -104,6 +104,11 @@ where<br>$N(\mathbf{x}) = \frac{\mathbf{x}}{|\mathbf{x}|}$
 
 **Calculate Rotation Parameters:**
 
+Calculate the midpoint $q$ between intersections of $A$ and $B$.
+
+$$q = N((a \times b) \times (a \cos \beta - b \cos \alpha))\space;\space N(x) =
+\frac{x}{\left|x\right|}$$
+
 $$\mathbf{r} = (\mathbf{a} \times \mathbf{b}) \times \mathbf{q}$$
 
 $$\rho = \arccos\left(\frac{\cos \alpha}{\mathbf{a} \cdot \mathbf{q}}\right)$$
