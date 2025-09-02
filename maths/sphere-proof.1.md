@@ -93,9 +93,9 @@ From the **Nautical Almanac**, obtain GP coordinates for times $t_1$ and $t_2$:
 
 Two circles $A$ and $B$ define the circles of equal altitude:
 
-$$A = \left\{\mathbf{p} \in \mathbb{R}^3 \mid \mathbf{p} \cdot \mathbf{a} = \cos \alpha \land |\mathbf{p}| = 1\right\}$$
+$$A = \lbrace \mathbf{p} \in \mathbb{R}^3 \mid \mathbf{p} \cdot \mathbf{a} = \cos \alpha \land |\mathbf{p}| = 1\rbrace $$
 
-$$B = \left\{\mathbf{p} \in \mathbb{R}^3 \mid \mathbf{p} \cdot \mathbf{b} = \cos \beta \land |\mathbf{p}| = 1\right\}$$
+$$B = \lbrace \mathbf{p} \in \mathbb{R}^3 \mid \mathbf{p} \cdot \mathbf{b} = \cos \beta \land |\mathbf{p}| = 1\rbrace $$
 
 **Calculate Intersection Midpoint:**
 $$\mathbf{q} = N((\mathbf{a} \times \mathbf{b}) \times (\mathbf{a} \cos \beta - \mathbf{b} \cos \alpha))$$
