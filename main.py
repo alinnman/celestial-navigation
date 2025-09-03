@@ -6,6 +6,8 @@
 
     © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
+    
+    Modified with font awareness support
 '''
 # pylint: disable=C0413
 # pylint: disable=C0411
@@ -38,13 +40,14 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.popup import Popup
-from kivy.metrics import dp
+from kivy.metrics import dp, sp
 from kivy.clock import Clock
 from kivy.storage.jsonstore import JsonStore
 from kivy.lang import Builder
 from kivy.app import App, runTouchApp
 from kivy.core.clipboard import Clipboard # Import the Clipboard module
 from kivy.core.window import Window
+from kivy.utils import platform
 
 from functools import partial
 from plotserver import NMEAServer
@@ -68,16 +71,139 @@ def str2bool(v):
 
 Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 
-# Set default color and sizes of the form
+DEBUG_FONT_HANDLING = False
+
+# Font scale configuration class
+class FontAwareConfig:
+    """Configuration class that adapts to system font scaling"""
+
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(FontAwareConfig, cls).__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+
+    def __init__(self):
+        #if self._initialized:
+        #    return
+        self.font_scale = self.detect_font_scale()
+        self.config = self.load_adaptive_config()
+        self._initialized = True
+
+        # Show warning if font scale is very large
+        if DEBUG_FONT_HANDLING:
+            if self.font_scale > 1.3:
+                Clock.schedule_once(self.show_font_scale_warning, 1.0)
+
+    def detect_font_scale(self):
+        """Detect system font scale"""
+        if platform == 'android':
+            try:
+# pylint: disable=E0401
+# pylint: disable=C0415
+                from android import mActivity # type: ignore
+# pylint: disable=W0611
+                from jnius import autoclass # type: ignore
+# pylint: enable=W0611
+# pylint: enable=E0401
+# pylint: enable=C0415
+
+                context = mActivity
+                resources = context.getResources()
+                configuration = resources.getConfiguration()
+                font_scale = configuration.fontScale
+                print(f"Detected system font scale: {font_scale}")
+                return font_scale
+# pylint: disable=W0718
+            except Exception as e:
+# pylint: enable=W0718
+                print(f"Could not detect font scale: {e}")
+        return 1.0
+
+    def load_adaptive_config(self):
+        """Load configuration based on font scale"""
+        base_config = {
+            'base_element_height': 35,
+            'base_spacing': 5,
+            'base_padding': 5,
+            'max_font_scale': 1.4,  # Prevent complete UI breakdown
+            'font_size_reduction': 0.85  # Reduce font size for very large scales
+        }
+
+        # Calculate effective scale (capped to prevent UI breaking)
+        effective_scale = min(self.font_scale, base_config['max_font_scale'])
+
+        # Apply font size reduction for very large scales
+        font_reduction = 1.0
+        if self.font_scale > 1.25:
+            font_reduction = base_config['font_size_reduction']
+
+        adapted_config = {
+            'element_height': int(base_config['base_element_height'] * effective_scale),
+            'spacing': int(base_config['base_spacing'] * effective_scale),
+            'padding': int(base_config['base_padding'] * effective_scale),
+            'font_scale_factor': font_reduction,
+            'use_scroll': self.font_scale > 1.15,  # Force scroll for large fonts
+            'effective_scale': effective_scale
+        }
+
+        return adapted_config
+
+    def get_element_height(self):
+        """Get adaptive element height"""
+        return dp(self.config['element_height'])
+
+    def get_spacing(self):
+        """Get adaptive spacing"""
+        return dp(self.config['spacing'])
+
+    def get_padding(self):
+        """Get adaptive padding"""
+        return dp(self.config['padding'])
+
+    def get_font_size_factor(self):
+        """Get font size reduction factor"""
+        return self.config['font_scale_factor']
+
+    def should_use_scroll(self):
+        """Whether to force scrolling for this font scale"""
+        return self.config['use_scroll']
+
+    def show_font_scale_warning(self): #, dt):
+        """Show warning for very large font scales"""
+        if hasattr(StarFixApp, 'message_popup'):
+            StarFixApp.message_popup(
+                f"[b]Large Font Scale Detected[/b]\n\n"
+                f"Your system font size is set to {self.font_scale:.1f}x normal size.\n"
+                f"The app layout has been optimized for better readability.\n\n"
+                f"If you experience any layout issues, consider reducing\n"
+                f"your system font size in Android Settings.",
+                "FONT_SCALE_WARNING"
+            )
+
+# Initialize global font config
+font_config = FontAwareConfig()
+
+# Set default color and sizes of the form with font awareness
 USE_KV = True
 if USE_KV:
-    Builder.load_string(
-    """
+    # Generate adaptive KV string based on font scale
+    def generate_adaptive_kv():
+        ''' Generated adaptive KV string '''
+# pylint: disable=W0612
+        element_height = font_config.get_element_height()
+# pylint: enable=W0612
+        spacing = font_config.get_spacing()
+        padding = font_config.get_padding()
+        font_factor = font_config.get_font_size_factor()
 
+        return f"""
 <FormSection@GridLayout>:
     cols: 2
-    spacing: dp(5)
-    padding: dp(5)
+    spacing: {spacing}
+    padding: {padding}
     canvas.before:
         Color:
             rgba: 0.35, 0.35, 0.35, 1
@@ -86,31 +212,36 @@ if USE_KV:
             size: self.size
 
 <MyLabel>:
-    size_hint_x: 0.4 # Adjust for a more balanced look in a two-column grid
+    size_hint_x: 0.4
     halign: 'right'
     valign: 'middle'
     padding: dp(1)
     text_size: self.width, None
-    size_hint_x : 0.45    
+    size_hint_x : 0.45
+    font_size: sp(14 * {font_factor})
 
 <MyTextInput>:
-    size_hint_x: 0.8 # The remaining space
+    size_hint_x: 0.8
     valign: 'middle'
-    multiline: False 
+    multiline: False
+    font_size: sp(14 * {font_factor})
 
 <LimbDropDown>:
-    size_hint_x: 0.8 # Same as TextInput
+    size_hint_x: 0.8
+    font_size: sp(14 * {font_factor})
 
 <MyCheckbox@CheckBox>:
-    size_hint_x: 0.8 # Same as TextInput
+    size_hint_x: 0.8
 
 <SightInputSection@GridLayout>:
     cols: 2
     size_hint_y: None
-    size_hint_x: 0.8 # The remaining space    
+    size_hint_x: 0.8
+    spacing: {spacing}
+    padding: {padding}
     canvas.before:
         Color:
-            rgba: 0.25, 0.25, 0.25, 1 # Slightly darker background for individual sight sections
+            rgba: 0.25, 0.25, 0.25, 1
         Rectangle:
             pos: self.pos
             size: self.size
@@ -121,19 +252,21 @@ if USE_KV:
         valign: 'middle'
         text_size: self.width, None    
         size_hint_x : 0.45
+        font_size: sp(14 * {font_factor})
     MyCheckbox:
         id: use_checkbox
-        size_hint_x: 0.8 # The remaining space         
+        size_hint_x: 0.8
     Label:
         text: '[b]Name :[/b]'
         markup: True        
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.45       
+        size_hint_x : 0.45
+        font_size: sp(14 * {font_factor})
     MyTextInput:
         id: object_name
-        size_hint_x: 0.8 # The remaining space
+        size_hint_x: 0.8
         multiline: False               
     Label:
         text: '[b]Altitude (Hs) :[/b]'
@@ -141,10 +274,11 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.45                 
+        size_hint_x : 0.45
+        font_size: sp(14 * {font_factor})
     MyTextInput:
         id: altitude
-        size_hint_x: 0.8 # The remaining space
+        size_hint_x: 0.8
         multiline: False
     Label:
         text: '[b]Artificial Horizon :[/b]'
@@ -152,20 +286,22 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.45                
+        size_hint_x : 0.45
+        font_size: sp(14 * {font_factor})
     MyCheckbox:
         id: artificial_horizon
-        size_hint_x: 0.8 # The remaining space               
+        size_hint_x: 0.8               
     Label:
         text: '[b]Date :[/b]'
         markup: True         
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.45                
+        size_hint_x : 0.45
+        font_size: sp(14 * {font_factor})
     MyTextInput:
         id: set_time_date
-        size_hint_x: 0.8 # The remaining space
+        size_hint_x: 0.8
         multiline: False
     Label:
         text: '[b]Time :[/b]'
@@ -173,10 +309,11 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.45                 
+        size_hint_x : 0.45
+        font_size: sp(14 * {font_factor})
     MyTextInput:
         id: set_time
-        size_hint_x: 0.8 # The remaining space
+        size_hint_x: 0.8
         multiline: False                   
     Label:
         text: '[b]Timezone :[/b]'
@@ -184,59 +321,65 @@ if USE_KV:
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.45                
+        size_hint_x : 0.45
+        font_size: sp(14 * {font_factor})
     MyTextInput:
         id: set_time_tz
-        size_hint_x: 0.8 # The remaining space
+        size_hint_x: 0.8
         multiline: False                    
     Label:
         text: 'Index Error (am) :'
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.45                 
+        size_hint_x : 0.45
+        font_size: sp(14 * {font_factor})
     MyTextInput:
         id: index_error
-        size_hint_x: 0.8 # The remaining space
+        size_hint_x: 0.8
         multiline: False         
     Label:
         text: 'Limb correction :'
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.45                
+        size_hint_x : 0.45
+        font_size: sp(14 * {font_factor})
     LimbDropDown:
         id: limb_correction
-        size_hint_x: 0.8 # The remaining space                
+        size_hint_x: 0.8                
     Label:
         text: 'Elevation (m) :'
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.45                     
+        size_hint_x : 0.45
+        font_size: sp(14 * {font_factor})
     MyTextInput:
         id: observer_height
-        size_hint_x: 0.8 # The remaining space
+        size_hint_x: 0.8
         multiline: False         
     Label:
         text: 'Temperature (°C):'
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.45                
+        size_hint_x : 0.45
+        font_size: sp(14 * {font_factor})
     MyTextInput:
         id: temperature
-        size_hint_x: 0.8 # The remaining space
+        size_hint_x: 0.8
         multiline: False        
     Label:
         text: 'Gradient (°C/m):'
         halign: 'right'
         valign: 'middle'
         text_size: self.width, None
-        size_hint_x : 0.45                  
+        size_hint_x : 0.45
+        font_size: sp(14 * {font_factor})
     MyTextInput:
         id: temperature_gradient
-        size_hint_x: 0.8 # The remaining space
+        size_hint_x: 0.8
         multiline: False         
     Label:
         text: 'Pressure (kPa):'
@@ -244,16 +387,19 @@ if USE_KV:
         valign: 'middle'
         text_size: self.width, None
         size_hint_x : 0.45
+        font_size: sp(14 * {font_factor})
     MyTextInput:
         id: pressure
-        size_hint_x: 0.8 # The remaining space
+        size_hint_x: 0.8
         multiline: False         
+"""
 
-""")
+    Builder.load_string(generate_adaptive_kv())
 
 FILE_NAME = None
 NUM_DICT = None
 
+# [Keep all the existing functions unchanged: get_starfixes, get_local_ip, etc.]
 # SIGHT REDUCTION.
 
 def get_starfixes(drp_pos: LatLonGeodetic) -> SightCollection:
@@ -479,12 +625,16 @@ def sight_reduction() -> \
     except ValueError as ve:
         return str(ve), False, None, None
 
+# Modified widget classes with font awareness
 class AppButton (Button):
     ''' Common base class for buttons '''
 
     def __init__(self, active : bool, **kwargs):
-        self.set_active (active)
+        # Apply font scaling
+        if 'font_size' not in kwargs:
+            kwargs['font_size'] = sp(16 * font_config.get_font_size_factor())
         super().__init__(**kwargs)
+        self.set_active (active)
 
     def set_active (self, active : bool):
         ''' Toggles the active state of the button '''
@@ -641,12 +791,16 @@ class FormRow (BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size_hint_y = None
+        self.height = font_config.get_element_height()
 
 class MyLabel (Label):
     ''' This is used for labels'''
 
     def __init__(self, indent: bool = False, **kwargs):
         left_hint = 0.45 if indent else 0.4
+        # Apply font scaling if not already specified
+        if 'font_size' not in kwargs:
+            kwargs['font_size'] = sp(14 * font_config.get_font_size_factor())
         super().__init__(size_hint=(left_hint, 1), **kwargs)
 
 class LimbDropDown (Button):
@@ -655,10 +809,18 @@ class LimbDropDown (Button):
     text_labels = {-1:"Lower", 0:"Center", 1:"Upper"}
 
     def __init__(self, **kwargs):
+        # Apply font scaling
+        if 'font_size' not in kwargs:
+            kwargs['font_size'] = sp(14 * font_config.get_font_size_factor())
         super().__init__(text=self.text_labels[0], color = (0.8, 0.1, 0.1, 1.0), **kwargs)
         self.my_dropdown = DropDown()
         for index in [-1, 0, 1]:
-            btn = Button(text=str(self.text_labels[index]), size_hint_y=None, height=dp(30))
+            btn = Button(
+                text=str(self.text_labels[index]),
+                size_hint_y=None,
+                height=font_config.get_element_height(),
+                font_size=sp(14 * font_config.get_font_size_factor())
+            )
 # pylint: disable=E1101
             btn.bind(on_release=lambda btn: self.my_dropdown.select(btn.text))
 # pylint: enable=E1101
@@ -686,11 +848,18 @@ class MyTextInput (TextInput):
 
     def __init__(self, **kwargs):
         self.valign = "center"
-        super().__init__(size_hint = (1,1), padding=['10dp', '7dp', '10dp', '7dp'], **kwargs)
+        # Apply font scaling
+        if 'font_size' not in kwargs:
+            kwargs['font_size'] = sp(14 * font_config.get_font_size_factor())
+        super().__init__(
+            size_hint = (1,1),
+            padding=['10dp', '7dp', '10dp', '7dp'],
+            **kwargs
+        )
 
 # New class to encapsulate a single Sight's input fields
 class SightInputSection(GridLayout):
-    ''' New layout for sight input segment '''
+    ''' New layout for sight input segment with font awareness '''
 # pylint: disable=I1101
     sight_num = kivy.properties.NumericProperty(0) # For dynamic text in KV
 # pylint: enable=I1101
@@ -698,6 +867,11 @@ class SightInputSection(GridLayout):
     def __init__(self, sight_num, **kwargs):
         super().__init__(**kwargs)
         self.sight_num = sight_num
+
+        # Apply adaptive height based on font scale
+        element_height = font_config.get_element_height()
+        sight_elements = 13  # Number of elements in sight section
+        self.height = element_height * sight_elements
 
         cb = self.ids.use_checkbox
         assert isinstance (cb, CheckBox)
@@ -728,13 +902,23 @@ class StarFixApp (App):
     def __init__ (self, **kwargs):
         super().__init__(**kwargs)
         StarFixApp.click_sound = None
-        layout = InputForm(size_hint_y = None)
+
+        # Create main layout with font awareness
+        if font_config.should_use_scroll():
+            # Force scrolling for large font scales
+            layout = InputForm(size_hint_y = None)
+        else:
+            layout = InputForm(size_hint_y = None)
+
 # pylint: disable=E1101
         layout.bind(minimum_height=layout.setter('height'))
 # pylint: enable=E1101
 
+        # Always use ScrollView for better compatibility
         root = ScrollView(
-            size_hint= (1,1)
+            size_hint= (1,1),
+            do_scroll_x=False,  # Only vertical scrolling
+            do_scroll_y=True
         )
         root.add_widget(layout)
         self.m_root = root
@@ -1008,65 +1192,89 @@ def do_initialize ():
                 "Format": "celeste.1"})
 
 class InputForm(GridLayout):
-    ''' This is the main input form '''
+    ''' This is the main input form with font awareness '''
 
     nr_of_sights = 3
 
     def __init__(self, **kwargs):
-        super().__init__(cols=1, spacing=dp(5), **kwargs)
+        super().__init__(cols=1, spacing=font_config.get_spacing(), **kwargs)
 
         self.__active_intersections = None
         self.__active_collection    = None
 
         self.data_widget_container = {}
 
+        # Add font scale info button
+        if DEBUG_FONT_HANDLING:
+            self.add_font_scale_info()
+
         bl = FormRow()
         butt = OnlineHelpButton()
         bl.add_widget(butt)
         self.add_widget(bl)
 
-        # drp_cell_height = 40 TODO Remove
-        # DRP Position Section
-        self.add_widget(Label(text='[b]DRP Position[/b]', markup=True, size_hint_y=None,\
-                              color = (0.8, 0.8, 1.0, 1.0), height=dp(40)))
-#pylint: disable=C0103
-        ELEMENT_HEIGHT = 35
-        DRP_NUM = 3
-        DRP_SECTION_HEIGHT = ELEMENT_HEIGHT * DRP_NUM
-#pylint: enable=C0103
-        drp_section = GridLayout(cols=2, spacing=dp(2), padding=dp(2), size_hint_y=None,\
-                                 height=dp(DRP_SECTION_HEIGHT))
+        # DRP Position Section with adaptive sizing
+        self.add_widget(Label(
+            text='[b]DRP Position[/b]',
+            markup=True,
+            size_hint_y=None,
+            color = (0.8, 0.8, 1.0, 1.0),
+            height=font_config.get_element_height(),
+            font_size=sp(16 * font_config.get_font_size_factor())
+        ))
+
+        # Calculate section height adaptively
+        drp_num = 3
+        drp_section_height = font_config.get_element_height() * drp_num
+
+        drp_section = GridLayout(
+            cols=2,
+            spacing=font_config.get_spacing(),
+            padding=font_config.get_padding(),
+            size_hint_y=None,
+            height=drp_section_height
+        )
+
         drp_section.add_widget(MyLabel(text='[b]Latitude:[/b]', markup=True))
         self.drp_lat_input = MyTextInput()
         self.data_widget_container["DrpLat"] = self.drp_lat_input
         drp_section.add_widget(self.drp_lat_input)
+
         drp_section.add_widget(MyLabel(text='[b]Longitude:[/b]',markup=True))
         self.drp_lon_input = MyTextInput()
         self.data_widget_container["DrpLon"] = self.drp_lon_input
         drp_section.add_widget(self.drp_lon_input)
 
         # DRP quality button
-        drp_section.add_widget(MyLabel(text='Sight quality (nm)'))
+        drp_section.add_widget(MyLabel(text='Sight quality (nm):'))
         self.drp_quality_input = MyTextInput()
         self.data_widget_container["DrpQuality"] = self.drp_quality_input
         drp_section.add_widget (self.drp_quality_input)
 
         self.add_widget(drp_section)
 
-        # Individual Sight Sections
+        # Individual Sight Sections with adaptive sizing
         for sight in range(self.nr_of_sights):
 
-            self.add_widget\
-                (Label(text=f'[b]Sight {sight+1} Data[/b]', \
-                       markup=True, size_hint_y=None, height=dp(40), color=(0.5, 0.9, 0.5, 1.0)))
-#pylint: disable=C0103
-            SIGHT_NUM = 13
-            SIGHT_SECTION_HEIGHT = ELEMENT_HEIGHT * SIGHT_NUM
-#pylint: enable=C0103
-            sight_section = SightInputSection(sight_num=sight+1,\
-                                              height=dp(SIGHT_SECTION_HEIGHT),
-                                              spacing=dp(2),
-                                              padding=dp(2))
+            self.add_widget(Label(
+                text=f'[b]Sight {sight+1} Data[/b]',
+                markup=True,
+                size_hint_y=None,
+                height=font_config.get_element_height(),
+                color=(0.5, 0.9, 0.5, 1.0),
+                font_size=sp(16 * font_config.get_font_size_factor())
+            ))
+
+            # Calculate sight section height adaptively
+            sight_elements = 13
+            sight_section_height = font_config.get_element_height() * sight_elements
+
+            sight_section = SightInputSection(
+                sight_num=sight+1,
+                height=sight_section_height,
+                spacing=font_config.get_spacing(),
+                padding=font_config.get_padding()
+            )
 
             # Store references to widgets within the SightInputSection
             self.data_widget_container["Use"+str(sight+1)] =\
@@ -1148,6 +1356,20 @@ class InputForm(GridLayout):
 
         self.populate_widgets()
 
+    def add_font_scale_info(self):
+        """Add font scale information if it's unusual"""
+        if font_config.font_scale > 1.1:
+            bl = FormRow()
+            font_info = MyLabel(
+                text=f'Font Scale: {font_config.font_scale:.1f}x (Layout optimized)',
+                markup=True,
+                indent=False,
+                color=(0.8, 0.8, 0.2, 1.0)
+            )
+            font_info.halign = "center"
+            bl.add_widget(font_info)
+            self.add_widget(bl)
+
     def __update_drp (self, i : tuple | LatLonGeodetic | NoneType):
         if i is None or isinstance (i, tuple):
             return
@@ -1207,12 +1429,20 @@ if __name__ == '__main__':
         start_http_server ()
     # Initialize all configuration data
     do_initialize()
-    StarFixApp.message_popup\
-          ("[b]Welcome to Celeste![/b]\n"+\
-           "This is an app for celestial navigation.\n"+\
-           "It is open source (MIT License)\nand comes with [b]NO WARRANTY[/b].\n"+\
-           "Use the \"Show help!\" button for documentation.",
-           StarFixApp.MSG_ID_INTRO)
+
+    # Show intro message with font scale info if needed
+    INTRO_MSG = ("[b]Welcome to Celeste![/b]\n"+
+                "This is an app for celestial navigation.\n"+
+                "It is open source (MIT License)\nand comes with [b]NO WARRANTY[/b].\n"+
+                "Use the \"Show help!\" button for documentation.")
+
+    if font_config.font_scale > 1.2 and DEBUG_FONT_HANDLING:
+        INTRO_MSG +=\
+        f"\n\n[color=orange]Font Scale: {font_config.font_scale:.1f}x[/color]\n"+\
+         "Layout has been optimized for large fonts."
+
+    StarFixApp.message_popup(INTRO_MSG, StarFixApp.MSG_ID_INTRO)
+
     a = StarFixApp ()
     # Run the application
     runTouchApp (a.get_root())
