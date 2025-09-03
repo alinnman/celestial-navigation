@@ -44,6 +44,8 @@
 1. [Installation and prerequisites](#installation-and-prerequisites)
 1. [Tips for Testing (without a sextant?)](#testing_tips)
 1. [Troubleshooting](#troubleshooting)
+    1. [Entering Parameters](#entering-of-parameters)
+    1. [Display Problems](#display-problems)
 1. [More Information](#more_information)
 1. [Licenses](#license)
 
@@ -469,6 +471,8 @@ failed sight reduction.
 
 ## Troubleshooting<a name="troubleshooting"></a>
 
+### Entering of parameters<a name="entering_parameters"></a>
+
 Entering parameters requires accuracy. Here is a list of common errors
 
 * You forget to specify the correct **limb correction**. <br>
@@ -480,6 +484,11 @@ Entering parameters requires accuracy. Here is a list of common errors
   Names of celestial objects, timestamps and angles must be specfied correctly. <br>
   You will often get an error message in the coordinate output field. <br>
   --> Check the error message and correct your input. 
+
+### Display problems<a name="display_problems"></a>
+
+The app will not work properly if you use system settings for large fonts. This will cause
+the text output to be garbled. You are recommended to use the default settings for system font sizes. 
 
 ## More Information<a name="more_information"></a>
 
