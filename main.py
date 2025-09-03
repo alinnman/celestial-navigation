@@ -937,16 +937,25 @@ class StarFixApp (App):
         if error_sound is not None:
             error_sound.play ()
 
-    message_kv_string = """
+# Generate font-aware message popup KV
+    @staticmethod
+    def get_message_popup_kv():
+        """Generate font-aware KV for MessagePopup"""
+        spacing = font_config.get_spacing()
+        padding = font_config.get_padding()
+        element_height = font_config.get_element_height()
+        font_factor = font_config.get_font_size_factor()
+
+        return f"""
 <MessagePopup>:
     size_hint: 1, 0.6
-    auto_dismiss: False  # Prevent dismissing by clicking outside
+    auto_dismiss: False
     title: 'Message'
 
     BoxLayout:
         orientation: 'vertical'
-        padding: dp(10)
-        spacing: dp(10)
+        padding: {padding}
+        spacing: {spacing}
 
         Label:
             id: message_label
@@ -955,17 +964,18 @@ class StarFixApp (App):
             text_size: self.width, None
             halign: 'center'
             valign: 'middle'
+            font_size: sp({14 * font_factor})
 
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: None
-            height: dp(40)
-            spacing: dp(10)
+            height: {element_height}
+            spacing: {spacing}
 
             CheckBox:
                 id: dont_show_checkbox
                 size_hint_x: None
-                width: dp(40)
+                width: {element_height}
                 on_active: root.toggle_dont_show_again(self.active)
 
             Label:
@@ -973,15 +983,18 @@ class StarFixApp (App):
                 text_size: self.width, None
                 halign: 'left'
                 valign: 'middle'
+                font_size: sp({12 * font_factor})
 
         Button:
             text: 'Close'
             size_hint_y: None
-            height: dp(50)
+            height: {int(element_height * 1.3)}
+            font_size: sp({14 * font_factor})
             on_release: root.dismiss()
 """
 
-    Builder.load_string(message_kv_string)
+    # Load the font-aware message popup KV
+    Builder.load_string(get_message_popup_kv())
 
     message_store_name = "message_settings.json"
     message_store = JsonStore(message_store_name)
@@ -999,6 +1012,9 @@ class StarFixApp (App):
             self.show_popup = True
             self.message = msg
             self.msg_id = msg_id
+            # Apply font scaling to popup title
+            if 'title_size' not in kwargs:
+                kwargs['title_size'] = sp(16 * font_config.get_font_size_factor())
             super().__init__ (**kwargs)
 
         def toggle_dont_show_again (self, active : bool):
