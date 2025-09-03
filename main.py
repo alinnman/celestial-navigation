@@ -948,7 +948,7 @@ class StarFixApp (App):
 
         return f"""
 <MessagePopup>:
-    size_hint: 1, 0.6
+    size_hint: 1, 0.8
     auto_dismiss: False
     title: 'Message'
 
