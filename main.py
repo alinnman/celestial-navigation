@@ -685,7 +685,8 @@ class MyTextInput (TextInput):
     color = (1.0, 1.0, 0.2, 1.0)
 
     def __init__(self, **kwargs):
-        super().__init__(size_hint = (1,1), **kwargs)
+        self.valign = "center"
+        super().__init__(size_hint = (1,1), padding=['10dp', '7dp', '10dp', '7dp'], **kwargs)
 
 # New class to encapsulate a single Sight's input fields
 class SightInputSection(GridLayout):
