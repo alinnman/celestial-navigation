@@ -370,8 +370,8 @@ Using the
 [Pythagorean Theorem for a Sphere](https://en.wikipedia.org/wiki/Spherical_law_of_cosines)
 it is easy to see this:
 
-$\cos\left(a\cdot q\right)\cos\left(p\cdot q\right) = \cos \alpha$ <br/>
-$\cos\left(b\cdot q\right)\cos\left(p\cdot q\right) = \cos \beta$ <br/>
+$(\cos\left(a\cdot q\right)) (\cos\left(p\cdot q\right)) = \cos \alpha$ <br/>
+$(\cos\left(b\cdot q\right)) (\cos\left(p\cdot q\right)) = \cos \beta$ <br/>
 
 From which we derive this
 
