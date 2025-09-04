@@ -115,14 +115,15 @@ $$\rho = \arccos\left(\frac{\cos \alpha}{\mathbf{a} \cdot \mathbf{q}}\right)$$
 **Apply [Rodrigues' Rotation Formula](https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula):**
 $$\mathbf{p}_{\text{rot}} = \mathbf{q} \cos \rho + (\mathbf{r} \times \mathbf{q}) \sin \rho + \mathbf{r}(\mathbf{r} \cdot \mathbf{q})(1 - \cos \rho)$$
 
-*A more detailed description of the algorithm can be found [here](../README.md#algorithm-sight-reduction)*
-
 **Final Result:**
 Apply the formula for both $+\rho$ and $-\rho$ to get two intersection points $\mathbf{p}_1$ and $\mathbf{p}_2$. Convert back to spherical coordinates - one represents your physical location.
 
 **Note:**
-The result we get above is a pure **spherical** sight reduction, performed on the unit sphere. In reality the Earth is an oblate spheroid, and you also need to enter corrections
-for atmospheric refraction and horizon dip. These are added as (smaller) coorections in a real-world implementation. 
+The result we get above is a pure **spherical** sight reduction, performed on the unit sphere.
+In reality the Earth is an oblate spheroid, and you also need to enter corrections for oblateness, 
+atmospheric refraction and horizon dip.
+These are introduced as (smaller) coorections in a real-world implementation.<br>
+*A more detailed description of the algorithm can be found [here](../README.md#algorithm-sight-reduction)*
 
 ## Part III: Mathematical Connection
 
