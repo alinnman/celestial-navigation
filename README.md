@@ -283,6 +283,8 @@ of equal altitude). These intersections can be located far away from each other.
 You will have to decide which one of them is the correct observation point,
 based on previous knowledge of your location.
 
+<a name="algorithm-sight-reduction"></a>
+
 The intersections are calculated using an algorithm based on
 [this article](https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere)
 <br/>
@@ -368,8 +370,8 @@ Using the
 [Pythagorean Theorem for a Sphere](https://en.wikipedia.org/wiki/Spherical_law_of_cosines)
 it is easy to see this:
 
-$\cos\left(a\cdot q\right)\cos\left(p\cdot q\right) = \cos \alpha$ <br/>
-$\cos\left(b\cdot q\right)\cos\left(p\cdot q\right) = \cos \beta$ <br/>
+$(\cos\left(a\cdot q\right)) (\cos\left(p\cdot q\right)) = \cos \alpha$ <br/>
+$(\cos\left(b\cdot q\right)) (\cos\left(p\cdot q\right)) = \cos \beta$ <br/>
 
 From which we derive this
 
@@ -415,7 +417,9 @@ ${p_2}_d = C2D(p_2)$
 
 The used function ($\text{C2D}$) for this conversion is numerical/iterative.
 For more details, see
-[this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion).
+[this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion)
+and [this reference](https://www.tandfonline.com/doi/abs/10.1179/sre.1976.23.181.323)
+(Bowring's iterative formulas).
 <br>(The function $\text{C2D}$ is the inverse of $\text{D2C}$,
 i.e $\text{C2D}(\text{D2C}(p))==p$)<br>
 Also see code

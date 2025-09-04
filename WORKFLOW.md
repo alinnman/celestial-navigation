@@ -88,4 +88,4 @@ of the celestial object, just like Eratosthenes
 *refraction, and the dip of the horizon create small deviations from the*
 *spheric model and are taken care of in this toolkit.* <br><br>
 For more details, proof of maths used and background see the
-[Readme File](README.md).
+[Readme File](README.md) with explanation of the algorithm [here](./README.md#algorithm-sight-reduction).
