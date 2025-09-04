@@ -415,7 +415,9 @@ ${p_2}_d = C2D(p_2)$
 
 The used function ($\text{C2D}$) for this conversion is numerical/iterative.
 For more details, see
-[this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion).
+[this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion)
+and [this reference](https://www.tandfonline.com/doi/abs/10.1179/sre.1976.23.181.323)
+(Bowring's iterative formulas).
 <br>(The function $\text{C2D}$ is the inverse of $\text{D2C}$,
 i.e $\text{C2D}(\text{D2C}(p))==p$)<br>
 Also see code
