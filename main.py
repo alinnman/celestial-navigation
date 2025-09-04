@@ -18,9 +18,10 @@ from types import NoneType
 import importlib
 import socket
 import time
+from datetime import datetime
 from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError, get_folium_load_error, show_or_display_file, \
-    is_windows, exit_handler, start_http_server, parse_angle_string
+    is_windows, kill_http_server, start_http_server, parse_angle_string
 import os
 import json
 import kivy
@@ -72,6 +73,41 @@ def str2bool(v):
 Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 
 DEBUG_FONT_HANDLING = False
+
+class DebugLogger:
+    ''' Simple debug facility '''
+    def __init__(self):
+        self.log_file = os.path.join(os.getcwd(), "celeste_debug.txt")
+        try:
+            with open(self.log_file, "a", encoding="utf-8") as f:
+                f.write(f"=== Celeste Debug Log Started at {datetime.now()} ===\n")
+        except:
+            pass
+
+    def _log(self, message, level="INFO"):
+        ''' Log a message'''
+        try:
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            with open(self.log_file, "a", encoding="utf-8") as f:
+                f.write(f"[{timestamp}] [{level}] {message}\n")
+                f.flush()
+        except:
+            pass  # Don't crash if logging fails
+
+    def error(self, message):
+        ''' Error log '''
+        self._log(message, "ERROR")
+
+    def info(self, message):
+        ''' Info log '''
+        self._log(message, "INFO")
+
+    def debug(self, message):
+        ''' Debug log '''
+        self._log(message, "DEBUG")
+
+# Create global logger
+debug_logger = DebugLogger()
 
 # Font scale configuration class
 class FontAwareConfig:
@@ -899,16 +935,8 @@ class StarFixApp (App):
     click_sound = None
     initialized = False
 
-    def __init__ (self, **kwargs):
-        super().__init__(**kwargs)
-        StarFixApp.click_sound = None
-
-        # Create main layout with font awareness
-        if font_config.should_use_scroll():
-            # Force scrolling for large font scales
-            layout = InputForm(size_hint_y = None)
-        else:
-            layout = InputForm(size_hint_y = None)
+    def _setup_widgets (self):
+        layout = InputForm(size_hint_y = None)
 
 # pylint: disable=E1101
         layout.bind(minimum_height=layout.setter('height'))
@@ -924,6 +952,11 @@ class StarFixApp (App):
         self.m_root = root
 
         StarFixApp.initialized = True
+
+    def __init__ (self, **kwargs):
+        super().__init__(**kwargs)
+        StarFixApp.click_sound = None
+        self._setup_widgets ()
 
     @staticmethod
     def play_click_sound ():
@@ -1078,6 +1111,74 @@ class StarFixApp (App):
         ''' Return the root widget '''
         return self.m_root
 
+    def on_pause(self):
+        """Called when app goes to background"""
+        debug_logger.info("=== APP PAUSE EVENT ===")
+        try:
+            # Save current state
+            if hasattr(self, 'm_root') and self.m_root:
+                form = self.get_input_form()
+                if form:
+                    form.extract_from_widgets()
+                    dump_dict(copy_to_clipboard=False)
+                else:
+                    debug_logger.error("InputForm not found while doing pause/save!")
+
+            # Clean up background processes
+            # But we don't clean up anything here. Threads are needed.
+            # The http thread is used for map display.
+
+# pylint: disable=W0718
+        except Exception as e:
+# pylint: enable=W0718
+            debug_logger.error (f"Error in on_pause: {str(e)}")
+
+        return True  # Allow pausing
+
+    def on_resume(self):
+        """Called when app returns from background"""
+
+        debug_logger.info("=== APP RESTORE EVENT ===")
+
+        # Check what Kivy thinks is the root
+        debug_logger.info(f"App.root: {self.root}")
+        debug_logger.info(f"App.root type: {type(self.root) if self.root else 'None'}")
+#pylint: disable=C0301
+        debug_logger.info(f"self.m_root: {self.m_root if hasattr(self, 'm_root') else 'Not set'}")
+        debug_logger.info(f"Are they the same? {self.root is self.m_root if hasattr(self, 'm_root') else 'Cannot compare'}")
+#pylint: enable=C0301
+
+        try:
+            # Force complete UI recreation
+            self._setup_widgets()
+
+            # CRITICAL: Make sure Kivy knows about the new root
+            debug_logger.info(f"Before setting root - App.root: {self.root}")
+            self.root = self.m_root  # This might be missing!
+            debug_logger.info(f"After setting root - App.root: {self.root}")
+
+            form = self.get_input_form()
+            if form:
+                form.populate_widgets()
+            debug_logger.info("UI fully recreated and root assigned")
+# pylint: disable=W0718
+        except Exception as e:
+# pylint: enable=W0718
+            debug_logger.error(f"UI recreation failed: {str(e)}")
+# pylint: disable=C0415
+            import traceback
+# pylint: enable=C0415
+            debug_logger.error(f"Full traceback: {traceback.format_exc()}")
+
+    def get_input_form(self):
+        """Helper to get the InputForm from the widget tree"""
+        if hasattr(self, 'm_root') and self.m_root:
+            # Navigate through ScrollView to find InputForm
+            for child in self.m_root.children:
+                if isinstance(child, InputForm):
+                    return child
+        return None
+
 def _initialize_from_string (s:str, init_dict : dict) -> bool:
 # pylint: disable=W0603
     global NUM_DICT
@@ -1144,11 +1245,12 @@ def initialize(fn: str, init_dict: dict):
         # If no file present, then load the defaults
         NUM_DICT = init_dict
 
-def dump_dict():
+def dump_dict(copy_to_clipboard = True):
     ''' Dumps the contents to a json file '''
 
     j_dump = json.dumps(NUM_DICT, indent=4)
-    Clipboard.copy (j_dump)
+    if copy_to_clipboard:
+        Clipboard.copy (j_dump)
     assert isinstance(FILE_NAME, str)
     with open(FILE_NAME, "w", encoding="utf-8") as f:
         f.write(j_dump)
@@ -1438,32 +1540,38 @@ class InputForm(GridLayout):
 
 if __name__ == '__main__':
 
-    if is_windows():
-        freeze_support ()
-    if not is_windows ():
-        # Start http server
-        start_http_server ()
-    # Initialize all configuration data
-    do_initialize()
+    try:
+        if is_windows():
+            freeze_support ()
+        if not is_windows ():
+            # Start http server
+            start_http_server ()
+        # Initialize all configuration data
+        do_initialize()
 
-    # Show intro message with font scale info if needed
-    INTRO_MSG = ("[b]Welcome to Celeste![/b]\n"+
-                "This is an app for celestial navigation.\n"+
-                "It is open source (MIT License)\nand comes with [b]NO WARRANTY[/b].\n"+
-                "Use the \"Show help!\" button for documentation.")
+        # Show intro message with font scale info if needed
+        INTRO_MSG = ("[b]Welcome to Celeste![/b]\n"+
+                    "This is an app for celestial navigation.\n"+
+                    "It is open source (MIT License)\nand comes with [b]NO WARRANTY[/b].\n"+
+                    "Use the \"Show help!\" button for documentation.")
 
-    if font_config.font_scale > 1.2 and DEBUG_FONT_HANDLING:
-        INTRO_MSG +=\
-        f"\n\n[color=orange]Font Scale: {font_config.font_scale:.1f}x[/color]\n"+\
-         "Layout has been optimized for large fonts."
+        if font_config.font_scale > 1.2 and DEBUG_FONT_HANDLING:
+            INTRO_MSG +=\
+            f"\n\n[color=orange]Font Scale: {font_config.font_scale:.1f}x[/color]\n"+\
+            "Layout has been optimized for large fonts."
 
-    StarFixApp.message_popup(INTRO_MSG, StarFixApp.MSG_ID_INTRO)
+        StarFixApp.message_popup(INTRO_MSG, StarFixApp.MSG_ID_INTRO)
 
-    a = StarFixApp ()
-    # Run the application
-    runTouchApp (a.get_root())
-    # Kill NMEA 0138 server (if active)
-    kill_plotserver ()
-    if not is_windows():
-        # Kill http server
-        exit_handler ()
+        a = StarFixApp ()
+        # Run the application
+        runTouchApp (a.get_root())
+# pylint: disable=W0718
+    except Exception as exc:
+# pylint: enable=W0718
+        print ("Unhandled exception : " + str(exc))
+    finally:
+        # Kill NMEA 0138 server (if active)
+        kill_plotserver ()
+        if not is_windows():
+            # Kill http server
+            kill_http_server ()

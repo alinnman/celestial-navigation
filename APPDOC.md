@@ -19,8 +19,8 @@
 1. [Entering Data](#entering_data)
     1. [DRP Position](#drp_position)
     1. [Sight Quality](#drp_quality)
-    1. [Sights](#star-fixes)
-        1. [Selection of sight](#selection-of-star-fix)
+    1. [Sights](#star_fixes)
+        1. [Selection of sight](#star_fix_selection)
         1. [Name of Object](#name-of-object)
         1. [Altitude](#altitude-hs)
         1. [Artificial Horizon](#artificial-horizon)
@@ -476,19 +476,22 @@ failed sight reduction.
 Entering parameters requires accuracy. Here is a list of common errors
 
 * You forget to specify the correct **limb correction**. <br>
-  This will typically result in a circle being about 15 nautical miles off and a bad sight reduction.
+  This will typically result in a circle being about 15 nautical miles off and a
+  bad sight reduction.
 * Your time zone is off. <br>
   This will typically lead to failed sight reductions. <br>
   --> Carefully check the [timezone](#timezone)
 * Various typos. <br>
-  Names of celestial objects, timestamps and angles must be specfied correctly. <br>
+  Names of celestial objects,
+  timestamps and angles must be specfied correctly. <br>
   You will often get an error message in the coordinate output field. <br>
-  --> Check the error message and correct your input. 
+  --> Check the error message and correct your input.
 
 ### Display problems<a name="display_problems"></a>
 
-The app will not work properly if you use system settings for large fonts. This will cause
-the text output to be garbled. You are recommended to use the default settings for system font sizes. 
+The app will not work properly if you use system settings for large fonts.
+This will cause the text output to be garbled.
+You are recommended to use the default settings for system font sizes.
 
 ## More Information<a name="more_information"></a>
 

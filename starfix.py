@@ -118,7 +118,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             try:
                 # Only allowed requests are for these file formats
                 matched = False
-                for p in ["html", "css", "ico", "js", "png", "jpg", "jpeg", "json", "webp"]:
+                for p in ["html", "css", "ico", "js", "png", "jpg", "jpeg", "json", "webp", "txt"]:
                     if self.path.lower().endswith (p):
                         matched = True
                         break
@@ -146,6 +146,10 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         self.send_error(405, "Method Not Allowed")
 #pylint: enable=C0103
 
+#pylint: disable=C0103
+running_http_server = None
+#pylint: enable=C0103
+
 def __run_http_server ():
     port = 8000
 
@@ -162,6 +166,12 @@ def __run_http_server ():
     except OSError as ose:
         if ose.errno != 98:
             raise ose
+    finally:
+        MASTER_HTTPD = None
+#pylint: disable=W0603
+        global running_http_server
+#pylint: enable=W0603
+        running_http_server = None
 
 def is_windows ():
     ''' Simple check for running under MS Windows '''
@@ -184,10 +194,6 @@ def show_or_display_file (filename : str, protocol : str = "file") :
     else:
         raise ValueError ("Incorrect protocol <" + protocol + ">")
 
-#pylint: disable=C0103
-running_http_server = None
-#pylint: enable=C0103
-
 def __kill_http_server_if_running ():
 #pylint: disable=C0415
     import requests
@@ -203,9 +209,10 @@ def __kill_http_server_if_running ():
 #pylint: disable=W0718
         except BaseException as _:
             pass
-        assert isinstance (running_http_server, Thread)
-        running_http_server.join ()
-        running_http_server = None
+        if running_http_server is not None:
+            assert isinstance (running_http_server, Thread)
+            running_http_server.join ()
+            running_http_server = None
 
 def start_http_server (kill_existing : bool = False):
     ''' Start an http server for showing maps '''
@@ -233,7 +240,8 @@ def http_server_running () -> bool:
     ''' Check if there is a http server running '''
     return running_http_server is not None
 
-def exit_handler ():
+# def exit_handler ():
+def kill_http_server ():
     ''' Can be used on program/app exit '''
     __kill_http_server_if_running ()
 
@@ -2183,6 +2191,7 @@ class SightCollection:
         self.__sf_list = sf_list
 
     def get_sf_list (self) -> list[Sight]:
+        ''' Get the list of contained Sight objects '''
         return self.__sf_list
 
 #pylint: disable=R0912
