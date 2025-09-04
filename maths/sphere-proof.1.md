@@ -115,6 +115,8 @@ $$\rho = \arccos\left(\frac{\cos \alpha}{\mathbf{a} \cdot \mathbf{q}}\right)$$
 **Apply [Rodrigues' Rotation Formula](https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula):**
 $$\mathbf{p}_{\text{rot}} = \mathbf{q} \cos \rho + (\mathbf{r} \times \mathbf{q}) \sin \rho + \mathbf{r}(\mathbf{r} \cdot \mathbf{q})(1 - \cos \rho)$$
 
+*A more detailed description of the algorithm can be found [here](../README.md#algorithm-sight-reduction)*
+
 **Final Result:**
 Apply the formula for both $+\rho$ and $-\rho$ to get two intersection points $\mathbf{p}_1$ and $\mathbf{p}_2$. Convert back to spherical coordinates - one represents your physical location.
 

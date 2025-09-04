@@ -283,6 +283,8 @@ of equal altitude). These intersections can be located far away from each other.
 You will have to decide which one of them is the correct observation point,
 based on previous knowledge of your location.
 
+<a name="algorithm-sight-reduction"></a>
+
 The intersections are calculated using an algorithm based on
 [this article](https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of-two-circles-on-a-sphere)
 <br/>
