@@ -489,10 +489,10 @@ Entering parameters requires accuracy. Here is a list of common errors
 
 ### Display problems<a name="display_problems"></a>
 
-If you use very large fonts, or wide spacing you may encounter problems in the layout
-of the input form. From android system settings
+If you use very large fonts, or wide spacing you may encounter problems in the
+layout of the input form. From android system settings
 [reduce the system font size](https://support.google.com/accessibility/android/answer/11183305?hl=en)
-if these problems affect your work. 
+if these problems affect your work.
 
 ## More Information<a name="more_information"></a>
 

@@ -32,6 +32,7 @@ from kivy.core.audio import SoundLoader
 click_sound = SoundLoader.load('./sounds/mouse-click.mp3')
 error_sound = SoundLoader.load('./sounds/error.mp3')
 kivy.config.Config.set('graphics', 'resizable', False)
+from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
@@ -45,7 +46,7 @@ from kivy.metrics import dp, sp
 from kivy.clock import Clock
 from kivy.storage.jsonstore import JsonStore
 from kivy.lang import Builder
-from kivy.app import App, runTouchApp
+from kivy.app import App
 from kivy.core.clipboard import Clipboard # Import the Clipboard module
 from kivy.core.window import Window
 from kivy.utils import platform
@@ -935,7 +936,7 @@ class StarFixApp (App):
     click_sound = None
     initialized = False
 
-    def _setup_widgets (self):
+    def _setup_widgets (self) -> Widget | NoneType:
         layout = InputForm(size_hint_y = None)
 
 # pylint: disable=E1101
@@ -949,14 +950,30 @@ class StarFixApp (App):
             do_scroll_y=True
         )
         root.add_widget(layout)
+# pylint: disable=W0201
         self.m_root = root
+# pylint: enable=W0201
 
         StarFixApp.initialized = True
+        return root
 
     def __init__ (self, **kwargs):
         super().__init__(**kwargs)
         StarFixApp.click_sound = None
-        self._setup_widgets ()
+        # self._setup_widgets ()
+
+    def build(self):
+        """Standard Kivy build method"""
+        #layout = InputForm(size_hint_y=None)
+#pylint: disable=E1101
+        #layout.bind(minimum_height=layout.setter('height'))
+#pylint: enable=E1101
+
+        #root = ScrollView(size_hint=(1,1), do_scroll_x=False, do_scroll_y=True)
+        #root.add_widget(layout)
+
+        #return root  # Kivy handles self.root automatically
+        return self._setup_widgets ()
 
     @staticmethod
     def play_click_sound ():
@@ -1562,16 +1579,14 @@ if __name__ == '__main__':
 
         StarFixApp.message_popup(INTRO_MSG, StarFixApp.MSG_ID_INTRO)
 
-        a = StarFixApp ()
-        # Run the application
-        runTouchApp (a.get_root())
+        app = StarFixApp()
+        app.run()  # Instead of runTouchApp(app.get_root())
 # pylint: disable=W0718
     except Exception as exc:
 # pylint: enable=W0718
-        print ("Unhandled exception : " + str(exc))
+        debug_logger.error(f"Unhandled exception in main : {str(exc)}")
     finally:
         # Kill NMEA 0138 server (if active)
         kill_plotserver ()
         if not is_windows():
-            # Kill http server
             kill_http_server ()
