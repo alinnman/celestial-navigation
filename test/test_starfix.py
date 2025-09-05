@@ -76,7 +76,9 @@ class TestStringMethods(unittest.TestCase):
         main_1_mr ()
 
     def test_latlons (self):
-        ''' Verify that the D2C and C2D functions are inverses '''
+        ''' Verify that the D2C and C2D functions are inverses
+            Also checking accuracy of the mapping
+        '''
 
         # Known reference values (from geodesy literature)
         test_cases = [
