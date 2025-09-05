@@ -77,10 +77,39 @@ class TestStringMethods(unittest.TestCase):
 
     def test_latlons (self):
         ''' Verify that the D2C and C2D functions are inverses '''
+
+        # Known reference values (from geodesy literature)
+        test_cases = [
+            # (geocentric_lat, expected_geodetic_lat in arcseconds, max_error_arcsec)
+            (30.0, 108601.2),      # 30° - difference ~6.17 arcmin
+            (45.0, 162691.2),      # 45° - difference ~11.6 arcmin (maximum)
+            (60.0, 216597.6),      # 60° - difference ~9.95 arcmin
+            (89.0, 320425.2),      # Near pole - small difference
+        ]
+
+        #print ("Testing D2C -> C2D")
         for x in range (0, 91):
             a = LatLonGeocentric (x,40)
             b = LatLonGeodetic (ll = a)
+            #print (str(x) + ";" + str(b.get_lat()))
             c = b.get_latlon ()
             d = spherical_distance (a, c)
+            #print ("Difference is " + str(d))
             assert d < 0.001
-     
+
+        #print ("Testing C2D -> D2C")
+        for x in range (0, 91):
+            a = LatLonGeodetic (x,40)
+            b = a.get_latlon()
+            #print (str(x) + ";" + str(b.get_lat()))
+            c = LatLonGeodetic (ll = b)
+            d = spherical_distance (a, c)
+            #print ("Difference is " + str(d))
+            assert d < 0.001
+
+        for geocentric_lat, expected_geodetic_lat_as in test_cases:
+            geocentric = LatLonGeocentric(geocentric_lat, 0.0)
+            geodetic = LatLonGeodetic(ll=geocentric)
+            error_arcsec = abs(geodetic.get_lat() - expected_geodetic_lat_as/3600) * 3600
+            #print (error_arcsec)
+            assert error_arcsec < 2.0
