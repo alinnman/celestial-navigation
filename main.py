@@ -76,6 +76,9 @@ Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 DEBUG_FONT_HANDLING = False
 
 class DebugLogger:
+
+    enable_debug = False
+
     ''' Simple debug facility '''
     def __init__(self):
         self.log_file = os.path.join(os.getcwd(), "celeste_debug.txt")
@@ -87,6 +90,10 @@ class DebugLogger:
 
     def _log(self, message, level="INFO"):
         ''' Log a message'''
+
+        if not DebugLogger.enable_debug:
+            return
+
         try:
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             with open(self.log_file, "a", encoding="utf-8") as f:
