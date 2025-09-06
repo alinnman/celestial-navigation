@@ -1034,6 +1034,15 @@ rounding errors.
 So there are likely algorithmic errors but as far as I can see these are
 less prominent than errors introduced by normal handling procedures.
 
+In the picture below you see a typical sight reduction, using simulated
+sextant reading (using Stellarium). The correct observation point is the lighthouse
+on the center of the big island, but the intersections are spread out a little. 
+The green circle has radius 1 nm. This illustrates well the current capabilities
+of the toolkit, and the major contributing factor to the error is likely sampling
+errors of the almanac data.
+
+![A sight reduction](pics/accuracy-sample.png "A sight reduction")
+
 ## 9. The machine-readable nautical almanac <a name="mr"></a>
 
 The toolkit is bundled with a set of .CSV files containing astrometric
