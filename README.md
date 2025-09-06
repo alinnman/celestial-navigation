@@ -1019,8 +1019,10 @@ Unit tests with benchmarks for refraction are currently missing.
 #### Sampling errors
 
 The handling of the nautical almanac is based on hourly or daily
-values and using linear interpolation. This is a likely cause of 
-(small) errors.
+values and using linear interpolation. This is a likely cause of
+(small) errors. The sample data is also rounded to one decimal
+arcminute values, giving a rounding error of 0.1 arcminute. 
+**This is likely the biggest algorithmic error in the current implementation**
 
 #### Rounding errors
 
@@ -1032,7 +1034,7 @@ rounding errors.
 So there are likely algorithmic errors but as far as I can see these are
 less prominent than errors introduced by normal handling procedures.
 
-## 9. The machine-readable nautical almanac <a name="mr">
+## 9. The machine-readable nautical almanac <a name="mr"></a>
 
 The toolkit is bundled with a set of .CSV files containing astrometric
 data for the period 2024-2028 (GHA, Declination, SHA, Horizontal Parallax,
