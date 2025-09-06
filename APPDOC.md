@@ -433,7 +433,10 @@ good, but you may find the app a litte "sluggish" on older phones/tablets.
 
 ## Tips for Testing (without a sextant?)<a name="testing_tips"></a>
 
-Download the app
+You can test the app with or without a sextant. We go through some options,
+going from simple to more complex.
+
+For simple sextant-free testing: Download the app
 [GPS&nbsp;Anti&nbsp;Spoof](https://play.google.com/store/apps/details?id=com.clockwk.GPSAntiSpoof&pcampaignid=web_share)
 or
 [GPS&nbsp;Anti&nbsp;Spoof&nbsp;Pro](https://play.google.com/store/apps/details?id=com.clockwk.GPSAntiSpoofPro)
@@ -448,7 +451,11 @@ You can also use online star atlases such as
 [Stellarium](https://en.wikipedia.org/wiki/Stellarium_(software))
 but this is a little more time-consuming.
 
-Another option is testing with a sextant app, such as
+*For really ambitious sextant-free testing you can use official navigation*
+*software such as NOVAS published by*
+*[the Astronomical Tools department of the US Navy](https://aa.usno.navy.mil/software/novas_info)*
+
+Another option is testing with a sextant app using the camera, such as
 [CamSextant](https://play.google.com/store/apps/details?id=com.embarcadero.CamSextant&pcampaignid=web_share).
 Note however that a mobile phone sextant app will never produce readings
 accurate enough for precise navigation.
@@ -456,8 +463,10 @@ accurate enough for precise navigation.
 You may of course also borrow sights from other navigators, and you
 can easily find groups on Facebook and other social media where
 sextant/chronometer readings are shared. Another source is using
-courses and training material. And finally you can of
-course test your own skills with a real sextant.
+courses and training material.
+
+And finally you can of
+course test your own skills with a **real sextant**.
 
 Do you have problems getting a correct sight reduction?
 In such case just use two sights, by unselecting
