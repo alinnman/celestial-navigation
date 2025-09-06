@@ -418,7 +418,8 @@ ${p_2}_d = C2D(p_2)$
 The used function ($\text{C2D}$) for this conversion is numerical/iterative.
 For more details, see
 [this article](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion)
-and [this reference](https://www.tandfonline.com/doi/abs/10.1179/sre.1976.23.181.323)
+and
+[this&nbsp;reference](https://www.tandfonline.com/doi/abs/10.1179/sre.1976.23.181.323)
 (Bowring's iterative formulas).
 <br>(The function $\text{C2D}$ is the inverse of $\text{D2C}$,
 i.e $\text{C2D}(\text{D2C}(p))==p$)<br>
@@ -1002,8 +1003,9 @@ Earth ellipsoid and uses the WGS-84 reference system.
 
 #### WGS-84 errors
 
-The [unit tests](./test/test_starfix.py) include an accuracy test which currently
-confirms an accuracy in WGS-84 mapping of max 2 arcseconds.
+The [unit tests](./test/test_starfix.py)
+include an accuracy test which currently confirms an accuracy in WGS-84
+mapping of max 2 arcseconds.
 
 In the future more precise benchmarks (unit tests) will be added using the
 [NOVAS library](https://aa.usno.navy.mil/software/novas_info).
@@ -1012,7 +1014,7 @@ In the future more precise benchmarks (unit tests) will be added using the
 
 In addition we may have errors due to refraction
 (which is a physical / a posteriori phenomenon) being quite difficult to model
-precisely.,
+precisely.
 
 Unit tests with benchmarks for refraction are currently missing.
 
@@ -1021,7 +1023,7 @@ Unit tests with benchmarks for refraction are currently missing.
 The handling of the nautical almanac is based on hourly or daily
 values and using linear interpolation. This is a likely cause of
 (small) errors. The sample data is also rounded to one decimal
-arcminute values, giving a rounding error of 0.1 arcminute. 
+arcminute values, giving a rounding error of 0.1 arcminute.
 **This is likely the biggest algorithmic error in the current implementation**
 
 #### Rounding errors
@@ -1035,11 +1037,12 @@ So there are likely algorithmic errors but as far as I can see these are
 less prominent than errors introduced by normal handling procedures.
 
 In the picture below you see a typical sight reduction, using simulated
-sextant reading (using Stellarium). The correct observation point is the lighthouse
-on the center of the big island, but the intersections are spread out a little. 
+sextant reading (using Stellarium).
+The correct observation point is the lighthouse
+on the center of the big island, but the intersections are spread out a little.
 The green circle has radius 1 nm. This illustrates well the current capabilities
-of the toolkit, and the major contributing factor to the error is likely sampling
-errors of the almanac data.
+of the toolkit, and the major contributing factor to the error is likely
+sampling errors of the almanac data.
 
 ![A sight reduction](pics/accuracy-sample.png "A sight reduction")
 
