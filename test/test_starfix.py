@@ -80,7 +80,8 @@ class TestStringMethods(unittest.TestCase):
             Also checking accuracy of the mapping
         '''
 
-        # Known reference values (from geodesy literature)
+        # Known reference values
+        # These values where picked from https://www.vcalc.com/wiki/geodetic-latitude
         test_cases = [
             # (geocentric_lat, expected_geodetic_lat in arcseconds, max_error_arcsec)
             (30.0, 108601.2),      # 30° - difference ~6.17 arcmin
