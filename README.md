@@ -1011,7 +1011,7 @@ In the future more precise benchmarks (unit tests) will be added using the
 #### Refraction errors
 
 In addition we may have errors due to refraction
-(which is a pysical / a posteriori phenomenon) being quite difficult to model
+(which is a physical / a posteriori phenomenon) being quite difficult to model
 precisely.,
 
 Unit tests with benchmarks for refraction are currently missing.
