@@ -99,7 +99,7 @@ Suppose there exists a non-spherical surface that produces the same horizon dip 
 
 ### Step 1: Trigonometric Constraint
 The derivation above shows that the $\sqrt{h}$ relationship requires:
-1. A tangent condition: $\cos(d) = \frac{R_{\text{eff}}}{R_{eff}+h}$
+1. A tangent condition: $\cos(d) = \frac{R_{\text{eff}}}{R_{\text{eff}}+h}$
 2. Constant effective radius of curvature $R_{\text{eff}}$ at all points
 3. Small-angle approximations that yield $d \approx \sqrt{\frac{2h}{R_{\text{eff}}}}$
 
