@@ -101,10 +101,10 @@ Go back to the Celeste app with the back button.
 
 ### Astrometric Data<a name="astrometry"></a>
 
-The app is pre-packaged with astrometric data from 2024 to 2028.
+The app is pre-packaged with astrometric data from 2024 to 2029.
 Entering dates outside this range will result in an error.
-If you want to do sight reductions for historical or future (beyond 2028)
-observations you can use the
+If you want to do sight reductions for historical or future
+(before 2024 or beyond 2029) observations you can use the
 [script&nbsp;solution](https://github.com/alinnman/celestial-navigation/blob/main/INSTALL.md).
 
 ### Feedback <a name="feedback"></a>
