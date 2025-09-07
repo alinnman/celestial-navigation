@@ -99,11 +99,11 @@ Suppose there exists a non-spherical surface that produces the same horizon dip 
 
 ### Step 1: Trigonometric Constraint
 The derivation above shows that the $\sqrt{h}$ relationship requires:
-1. A tangent condition: $\cos(d) = \frac{R_{eff}}{R_{eff}+h}$
-2. Constant effective radius of curvature $R_{eff}$ at all points
-3. Small-angle approximations that yield $d \approx \sqrt{\frac{2h}{R_{eff}}}$
+1. A tangent condition: $\cos(d) = \frac{R_{\text{eff}}}{R_{eff}+h}$
+2. Constant effective radius of curvature $R_{\text{eff}}$ at all points
+3. Small-angle approximations that yield $d \approx \sqrt{\frac{2h}{R_{\text{eff}}}}$
 
-Where $R_{eff}$ represents either:
+Where $R_{\text{eff}}$ represents either:
 - The geometric radius $R$ (no refraction case)
 - An apparent radius $R/(1-k)$ where $k$ accounts for atmospheric refraction
 
@@ -129,7 +129,7 @@ By the **Gauss-Bonnet theorem** and **uniformization theorem**, surfaces of cons
 
 **Case $K = 0$ (Flat/Cylindrical):**
 - On a flat surface: no horizon dip ($d = 0$ always)
-- The trigonometric relationship $\cos(d) = \frac{R_{eff}}{R_{eff}+h}$ becomes undefined (infinite radius)
+- The trigonometric relationship $\cos(d) = \frac{R_{\text{eff}}}{R_{\text{eff}}+h}$ becomes undefined (infinite radius)
 - No tangent line from elevated observer to flat surface produces dip
 - **Contradiction** with observed formula (regardless of refraction effects)
 
@@ -146,7 +146,7 @@ By the **Gauss-Bonnet theorem** and **uniformization theorem**, surfaces of cons
 - **Contradiction** with both observed universal constants ($1.93$ geometric, $1.85$ with refraction)
 
 **Case: Non-constant curvature surfaces:**
-- The tangent condition $\cos(d) = \frac{R_{eff}}{R_{eff}+h}$ requires a well-defined radius $R_{eff}$
+- The tangent condition $\cos(d) = \frac{R_{\text{eff}}}{R_{\text{eff}}+h}$ requires a well-defined radius $R_{\text{eff}}$
 - Surfaces with varying curvature have no single radius parameter
 - The trigonometric derivation fails without constant $R$
 - **Contradiction** with both observed relationships (atmospheric refraction cannot create apparent constant curvature from variable curvature)
@@ -162,8 +162,8 @@ Atmospheric refraction changes the coefficient from $1.93$ to $\approx 1.85$ whi
 Only when $K > 0$ and constant (i.e., $K = \frac{1}{R^2}$ everywhere) do we get:
 - Uniform positive curvature everywhere
 - Well-defined constant radius $R$
-- Valid trigonometric relationship $\cos(d) = \frac{R_{eff}}{R_{eff}+h}$ (where $R_{eff}$ accounts for atmospheric effects)
-- Consistent small-angle approximation yielding $d \approx \sqrt{\frac{2h}{R_{eff}}}$
+- Valid trigonometric relationship $\cos(d) = \frac{R_{\text{eff}}}{R_{\text{eff}}+h}$ (where $R_{eff}$ accounts for atmospheric effects)
+- Consistent small-angle approximation yielding $d \approx \sqrt{\frac{2h}{R_{\text{eff}}}}$
 - Both observed relationships: $d_{\text{am}}(h) = 1.93\sqrt{h}$ (geometric) and $d_{\text{amR}}(h) = 1.85\sqrt{h}$ (with refraction)
 
 ## Topological Conclusion
