@@ -1022,14 +1022,16 @@ Unit tests with benchmarks for refraction are currently missing.
 
 The handling of the nautical almanac is based on hourly or daily
 values and using linear interpolation. This is a likely cause of
-(small) errors. The sample data is also rounded to one decimal
-arcminute values, giving a rounding error of 0.1 arcminute.
-**This is likely the biggest algorithmic error in the current implementation**
+(small) errors. 
 
 #### Rounding errors
 
 The [algorithm itself](#algorithm-sight-reduction) most likely introduces small
 rounding errors.
+
+#### Data source errors
+
+The bundled nautical almanac derives from HIPPARCOS data which originates from 1991. There may be astrometric errors for high-proper-motion stars. 
 
 #### Conclusion
 
@@ -1062,6 +1064,8 @@ which in turn is a fork of the very useful SkyAlmanac package by
 The source data for all numbers in the almanac files is the
 [Hipparcos](https://www.cosmos.esa.int/web/hipparcos)
 service powered by ESA.
+
+NOTE: The bundled almanacs have 0.01 nm precision (the standard nautical almanacs typically have 0.1 nm). This is for minimizing possible effects of sampling/rounding errors. 
 
 NOTE: The machine-readable almanac uses the
 [Pandas](https://pandas.pydata.org/) library. But as long as
