@@ -107,19 +107,13 @@ class NOVASValidator:
 
             # intersections, fitness, diag, collection, calculated_diff
 
-            try:
-                intersections, fitness, _, _, calculated_diff = SightCollection.get_intersections_conv(
-                    return_geodetic=True,
-                    estimated_position=estimated_pos,
-                    get_starfixes = get_starfixes,
-                    diagnostics=False                
-                )
-            except Exception as e:
-                print ("URBAN") # TODO Remove
-                print (str(type(e)))
-                raise e
-
-            print ("FOOBAR") # TODO Remove
+ 
+            intersections, fitness, _, _, calculated_diff = SightCollection.get_intersections_conv(
+                return_geodetic=True,
+                estimated_position=estimated_pos,
+                get_starfixes = get_starfixes,
+                diagnostics=False                
+            )
             
             # 4. Calculate accuracy
             if test_case.expected_position:
