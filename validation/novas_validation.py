@@ -31,6 +31,7 @@ class ValidationTestCase:
         self.stars = stars  # List of star names
         self.description = description
         self.expected_position = expected_position  # Known answer if available
+        self.time = datetime_utc
 
 class NOVASValidator:
     """Main validation class comparing toolkit results with NOVAS"""
@@ -59,35 +60,66 @@ class NOVASValidator:
             print(f"\nNOVAS REFERENCE ALTITUDES:")
             novas_altitudes = {}
             for star in test_case.stars:
-                result = get_star_altitude(star, test_case.location[0], test_case.location[1])
+                result = get_star_altitude(star, test_case.location[0], test_case.location[1], test_case.time)
                 novas_altitudes[star] = result
                 print(f"  {star.title():12}: {result['altitude']:7.4f}° "
                       f"({result['altitude']*60:7.1f}') Az: {result['azimuth']:6.1f}°")
             
             # 2. Create Sight objects using NOVAS altitudes
-            sights = []
+            # sights = []
             estimated_pos = LatLonGeodetic(test_case.location[0], test_case.location[1])
             
-            for star in test_case.stars:
-                alt_deg = novas_altitudes[star]['altitude']
-                alt_dms = self.decimal_to_dms(alt_deg)
+            #for star in test_case.stars:
+            #    alt_deg = novas_altitudes[star]['altitude']
+            #    alt_dms = self.decimal_to_dms(alt_deg)
                 
-                sight = Sight(
-                    object_name=star,
-                    set_time=test_case.datetime_utc.strftime("%Y-%m-%d %H:%M:%S+00:00"),
-                    measured_alt=alt_dms,
-                    estimated_position=estimated_pos,
-                    ho_obs=True  # Skip refraction since NOVAS already applied it
-                )
-                sights.append(sight)
+            #    sight = Sight(
+            #        object_name=star,
+            #        set_time=test_case.datetime_utc.strftime("%Y-%m-%d %H:%M:%S+00:00"),
+            #        measured_alt=alt_dms,
+            #        estimated_position=estimated_pos,
+            #        ho_obs=True  # Skip refraction since NOVAS already applied it
+            #    sights.append(sight)
             
             # 3. Perform sight reduction
-            collection = SightCollection(sights)
-            intersections, fitness, diag, calculated_diff = collection.get_intersections(
-                return_geodetic=True,
-                estimated_position=estimated_pos,
-                diagnostics=False
-            )
+            #collection = SightCollection(sights)
+            #intersections, fitness, diag, calculated_diff = collection.get_intersections(
+            #    return_geodetic=True,
+            #    estimated_position=estimated_pos,
+            #    diagnostics=False
+            #)
+
+            def get_starfixes (estimated_position) -> SightCollection:
+                sights = []
+                for star in test_case.stars:
+                    alt_deg = novas_altitudes[star]['altitude']
+                    alt_dms = self.decimal_to_dms(alt_deg)
+                
+                    sight = Sight(
+                        object_name=star,
+                        set_time=test_case.datetime_utc.strftime("%Y-%m-%d %H:%M:%S+00:00"),
+                        measured_alt=alt_dms,
+                        estimated_position=estimated_position
+                        #ho_obs=True  # Skip refraction since NOVAS already applied it
+                    )
+                    sights.append(sight)
+                return SightCollection (sights)
+
+            # intersections, fitness, diag, collection, calculated_diff
+
+            try:
+                intersections, fitness, _, _, calculated_diff = SightCollection.get_intersections_conv(
+                    return_geodetic=True,
+                    estimated_position=estimated_pos,
+                    get_starfixes = get_starfixes,
+                    diagnostics=False                
+                )
+            except Exception as e:
+                print ("URBAN") # TODO Remove
+                print (str(type(e)))
+                raise e
+
+            print ("FOOBAR") # TODO Remove
             
             # 4. Calculate accuracy
             if test_case.expected_position:
@@ -136,6 +168,7 @@ class NOVASValidator:
             
         except Exception as e:
             print(f"VALIDATION FAILED: {e}")
+
             return {
                 'test_name': test_case.name,
                 'description': test_case.description,
@@ -287,9 +320,9 @@ def create_test_cases():
     test_cases.append(ValidationTestCase(
         name="North Atlantic Fix",
         location=(40.0, -30.0),
-        datetime_utc=datetime(2025, 3, 21, 20, 15, 30),
-        stars=['vega', 'arcturus', 'capella'],
-        description="Mid-latitude Atlantic crossing scenario"
+        datetime_utc=datetime(2025, 3, 21, 23, 15, 30),
+        stars=['pollux', 'arcturus', 'capella'],
+        description="Mid-latitude Atlantic crossing scenario",    
     ))
     
     # Test Case 3: Two star fix - minimum case
@@ -306,8 +339,8 @@ def create_test_cases():
         name="Equatorial Fix",
         location=(0.0, 73.0),
         datetime_utc=datetime(2025, 6, 15, 2, 30, 0),
-        stars=['vega', 'arcturus', 'capella'],
-        description="Equatorial location test"
+        stars=['enif', 'deneb', 'altair'],
+        description="Equatorial location test"  
     ))
     
     return test_cases
@@ -315,7 +348,6 @@ def create_test_cases():
 def main():
     """Main validation runner"""
     validator = NOVASValidator()
-    
     # Add test cases
     for test_case in create_test_cases():
         validator.add_test_case(test_case)
