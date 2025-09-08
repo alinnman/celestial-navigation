@@ -1660,6 +1660,7 @@ class Almanac:
         """ Initialize the range object """
         config = ConfigParser ()
         fn = dp+"range.properties"
+        print ("FN = " + fn) # TODO Remove
         config.read (fn)
         Almanac.range_from = config.get('Limits', 'From')
         Almanac.range_to   = config.get('Limits', 'To')

@@ -12,6 +12,9 @@ testing*
 bin/**
 tiles/**
 celeste_debug.txt
+validation/results
+validation/venv
+
 
 
 
