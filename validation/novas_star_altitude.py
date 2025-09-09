@@ -4,7 +4,9 @@ Uses the correct NOVAS API functions
 """
 
 from datetime import datetime
+#pylint: disable=E0401
 import novas.compat as novas
+#pylint: enable=E0401
 
 def get_star_altitude(star_name, lat, lon, time, height=0.0):
     """
@@ -698,11 +700,11 @@ def get_navigation_stars():
         }
     }
 
-def compare_with_your_almanac(star_name, lat, lon):
+def compare_with_your_almanac(star_name, lat, lon, time):
     """
     Helper function to format results for comparison with your almanac
     """
-    result = get_star_altitude(star_name, lat, lon)
+    result = get_star_altitude(star_name, lat, lon, time)
     
     if result:
         print(f"\n=== NOVAS Results for {star_name.title()} ===")
@@ -761,7 +763,7 @@ if __name__ == "__main__":
     
     for star in test_stars:
         #try:
-        result = compare_with_your_almanac(star, lat, lon)
+        result = compare_with_your_almanac(star, lat, lon, datetime(2025,4,19,3,10,10))
         #except Exception as e:
         #    print(f"Error calculating {star}: {e}")
     
