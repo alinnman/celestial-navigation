@@ -330,7 +330,7 @@ def run_smart_random_validation(count=50, seed=42):
 if __name__ == "__main__":
     # Run smart random validation
     print("Testing smart random validation with visible star selection...")
-    results, stats = run_smart_random_validation(count=20, seed=42)  # Start with smaller count for testing
+    results, stats = run_smart_random_validation(count=500, seed=42)  # Start with smaller count for testing
 
     successful_results = [r for r in results if r['success']]
     if successful_results:

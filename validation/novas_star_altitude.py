@@ -312,7 +312,7 @@ def get_navigation_stars():
             'parallax': 37.67,
             'radial_velocity': -0.2,
         },
-        'kaus_aust': {
+        'Kaus Aust.': {
             'name': 'Kaus Aust.',
             'catalog_number': 90185,
             'ra': 18.402695,
@@ -454,8 +454,8 @@ def get_navigation_stars():
             'parallax': 39.51,
             'radial_velocity': -9.3,
         },
-        'zubenubi': {
-            'name': "Zuben'ubi",
+        'zuben\'ubi': {
+            'name': "Zuben\'ubi",
             'catalog_number': 72622,
             'ra': 14.847971,
             'dec': -16.041777,
@@ -546,7 +546,7 @@ def get_navigation_stars():
             'parallax': 7.63,
             'radial_velocity': -12.0,
         },
-        'rigil_kent': {
+        'Rigil Kent.': {
             'name': 'Rigil Kent.',
             'catalog_number': 71683,
             'ra': 14.660617,
@@ -586,8 +586,8 @@ def get_navigation_stars():
             'parallax': 17.99,
             'radial_velocity': 1.2,
         },
-        'al_nair': {
-            'name': "Al Na'ir",
+        'Al Na\'ir': {
+            'name': "Al Na\'ir",
             'catalog_number': 109268,
             'ra': 22.137216,
             'dec': -46.960974,

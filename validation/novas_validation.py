@@ -133,14 +133,18 @@ class NOVASValidator:
             print(f"  Calculated Sigma:    ±{calculated_diff/1.852:.3f} nm")
             
             # Accuracy rating
-            if error_distance < 0.1:
+            if fitness < 0.5:
+                rating = "BAD STAR CHOICE"
+            elif error_distance < 0.1:
                 rating = "EXCELLENT"
             elif error_distance < 0.5:
                 rating = "VERY GOOD"
             elif error_distance < 1.0:
                 rating = "GOOD"
-            else:
+            elif error_distance < 2.0:
                 rating = "ACCEPTABLE"
+            else:
+                rating = "BAD"
             
             print(f"  Accuracy Rating:     {rating}")
             
@@ -191,7 +195,13 @@ class NOVASValidator:
         
         self.results = []
         for test_case in self.test_cases:
+
             result = self.run_validation(test_case)
+            try:
+                if result['rating'] == "BAD STAR CHOICE":
+                    continue
+            except KeyError as _:
+                pass
             self.results.append(result)
         
         self.generate_summary()
