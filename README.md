@@ -1022,7 +1022,7 @@ Unit tests with benchmarks for refraction are currently missing.
 
 The handling of the nautical almanac is based on hourly or daily
 values and using linear interpolation. This is a likely cause of
-(small) errors. 
+(small) errors.
 
 #### Rounding errors
 
@@ -1031,11 +1031,24 @@ rounding errors.
 
 #### Data source errors
 
-The bundled nautical almanac derives from HIPPARCOS data which originates from 1991. There may be astrometric errors for high-proper-motion stars. 
+The bundled nautical almanac derives from HIPPARCOS data which
+originates from 1991.
+There may be astrometric errors for high-proper-motion stars.
+
+#### Validation (NOVAS)
+
+A special validation toolkit is [provided here](./validation/).
+See the [README file](./validation/README.md) for more information.
+
+Using this validation toolkit you can easily see that the algorithmic errors
+are **less than 0.2 nm**.
+The toolkit is based on the
+[NOVAS](https://aa.usno.navy.mil/software/novas_info) package from
+the US Naval Observatory.  
 
 #### Conclusion
 
-So there are likely algorithmic errors but as far as I can see these are
+So there are algorithmic errors but as far as I can see these are
 less prominent than errors introduced by normal handling procedures.
 
 In the picture below you see a typical sight reduction, using simulated
@@ -1043,8 +1056,7 @@ sextant reading (using Stellarium).
 The correct observation point is the lighthouse
 on the center of the big island, but the intersections are spread out a little.
 The green circle has radius 1 nm. This illustrates well the current capabilities
-of the toolkit, and the major contributing factor to the error is likely
-sampling errors of the almanac data.
+of the toolkit.
 
 ![A sight reduction](pics/accuracy-sample.png "A sight reduction")
 
@@ -1065,7 +1077,9 @@ The source data for all numbers in the almanac files is the
 [Hipparcos](https://www.cosmos.esa.int/web/hipparcos)
 service powered by ESA.
 
-NOTE: The bundled almanacs have 0.01 nm precision (the standard nautical almanacs typically have 0.1 nm). This is for minimizing possible effects of sampling/rounding errors. 
+NOTE: The bundled almanacs have 0.01 nm precision
+(the standard nautical almanacs typically have 0.1 nm).
+This is for minimizing possible effects of sampling/rounding errors.
 
 NOTE: The machine-readable almanac uses the
 [Pandas](https://pandas.pydata.org/) library. But as long as

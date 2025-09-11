@@ -8,14 +8,14 @@ from datetime import datetime
 import novas.compat as novas
 #pylint: enable=E0401
 
-def get_star_altitude(star_name, lat, lon, time, height=0.0):
+def get_star_altitude(star_name, lat_, lon_, time, height=0.0):
     """
     Calculate star altitude using NOVAS
     
     Args:
         star_name: Name of star (e.g., "Vega", "Arcturus", "Sirius")
-        lat: Observer latitude (degrees)
-        lon: Observer longitude (degrees) 
+        lat_: Observer latitude (degrees)
+        lon_: Observer longitude (degrees) 
         datetime_utc: UTC datetime object
         height: Observer height above sea level (meters)
     
@@ -29,8 +29,8 @@ def get_star_altitude(star_name, lat, lon, time, height=0.0):
     star_data = star_catalog[star_name.lower()]
     datetime_utc = time # star_data["time"]
     # Convert datetime to Julian Date
-    jd_utc = novas.julian_date(datetime_utc.year, datetime_utc.month, 
-                               datetime_utc.day, datetime_utc.hour + 
+    jd_utc = novas.julian_date(datetime_utc.year, datetime_utc.month,
+                               datetime_utc.day, datetime_utc.hour +
                                datetime_utc.minute/60.0 + datetime_utc.second/3600.0)
 
     # Get delta-T (approximate TT - UTC for 2025)
@@ -39,30 +39,30 @@ def get_star_altitude(star_name, lat, lon, time, height=0.0):
     jd_tt = jd_utc + delta_t / 86400.0
 
     # Create observer location
-    location = novas.make_on_surface(lat, lon, height, 10.0, 1013.25)
+    location = novas.make_on_surface(lat_, lon_, height, 10.0, 1013.25)
 
     if star_name.lower() not in star_catalog:
         raise ValueError(f"Star {star_name} not found in catalog")
-    
+
     # Create star catalog entry using make_cat_entry
-    star = novas.make_cat_entry(
+    star_ = novas.make_cat_entry(
         star_data['name'],              # star name
         'HIP',                          # catalog designation
         star_data['catalog_number'],    # catalog number
         star_data['ra'],                # RA in hours
-        star_data['dec'],               # Dec in degrees  
+        star_data['dec'],               # Dec in degrees
         star_data['pm_ra'],             # PM in RA (mas/year)
         star_data['pm_dec'],            # PM in Dec (mas/year)
         star_data['parallax'],          # Parallax (mas)
         star_data['radial_velocity']    # RV (km/s)
     )
-    
+
     # Calculate topocentric star position
-    ra_topo, dec_topo = novas.topo_star(jd_tt, 0.0, star, location)
-    
+    ra_topo, dec_topo = novas.topo_star(jd_tt, 0.0, star_, location)
+
     # Convert equatorial to horizontal coordinates
     # Correct call with proper parameters and unpacking
-    result = novas.equ2hor(
+    result_ = novas.equ2hor(
         jd_ut1=jd_utc,      # Julian date UT1
         delta_t=delta_t,    # TT - UT1 in seconds
         xp=0.0,             # Polar motion x-component (arcsec)
@@ -73,14 +73,14 @@ def get_star_altitude(star_name, lat, lon, time, height=0.0):
         ref_option=1,       # Refraction option (0=no refraction, 1=standard refraction)
         accuracy=0          # Accuracy mode (0=full accuracy, 1=reduced accuracy)
     )
-    
+
     # Unpack the result tuple
-    (zd, az), (_, _) = result
-    
+    (zd, az), (_, _) = result_
+
     # Convert zenith distance to altitude
     altitude = 90.0 - zd
     azimuth = az
-    
+
     return {
         'altitude': altitude,
         'azimuth': azimuth,
@@ -220,7 +220,7 @@ def get_navigation_stars():
             'parallax': 23.22,
             'radial_velocity': -4.2,
         },
-        
+
         # Mid-Northern Stars
         'arcturus': {
             'name': 'Arcturus',
@@ -322,7 +322,7 @@ def get_navigation_stars():
             'parallax': 23.52,
             'radial_velocity': -16.0,
         },
-        
+
         # Equatorial and Tropical Stars
         'aldebaran': {
             'name': 'Aldebaran',
@@ -464,7 +464,7 @@ def get_navigation_stars():
             'parallax': 43.03,
             'radial_velocity': -35.8,
         },
-        
+
         # Southern Hemisphere Stars (Critical for Southern Ocean navigation)
         'canopus': {
             'name': 'Canopus',
@@ -606,7 +606,7 @@ def get_navigation_stars():
             'parallax': 129.81,
             'radial_velocity': 6.5,
         },
-        
+
         # Circumpolar and Arctic Stars
         'alpheratz': {
             'name': 'Alpheratz',
@@ -700,35 +700,35 @@ def get_navigation_stars():
         }
     }
 
-def compare_with_your_almanac(star_name, lat, lon, time):
+def compare_with_your_almanac(star_name, lat_, lon_, time):
     """
     Helper function to format results for comparison with your almanac
     """
-    result = get_star_altitude(star_name, lat, lon, time)
-    
-    if result:
+    result_ = get_star_altitude(star_name, lat_, lon_, time)
+
+    if result_:
         print(f"\n=== NOVAS Results for {star_name.title()} ===")
-        print(f"Location: {lat:.6f}°N, {lon:.6f}°E")
-        print(f"Time: {result['time']}")
-        dms = degrees_to_dms (result["altitude"])
-        print(f"Altitude: {result['altitude']:.4f}° ({result['altitude']*60:.1f}')")
-        dms = degrees_to_dms (result["altitude"])
-        print(f"Altitude (DMS): {dms}")       
-        print(f"Azimuth: {result['azimuth']:.4f}°")
-        print(f"Apparent RA: {result['ra_apparent']:.6f}h")
-        print(f"Apparent Dec: {result['dec_apparent']:.6f}°")
-        print(f"Zenith Distance: {result['zenith_distance']:.4f}°")
-        
+        print(f"Location: {lat_:.6f}°N, {lon_:.6f}°E")
+        print(f"Time: {result_['time']}")
+        dms = degrees_to_dms (result_["altitude"])
+        print(f"Altitude: {result_['altitude']:.4f}° ({result_['altitude']*60:.1f}')")
+        dms = degrees_to_dms (result_["altitude"])
+        print(f"Altitude (DMS): {dms}")
+        print(f"Azimuth: {result_['azimuth']:.4f}°")
+        print(f"Apparent RA: {result_['ra_apparent']:.6f}h")
+        print(f"Apparent Dec: {result_['dec_apparent']:.6f}°")
+        print(f"Zenith Distance: {result_['zenith_distance']:.4f}°")
+
         # Calculate SHA for comparison with nautical almanacs
         # SHA = GHA_Aries - RA (approximately)
         # For exact comparison you'd need GHA Aries at the same time
-        print(f"\nFor nautical almanac comparison:")
-        print(f"RA (decimal hours): {result['ra_apparent']:.6f}")
-        print(f"RA (h m s): {hours_to_hms(result['ra_apparent'])}")
-        print(f"Dec (degrees): {result['dec_apparent']:.6f}")
-        print(f"Dec (d m s): {degrees_to_dms(result['dec_apparent'])}")
-        
-        return result
+        print("\nFor nautical almanac comparison:")
+        print(f"RA (decimal hours): {result_['ra_apparent']:.6f}")
+        print(f"RA (h m s): {hours_to_hms(result_['ra_apparent'])}")
+        print(f"Dec (degrees): {result_['dec_apparent']:.6f}")
+        print(f"Dec (d m s): {degrees_to_dms(result_['dec_apparent'])}")
+
+        return result_
     else:
         print(f"Failed to calculate position for {star_name}")
         return None
@@ -752,20 +752,22 @@ def degrees_to_dms(decimal_degrees):
 # Example usage
 if __name__ == "__main__":
     # Your test case
+#pylint: disable=C0103
     lat = 59.44395460197247
     lon = 19.501688357663202
-    
+#pylint: enable=C0103
+
     print("NOVAS Star Altitude Calculator")
     print("=" * 50)
-    
+
     # Test your problematic stars
     test_stars = ['vega', 'arcturus', 'capella']
-    
+
     for star in test_stars:
         #try:
         result = compare_with_your_almanac(star, lat, lon, datetime(2025,4,19,3,10,10))
         #except Exception as e:
         #    print(f"Error calculating {star}: {e}")
-    
+
     print("\n" + "=" * 50)
     print("Compare these values with your Skyfield almanac and EZ Nautical Almanac!")

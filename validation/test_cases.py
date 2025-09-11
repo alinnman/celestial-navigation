@@ -15,7 +15,7 @@ from novas_validation import ValidationTestCase
 def create_extended_test_cases():
     """Create comprehensive validation test cases covering global scenarios"""
     test_cases = []
-    
+
     # Original high-accuracy test case - Baltic Sea
     test_cases.append(ValidationTestCase(
         name="Baltic Sea Precision",
@@ -24,7 +24,7 @@ def create_extended_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="High-precision reference case with known accurate results"
     ))
-    
+
     # Arctic navigation - High latitude challenges
     test_cases.append(ValidationTestCase(
         name="Arctic Navigation",
@@ -33,7 +33,7 @@ def create_extended_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="High latitude Arctic navigation with challenging star geometry"
     ))
-    
+
     # Equatorial crossing - Different star visibility
     test_cases.append(ValidationTestCase(
         name="Equatorial Crossing",
@@ -42,7 +42,7 @@ def create_extended_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Equatorial navigation with optimal star visibility"
     ))
-    
+
     # Southern hemisphere - Different star patterns
     test_cases.append(ValidationTestCase(
         name="Southern Ocean",
@@ -51,7 +51,7 @@ def create_extended_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Southern hemisphere navigation"
     ))
-    
+
     # Pacific crossing - Classic blue water scenario
     test_cases.append(ValidationTestCase(
         name="Pacific Crossing",
@@ -60,7 +60,7 @@ def create_extended_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Pacific Ocean crossing - classic blue water navigation"
     ))
-    
+
     # Mediterranean - Coastal navigation
     test_cases.append(ValidationTestCase(
         name="Mediterranean Coastal",
@@ -69,7 +69,7 @@ def create_extended_test_cases():
         stars=['vega', 'arcturus'],
         description="Two-star fix for coastal navigation"
     ))
-    
+
     # North Atlantic - Transatlantic crossing
     test_cases.append(ValidationTestCase(
         name="North Atlantic Crossing",
@@ -78,7 +78,7 @@ def create_extended_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Mid-latitude Atlantic crossing scenario"
     ))
-    
+
     # Caribbean - Tropical navigation
     test_cases.append(ValidationTestCase(
         name="Caribbean Navigation",
@@ -87,7 +87,7 @@ def create_extended_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Tropical Caribbean navigation"
     ))
-    
+
     # Indian Ocean - Monsoon season navigation
     test_cases.append(ValidationTestCase(
         name="Indian Ocean Route",
@@ -96,7 +96,7 @@ def create_extended_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Indian Ocean navigation during monsoon season"
     ))
-    
+
     # North Pacific - Great circle route
     test_cases.append(ValidationTestCase(
         name="North Pacific Route",
@@ -105,13 +105,13 @@ def create_extended_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="North Pacific great circle navigation"
     ))
-    
+
     return test_cases
 
 def create_stress_test_cases():
     """Create challenging test cases to stress-test the algorithms"""
     test_cases = []
-    
+
     # Very high latitude - Near pole
     test_cases.append(ValidationTestCase(
         name="Near North Pole",
@@ -120,7 +120,7 @@ def create_stress_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Extreme high latitude near North Pole"
     ))
-    
+
     # Date line crossing
     test_cases.append(ValidationTestCase(
         name="Date Line Crossing",
@@ -129,7 +129,7 @@ def create_stress_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Navigation across international date line"
     ))
-    
+
     # Prime meridian crossing
     test_cases.append(ValidationTestCase(
         name="Prime Meridian Crossing",
@@ -138,7 +138,7 @@ def create_stress_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Navigation across prime meridian (Greenwich)"
     ))
-    
+
     # Southern high latitude
     test_cases.append(ValidationTestCase(
         name="Drake Passage",
@@ -147,16 +147,16 @@ def create_stress_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Southern high latitude - Drake Passage navigation"
     ))
-    
+
     return test_cases
 
 def create_seasonal_test_cases():
     """Create test cases covering seasonal variations"""
     test_cases = []
-    
+
     # Same location, different seasons
     base_location = (45.0, -60.0)  # North Atlantic
-    
+
     # Spring navigation
     test_cases.append(ValidationTestCase(
         name="Spring Navigation",
@@ -165,7 +165,7 @@ def create_seasonal_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Spring equinox navigation - North Atlantic"
     ))
-    
+
     # Summer navigation
     test_cases.append(ValidationTestCase(
         name="Summer Navigation",
@@ -174,7 +174,7 @@ def create_seasonal_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Summer solstice navigation - North Atlantic"
     ))
-    
+
     # Autumn navigation
     test_cases.append(ValidationTestCase(
         name="Autumn Navigation",
@@ -183,7 +183,7 @@ def create_seasonal_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Autumn equinox navigation - North Atlantic"
     ))
-    
+
     # Winter navigation
     test_cases.append(ValidationTestCase(
         name="Winter Navigation",
@@ -192,22 +192,22 @@ def create_seasonal_test_cases():
         stars=['vega', 'arcturus', 'capella'],
         description="Winter solstice navigation - North Atlantic"
     ))
-    
+
     return test_cases
 
 def get_all_test_cases():
     """Get all available test cases"""
-    all_cases = []
-    all_cases.extend(create_extended_test_cases())
-    all_cases.extend(create_stress_test_cases())
-    all_cases.extend(create_seasonal_test_cases())
-    return all_cases
+    all_cases_ = []
+    all_cases_.extend(create_extended_test_cases())
+    all_cases_.extend(create_stress_test_cases())
+    all_cases_.extend(create_seasonal_test_cases())
+    return all_cases_
 
 if __name__ == "__main__":
     # Demo: Print all available test cases
     print("Available Validation Test Cases:")
     print("=" * 50)
-    
+
     all_cases = get_all_test_cases()
     for i, case in enumerate(all_cases, 1):
         print(f"{i:2d}. {case.name}")
@@ -216,5 +216,5 @@ if __name__ == "__main__":
         print(f"    Stars: {', '.join(case.stars)}")
         print(f"    Description: {case.description}")
         print()
-    
+
     print(f"Total test cases available: {len(all_cases)}")

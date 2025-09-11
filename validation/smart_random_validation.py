@@ -13,6 +13,7 @@ MIT License
 import random
 from datetime import datetime, timedelta
 import json
+from argparse import ArgumentParser
 import numpy as np
 from novas_validation import ValidationTestCase, NOVASValidator
 from novas_star_altitude import get_star_altitude, get_navigation_stars
@@ -49,7 +50,9 @@ class VisibilityAwareGenerator:
 
             return True, altitude
 
-        except Exception as e:
+#pylint: disable=W0718
+        except Exception as _:
+#pylint: enable=W0718
             # Star calculation failed (maybe below horizon or other issue)
             return False, -999
 
@@ -71,7 +74,9 @@ class VisibilityAwareGenerator:
                         'altitude': altitude,
                         'azimuth': result['azimuth']
                     })
+#pylint: disable=W0702
                 except:
+#pylint: enable=W0702
                     continue  # Skip this star if calculation fails
 
         # Sort by altitude (higher stars first - generally better for navigation)
@@ -91,7 +96,7 @@ class VisibilityAwareGenerator:
         az2_r = np.radians(az2)
 
         # Spherical law of cosines
-        cos_sep = (np.sin(alt1_r) * np.sin(alt2_r) + 
+        cos_sep = (np.sin(alt1_r) * np.sin(alt2_r) +
                    np.cos(alt1_r) * np.cos(alt2_r) * np.cos(az2_r - az1_r))
 
         # Clamp to avoid numerical errors
@@ -121,6 +126,7 @@ class VisibilityAwareGenerator:
             min_separation = float('inf')
             total_altitude = 0
 
+#pylint: disable=C0200
             for i in range(len(selected)):
                 total_altitude += selected[i]['altitude']
                 for j in range(i + 1, len(selected)):
@@ -129,6 +135,7 @@ class VisibilityAwareGenerator:
                         selected[j]['altitude'], selected[j]['azimuth']
                     )
                     min_separation = min(min_separation, sep)
+#pylint: enable=C0200
 
             # Score: prefer good separation and reasonable total altitude
             if min_separation >= self.min_separation:
@@ -140,10 +147,11 @@ class VisibilityAwareGenerator:
 
         # If no good combination found, just take the brightest stars
         if best_combination is None:
-            print(f"    Warning: No optimal combination found, using brightest stars")
+            print("    Warning: No optimal combination found, using brightest stars")
             best_combination = visible_stars[:target_count]
         else:
             min_sep = float('inf')
+#pylint: disable=C0200
             for i in range(len(best_combination)):
                 for j in range(i + 1, len(best_combination)):
                     sep = self.calculate_angular_separation(
@@ -151,7 +159,9 @@ class VisibilityAwareGenerator:
                         best_combination[j]['altitude'], best_combination[j]['azimuth']
                     )
                     min_sep = min(min_sep, sep)
-            print(f"    Selected {len(best_combination)} stars with {min_sep:.1f}° minimum separation")
+#pylint: enable=C0200
+            print(f"    Selected {len(best_combination)}"
+                  f" stars with {min_sep:.1f}° minimum separation")
 
         return [star['name'] for star in best_combination]
 
@@ -194,9 +204,9 @@ class VisibilityAwareGenerator:
         random_minutes = random.randint(0, 59)
         random_seconds = random.randint(0, 59)
 
-        return start_date + timedelta(days=random_days, 
+        return start_date + timedelta(days=random_days,
                                     hours=random_hour,
-                                    minutes=random_minutes, 
+                                    minutes=random_minutes,
                                     seconds=random_seconds)
 
     def generate_smart_test_case(self, test_id, max_attempts=10):
@@ -264,7 +274,7 @@ class VisibilityAwareGenerator:
         print("=" * 60)
 
         successful = 0
-        for i in range(count * 2):  # Try up to 2x target count
+        for _ in range(count * 2):  # Try up to 2x target count
             if successful >= count:
                 break
 
@@ -320,24 +330,38 @@ def run_smart_random_validation(count=50, seed=42):
         }
     }
 
-    with open('results/smart_random_validation.json', 'w') as f:
+    with open('results/smart_random_validation.json', 'w', encoding="UTF-8") as f:
         json.dump(smart_results, f, indent=2, default=str)
 
-    print(f"\nSmart random validation results saved to: results/smart_random_validation.json")
+    print("\nSmart random validation results saved to: results/smart_random_validation.json")
 
     return validator.results, smart_results
 
-if __name__ == "__main__":
+def main ():
+    ''' Main function for the random validator '''
     # Run smart random validation
+
+    parser = ArgumentParser()
+    parser.add_argument("-l", "--length", default="500")
+    parser.add_argument("-s", "--seed", default="42")
+
+    args = parser.parse_args()
+
+    print(args)
+
     print("Testing smart random validation with visible star selection...")
-    results, stats = run_smart_random_validation(count=500, seed=42)  # Start with smaller count for testing
+    results, _ = run_smart_random_validation(count=int(args.length), seed=int(args.seed))
+    # Start with smaller count for testing
 
     successful_results = [r for r in results if r['success']]
     if successful_results:
         errors = [r['error_nm'] for r in successful_results]
-        print(f"\nSMART VALIDATION SUMMARY:")
+        print("\nSMART VALIDATION SUMMARY:")
         print(f"Successful tests: {len(successful_results)}/{len(results)}")
         print(f"Average error: {np.mean(errors):.3f} nm")
         print(f"Max error: {np.max(errors):.3f} nm")
     else:
         print("\nNo successful validations - check star visibility logic")
+
+if __name__ == "__main__":
+    main ()

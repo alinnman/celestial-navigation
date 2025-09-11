@@ -1182,7 +1182,7 @@ def get_refraction (apparent_angle : int | float, temperature : float, pressure 
     h = apparent_angle
     d = h + 7.31 / (h + 4.4)
     d2 = d*q
-    retval = (1 / tan (d2))*(pressure / 101.1)*(283.0/(273.0 + temperature))
+    retval = (1 / tan (d2))*(pressure / 101.3)*(283.0/(273.0 + temperature))
     return retval
 
 ################################################
@@ -1660,7 +1660,6 @@ class Almanac:
         """ Initialize the range object """
         config = ConfigParser ()
         fn = dp+"range.properties"
-        print ("FN = " + fn) # TODO Remove
         config.read (fn)
         Almanac.range_from = config.get('Limits', 'From')
         Almanac.range_to   = config.get('Limits', 'To')

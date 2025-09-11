@@ -30,8 +30,9 @@ pip install -r requirements.txt
 mkdir -p results
 
 # Run validation
-echo "Running NOVAS validation..."
-python novas_validation.py
+echo "Running NOVAS (smart random) validation..."
+# python novas_validation.py
+python smart_random_validation.py $1 $2 $3 $4
 
 # Check if validation was successful
 if [ $? -eq 0 ]; then
@@ -56,7 +57,7 @@ else
 fi
 
 # Deactivate virtual environment
-deactivate
+# conda deactivate
 
 echo ""
 echo "Validation complete. Check results/ directory for detailed output."
