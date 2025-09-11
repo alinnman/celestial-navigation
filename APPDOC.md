@@ -41,11 +41,12 @@
     1. [Using a Mobile Hotspot](#hotspot)
     1. [Specific app configuration](#app-configurations)
 1. [Working with configurations](#configs)
-1. [Installation and prerequisites](#installation-and-prerequisites)
+1. [Installation and prerequisites](#installation)
 1. [Tips for Testing (without a sextant?)](#testing_tips)
 1. [Troubleshooting](#troubleshooting)
-    1. [Entering Parameters](#entering-of-parameters)
-    1. [Display Problems](#display-problems)
+    1. [Entering Parameters](#entering_parameters)
+    1. [Display Problems](#display_problems)
+    1. [Trouble getting accurate sight reductions](#trouble_reductions)
 1. [More Information](#more_information)
 1. [Licenses](#license)
 
@@ -502,6 +503,16 @@ If you use very large fonts, or wide spacing you may encounter problems in the
 layout of the input form. From android system settings
 [reduce the system font size](https://support.google.com/accessibility/android/answer/11183305?hl=en)
 if these problems affect your work.
+
+### Trouble getting accurate sight reductions<a name="trouble_reductions"></a>
+
+The app has been tested (using the
+[NOVAS](https://aa.usno.navy.mil/software/novas_info) package)
+with a large number of various sight reductions, and
+the expected mean algorithmic error is less than 0.2 nm. If you find larger
+errors you are advised to check you input carefully.
+For more information see
+[the documentation](https://github.com/alinnman/celestial-navigation?tab=readme-ov-file#algorithm)
 
 ## More Information<a name="more_information"></a>
 
