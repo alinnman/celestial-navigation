@@ -871,8 +871,8 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
                       Diagnostics is returned as the third item in return value tuple. 
         intersection_number : Used for diagnostics to label output. 
 
-    This algorithm seems to work very well for geocentric data, but not for 
-    geodetic (ellipsoidal) data. A general design decision is to make all intersection
+    This algorithm seems to works for geocentric data. 
+    A general design decision is to make all intersection
     work in the geocentrical system, and convert/transform to/from geodetical when needed. 
     '''
     assert circle1.get_angle() >= 0 and circle2.get_angle() >= 0
@@ -1018,24 +1018,22 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
         "\n### **Calculating the rotation angle and vector to find the "+\
         "intersections from $\\text{q}$**\n"
 
-    if circle1.get_angle() < circle2.get_angle():
-        try:
+    try:
+        if circle1.get_angle() < circle2.get_angle():
             rho = acos (cos (deg_to_rad(circle1.get_angle())) / (dot_product (a_vec, q)))
-        except ValueError as ve:
-            raise IntersectError ("Small circles don't intersect") from ve
-        if diagnostics:
-            diag_output +=\
-            "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle1}\\right)}}"+\
-            "{\\text{aVec}\\cdot\\text{q}}\\right)}"
-    else:
-        try:
+            if diagnostics:
+                diag_output +=\
+                "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle1}\\right)}}"+\
+                "{\\text{aVec}\\cdot\\text{q}}\\right)}"
+        else:
             rho = acos (cos (deg_to_rad(circle2.get_angle())) / (dot_product (b_vec, q)))
-        except ValueError as ve:
-            raise IntersectError ("Small circles don't intersect") from ve
-        if diagnostics:
-            diag_output +=\
-            "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle2}\\right)}}"+\
-            "{\\text{bVec}\\cdot\\text{q}}\\right)}"
+            if diagnostics:
+                diag_output +=\
+                "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle2}\\right)}}"+\
+                "{\\text{bVec}\\cdot\\text{q}}\\right)}"
+    except ValueError as ve:
+        raise IntersectError ("Small circles don't intersect") from ve
+
     if diagnostics:
         diag_output += "=" + str(round(rho,4)) + "\\text{ ==> }\\rho$ (rotation angle)\n"
 
@@ -1182,7 +1180,7 @@ def get_refraction (apparent_angle : int | float, temperature : float, pressure 
     h = apparent_angle
     d = h + 7.31 / (h + 4.4)
     d2 = d*q
-    retval = (1 / tan (d2))*(pressure / 101.3)*(283.0/(273.0 + temperature))
+    retval = (1 / tan (d2))*(pressure / 101.0)*(283.0/(273.0 + temperature))
     return retval
 
 ################################################

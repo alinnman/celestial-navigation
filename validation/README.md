@@ -7,7 +7,7 @@ of the celestial navigation toolkit against NOVAS
 ## Overview
 
 The validation framework proves that our celestial navigation algorithms
-achieve **sub-0.2 nautical mile accuracy** when compared against the
+achieve **0.2 nautical mile accuracy** when compared against the
 U.S. Naval Observatory's reference implementation.
 
 ## Quick Start
@@ -21,7 +21,7 @@ U.S. Naval Observatory's reference implementation.
 2. **Run validation:**
 
    ```bash
-   sh run_validation.sh [test size] [random seed]
+   sh run_validation.sh -l [test size] -s [random seed]
    ```
 
 3. **View detailed results:**
@@ -43,8 +43,8 @@ U.S. Naval Observatory's reference implementation.
 | File | Description |
 |------|-------------|
 | `novas_validation.py` | Main validation framework |
-| `novas_star_altitude.py` | NOVAS interface module |
-| `smart_random_validation.py` | Randomized NOVAS interface module |
+| `novas_star_altitude.py` | NOVAS interface module (reference module)|
+| `smart_random_validation.py` | Randomized NOVAS interface module (used as default) |
 | `VALIDATION.md` | Detailed documentation and results |
 | `requirements.txt` | Python dependencies |
 | `results/` | Validation output data |
@@ -67,6 +67,12 @@ The validation works by:
 
 Since NOVAS provides sub-arcsecond accuracy, any errors in our results
 indicate algorithmic issues in our toolkit, not reference data problems.
+
+Any test case resulting in **opposing stars** or very
+**narrow intersection angles** will be **discarded**.
+(Classified as "BAD STAR CHOICE").
+This is equivalent to common practice in celestial navigation. The selection is
+based on the **fitness sum** algorithm [described here](../README.md#fitness).
 
 ## Expected Output
 
@@ -113,5 +119,5 @@ This validation framework demonstrates that our celestial navigation toolkit:
 - **Achieves sub-sextant precision** - Better accuracy than physical
   measurement limits
 
-A consistent sub-0.2 nm accuracy provides confidence for practical navigation
+A consistent 0.2 nm accuracy provides confidence for practical navigation
 applications.

@@ -311,12 +311,16 @@ using the timestamps $t_1$ and $t_2$, get the
 [geographic position](https://www.celestialprogramming.com/snippets/geographicPosition.html)
 vectors (GP:s) $a$ and $b$.
 
-Note: The GP:s $a$ and $b$ are **geocentrical**, and located on the unit sphere.
+Note: The GP:s $a$ and $b$ are **geocentrical**,
+and located on the **unit sphere** $S_u$.
+
+$S_u = \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
+
 All calculations for intersections are made on the unit sphere.
 
-$a \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
+$a \in S_u$
 <br>
-$b \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
+$b \in S_u$
 
 The altitudes are successively corrected for oblateness ($C_{\text{obl}}$),
 [refraction](#2i-atmospheric-refraction) ($C_{\text{refr}}$)
@@ -342,18 +346,17 @@ for more information. <br>Also see code
 [&rarr;](https://github.com/alinnman/celestial-navigation/blob/bb71731f8c4be417b20bf55676bc18e6492028cf/starfix.py#L1180).
 
 From here we continue all calculations in a **geocentrical** (spherical)
-coordinate system on the unit sphere<br>
-($\lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$).
+coordinate system on the unit sphere $S_u$.
 
 Define angles $\alpha$ and $\beta$ this way:
 $\alpha = \frac{\pi}{2} - f_1$, $\beta = \frac{\pi}{2} - f_2$
 
 Now we can define two circles of equal altitude, $A$ and $B$.
 
-$A = \lbrace p \in \mathbb{R}^3 \mid
-p \cdot a = \cos \alpha \land \left|\left|p\right|\right| = 1 \rbrace$ <br/>
-$B = \lbrace p \in \mathbb{R}^3 \mid
-p \cdot b = \cos \beta \land \left|\left|p\right|\right| = 1 \rbrace$
+$A = \lbrace p \in S_u \mid
+p \cdot a = \cos \alpha \rbrace$ <br/>
+$B = \lbrace p \in S_u \mid
+p \cdot b = \cos \beta  \rbrace$
 
 The notation $\left|\left|x\right|\right|$ denotes the
 [absolute value](https://en.wikipedia.org/wiki/Absolute_value#Vector_spaces)
@@ -428,6 +431,7 @@ Also see code
 and this explanation
 [&rarr;](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Newton%E2%80%93Raphson_method).
 
+<a name="fitness"></a>
 When performing the calculation above we also deduce the intersection angle for
 the two small circles (**fitness**). This angle will be used later on when we
 compare many different intersections. When the angle is small the error margin
@@ -443,6 +447,10 @@ $d_2 = N((p_1 - b) \times b)$
 From this we calculate the fitness factor $\phi$:
 
 $\phi = \left|\left|d_1 \times d_2\right|\right|$  ;  $0<=\phi<=1$
+
+For each sight a **fitness sum** is calculated as being the sum
+of the fitness of all intersections. A fitness sum less than 0.5 can
+be considered as a **bad sight**.
 
 Note: I have chosen to use an algorithm based on 3D cartesian vectors.
 Standard literature on sight reduction typically uses 2D spherical coordinates,
@@ -460,16 +468,16 @@ For **two great circles** there is a much simpler algorithm.
 
 The GP:s $a$ and $b$ are still located on the unit sphere.
 
-$a \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
+$a \in S_u$
 <br>
-$b \in \lbrace p \in \mathbb{R}^3 \mid \left|\left|p\right|\right| = 1 \rbrace$
+$b \in S_u$
 
 We now get these circles
 
-$A = \lbrace p \in \mathbb{R}^3 \mid
-p \perp a \land \left|\left|p\right|\right| = 1 \rbrace$ <br/>
-$B = \lbrace p \in \mathbb{R}^3 \mid
-p \perp b \land \left|\left|p\right|\right| = 1 \rbrace$
+$A = \lbrace p \in S_u \mid
+p \perp a \rbrace$ <br/>
+$B = \lbrace p \in S_u \mid
+p \perp b  \rbrace$
 
 From this it is easy to identify the two intersection points ($A \bigcap B$)
 as the cross-products.
@@ -993,7 +1001,8 @@ need for precision while doing the practical observational work.
 
 The toolkit has been tested against "sights" taken by the
 Star Atlas software [Stellarium](https://github.com/Stellarium/stellarium) the
-[GPS&nbsp;Anti&nbsp;Spoof&nbsp;Pro&nbsp;Android&nbsp;app](https://play.google.com/store/apps/details?id=com.clockwk.GPSAntiSpoofPro&pcampaignid=web_share) and the NOVAS library from the US Naval Observatory (USNO). 
+[GPS&nbsp;Anti&nbsp;Spoof&nbsp;Pro&nbsp;Android&nbsp;app](https://play.google.com/store/apps/details?id=com.clockwk.GPSAntiSpoofPro&pcampaignid=web_share)
+and the [NOVAS library](#novas) from the US Naval Observatory (USNO).
 This method of testing
 eliminates all handling errors and tests the used algorithm only.
 Stellarium uses refraction handling (Bennet and Saemundssons formulas) as
@@ -1040,7 +1049,7 @@ A special validation toolkit is [provided here](./validation/).
 See the [README file](./validation/README.md) for more information.
 
 Using this validation toolkit you can easily see that the algorithmic errors
-are **less than 0.2 nm**.
+are **around 0.2 nm**.
 The toolkit is based on the
 [NOVAS](https://aa.usno.navy.mil/software/novas_info) package from
 the US Naval Observatory.  

@@ -509,8 +509,11 @@ if these problems affect your work.
 The app has been tested (using the
 [NOVAS](https://aa.usno.navy.mil/software/novas_info) package)
 with a large number of various sight reductions, and
-the expected mean algorithmic error is less than 0.2 nm. If you find larger
-errors you are advised to check you input carefully.
+the expected mean algorithmic error is around 0.2 nm.
+If you find suspected algorithmic
+errors larger than 1.0 nm are advised to check you input carefully.
+Be careful to not select **opposing stars** or intersections creating
+very narrow intersection angles.
 For more information see
 [the documentation](https://github.com/alinnman/celestial-navigation?tab=readme-ov-file#algorithm)
 
