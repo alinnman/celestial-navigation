@@ -2252,8 +2252,11 @@ class SightCollection:
                                              estimated_position=ep,
                                              diagnostics = diagnostics,\
                                              intersection_number = intersection_count)
-                except IntersectError as ie:
-                    raise IntersectError (str(ie), self) from ie
+                except IntersectError as _:
+                    # raise IntersectError (str(ie), self) from ie
+                    # If one intersection fails, then just ignore it and go on
+                    # with other intersections.
+                    continue
                 diag_output += dia
                 if p_int is not None:
                     if isinstance (p_int, (list, tuple)):
@@ -2264,7 +2267,9 @@ class SightCollection:
                     else:
                         assert False
         nr_of_coords = len (coords)
-        dists = dict ()
+        if nr_of_coords == 0:
+            raise IntersectError ("No intersections found for multiple-star fix", self)
+        dists = {} # dict ()
         # Collect all distance values between intersections
         if diagnostics:
             diag_output += "## Distance table\n\n"
@@ -2349,6 +2354,7 @@ class SightCollection:
                 add_vecs (summation_vec,\
                 mult_scalar_vect ((1/nr_of_chosen_points)*fitness_here, rect_vec))
         summation_vec = normalize_vect (summation_vec)
+        mean_fitness = fitness_sum / len(chosen_points)
         ret_latlon = to_latlon (summation_vec)
         calculated_diff = 0
         diff_sum_2 = 0
@@ -2358,8 +2364,8 @@ class SightCollection:
             diff_sum_2 += distance_diff**2
         calculated_diff = sqrt (diff_sum_2)
         if return_geodetic:
-            return LatLonGeodetic(ll=ret_latlon), fitness_sum, diag_output, calculated_diff
-        return ret_latlon, fitness_sum, diag_output, calculated_diff
+            return LatLonGeodetic(ll=ret_latlon), mean_fitness, diag_output, calculated_diff
+        return ret_latlon, mean_fitness, diag_output, calculated_diff
 #pylint: enable=R0912
 #pylint: enable=R0914
 #pylint: enable=R0915
@@ -2478,9 +2484,10 @@ class SightCollection:
                 ready = True
             else:
                 estimated_position = intersections
-            counter += 1
-            if counter >= max_iter:
-                raise IntersectError ("Cannot find an intersection. Bad data?")
+            if not ready:
+                counter += 1
+                if counter >= max_iter:
+                    raise IntersectError ("Cannot find an intersection. Bad data?")
         assert intersections is not None
         assert fitness is not None
         assert diag is not None

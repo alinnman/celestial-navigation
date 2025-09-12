@@ -448,8 +448,8 @@ From this we calculate the fitness factor $\phi$:
 
 $\phi = \left|\left|d_1 \times d_2\right|\right|$  ;  $0<=\phi<=1$
 
-For each sight a **fitness sum** is calculated as being the sum
-of the fitness of all intersections. A fitness sum less than 0.5 can
+For each sight a **mean fitness** is calculated as being the mean
+of the fitness of all intersections. A mean fitness less than 0.5 can
 be considered as a **bad sight**.
 
 Note: I have chosen to use an algorithm based on 3D cartesian vectors.

@@ -228,6 +228,8 @@ class VisibilityAwareGenerator:
 
             # Select optimal star combination
             target_count = min(random.choice([2, 3, 3, 3, 4]), len(visible_stars))
+            # Review
+            # target_count = min(random.choice([100]), len(visible_stars))
             selected_stars = self.select_optimal_stars(visible_stars, target_count)
 
             if len(selected_stars) >= 2:

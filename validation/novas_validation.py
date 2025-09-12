@@ -14,11 +14,12 @@ from pathlib import Path
 import sys
 import json
 from datetime import datetime
+from math import sqrt
 sys.path.append(str(Path(__file__).parent.parent))
 #pylint: disable=C0413
 from novas_star_altitude import get_star_altitude
 from starfix import Sight, SightCollection, LatLonGeodetic, get_representation,\
-     spherical_distance, km_to_nm
+     spherical_distance, km_to_nm, IntersectError
 #pylint: enable=C0413
 
 # Add the main toolkit to path
@@ -49,7 +50,7 @@ class NOVASValidator:
         ''' Adding a test case '''
         self.test_cases.append(test_case)
 
-    def run_validation(self, test_case):
+    def run_validation(self, test_case, bad_star_choice_limit = 0.5):
         """Run a single validation test"""
         print(f"\n{'='*60}")
         print(f"VALIDATION TEST: {test_case.name}")
@@ -139,7 +140,7 @@ class NOVASValidator:
             print(f"  Calculated Sigma:    ±{calculated_diff/1.852:.3f} nm")
 
             # Accuracy rating
-            if fitness < 0.5:
+            if fitness < bad_star_choice_limit:
                 rating = "BAD STAR CHOICE"
             elif error_distance < 0.1:
                 rating = "EXCELLENT"
@@ -151,6 +152,9 @@ class NOVASValidator:
                 rating = "ACCEPTABLE"
             else:
                 rating = "BAD"
+
+            if rating == "BAD STAR CHOICE":
+                raise ValueError ("Bad star choice")
 
             print(f"  Accuracy Rating:     {rating}")
 
@@ -174,10 +178,15 @@ class NOVASValidator:
 #pylint: enable=W0718
             print(f"VALIDATION FAILED: {e}")
 
+            if isinstance (e, IntersectError):
+                error_msg = "Bad intersection. Opposing stars?"
+            else:
+                error_msg = str(e)
+
             return {
                 'test_name': test_case.name,
                 'description': test_case.description,
-                'error_message': str(e),
+                'error_message': str(error_msg),
                 'success': False
             }
 
@@ -204,11 +213,11 @@ class NOVASValidator:
         for test_case in self.test_cases:
 
             result = self.run_validation(test_case)
-            try:
-                if result['rating'] == "BAD STAR CHOICE":
-                    continue
-            except KeyError as _:
-                pass
+            #try:
+            #    if result['rating'] == "BAD STAR CHOICE":
+            #        continue
+            #except KeyError as _:
+            #    pass
             self.results.append(result)
 
         self.generate_summary()
@@ -226,6 +235,13 @@ class NOVASValidator:
         if successful_tests:
             errors = [r['error_nm'] for r in successful_tests]
             avg_error = sum(errors) / len(errors)
+
+            sum_squares = 0
+            for e in errors:
+                sum_squares += (avg_error - e)**2
+            sum_squares /= len(errors)
+            sigma = sqrt (sum_squares)
+
             max_error = max(errors)
             min_error = min(errors)
 
@@ -235,6 +251,7 @@ class NOVASValidator:
             print(f"Average Error:        {avg_error:.3f} nautical miles")
             print(f"Maximum Error:        {max_error:.3f} nautical miles")
             print(f"Minimum Error:        {min_error:.3f} nautical miles")
+            print(f"Error spread (sigma): {sigma:.3f} nautical miles")
 
             # Overall accuracy classification
             if max_error < 0.1:
@@ -293,14 +310,20 @@ class NOVASValidator:
                 avg_error = sum(errors) / len(errors)
                 max_error = max(errors)
                 min_error = min(errors)
+                sum_squares = 0
+                for e in errors:
+                    sum_squares += (avg_error - e)**2
+                sum_squares /= len(errors)
+                sigma = sqrt (sum_squares)
 
                 f.write("SUMMARY STATISTICS\n")
                 f.write("-" * 30 + "\n")
-                f.write(f"Total Test Cases: {len(self.results)}\n")
-                f.write(f"Successful Tests: {len(successful_tests)}/{len(self.results)}\n")
-                f.write(f"Average Error: {avg_error:.3f} nautical miles\n")
-                f.write(f"Maximum Error: {max_error:.3f} nautical miles\n")
-                f.write(f"Minimum Error: {min_error:.3f} nautical miles\n\n")
+                f.write(f"Total Test Cases:     {len(self.results)}\n")
+                f.write(f"Successful Tests:     {len(successful_tests)}/{len(self.results)}\n")
+                f.write(f"Average Error:        {avg_error:.3f} nautical miles\n")
+                f.write(f"Maximum Error:        {max_error:.3f} nautical miles\n")
+                f.write(f"Minimum Error:        {min_error:.3f} nautical miles\n")
+                f.write(f"Error spread (sigma): {sigma:.3f} nautical miles\n\n")
 
                 f.write("DETAILED RESULTS\n")
                 f.write("-" * 30 + "\n")
