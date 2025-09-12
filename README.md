@@ -992,10 +992,9 @@ need for precision while doing the practical observational work.
 ### 8.ii Algorithm errors <a name="algorithm"></a>
 
 The toolkit has been tested against "sights" taken by the
-Star Atlas software [Stellarium](https://github.com/Stellarium/stellarium)
-and the
-[GPS&nbsp;Anti&nbsp;Spoof&nbsp;Pro&nbsp;Android&nbsp;app](https://play.google.com/store/apps/details?id=com.clockwk.GPSAntiSpoofPro&pcampaignid=web_share).
-The maximum error seems to be less than 1 nm. This method of testing
+Star Atlas software [Stellarium](https://github.com/Stellarium/stellarium) the
+[GPS&nbsp;Anti&nbsp;Spoof&nbsp;Pro&nbsp;Android&nbsp;app](https://play.google.com/store/apps/details?id=com.clockwk.GPSAntiSpoofPro&pcampaignid=web_share) and the NOVAS library from the US Naval Observatory (USNO). 
+This method of testing
 eliminates all handling errors and tests the used algorithm only.
 Stellarium uses refraction handling (Bennet and Saemundssons formulas) as
 well as basic management of atmospheric conditions. It is also aware of the
