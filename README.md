@@ -1035,7 +1035,7 @@ The bundled nautical almanac derives from HIPPARCOS data which
 originates from 1991.
 There may be astrometric errors for high-proper-motion stars.
 
-#### Validation (NOVAS)
+#### Validation (NOVAS)<a name="novas"></a>
 
 A special validation toolkit is [provided here](./validation/).
 See the [README file](./validation/README.md) for more information.
