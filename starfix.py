@@ -1844,6 +1844,8 @@ class Sight :
 #pylint: disable=R0912
 #pylint: disable=R0913
 #pylint: disable=R0914
+#pylint: disable=R0915
+#pylint: disable=R0917
     def __init__ (self, \
                   object_name              : str,
                   set_time                 : str,
@@ -1851,13 +1853,13 @@ class Sight :
                   gha_time_0               : str | NoneType = None,
                   gha_time_1               : str | NoneType = None,
                   decl_time_0              : str | NoneType = None,
-                  decl_time_1              : NoneType | str = None,
+                  decl_time_1              : str | NoneType = None,
                   estimated_position       : LatLonGeodetic | NoneType = None,
-                  sha_diff                 : NoneType | str = None,
+                  sha_diff                 : str | NoneType = None,
                   observer_height          : int | float = 0,
                   artificial_horizon       : bool = False,
                   index_error_minutes      : int | float = 0,
-                  limb_correction          : int = 0,
+                  limb_correction          : int = LIMB_CENTRAL,
                   horizontal_parallax      : int | float | NoneType = None,
                   sextant                  : NoneType | Sextant = None,
                   chronometer              : NoneType | Chronometer = None,
@@ -2026,6 +2028,8 @@ class Sight :
 #pylint: enable=R0912
 #pylint: enable=R0913
 #pylint: enable=R0914
+#pylint: enable=R0915
+#pylint: enable=R0917
 
     def get_gp (self) -> LatLonGeocentric:
         ''' Returns the GP (geographical point) '''
@@ -2199,6 +2203,8 @@ class SightCollection:
 #pylint: disable=R0912
 #pylint: disable=R0914
 #pylint: disable=R0915
+#pylint: disable=R0913
+#pylint: disable=R0917
     def get_intersections\
         (self, return_geodetic : bool, limit : int | float = 100,
           estimated_position : NoneType | LatLon = None,
@@ -2369,6 +2375,8 @@ class SightCollection:
 #pylint: enable=R0912
 #pylint: enable=R0914
 #pylint: enable=R0915
+#pylint: enable=R0913
+#pylint: enable=R0917
 
 #pylint: disable=R0913
 #pylint: disable=R0914
@@ -2496,7 +2504,11 @@ class SightCollection:
 #pylint: enable=R0917
 #pylint: enable=R0914
 
+#pylint: disable=R0912
+#pylint: disable=R0913
 #pylint: disable=R0914
+#pylint: disable=R0915
+#pylint: disable=R0917
     def render_folium\
           (self, intersections : tuple [LatLon, LatLon] | LatLon | NoneType = None,\
            accuracy : float = 1, label_text = "Intersection",
@@ -2683,13 +2695,18 @@ class SightCollection:
                         add_to(the_map)
 
         return the_map
+#pylint: enable=R0912
+#pylint: enable=R0913
 #pylint: enable=R0914
+#pylint: enable=R0915
+#pylint: enable=R0917
 
 #pylint: disable=R0902
 class SightTrip:
     ''' Object used for dead-reckoning. Sights are taken on different times
         Course and speed are estimated input parameters.  '''
 #pylint: disable=R0913
+#pylint: disable=R0917
     def __init__ (self, \
                        sight_start : Sight | datetime,
                        sight_end : Sight,
@@ -2706,6 +2723,7 @@ class SightTrip:
         self.__start_pos                = None
         self.__end_pos                  = None
 #pylint: enable=R0913
+#pylint: enable=R0917
 
     def __calculate_time_hours (self):
         if isinstance (self.__sight_start, Sight):
@@ -2802,6 +2820,7 @@ class SightTrip:
         return gi, fitness, diag
 #pylint: enable=R0914
 
+#pylint: disable=R0914
     def render_folium (self, intersections : tuple [LatLon, LatLon] | LatLon,\
                        accuracy : float = 1, draw_grid = True, draw_markers = True):
         ''' Renders this object as a Folium Map object '''
@@ -2867,5 +2886,6 @@ class SightTrip:
             draw_arrow (draw_map, start_pos_d, end_pos_d)
 
         return draw_map
+#pylint: enable=R0914    
 
 #pylint: enable=R0902
