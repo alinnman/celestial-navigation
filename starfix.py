@@ -324,7 +324,8 @@ EARTH_FLATTENING = WGS84_F
 ################################################
 
 class LatLon:
-    ''' Base class for lat-lon pairs '''
+    ''' General baseclass for latlon coordinates '''
+
     def __init__ (self, lat : float | int, lon : float | int):
         if lat > 90 or lat < -90:
             raise ValueError ("Latitude must be between -90 and 90.")
@@ -469,7 +470,7 @@ def get_decimal_degrees_from_tuple (t : tuple) -> float:
     return get_decimal_degrees (t[0], t[1], t[2])
 
 def rotate_vector\
-    (vec : list [float], rot_vec : list [float], angle_radians : int | float) -> list [float]:
+    (vec : list [float], rot_vec : list [float], angle_radians : float) -> list [float]:
     '''
     Rotate a vector around a rotation vector. Based on Rodrigues formula. 
     https://en.wikipedia.org/wiki/Rodrigues%27_formula
@@ -478,7 +479,7 @@ def rotate_vector\
 
     v1 = mult_scalar_vect (cos(angle_radians), vec)
     v2 = mult_scalar_vect (sin(angle_radians), cross_product(rot_vec, vec))
-    v3 = mult_scalar_vect (dot_product(rot_vec,vec)*(1-cos(angle_radians)), rot_vec)
+    v3 = mult_scalar_vect (dot_product(rot_vec,vec)*(1.0-cos(angle_radians)), rot_vec)
     result = add_vecs (v1, add_vecs(v2, v3))
     return result
 
@@ -1176,9 +1177,12 @@ def get_refraction (apparent_angle : int | float, temperature : float, pressure 
         Returns:
             The refraction in arc minutes
     '''
+    c1 = 7.31
+    c2 = 4.4
+
     q = pi/180
     h = apparent_angle
-    d = h + 7.31 / (h + 4.4)
+    d = h + c1 / (h + c2)
     d2 = d*q
     retval = (1 / tan (d2))*(pressure / 101.0)*(283.0/(273.0 + temperature))
     return retval
@@ -1298,11 +1302,11 @@ def parse_angle_string (angle_string : str) -> float:
     if minutes is not None:
         if degrees < 0:
             minutes = -minutes
-        ret_val += minutes / 60
+        ret_val += minutes / 60.0
     if seconds is not None:
         if degrees < 0:
             seconds = -seconds
-        ret_val += seconds / 3600
+        ret_val += seconds / 3600.0
     return ret_val
 
 ################################################
@@ -1311,6 +1315,10 @@ def parse_angle_string (angle_string : str) -> float:
 
 class LatLonGeodetic (LatLon):
     ''' Represents a geodetic coordinate in an ellipsoid model (WGS-84) '''
+
+    # This flag disables all geocentric/geodetic mapping (for testing only)
+    disable_geodetics = False
+
     def __init__ (self,
                   lat : float | int | NoneType = None,
                   lon : float | int | NoneType = None,
@@ -1325,7 +1333,7 @@ class LatLonGeodetic (LatLon):
         assert lat is None
         assert lon is None
 
-        if isinstance (ll, LatLonGeodetic):
+        if isinstance (ll, LatLonGeodetic) or LatLonGeodetic.disable_geodetics:
             # Just copy the data from a geodetic coordinate
             super().__init__ (ll.get_lat(), ll.get_lon())
             return
@@ -1371,6 +1379,9 @@ class LatLonGeodetic (LatLon):
             See D2C function mentioned in README.md 
             See: https://www.mathworks.com/help/aeroblks/geodetictogeocentriclatitude.html
         '''
+        if LatLonGeodetic.disable_geodetics:
+            return LatLonGeocentric (lat = self.get_lat(), lon = self.get_lon())
+
         f = EARTH_FLATTENING
         a = EARTH_RADIUS_GEODETIC_EQUATORIAL / (2*pi)
         mu = deg_to_rad(self.get_lat())
@@ -2017,6 +2028,7 @@ class Sight :
             self.__measured_alt =\
                 get_geocentric_alt (self.__estimated_position,\
                                     self.__measured_alt, self.get_gp())
+
         # At this point the altitude values are saved
         # self.__measured_alt     = A corrected *geocentrical* altitude
         #      This value is used for all intersection work
@@ -2886,6 +2898,6 @@ class SightTrip:
             draw_arrow (draw_map, start_pos_d, end_pos_d)
 
         return draw_map
-#pylint: enable=R0914    
+#pylint: enable=R0914
 
 #pylint: enable=R0902

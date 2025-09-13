@@ -19,7 +19,8 @@ from starfixdata_sea_3       import main as main_sea_3
 from starfixdata_sea_4       import main as main_sea_4
 from starfixdata_sea_5       import main as main_sea_5
 from terrestrial             import main as main_terrestrial
-from starfix                 import LatLonGeocentric, LatLonGeodetic, spherical_distance
+from starfix                 import LatLonGeocentric, LatLonGeodetic, spherical_distance,\
+                                    to_rectangular, to_latlon
 #pylint: enable=E0401
 
 
@@ -76,8 +77,9 @@ class TestStringMethods(unittest.TestCase):
         main_1_mr ()
 
     def test_latlons (self):
-        ''' Verify that the D2C and C2D functions are inverses
-            Also checking accuracy of the mapping
+        ''' 1. Verify that the D2C and C2D functions are inverses
+            2. Checking accuracy of the mapping
+            3. Some other accuracy checks
         '''
 
         # Known reference values
@@ -116,3 +118,11 @@ class TestStringMethods(unittest.TestCase):
             error_arcsec = abs(geodetic.get_lat() - expected_geodetic_lat_as/3600) * 3600
             #print (error_arcsec)
             assert error_arcsec < 2.0
+
+        x = LatLonGeocentric (lat = 30, lon = 40)
+        y = to_rectangular (x)
+        z = to_latlon (y)
+        assert (abs(z.get_lat() - x.get_lat()) < 0.00000000000001)
+        assert (abs(z.get_lon() - x.get_lon()) < 0.00000000000001)
+        
+
