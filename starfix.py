@@ -320,6 +320,15 @@ EARTH_FLATTENING = WGS84_F
 
 
 ################################################
+# Basic maths
+################################################
+
+def acos2 (x : float, a : float) -> float:
+    """ A numerically stable routine for acos(cos(X)*a)"""
+    y = atan2(sqrt(1 - (cos(x) * a)**2), cos(x) * a)
+    return y
+
+################################################
 # Data types
 ################################################
 
@@ -481,6 +490,34 @@ def rotate_vector\
     v2 = mult_scalar_vect (sin(angle_radians), cross_product(rot_vec, vec))
     v3 = mult_scalar_vect (dot_product(rot_vec,vec)*(1.0-cos(angle_radians)), rot_vec)
     result = add_vecs (v1, add_vecs(v2, v3))
+    return result
+
+def rotate_vector_2 (vec : list [float], rot_vec : list [float],
+                     angle_radians : float, tolerance : float =1e-15):
+    """Numerically stable Rodrigues rotation"""
+
+    assert len(vec) == len(rot_vec) == 3
+
+    if abs(angle_radians) < tolerance:
+        return vec.copy()
+
+    # Ensure axis is normalized
+    axis_norm = normalize_vect(rot_vec)
+
+    cos_theta = cos(angle_radians)
+    sin_theta = sin(angle_radians)
+
+    # Rodrigues formula with explicit computation
+    axis_dot_vec = dot_product(axis_norm, vec)
+    cross_axis_vec = cross_product(axis_norm, vec)
+
+    result = [
+        vec[i] * cos_theta +
+        cross_axis_vec[i] * sin_theta +
+        axis_norm[i] * axis_dot_vec * (1.0 - cos_theta)
+        for i in range(3)
+    ]
+
     return result
 
 def squeeze (val : float, min_val : float, max_val : float) -> float :
@@ -728,7 +765,7 @@ class Circle:
                             mult_scalar_vect (-cos(deg_to_rad(angle)), east_tangent),
                             mult_scalar_vect (sin(deg_to_rad(angle)), north_tangent)
                             )
-            y = rotate_vector (b, real_tangent, deg_to_rad(self.get_angle()))
+            y = rotate_vector_2 (b, real_tangent, deg_to_rad(self.get_angle()))
 
             y_latlon = to_latlon (y)
             if adjust_geodetic:
@@ -830,7 +867,7 @@ def get_great_circle_route\
     north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
     b = to_rectangular (start)
     east_tangent = normalize_vect(cross_product (b, north_pole))
-    rotated = rotate_vector (east_tangent, b, deg_to_rad(90 - direction))
+    rotated = rotate_vector_2 (east_tangent, b, deg_to_rad(90 - direction))
     cp = normalize_vect(cross_product (b, rotated))
     cp_latlon = to_latlon (cp)
     c = Circle (cp_latlon, 90)
@@ -1021,13 +1058,15 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 
     try:
         if circle1.get_angle() < circle2.get_angle():
-            rho = acos (cos (deg_to_rad(circle1.get_angle())) / (dot_product (a_vec, q)))
+            #rho = acos (cos (deg_to_rad(circle1.get_angle())) / (dot_product (a_vec, q)))
+            rho = acos2 (deg_to_rad(circle1.get_angle()),1/(dot_product (a_vec, q)))
             if diagnostics:
                 diag_output +=\
                 "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle1}\\right)}}"+\
                 "{\\text{aVec}\\cdot\\text{q}}\\right)}"
         else:
-            rho = acos (cos (deg_to_rad(circle2.get_angle())) / (dot_product (b_vec, q)))
+            #rho = acos (cos (deg_to_rad(circle2.get_angle())) / (dot_product (b_vec, q)))
+            rho = acos2 (deg_to_rad(circle2.get_angle()),1/(dot_product (b_vec, q)))
             if diagnostics:
                 diag_output +=\
                 "* $\\arccos{\\left(\\frac {\\cos{\\left(\\text{angle2}\\right)}}"+\
@@ -1057,14 +1096,14 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
                        "q \\cos \\tau + \\left( r \\times q \\right) \\sin \\tau + "+\
                        "r \\left(r \\cdot q \\right)\\left(1 - \\cos \\tau \\right)}$\n"
 
-    int1 = rotate_vector (q, rot_axis, rho)
+    int1 = rotate_vector_2 (q, rot_axis, rho)
     if diagnostics:
         diag_output += "    * $GR\\left(\\text{q},\\text{rotAxis},\\rho\\right) = ("+\
         str(round(int1[0],4))+","+\
         str(round(int1[1],4))+","+\
         str(round(int1[2],4))+")\\text{ ==> }\\textbf{int1}"+\
         "$\n"
-    int2 = rotate_vector (q, rot_axis, -rho)
+    int2 = rotate_vector_2 (q, rot_axis, -rho)
     if diagnostics:
         diag_output += "    * $GR\\left(\\text{q},\\text{rotAxis},-\\rho\\right) = ("+\
         str(round(int2[0],4))+","+\
@@ -1165,7 +1204,8 @@ def calculate_time_hours (dt1 : datetime, dt2 : datetime) -> float:
 # Atmospheric refraction
 ################################################
 
-def get_refraction (apparent_angle : int | float, temperature : float, pressure : float) -> float:
+def get_refraction (apparent_angle : int | float, temperature : float,
+                    pressure : float, humidity_percent=50.0) -> float:
     '''
     Calculate an estimation of the effect of atmospheric refraction using Bennett's formula
     See: https://en.wikipedia.org/wiki/Atmospheric_refraction#Calculating_refraction 
@@ -1174,6 +1214,7 @@ def get_refraction (apparent_angle : int | float, temperature : float, pressure 
             apparent_angle : The apparent (measured) altitude in degrees.
             temperature : Temperature in degrees celsius.
             pressure : Pressure in kPa.
+            humidity_percent : humidity in %
         Returns:
             The refraction in arc minutes
     '''
@@ -1184,7 +1225,8 @@ def get_refraction (apparent_angle : int | float, temperature : float, pressure 
     h = apparent_angle
     d = h + c1 / (h + c2)
     d2 = d*q
-    retval = (1 / tan (d2))*(pressure / 101.0)*(283.0/(273.0 + temperature))
+    humidity_factor = 1.0 - 0.0000008 * humidity_percent * temperature
+    retval = (1 / tan (d2))*(pressure / 101.0)*(283.0/(273.0 + temperature)) * humidity_factor
     return retval
 
 ################################################
@@ -1449,7 +1491,7 @@ def get_circle_for_angle (point1 : LatLonGeodetic, point2 : LatLonGeodetic,
     x = b - c
     # calculate position and radius of circle
     rotation_angle = x / EARTH_RADIUS
-    rot_center = rotate_vector (mid_point,\
+    rot_center = rotate_vector_2 (mid_point,\
                                normalize_vect(subtract_vecs (point2_v, point1_v)), rotation_angle)
     rot_center_latlon = to_latlon (rot_center)
     radius = rad_to_deg(angle_b_points (to_latlon(rot_center), point1))
@@ -2749,7 +2791,7 @@ class SightTrip:
                                         a_vec : list [float], b_vec : list [float])\
           -> tuple [float, LatLonGeocentric, LatLonGeocentric]:
         rotation_angle = deg_to_rad (angle)
-        rotated_vec = rotate_vector (b_vec, a_vec, rotation_angle)
+        rotated_vec = rotate_vector_2 (b_vec, a_vec, rotation_angle)
         rotated_latlon = to_latlon (rotated_vec)
         taken_out = takeout_course (rotated_latlon, self.__course_degrees,\
                                     self.__speed_knots, self.time_hours)
