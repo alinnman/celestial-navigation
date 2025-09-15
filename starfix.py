@@ -22,6 +22,20 @@ import webbrowser
 from configparser import ConfigParser
 
 ################################################
+# Testing switches
+################################################
+
+#pylint: disable=R0903
+class Testing:
+    ''' This is a switchboard used for testing only '''
+
+    # This flag disables all geocentric/geodetic mapping (for testing only)
+    disable_geodetics           = False
+    # This flag disables all handling of refraction (for testing only)
+    disable_refraction_handling = False
+#pylint: enable=R0903
+
+################################################
 # Metadata and file access
 ################################################
 
@@ -638,6 +652,9 @@ def get_adjusted_earth_radius (temperature : float = 10,
     ''' Calculate the modified earth radius as a result of refraction 
         Returns : The adjusted radius in km
     '''
+    if Testing.disable_refraction_handling:
+        return EARTH_RADIUS
+
     k_factor = 503*(pressure*10)*(1/((temperature+273)**2))*(0.0343 + dt_dh)
     r = EARTH_RADIUS
     return r / (1 - k_factor)
@@ -1218,6 +1235,10 @@ def get_refraction (apparent_angle : int | float, temperature : float,
         Returns:
             The refraction in arc minutes
     '''
+
+    if Testing.disable_refraction_handling:
+        return 0
+
     c1 = 7.31
     c2 = 4.4
 
@@ -1358,9 +1379,6 @@ def parse_angle_string (angle_string : str) -> float:
 class LatLonGeodetic (LatLon):
     ''' Represents a geodetic coordinate in an ellipsoid model (WGS-84) '''
 
-    # This flag disables all geocentric/geodetic mapping (for testing only)
-    disable_geodetics = False
-
     def __init__ (self,
                   lat : float | int | NoneType = None,
                   lon : float | int | NoneType = None,
@@ -1375,7 +1393,7 @@ class LatLonGeodetic (LatLon):
         assert lat is None
         assert lon is None
 
-        if isinstance (ll, LatLonGeodetic) or LatLonGeodetic.disable_geodetics:
+        if isinstance (ll, LatLonGeodetic) or Testing.disable_geodetics:
             # Just copy the data from a geodetic coordinate
             super().__init__ (ll.get_lat(), ll.get_lon())
             return
@@ -1421,7 +1439,7 @@ class LatLonGeodetic (LatLon):
             See D2C function mentioned in README.md 
             See: https://www.mathworks.com/help/aeroblks/geodetictogeocentriclatitude.html
         '''
-        if LatLonGeodetic.disable_geodetics:
+        if Testing.disable_geodetics:
             return LatLonGeocentric (lat = self.get_lat(), lon = self.get_lon())
 
         f = EARTH_FLATTENING
