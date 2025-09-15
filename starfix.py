@@ -1955,7 +1955,10 @@ class Sight :
         self.__set_time_dt        = datetime.fromisoformat (set_time)
         self.__set_time_dt_hour   = self.__set_time_dt.replace\
                                       (second=0, microsecond=0, minute=0,
-                                       hour=self.__set_time_dt.hour,\
+                                       hour=self.__set_time_dt.hour,
+                                       day=self.__set_time_dt.day,
+                                       month=self.__set_time_dt.month,
+                                       year=self.__set_time_dt.year,
                                        tzinfo=self.__set_time_dt.tzinfo)
         if Sight.__time_diff_hold != 0.0:
             diff = gauss(0, Sight.__time_diff_hold)
@@ -2151,10 +2154,15 @@ class Sight :
             (self.__measured_alt, self.__temperature, self.__pressure)/60
 
     def __calculate_gp (self) -> LatLonGeocentric:
-        min_sec_contribution = (self.__set_time_dt - self.__set_time_dt_hour).total_seconds() / 3600
+        duration = self.__set_time_dt - self.__set_time_dt_hour
+        assert isinstance (duration, timedelta)
+        days = duration.days
+        seconds = duration.seconds
+        microseconds = duration.microseconds
+        min_sec_contribution = (days*86400 + seconds + microseconds / 10**6) / 3600.0
 
         if Testing.GP_shift is not None:
-            min_sec_contribution += Testing.GP_shift
+            min_sec_contribution += Testing.GP_shift / 3600
 
         result_lon = mod_lon (- \
         ((self.__gha_time_0 + self.__sha_diff) + \
