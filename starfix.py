@@ -1751,12 +1751,13 @@ class AlmanacRangeException (ValueError):
     def __init__ (self, description : str):
         self.from_date = Almanac.range_from
         self.to_date = Almanac.range_to
+        self.description = description
         super().__init__ (self, description)
 
     def __str__ (self) -> str:
         return "The almanac only holds values between " +\
                 str(self.from_date) +  " to " +\
-                str(self.to_date)
+                str(self.to_date) + ". The specific error = " + str(self.description)
 
 #pylint: disable=R0912
 #pylint: disable=R0914
@@ -1811,7 +1812,14 @@ def get_mr_item (cel_obj : MrKind | str,
                 return str(loc[str(cel_obj)+"_"+str(obs_type)])
             except KeyError as ie:
                 raise ValueError ("Invalid parameter") from ie
-
+        elif str(obs_type) in ["GHA"] and isinstance (cel_obj, MrKindAries):
+            the_almanac = Almanac.get_almanac ("planets")
+            df = the_almanac.pd
+            try:
+                loc = df.loc[ts]
+                return str(loc[str(cel_obj)+"_"+str(obs_type)])
+            except KeyError as ie:
+                raise AlmanacRangeException ("Invalid parameter") from ie
         else:
             the_almanac = Almanac.get_almanac ("planets")
             df = the_almanac.pd
@@ -1842,7 +1850,8 @@ def get_mr_item (cel_obj : MrKind | str,
                 raise AlmanacRangeException ("Invalid parameter") from ie
     elif isinstance (cel_obj ,MrKindStar):
         if str(obs_type) in ["GHA"]:
-            return get_mr_item ("Aries", ts, ObsTypes.GHA)
+            # return get_mr_item ("Aries", ts, ObsTypes.GHA)
+            return get_mr_item (CelObjects.ARIES, ts, ObsTypes.GHA)
         the_almanac = Almanac.get_almanac ("stars")
         df = the_almanac.pd
         ready = False
