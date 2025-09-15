@@ -1751,12 +1751,13 @@ class AlmanacRangeException (ValueError):
     def __init__ (self, description : str):
         self.from_date = Almanac.range_from
         self.to_date = Almanac.range_to
+        self.description = description
         super().__init__ (self, description)
 
     def __str__ (self) -> str:
         return "The almanac only holds values between " +\
                 str(self.from_date) +  " to " +\
-                str(self.to_date)
+                str(self.to_date) + ". The specific error = " + str(self.description)
 
 #pylint: disable=R0912
 #pylint: disable=R0914
@@ -1811,7 +1812,14 @@ def get_mr_item (cel_obj : MrKind | str,
                 return str(loc[str(cel_obj)+"_"+str(obs_type)])
             except KeyError as ie:
                 raise ValueError ("Invalid parameter") from ie
-
+        elif str(obs_type) in ["GHA"] and isinstance (cel_obj, MrKindAries):
+            the_almanac = Almanac.get_almanac ("planets")
+            df = the_almanac.pd
+            try:
+                loc = df.loc[ts]
+                return str(loc[str(cel_obj)+"_"+str(obs_type)])
+            except KeyError as ie:
+                raise AlmanacRangeException ("Invalid parameter") from ie
         else:
             the_almanac = Almanac.get_almanac ("planets")
             df = the_almanac.pd
@@ -1842,7 +1850,8 @@ def get_mr_item (cel_obj : MrKind | str,
                 raise AlmanacRangeException ("Invalid parameter") from ie
     elif isinstance (cel_obj ,MrKindStar):
         if str(obs_type) in ["GHA"]:
-            return get_mr_item ("Aries", ts, ObsTypes.GHA)
+            # return get_mr_item ("Aries", ts, ObsTypes.GHA)
+            return get_mr_item (CelObjects.ARIES, ts, ObsTypes.GHA)
         the_almanac = Almanac.get_almanac ("stars")
         df = the_almanac.pd
         ready = False
@@ -1955,7 +1964,10 @@ class Sight :
         self.__set_time_dt        = datetime.fromisoformat (set_time)
         self.__set_time_dt_hour   = self.__set_time_dt.replace\
                                       (second=0, microsecond=0, minute=0,
-                                       hour=self.__set_time_dt.hour,\
+                                       hour=self.__set_time_dt.hour,
+                                       day=self.__set_time_dt.day,
+                                       month=self.__set_time_dt.month,
+                                       year=self.__set_time_dt.year,
                                        tzinfo=self.__set_time_dt.tzinfo)
         if Sight.__time_diff_hold != 0.0:
             diff = gauss(0, Sight.__time_diff_hold)
@@ -2151,10 +2163,15 @@ class Sight :
             (self.__measured_alt, self.__temperature, self.__pressure)/60
 
     def __calculate_gp (self) -> LatLonGeocentric:
-        min_sec_contribution = (self.__set_time_dt - self.__set_time_dt_hour).total_seconds() / 3600
+        duration = self.__set_time_dt - self.__set_time_dt_hour
+        assert isinstance (duration, timedelta)
+        days = duration.days
+        seconds = duration.seconds
+        microseconds = duration.microseconds
+        min_sec_contribution = (days*86400 + seconds + microseconds / 10**6) / 3600.0
 
         if Testing.GP_shift is not None:
-            min_sec_contribution += Testing.GP_shift
+            min_sec_contribution += Testing.GP_shift / 3600
 
         result_lon = mod_lon (- \
         ((self.__gha_time_0 + self.__sha_diff) + \

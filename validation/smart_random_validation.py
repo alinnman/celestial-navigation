@@ -10,13 +10,19 @@ specified time and location.
 MIT License
 """
 
+from pathlib import Path
 import random
 from datetime import datetime, timedelta
 import json
+import sys
 from argparse import ArgumentParser
 import numpy as np
 from novas_validation import ValidationTestCase, NOVASValidator
 from novas_star_altitude import get_star_altitude, get_navigation_stars
+
+sys.path.append(str(Path(__file__).parent.parent))
+#pylint: disable=C0413
+from starfix import Testing
 
 class VisibilityAwareGenerator:
     """Generates random test cases with proper star visibility checking"""
@@ -293,12 +299,15 @@ class VisibilityAwareGenerator:
         print(f"Successfully generated {len(test_cases)} test cases")
         return test_cases
 
-def run_smart_random_validation(count=50, seed=42):
+def run_smart_random_validation(count: int=50, seed : int=42, gp_shift : float=0.0):
     """Run visibility-aware random validation"""
     print("=" * 80)
     print(f"SMART RANDOM VALIDATION - {count} TEST CASES")
     print("Only selecting visible stars suitable for navigation")
     print("=" * 80)
+
+    if gp_shift != 0.0:
+        Testing.GP_shift = gp_shift
 
     # Generate smart test cases
     generator = VisibilityAwareGenerator(seed=seed)
@@ -346,13 +355,15 @@ def main ():
     parser = ArgumentParser()
     parser.add_argument("-l", "--length", default="500")
     parser.add_argument("-s", "--seed", default="42")
+    parser.add_argument("-g", "--gp-shift", default="0")
 
     args = parser.parse_args()
 
     print(args)
 
     print("Testing smart random validation with visible star selection...")
-    results, _ = run_smart_random_validation(count=int(args.length), seed=int(args.seed))
+    results, _ = run_smart_random_validation \
+    (count=int(args.length), seed=int(args.seed), gp_shift=float(args.gp_shift))
     # Start with smaller count for testing
 
     successful_results = [r for r in results if r['success']]
