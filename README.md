@@ -1015,27 +1015,26 @@ The [unit tests](./test/test_starfix.py)
 include an accuracy test which currently confirms an accuracy in WGS-84
 mapping of max 2 arcseconds.
 
-In the future more precise benchmarks (unit tests) will be added using the
-[NOVAS library](https://aa.usno.navy.mil/software/novas_info).
-
 #### Refraction errors
 
 In addition we may have errors due to refraction
 (which is a physical / a posteriori phenomenon) being quite difficult to model
 precisely.
 
-Unit tests with benchmarks for refraction are currently missing.
+The code uses the [Bennet formula](https://en.wikipedia.org/wiki/Atmospheric_refraction)
+for refraction handling. 
 
 #### Sampling errors
 
 The handling of the nautical almanac is based on hourly or daily
 values and using linear interpolation. This is a likely cause of
-(small) errors.
+(very small) errors.
 
 #### Rounding errors
 
 The [algorithm itself](#algorithm-sight-reduction) most likely introduces small
-rounding errors.
+rounding errors. Some remediations have been made to remove particularly numerically
+unstable functions from the code. 
 
 #### Data source errors
 
@@ -1043,7 +1042,7 @@ The bundled nautical almanac derives from HIPPARCOS data which
 originates from 1991.
 There may be astrometric errors for high-proper-motion stars.
 
-#### Validation (NOVAS)<a name="novas"></a>
+#### **Validation** (NOVAS)<a name="novas"></a>
 
 A special validation toolkit is [provided here](./validation/).
 See the [README file](./validation/README.md) for more information.
@@ -1052,11 +1051,11 @@ Using this validation toolkit you can easily see that the algorithmic errors
 are **around 0.2 nm**.
 The toolkit is based on the
 [NOVAS](https://aa.usno.navy.mil/software/novas_info) package from
-the US Naval Observatory.  
+the US Naval Observatory.
 
 #### Conclusion
 
-So there are algorithmic errors but as far as I can see these are
+So there are algorithmic errors but these are
 less prominent than errors introduced by normal handling procedures.
 
 In the picture below you see a typical sight reduction, using simulated

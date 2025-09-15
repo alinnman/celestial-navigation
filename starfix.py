@@ -340,7 +340,7 @@ EARTH_FLATTENING = WGS84_F
 ################################################
 
 def acos2 (x : float, a : float) -> float:
-    """ A numerically stable routine for acos(cos(X)*a)"""
+    """ A numerically stable routine for acos(cos(x)*a)"""
     y = atan2(sqrt(1 - (cos(x) * a)**2), cos(x) * a)
     return y
 
@@ -2412,7 +2412,6 @@ class SightCollection:
         fine_sorting = False # This code is disabled for now
         if fine_sorting:
             for cp1 in chosen_points:
-                print (get_representation (coords[0][cp1],1))
                 for cp2 in chosen_points:
                     if cp1 != cp2:
                         dist = spherical_distance (coords[0][cp1], coords[0][cp2])
