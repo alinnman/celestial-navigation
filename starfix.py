@@ -33,6 +33,8 @@ class Testing:
     disable_geodetics           = False
     # This flag disables all handling of refraction (for testing only)
     disable_refraction_handling = False
+    # This flag is for shifting the GP calculation
+    GP_shift                    = None
 #pylint: enable=R0903
 
 ################################################
@@ -2150,6 +2152,9 @@ class Sight :
 
     def __calculate_gp (self) -> LatLonGeocentric:
         min_sec_contribution = (self.__set_time_dt - self.__set_time_dt_hour).total_seconds() / 3600
+
+        if Testing.GP_shift is not None:
+            min_sec_contribution += Testing.GP_shift
 
         result_lon = mod_lon (- \
         ((self.__gha_time_0 + self.__sha_diff) + \
