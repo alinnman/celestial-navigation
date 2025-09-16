@@ -6,7 +6,7 @@ of the celestial navigation toolkit against NOVAS
 
 ## Overview
 
-The validation framework proves that our celestial navigation algorithms
+The validation framework proves that the celestial navigation algorithms
 achieve **0.2 nautical mile accuracy** when compared against the
 U.S. Naval Observatory's reference implementation.
 
@@ -32,7 +32,7 @@ U.S. Naval Observatory's reference implementation.
 
 ## What Gets Validated
 
-- ✅ **Sight reduction accuracy** - Position calculations within 0.1nm
+- ✅ **Sight reduction accuracy** - Position calculations within 0.2nm
 - ✅ **WGS-84 coordinate transformations** - Geodetic/geocentric conversions
 - ✅ **Atmospheric correction handling** - Refraction model accuracy
 - ✅ **Multi-star intersection algorithms** - 2-4 star fixes
@@ -43,7 +43,7 @@ U.S. Naval Observatory's reference implementation.
 | File | Description |
 |------|-------------|
 | `novas_validation.py` | Main validation framework |
-| `novas_star_altitude.py` | NOVAS interface module (reference module)|
+| `novas_star_altitude.py` | NOVAS interface module |
 | `smart_random_validation.py` | Randomized NOVAS interface module (used as default) |
 | `VALIDATION.md` | Detailed documentation and results |
 | `requirements.txt` | Python dependencies |
@@ -110,7 +110,7 @@ Minimum Error: 0.013 nautical miles
 
 ## Professional Validation
 
-This validation framework demonstrates that our celestial navigation toolkit:
+This validation framework demonstrates that the celestial navigations toolkit:
 
 - **Meets professional standards** - Comparable to commercial navigation
   software

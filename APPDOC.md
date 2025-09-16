@@ -511,7 +511,7 @@ The app has been tested (using the
 with a large number of various sight reductions, and
 the expected mean algorithmic error is around 0.2 nm.
 If you find suspected algorithmic
-errors larger than 1.0 nm are advised to check you input carefully.
+errors larger than 1.0 nm you are advised to check you input carefully.
 Be careful to not select **opposing stars** or intersections creating
 very narrow intersection angles.
 For more information see
