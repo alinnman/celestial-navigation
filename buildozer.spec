@@ -27,7 +27,7 @@ source.include_patterns = sample_data/*, tiles/*
 #source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = .venv, .venv-buildozer, .vscode, colab, maths, nautical_almanacs, test, xtras, pics
+source.exclude_dirs = .venv, .venv-buildozer, .vscode, colab, maths, nautical_almanacs, test, xtras, pics, validation
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
