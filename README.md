@@ -21,7 +21,8 @@ You need a Google/Gmail account to run the code in the notebook*.
 
 ## Celestial Navigation for Dummies
 
-You use the sextant to read the altitude (angle) of a sun, planet or star
+You use the sextant to read the altitude (angle) of the
+Sun, the Moon, a planet or a star
 above the horizon. Repeat this several times. For each reading you get
 a circle that can be drawn on a map.
 Now see where these circles intersect. This will reveal your position.<br>
