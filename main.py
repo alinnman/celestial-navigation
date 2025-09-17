@@ -990,15 +990,6 @@ class StarFixApp (App):
 
     def build(self):
         """Standard Kivy build method"""
-        #layout = InputForm(size_hint_y=None)
-#pylint: disable=E1101
-        #layout.bind(minimum_height=layout.setter('height'))
-#pylint: enable=E1101
-
-        #root = ScrollView(size_hint=(1,1), do_scroll_x=False, do_scroll_y=True)
-        #root.add_widget(layout)
-
-        #return root  # Kivy handles self.root automatically
         return self._setup_widgets ()
 
     @staticmethod
