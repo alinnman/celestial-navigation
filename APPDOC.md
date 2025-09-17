@@ -190,7 +190,7 @@ altitude and this can assist you in your work.
 #### Name of Object<a name="name"></a>
 
 You have to select the **name** of the object.
-Choose the Sun, one of the planets (venus, mars, jupiter or saturn)
+Choose the Sun, Moon, one of the planets (venus, mars, jupiter or saturn)
 or a selected **navigational star**. You find a
 [list&nbsp;of&nbsp;these&nbsp;stars&nbsp;here](https://github.com/alinnman/celestial-navigation/blob/main/README.md#navstars).
 
@@ -373,8 +373,8 @@ if you hide the app.
 
 ## Working with configurations<a name="configs"></a>
 
-Whenever you execute a succesful sight reduction the active configuration
-(settings of all fields) will be saved on the **clipboard** (in JSON format).
+You can press the <tt><b>"Copy Config"</b></tt> button to copy the results of
+the last successful sight reduction to the clipboard.
 You can use this to save your work easily, using a document solution of
 your own choice. Just paste the contents into a suitable document
 in another app, and save.

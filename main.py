@@ -76,6 +76,7 @@ Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 DEBUG_FONT_HANDLING = False
 
 class DebugLogger:
+    ''' Simple debug utility to use when needed. Set enable_debug=True '''
 
     enable_debug = False
 
@@ -717,7 +718,7 @@ class ExecButton (AppButton):
             # Save collection and intersections (to be used in map presentation)
             the_form.set_active_intersections(intersections, coll)
             the_form.extract_from_widgets()
-            dump_dict()
+            dump_dict(copy_to_clipboard=False)
             the_form.results.text = "Your location = " + sr
             StarFixApp.message_popup ("You have made a successful sight reduction!\n"
                                       "Use the \"Show map!\" button to see the result!\n"
@@ -812,12 +813,30 @@ class PasteConfigButton (AppButton):
         else:
             StarFixApp.play_error_sound ()
 
+class CopyConfigButton (AppButton):
+    """ This button copies the config to the clipboard """
+
+    def __init__(self, form, **kwargs):
+        super().__init__(active = True, **kwargs)
+        self.form = form
+        self.text = "Copy Config"
+# pylint: disable=E1101
+        self.bind(on_press=self.callback)
+# pylint: enable=E1101
+
+    @staticmethod
+    def callback(instance):
+        ''' Responds to button click and copies config to clipboard '''
+        assert isinstance (instance, CopyConfigButton)
+        dump_dict(copy_to_clipboard=True)
+        StarFixApp.play_click_sound ()
+
 class OnlineHelpButton (AppButton):
     ''' A button for showing online help '''
 
     def __init__(self, **kwargs):
         super().__init__(active = True, **kwargs)
-        self.text = "Show help!"
+        self.text = "Show Help!"
 # pylint: disable=E1101
         self.bind(on_press=self.callback)
 # pylint: enable=E1101
@@ -1466,6 +1485,11 @@ class InputForm(GridLayout):
         self.__show_map_button = butt
 
         bl = FormRow()
+        butt = CopyConfigButton(self)
+        bl.add_widget(butt)
+        self.add_widget(bl)
+
+        bl = FormRow()
         butt = PasteConfigButton(self)
         bl.add_widget(butt)
         self.add_widget(bl)
@@ -1577,7 +1601,7 @@ if __name__ == '__main__':
         INTRO_MSG = ("[b]Welcome to Celeste![/b]\n"+
                     "This is an app for celestial navigation.\n"+
                     "It is open source (MIT License)\nand comes with [b]NO WARRANTY[/b].\n"+
-                    "Use the \"Show help!\" button for documentation.")
+                    "Use the \"Show Help!\" button for documentation.")
 
         if font_config.font_scale > 1.2 and DEBUG_FONT_HANDLING:
             INTRO_MSG +=\
