@@ -6,8 +6,6 @@
 
     © August Linnman, 2025, email: august@linnman.net
     MIT License (see LICENSE file)
-    
-    Modified with font awareness support
 '''
 # pylint: disable=C0413
 # pylint: disable=C0411
@@ -218,8 +216,8 @@ class FontAwareConfig:
 
     def show_font_scale_warning(self): #, dt):
         """Show warning for very large font scales"""
-        if hasattr(StarFixApp, 'message_popup'):
-            StarFixApp.message_popup(
+        if hasattr(CelesteApp, 'message_popup'):
+            CelesteApp.message_popup(
                 f"[b]Large Font Scale Detected[/b]\n\n"
                 f"Your system font size is set to {self.font_scale:.1f}x normal size.\n"
                 f"The app layout has been optimized for better readability.\n\n"
@@ -710,7 +708,7 @@ class ExecButton (AppButton):
         sr, result, intersections, coll = sight_reduction()
         if result:
             # Successful sight reduction
-            StarFixApp.play_click_sound ()
+            CelesteApp.play_click_sound ()
             assert isinstance (coll, SightCollection)
             assert isinstance (intersections, tuple) or\
                    isinstance (intersections, LatLonGeodetic) or\
@@ -720,26 +718,26 @@ class ExecButton (AppButton):
             the_form.extract_from_widgets()
             dump_dict(copy_to_clipboard=False)
             the_form.results.text = "Your location = " + sr
-            StarFixApp.message_popup ("You have made a successful sight reduction!\n"
-                                      "Use the \"Show map!\" button to see the result!\n"
+            CelesteApp.message_popup ("You have made a successful sight reduction!\n"
+                                      "Use the \"Show Map!\" button to see the result!\n"
                                       "The settings have been copied to the clipboard.",\
-                                      StarFixApp.MSG_ID_SIGHT_REDUCTION_SUCCESS)
+                                      CelesteApp.MSG_ID_SIGHT_REDUCTION_SUCCESS)
         else:
             # Failed sight reduction
-            StarFixApp.play_error_sound ()
+            CelesteApp.play_error_sound ()
             if coll is not None:
                 # Save the collection (without intersections) on error
                 the_form.set_active_intersections (None, coll)
-                StarFixApp.message_popup ("You have made a failed sight reduction!\n"
+                CelesteApp.message_popup ("You have made a failed sight reduction!\n"
                                           "The circles of equal altitude don't intersect properly\n"
-                                          "Use the \"Show map!\" button for troubleshooting!",\
-                                          StarFixApp.MSG_ID_SIGHT_REDUCTION_FAILURE)
+                                          "Use the \"Show Map!\" button for troubleshooting!",\
+                                          CelesteApp.MSG_ID_SIGHT_REDUCTION_FAILURE)
             else:
-                StarFixApp.message_popup ("You have made a failed sight reduction!\n"
+                CelesteApp.message_popup ("You have made a failed sight reduction!\n"
                                           "See the message in the field above for more"+\
                                           "information!\n",\
-                                          StarFixApp.MSG_ID_SIGHT_REDUCTION_FAILURE)
-                StarFixApp.reset_messages()
+                                          CelesteApp.MSG_ID_SIGHT_REDUCTION_FAILURE)
+                CelesteApp.reset_messages()
             the_form.results.text = sr
 
 
@@ -769,20 +767,20 @@ class ShowMapButton (AppButton):
                     the_map = c.render_folium (i)
                 elif isinstance (c, Sight):
                     the_map = c.render_folium_new_map ()
-                StarFixApp.play_click_sound()
+                CelesteApp.play_click_sound()
                 assert the_map is not None
                 file_name = "./map.html"
                 the_map.save (file_name)
                 # Keeping this message to possible future use
-                #StarFixApp.message_popup ("You have generated a map.\n"
+                #CelesteApp.message_popup ("You have generated a map.\n"
                 #                          "It is visible in a web brower window.\n"
                 #                          "It shows the last sight reduction\n"
                 #                          "(successful or not)",
-                #                          StarFixApp.MSG_ID_SHOW_MAP)
+                #                          CelesteApp.MSG_ID_SHOW_MAP)
                 show_or_display_file (file_name, protocol="http")
 # pylint: disable=W0702
             except:
-                StarFixApp.play_error_sound()
+                CelesteApp.play_error_sound()
                 if the_map is None:
                     instance.text = get_folium_load_error()
                 else:
@@ -808,10 +806,10 @@ class PasteConfigButton (AppButton):
         assert isinstance (NUM_DICT, dict)
         format_ok = _initialize_from_string (config_string, NUM_DICT)
         if format_ok:
-            StarFixApp.play_click_sound ()
+            CelesteApp.play_click_sound ()
             instance.form.populate_widgets ()
         else:
-            StarFixApp.play_error_sound ()
+            CelesteApp.play_error_sound ()
 
 class CopyConfigButton (AppButton):
     """ This button copies the config to the clipboard """
@@ -829,7 +827,7 @@ class CopyConfigButton (AppButton):
         ''' Responds to button click and copies config to clipboard '''
         assert isinstance (instance, CopyConfigButton)
         dump_dict(copy_to_clipboard=True)
-        StarFixApp.play_click_sound ()
+        CelesteApp.play_click_sound ()
 
 class OnlineHelpButton (AppButton):
     ''' A button for showing online help '''
@@ -844,7 +842,7 @@ class OnlineHelpButton (AppButton):
     @staticmethod
     def callback(_):
         ''' This is a function for showing online help '''
-        StarFixApp.play_click_sound ()
+        CelesteApp.play_click_sound ()
         file_name = "./APPDOC.html"
         show_or_display_file (file_name, protocol="http")
 
@@ -956,7 +954,7 @@ class SightInputSection(GridLayout):
                 else:
                     child.disabled = not value
 
-class StarFixApp (App):
+class CelesteApp (App):
     ''' The application class '''
 
     click_sound = None
@@ -980,12 +978,12 @@ class StarFixApp (App):
         self.m_root = root
 # pylint: enable=W0201
 
-        StarFixApp.initialized = True
+        CelesteApp.initialized = True
         return root
 
     def __init__ (self, **kwargs):
         super().__init__(**kwargs)
-        StarFixApp.click_sound = None
+        CelesteApp.click_sound = None
         # self._setup_widgets ()
 
     def build(self):
@@ -1087,14 +1085,14 @@ class StarFixApp (App):
         def toggle_dont_show_again (self, active : bool):
             ''' Toggle the active state for the "dont show again" state '''
             self.show_popup = not active
-            StarFixApp.message_store.put (self.msg_id, dont_show_again=active)
+            CelesteApp.message_store.put (self.msg_id, dont_show_again=active)
 
     @staticmethod
     def reset_messages ():
         ''' Restore all messages '''
         try:
-            os.remove (StarFixApp.message_store_name)
-            StarFixApp.message_store = JsonStore (StarFixApp.message_store_name)
+            os.remove (CelesteApp.message_store_name)
+            CelesteApp.message_store = JsonStore (CelesteApp.message_store_name)
 # pylint: disable=W0702
         except:
             pass
@@ -1104,29 +1102,29 @@ class StarFixApp (App):
     def _message_popup_doer (msg : str, msg_id : str, *_):
 
         show_popup = False
-        if StarFixApp.message_store.exists(msg_id):
-            b = StarFixApp.message_store.get(msg_id)
+        if CelesteApp.message_store.exists(msg_id):
+            b = CelesteApp.message_store.get(msg_id)
             the_val = b ["dont_show_again"]
             show_popup = not the_val
         else:
             show_popup = True
 
         if show_popup:
-            mp = StarFixApp.MessagePopup (msg, msg_id)
+            mp = CelesteApp.MessagePopup (msg, msg_id)
             mp.open ()
 
     @staticmethod
     def message_popup (msg : str, msg_id : str):
         ''' Produce an informational message popup '''
-        if not StarFixApp.initialized:
-            Clock.schedule_once(partial(StarFixApp._message_popup_doer, msg, msg_id), 0.1)
+        if not CelesteApp.initialized:
+            Clock.schedule_once(partial(CelesteApp._message_popup_doer, msg, msg_id), 0.1)
             return
-        StarFixApp._message_popup_doer (msg, msg_id)
+        CelesteApp._message_popup_doer (msg, msg_id)
 
     @staticmethod
     def _error_popup_doer (msg : str, *_):
-        StarFixApp.play_error_sound ()
-        if StarFixApp.initialized:
+        CelesteApp.play_error_sound ()
+        if CelesteApp.initialized:
             popup = Popup(title='Error',
                           content=Label(text=msg+"\n\nClick outside to close.",\
                                         markup=True),
@@ -1136,10 +1134,10 @@ class StarFixApp (App):
     @staticmethod
     def error_popup (msg : str):
         ''' Produce a warning/error message popup '''
-        if not StarFixApp.initialized:
-            Clock.schedule_once(partial(StarFixApp._error_popup_doer, msg), 0.1)
+        if not CelesteApp.initialized:
+            Clock.schedule_once(partial(CelesteApp._error_popup_doer, msg), 0.1)
             return
-        StarFixApp._error_popup_doer (msg)
+        CelesteApp._error_popup_doer (msg)
 
     def get_root (self):
         ''' Return the root widget '''
@@ -1218,7 +1216,7 @@ def _initialize_from_string (s:str, init_dict : dict) -> bool:
     global NUM_DICT
 # pylint: enable=W0603
     def handle_error (msg : str):
-        StarFixApp.error_popup (msg)
+        CelesteApp.error_popup (msg)
 
     def _fill_in_defaults ():
 
@@ -1538,7 +1536,7 @@ class InputForm(GridLayout):
         ''' Save the set of active cel nav intersection objects '''
         self.__active_intersections = i
         self.__active_collection    = c
-        self.__show_map_button.text = "Show map!"
+        self.__show_map_button.text = "Show Map!"
         self.__show_map_button.set_active (True)
         self.__update_drp (i)
 
@@ -1599,9 +1597,9 @@ if __name__ == '__main__':
             f"\n\n[color=orange]Font Scale: {font_config.font_scale:.1f}x[/color]\n"+\
             "Layout has been optimized for large fonts."
 
-        StarFixApp.message_popup(INTRO_MSG, StarFixApp.MSG_ID_INTRO)
+        CelesteApp.message_popup(INTRO_MSG, CelesteApp.MSG_ID_INTRO)
 
-        app = StarFixApp()
+        app = CelesteApp()
         app.run()  # Instead of runTouchApp(app.get_root())
 # pylint: disable=W0718
     except Exception as exc:
