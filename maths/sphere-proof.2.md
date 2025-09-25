@@ -366,7 +366,6 @@ The individual mathematical components are rigorously established.
 
 ### Additional Sources Referenced
 
-- [Dip of the Horizon – FlatEarth.ws](https://flatearth.ws/c/horizon-dip)
 - [Horizon - Wikipedia](https://en.wikipedia.org/wiki/Horizon)
 - [Empirical evidence for the spherical shape of Earth - Wikipedia](https://en.wikipedia.org/wiki/Empirical_evidence_for_the_spherical_shape_of_Earth)
 - [Constant Curvature - ScienceDirect Topics](https://www.sciencedirect.com/topics/mathematics/constant-curvature)
