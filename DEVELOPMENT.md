@@ -77,6 +77,7 @@ Building the app is done using these commands:
     ./build.sh
 
 This executes the buildozer script and some other preparation steps.
+The virtual environment .venv-buildozer need to be prepared beforehand.
 
 Note however that you probably need to fine-tune and adjust your enviroment
 carefully before being able to run the app build script successfully.
@@ -84,6 +85,9 @@ For deployment vs later Android SDK levels you may need to carefully check
 the [python-for-android](https://github.com/kivy/python-for-android)
 setup, which may require forking and working with
 detailed configuration.
+
+Also note that the current buildozer setup sofar has only been tested in
+a Python 3.11 environment. 
 
 ## App testing
 
