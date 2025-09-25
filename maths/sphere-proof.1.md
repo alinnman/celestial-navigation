@@ -408,10 +408,12 @@ Then $S$ is necessarily a sphere of radius $R = \frac{k \cdot 180}{\pi}$ degrees
 ### Modern Experimental Verification
 
 **Satellite Geodesy:**
+
 - "GPS and Geodesy." *GPS World Magazine*, various articles.
 - "Satellite Laser Ranging." International Laser Ranging Service. https://ilrs.gsfc.nasa.gov/
 
 **Precision Measurements:**
+
 - "International Earth Rotation and Reference Systems Service." https://www.iers.org/
 - "Very Long Baseline Interferometry." US Naval Observatory. https://www.usno.navy.mil/USNO/earth-orientation/vlbi
 
@@ -419,15 +421,19 @@ Then $S$ is necessarily a sphere of radius $R = \frac{k \cdot 180}{\pi}$ degrees
 
 ## Additional Online Resources
 
-### Educational Materials:
-- "How Do We Know the Earth is Spherical?" Institute for Environmental Research and Education. https://iere.org/how-do-we-know-the-earth-is-spherical/
+### Educational Materials
+
+- "How Do We Know the Earth is Spherical?" Institute for Environmental Research
+and Education. https://iere.org/how-do-we-know-the-earth-is-spherical/
 - "Eratosthenes and the Measurement of Earth's Circumference." NASA Educational Resources.
 
-### Interactive Tools:
+### Interactive Tools
+
 - "GPS Anti-Spoof" by Frank Reed - Celestial navigation simulator
 - "Stellarium" - Open source planetarium software for celestial observations
 
-### Professional Organizations:
+### Professional Organizations
+
 - **International Association of Geodesy**: https://www.iag-aig.org/
 - **Institute of Navigation**: https://www.ion.org/
 - **Royal Institute of Navigation**: https://www.rin.org.uk/
