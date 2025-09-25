@@ -422,7 +422,7 @@ preserving the geometric conclusions.
 **Current Understanding**:
 - **Earth's radius**: 6371.0 km (mean)
 - **Nearest star distance**: 4.24 light-years ≈ $4 \times 10^{13}$ km
-- **Distance ratio**: Nearest star is ~$6 \times 10^9$ times farther than
+- **Distance ratio**: Nearest star is $\approx 6 \times 10^9$ times farther than
 Earth's radius
 
 **Validation**:
