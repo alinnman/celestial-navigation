@@ -98,7 +98,10 @@ This matches Earth's actual radius well, confirming the spherical model.
 
 ## Uniqueness Proof
 
-### Theorem: Only surfaces of constant positive curvature (spheres) can produce $d(h) \propto \sqrt{h}$ for all elevations $h$
+### Theorem for uniqueness
+
+**Theorem: Only surfaces of constant positive curvature (spheres) can**
+**produce $d(h) \propto \sqrt{h}$ for all elevations $h$**
 
 **Proof by contradiction:**
 
