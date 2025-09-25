@@ -31,12 +31,12 @@ parameters simultaneously.
 
 **The Fundamental Experiment** (reproducible by anyone):
 
-**Step 1**: Choose any distant celestial object (Sun, star, or planet)  
-**Step 2**: Identify the object's Geographic Position (GP) - the point on
+- **Step 1**: Choose any distant celestial object (Sun, star, or planet)  
+- **Step 2**: Identify the object's Geographic Position (GP) - the point on
 Earth where it appears directly overhead (90° altitude)
-**Step 3**: At various locations at different distances from the GP,
+- **Step 3**: At various locations at different distances from the GP,
 measure the object's altitude angle
-**Step 4**: Plot altitude angle versus distance from GP
+- **Step 4**: Plot altitude angle versus distance from GP
 
 **Reproducible Results**:
 
