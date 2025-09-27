@@ -5,7 +5,7 @@
 Everyone discussing (or trying to disprove) the [proofs](shphere-proof.md)
 presented here must agree to the basic
 rules. These are the **foundational axioms** that make
-logical reasoning possible. Leaving out or dissmissing this will leave the area
+logical reasoning possible. Leaving out or dismissing this will leave the area
 we call **science**. Nothing wrong with that, but then we cannot do the
 discussion with the scientific method and the basic episthemology
 techniques (a posteriori empirical work combined with a priori reasoning)
@@ -33,8 +33,8 @@ analyze observations
 provide meaningful data about physical reality
 - **Reproducibility**: Independent observers using proper methods get
 consistent results
-- **Translation**: Polaris altitude measurements by different people at
-different times are valid data
+- **Translation**: Measurements (altitudes, clock readings etc) by
+different people at different times are valid data
 
 ### **Axiom 4: Logical Reasoning**
 
@@ -51,13 +51,13 @@ not both, not neither
 
 - **Response**: Axiom 1 establishes we're discussing physical reality,
 not philosophical metaphysics
-- **Tournament Rule**: Contestants must make falsifiable predictions about
+- **Rule for our work**: Contestants must make falsifiable predictions about
 observable reality
 
 **Against Contradiction**: *"Earth can be round and flat simultaneously"*
 
 - **Response**: Axiom 1 + Axiom 4 - physical properties can't be contradictory
-- **Tournament Rule**: Each contestant must present a **consistent** geometric
+- **Rule for our work**: Each contestant must present a **consistent** geometric
 model
 
 **Against Non-Euclidean Escapes**:
@@ -65,17 +65,17 @@ model
 
 - **Response**: Axiom 2 - we're analyzing **local** observations using
 **local** geometry
-- **Tournament Rule**: Proposers of theories can't invoke exotic physics to
+- **Rule for our work**: Proposers of theories can't invoke exotic physics to
 explain simple observations
 
 **Against Measurement Denial**: *"How do you know instruments work?"*
 
 - **Response**: Axiom 3 - if we can't trust properly calibrated instruments,
 no science is possible
-- **Tournament Rule**: Proposers of theories must accept valid observational
+- **Rule for our work**: Proposers of theories must accept valid observational
 data as evidence
 
-### **The "Meta-Tournament" Question**
+### **The "Meta-Work" Question**
 
 **If someone rejects these axioms**, they're not really debating Earth's
 shape - they're debating whether logical reasoning about physical reality is
