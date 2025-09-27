@@ -13,6 +13,9 @@ We show that only the specific combination of spherical Earth geometry with
 distant celestial objects can account for the universal observational constant
 of 111.1 km/degree.
 
+Before going through this text you may look up a [description of the
+fundamental axioms](axioms.md) you need to observe and agree on.
+
 ## Part I: The Two-Parameter Problem
 
 ### 1.1 Formulating the Complete Problem

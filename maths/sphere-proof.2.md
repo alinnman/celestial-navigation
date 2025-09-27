@@ -1,5 +1,14 @@
 # Proof 2: Only Spherical Surfaces Produce the Observed Horizon Dip Formula
 
+## Abstract
+
+We present the mathematical proof for connecting the known horizon dip
+with a mathematical reasoning leading to proving a spherical shape as the
+only possible one behind the actual observations.
+
+Before going through this text you may look up a [description of the
+fundamental axioms](axioms.md) you need to observe and agree on.
+
 ## Given Information
 
 - Observed horizon dip formula: **$d \approx k\sqrt{h}$**
