@@ -2,7 +2,7 @@
 
 ## Foundational Axioms
 
-Everyone discussing (or trying to disprove) the [proofs](shphere-proof.md)
+Everyone discussing (or trying to disprove) the [proofs](sphere-proof.md)
 presented here must agree to the basic
 rules. These are the
 **foundational [axioms](https://en.wikipedia.org/wiki/Axiom)** that make
