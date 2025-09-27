@@ -48,7 +48,7 @@ Today this is very basic science,
 but presented here as counter-arguments against pseudoscience advocating a
 Flat Earth.
 
-Confronting the proofs given above can be done in two ways:
+Confronting the proofs given above can be done in three possible ways:
 
 1. Refuting the observational findings (a posteriori),
 preferrably through producing well-documented and peer-reviewed experimental
@@ -58,6 +58,10 @@ results ("no horizon dip",
 Refuting the mathematical proofs (a priori). Then you will have to wrestle
 against titans such as
 [Carl Friedrich Gauss](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss).
+3. If steps 1 or 2 fail you may go to the [axioms](axioms.md) in order to
+use other fundamental views and maybe formulate new axioms. But doing so
+will make the entire proof structure void and invalid. The discussion will
+need to seek some other non-scientific ground.
 
 I say Good Luck to anyone accepting the challenge to do such a confrontation!
 
