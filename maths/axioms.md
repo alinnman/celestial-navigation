@@ -6,10 +6,14 @@ Everyone discussing (or trying to disprove) the [proofs](shphere-proof.md)
 presented here must agree to the basic
 rules. These are the
 **foundational [axioms](https://en.wikipedia.org/wiki/Axiom)** that make
-logical reasoning possible. Leaving out or dismissing this will leave the area
+scientific reasoning possible.
+Leaving out or dismissing this will leave the area
 we call **science**. Nothing wrong with that, but then we cannot do the
-discussion with the scientific method and the basic episthemology
-techniques (a posteriori empirical work combined with a priori reasoning)
+discussion with the scientific method and the relevant
+[epistemology](https://en.wikipedia.org/wiki/Epistemology)
+techniques
+([a posteriori](https://en.wikipedia.org/wiki/A_priori_and_a_posteriori)
+empirical work combined with a priori reasoning)
 
 ### **Axiom 1: Reality and Consistency**
 
