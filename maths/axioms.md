@@ -4,7 +4,8 @@
 
 Everyone discussing (or trying to disprove) the [proofs](shphere-proof.md)
 presented here must agree to the basic
-rules. These are the **foundational axioms** that make
+rules. These are the
+**foundational [axioms](https://en.wikipedia.org/wiki/Axiom)** that make
 logical reasoning possible. Leaving out or dismissing this will leave the area
 we call **science**. Nothing wrong with that, but then we cannot do the
 discussion with the scientific method and the basic episthemology
@@ -21,7 +22,8 @@ these are mutually exclusive geometric properties
 
 ### **Axiom 2: Euclidean Geometry (Local)**
 
-- **Space is Euclidean**: Space follows Euclidean geometric principles
+- **Space is Euclidean**: Space follows
+[Euclidean geometric principles](https://en.wikipedia.org/wiki/Euclidean_geometry)
 - **Straight Lines**: Light travels in straight lines through uniform media
 (geometric optics)
 - **Translation**: We can use standard geometry and trigonometry to
@@ -47,7 +49,8 @@ not both, not neither
 
 ### **Why These Axioms Matter**
 
-**Against Solipsism**: *"Maybe nothing is real and it's all in your mind"*
+**Against [Solipsism](https://en.wikipedia.org/wiki/Solipsism)**:
+*"Maybe nothing is real and it's all in your mind"*
 
 - **Response**: Axiom 1 establishes we're discussing physical reality,
 not philosophical metaphysics
