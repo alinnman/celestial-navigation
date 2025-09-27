@@ -380,4 +380,12 @@ The individual mathematical components are rigorously established.
 - [Constant Curvature - ScienceDirect Topics](https://www.sciencedirect.com/topics/mathematics/constant-curvature)
 - [Finding Constant Curvature Metrics on Surfaces - MathOverflow](https://mathoverflow.net/questions/14548/finding-constant-curvature-metrics-on-surfaces-without-full-power-of-uniformiza)
 
+## Acknowledgments
+
+This work was developed with significant assistance from Claude AI (Anthropic)
+for research, source identification, and structural organization.
+While I take full responsibility for the final content and arguments presented,
+AI assistance was instrumental in literature review, citation discovery,
+and initial drafting.
+
 ---
