@@ -21,7 +21,7 @@ you travel towards its
 [GP](https://www.britannica.com/technology/ground-position)
 (Celestial Navigation / Eratosthenes)
 1. There is a dip of the horizon and it follows this formula:
-$\Theta ≈ 1.93 \times \sqrt{h}$ <br>
+$\Theta ≈ 1.85 \times \sqrt{h}$ <br>
    (where $\Theta$ is dip in arcminutes, $h$ is elevation in meters) (Al-Biruni)
 
 From this you start reasoning
