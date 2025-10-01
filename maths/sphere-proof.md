@@ -1,5 +1,7 @@
 # Rigorous proof of Earth sphericity
 
+## Two proofs
+
 1000 years ago we knew a lot less about science, but we had already quite a
 good grasp of the shape of the Earth.
 The spherical shape of the Earth was first established in antiquity by
@@ -66,3 +68,16 @@ need to seek some other non-scientific ground.
 I say Good Luck to anyone accepting the challenge to do such a confrontation!
 
 I leave it here for anyone to use.
+
+## Giving feedback
+
+The proofs given here were drafted quite recently (september 2025) and there
+may be both logical and mathematical errors.
+If you find anything then please feel free to add a PR (Pull Request) vs this
+document.
+
+If you find the proofs **incorrect**, maybe indicating a proposed Flat Earth or
+similar then I advise you to contact the
+[IAU&nbsp;(International&nbsp;Astronomical&nbsp;Union)](https://iau.org/Iau/About/Secretariat.aspx).
+
+
