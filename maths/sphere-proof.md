@@ -13,7 +13,7 @@ experiments for determining the **spherical** shape of the Earth:
 
 The article can be summarized as the experimental findings which are given
 here as
-[**a posterori**](https://en.wikipedia.org/wiki/A_priori_and_a_posteriori#A_posteriori)
+[**a posteriori**](https://en.wikipedia.org/wiki/A_priori_and_a_posteriori#A_posteriori)
 (observational) knowledge.
 
 1. The altitude of any celestial object increases 1 degree for each 111.1 km
