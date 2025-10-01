@@ -41,6 +41,16 @@ Earth where it appears directly overhead (90° altitude)
 measure the object's altitude angle
 - **Step 4**: Plot altitude angle versus distance from GP
 
+**Methodological Note on Geographic Positions**:
+The Geographic Position (GP) of a celestial object is determined by direct
+observation - it is simply the location where the object appears directly
+overhead (90° altitude). No astronomical tables, theoretical models,
+or assumptions about Earth's shape are required for this determination.
+Nautical almanacs provide convenience for locating GPs through tabulated data,
+but are not logically necessary for the proof. The GP can always be found
+empirically by traveling until the object reaches zenith, making this method
+completely independent of any potentially disputed reference materials.
+
 **Reproducible Results**:
 
 - **Linear relationship**: Altitude decreases linearly with distance from GP
