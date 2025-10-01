@@ -79,5 +79,3 @@ document.
 If you find the proofs **incorrect**, maybe indicating a proposed Flat Earth or
 similar then I advise you to contact the
 [IAU&nbsp;(International&nbsp;Astronomical&nbsp;Union)](https://iau.org/Iau/About/Secretariat.aspx).
-
-
