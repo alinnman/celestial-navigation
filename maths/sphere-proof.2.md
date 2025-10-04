@@ -9,6 +9,13 @@ only possible one behind the actual observations.
 Before going through this text you may look up a [description of the
 fundamental axioms](axioms.md) you need to observe and agree on.
 
+## Initial remark: Horizon distance
+
+It is easy to see that horizon dip for a sphere (in arcminutes) always is
+the same a the **distance to the horizon in nautical miles**.
+So the proof presented here can **also be used** for measurements based on
+observations of the distance to the horizon/terminator.
+
 ## Given Information
 
 - Observed horizon dip formula: **$d \approx k\sqrt{h}$**
