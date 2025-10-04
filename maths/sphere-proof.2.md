@@ -42,7 +42,7 @@ A common observation for lower elevations over Earth's surface is seeing the dip
 well approximated by this formula, when measuring with a level,
 theodolite or similar:<br>
 
-$d_{\text{amR}}(h) \approx 1.75 \times \sqrt{h}$
+$d_{\text{amR}}(h) \approx 1.85 \times \sqrt{h}$
 
 Where $d_{\text{amR}}$ is the observed dip in arcminutes.
 
