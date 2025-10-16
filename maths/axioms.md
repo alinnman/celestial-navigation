@@ -6,7 +6,7 @@ Everyone discussing (or trying to disprove) the [proofs](sphere-proof.md)
 presented here must agree to the basic
 rules. These are the
 **foundational [axioms](https://en.wikipedia.org/wiki/Axiom)** that make
-scientific reasoning possible.
+scientific reasoning possible about the shape of the Earth.
 Leaving out or dismissing this will leave the area
 we call **science**. Nothing wrong with that, but then we cannot do the
 discussion with the scientific method and the relevant
@@ -23,6 +23,10 @@ There is an objective physical world independent of our beliefs about it
 have contradictory properties
 - **Translation**: Earth cannot be "both round and flat at the same time" -
 these are mutually exclusive geometric properties
+- *In addition to this we can add the concept of*
+*[object permance](https://en.wikipedia.org/wiki/Object_permanence), i.e. the*
+*notion that objects remain even if we for a period of*
+*time ceases our observation work.*
 
 ### **Axiom 2: Euclidean Geometry (At human-observable scales)**
 
@@ -277,6 +281,15 @@ spanning foundational classics through contemporary scholarship, provides
 robust academic grounding for empirical geometric investigations while
 remaining accessible to educated readers engaged in scientific discourse.
 
+## A note on microphysics (quantum mechanics)
+
+The axioms given here apply to macro phenomena, in particular on the scale
+of celestial objects. Microphysics and
+[quantum mechanics](https://en.wikipedia.org/wiki/Quantum_mechanics)
+exhibit other properties and the axioms given here might not be
+fully applicable (in particular axiom 4).
+We ignore this in the context used here.
+
 ## Acknowledgments
 
 This work was developed with significant assistance from Claude AI (Anthropic)
@@ -290,6 +303,7 @@ and initial drafting.
 Many academic sources were identified through AI-assisted research.
 While I have reviewed abstracts and key sections of cited works,
 not all sources have been read in full.
-Readers are encouraged to consult original sources directly for complete context.
+Readers are encouraged to consult original sources directly for complete
+context.
 
 ---

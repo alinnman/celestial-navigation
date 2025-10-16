@@ -35,6 +35,13 @@ From this you start reasoning
 *First find observable facts in nature with predictable outcomes, then try to*
 *fit them into a model and/or make a priori reasoning to draw conclusions.*
 
+Let us denote the empirical (a posteriori) findings with $E$<br>
+The conclusion that the Earth is a sphere is denoted with $S$<br>
+It is rather obvious that we early on can deduce $E\Leftarrow{S}$, i.e. the
+findings are **necessary** proofs for a spherical Earth. <br>Next step is to
+establish **sufficient** proofs a priori, i.e. $E\Leftrightarrow{S}$, just to
+**rule out** any other possible shape of the Earth.
+
 I present here two rigorous proofs for this:
 
 [1. Proof that Eratosthenes assumption and Celestial Navigation **only works on a sphere**](sphere-proof.1.md)
