@@ -83,6 +83,7 @@ may be both logical and mathematical errors.
 If you find anything then please feel free to add a PR (Pull Request) vs this
 document.
 
-If you find the proofs **incorrect**, maybe indicating a proposed Flat Earth or
-similar then I advise you to contact the
+If you find the proofs fundamentally **incorrect**,
+maybe indicating a proposed Flat Earth or similar then I advise you to
+contact the
 [IAU&nbsp;(International&nbsp;Astronomical&nbsp;Union)](https://iau.org/Iau/About/Secretariat.aspx).
