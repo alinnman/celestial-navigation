@@ -94,8 +94,8 @@ I leave it here for anyone to use.
 
 The proofs given here were drafted quite recently (september 2025) and there
 may be both logical and mathematical errors.
-If you find anything then please feel free to add a PR (Pull Request) vs this
-document.
+If you find anything then please feel free to add a PR (Pull Request) vs these
+documents.
 
 If you find the proofs fundamentally **incorrect**,
 maybe indicating a proposed Flat Earth or similar then I advise you to
