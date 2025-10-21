@@ -26,27 +26,31 @@ you travel towards its
 $\Theta ≈ 1.85 \times \sqrt{h}$ <br>
    (where $\Theta$ is dip in arcminutes, $h$ is elevation in meters) (Al-Biruni)
 
+The relations stated above describe falsifiable empirical patterns. We can clearly see in our data
+that measurements of altitudes and horizon dip seem to follow a predifined pattern. 
+This is not a **truth** in itself, but it is the result of systematically evaluating
+a posteriori observations. 
+
 From this you start reasoning
 [**a priori**](https://en.wikipedia.org/wiki/A_priori_and_a_posteriori#A_priori)
-(using maths in this case) to prove that the findings above are
-**only possible on a sphere**.
+(using mathematical deduction) to prove that the
+findings above **uniquely indicate a spherical Earth**.
+
+Let us denote the empirical (a posteriori) findings with $E$, 
+and the conclusion that the Earth is a sphere with $S$. 
+It is straightforward to show that $S\Rightarrow{E}$—that is, if the Earth is spherical,
+these observations follow necessarily. However, the crucial step is establishing the converse: 
+$E\Rightarrow{S}$, meaning these observations can *only* occur on a sphere, thereby ruling out any other possible shape. Together, these establish $E\Leftrightarrow{S}$—the observations are both necessary and sufficient for sphericity.
 
 *The method used is typical for basic science:*
 *First find observable facts in nature with predictable outcomes, then try to*
 *fit them into a model and/or make a priori reasoning to draw conclusions.*
 
-Let us denote the empirical (a posteriori) findings with $E$<br>
-The conclusion that the Earth is a sphere is denoted with $S$<br>
-It is rather obvious that we early on can deduce $E\Leftarrow{S}$, i.e. the
-findings are **necessary** proofs for a spherical Earth. <br>Next step is to
-establish **sufficient** proofs a priori, i.e. $E\Leftrightarrow{S}$, just to
-**rule out** any other possible shape of the Earth.
-
 I present here two rigorous proofs for this:
 
-[1. Proof that Eratosthenes assumption and Celestial Navigation **only works on a sphere**](sphere-proof.1.md)
-<br>
-[2. Proof that Al-Biruni's finding and the square root relation of dip and elevation **only works on a sphere**](sphere-proof.2.md)
+[1. Proof that Eratosthenes assumption and Celestial Navigation **are uniquely consistent with a sphere**](sphere-proof.1.md)<br/>
+[2. Proof that Al-Biruni's finding and the square root relation of dip and elevation
+**are uniquely consistent with a sphere**](sphere-proof.2.md)
 
 Before going through this you may also read about the
 [fundamental axioms](axioms.md)
@@ -59,18 +63,20 @@ Flat Earth.
 
 Confronting the proofs given above can be done in three possible ways:
 
-1. Refuting the observational findings (a posteriori),
-preferrably through producing well-documented and peer-reviewed experimental
-results ("no horizon dip",
-"refute the linear relation of the altitude of celestial objects").
+1. Falsifying (refuting) the observational findings (a posteriori),
+preferably through independently verified
+results giving other results from what we have found.<br/> ("there is no horizon dip",
+"the altitude of celestial object do not follow the linear pattern").
 2. If you fail in step 1 above:
-Refuting the mathematical proofs (a priori). Then you will have to wrestle
-against titans such as
-[Carl Friedrich Gauss](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss).
+Refuting the mathematical proofs (a priori) where we concluded the spherical shape. 
+Then you will have to confront mathematics and geometry all the way from
+antiquity ([Euclid](https://en.wikipedia.org/wiki/Euclid))
+to differential geometry of the 19th century
+([Carl Friedrich Gauss](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss)).
 3. If steps 1 or 2 fail you may go to the [axioms](axioms.md) in order to
-use other fundamental views and maybe formulate new axioms. But doing so
-will make the entire proof structure void and invalid. The discussion will
-need to seek some other non-scientific ground.
+use other fundamental epistemological views and maybe formulate new axioms.  
+Rejecting the presented axioms would require proposing an entirely different mathematical
+framework or epistemology.
 
 I say Good Luck to anyone accepting the challenge to do such a confrontation!
 
