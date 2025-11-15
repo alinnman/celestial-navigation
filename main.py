@@ -913,7 +913,8 @@ class MyTextInput (TextInput):
             kwargs['font_size'] = sp(14 * font_config.get_font_size_factor())
         super().__init__(
             size_hint = (1,1),
-            padding=['10dp', '7dp', '10dp', '7dp'],
+            #padding=['10dp', '7dp', '10dp', '7dp'],
+            padding=['10dp', '5dp', '10dp', '5dp'], #Trying a different setup
             **kwargs
         )
 
