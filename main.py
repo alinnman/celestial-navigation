@@ -719,8 +719,7 @@ class ExecButton (AppButton):
             dump_dict(copy_to_clipboard=False)
             the_form.results.text = "Your location = " + sr
             CelesteApp.message_popup ("You have made a successful sight reduction!\n"
-                                      "Use the \"Show Map!\" button to see the result!\n"
-                                      "The settings have been copied to the clipboard.",\
+                                      "Use the \"Show Map!\" button to see the result!",\
                                       CelesteApp.MSG_ID_SIGHT_REDUCTION_SUCCESS)
         else:
             # Failed sight reduction

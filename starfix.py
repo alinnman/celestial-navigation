@@ -510,10 +510,10 @@ def get_decimal_degrees_from_tuple (t : tuple) -> float:
 
 def rotate_vector_2 (vec : list [float], rot_vec : list [float],
                      angle_radians : float, tolerance : float =1e-15):
-    """Numerically stable Rodrigues rotation
+    '''
     Rotate a vector around a rotation vector. Based on Rodrigues formula. 
     https://en.wikipedia.org/wiki/Rodrigues%27_formula      
-    """
+    '''
 
     assert len(vec) == len(rot_vec) == 3
 
