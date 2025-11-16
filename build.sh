@@ -5,10 +5,12 @@
 #    MIT License (see LICENSE file)
 #
 
-
-
 # Simple build script. Bootstrapping the pure python libraries
 # and then building using buildozer (p4a)
+
+# This script has been successfully executed in an Ubuntu 24.04 LTS setup. 
+
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 
 source .venv-buildozer/bin/activate
 

@@ -43,6 +43,7 @@ version = 0.2.30
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
 requirements = pandas,kivy,android,folium,branca,jinja2,markupsafe,xyzservices
+#requirements = pandas==1.5.3,kivy,android,folium,branca,jinja2,markupsafe,xyzservices
 # Note: The requirements "folium,branca,jinja2,markupsafe,xyzservices"
 # are all needed for folium (pure python libraries needed)
 
@@ -125,9 +126,11 @@ android.minapi = 33
 # android.sdk = 36
 
 # (str) Android NDK version to use
-android.ndk = 25c
+#android.ndk = 25c
+android.ndk = 28c
 
 android.ndk_api = 33
+#android.ndk_api = 21
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
 #android.private_storage = True
@@ -348,7 +351,9 @@ p4a.branch = develop
 #p4a.setup_py = false
 
 # (str) extra command line arguments to pass when invoking pythonforandroid.toolchain
-#p4a.extra_args =
+#p4a.extra_args = --python-version 3.11
+#p4a.extra_args = --ignore-setup-py
+p4a.python_version = 3.11
 
 
 #
