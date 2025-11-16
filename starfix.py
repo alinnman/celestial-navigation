@@ -494,23 +494,26 @@ def get_decimal_degrees_from_tuple (t : tuple) -> float:
     ''' Return decimal value for an angle, represented as a tuple (degrees, minutes, seconds)'''
     return get_decimal_degrees (t[0], t[1], t[2])
 
-def rotate_vector\
-    (vec : list [float], rot_vec : list [float], angle_radians : float) -> list [float]:
-    '''
-    Rotate a vector around a rotation vector. Based on Rodrigues formula. 
-    https://en.wikipedia.org/wiki/Rodrigues%27_formula
-    '''
-    assert len(vec) == len(rot_vec) == 3
+#def rotate_vector\
+#    (vec : list [float], rot_vec : list [float], angle_radians : float) -> list [float]:
+#    '''
+#    Rotate a vector around a rotation vector. Based on Rodrigues formula. 
+#    https://en.wikipedia.org/wiki/Rodrigues%27_formula
+#    '''
+#    assert len(vec) == len(rot_vec) == 3
 
-    v1 = mult_scalar_vect (cos(angle_radians), vec)
-    v2 = mult_scalar_vect (sin(angle_radians), cross_product(rot_vec, vec))
-    v3 = mult_scalar_vect (dot_product(rot_vec,vec)*(1.0-cos(angle_radians)), rot_vec)
-    result = add_vecs (v1, add_vecs(v2, v3))
-    return result
+#    v1 = mult_scalar_vect (cos(angle_radians), vec)
+#    v2 = mult_scalar_vect (sin(angle_radians), cross_product(rot_vec, vec))
+#    v3 = mult_scalar_vect (dot_product(rot_vec,vec)*(1.0-cos(angle_radians)), rot_vec)
+#    result = add_vecs (v1, add_vecs(v2, v3))
+#    return result
 
 def rotate_vector_2 (vec : list [float], rot_vec : list [float],
                      angle_radians : float, tolerance : float =1e-15):
-    """Numerically stable Rodrigues rotation"""
+    '''
+    Rotate a vector around a rotation vector. Based on Rodrigues formula. 
+    https://en.wikipedia.org/wiki/Rodrigues%27_formula      
+    '''
 
     assert len(vec) == len(rot_vec) == 3
 

@@ -34,7 +34,7 @@ source.exclude_dirs = .venv, .venv-buildozer, vscode, colab, maths, nautical_alm
 source.exclude_patterns = calibration.py, download_tiles.py, starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py, plotclient_test.py, kivyapp.*.json, notebook.*.json, map.html
 
 # (str) Application versioning (method 1)
-version = 0.2.29
+version = 0.2.30
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -42,7 +42,12 @@ version = 0.2.29
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = pandas,kivy,android,folium,branca,jinja2,markupsafe,xyzservices
+#requirements = pandas,kivy,android,folium,branca,jinja2,markupsafe,xyzservices
+# Pinned all versions for reproducible builds
+requirements = pandas,kivy==2.3.1,android,folium==0.20.0,branca==0.8.2,jinja2==3.1.6,markupsafe==3.0.3,xyzservices==2025.10.0
+# NOTE these are underlying dependencies
+# numpy  == 2.3.4
+# pandas == 2.3.0
 # Note: The requirements "folium,branca,jinja2,markupsafe,xyzservices"
 # are all needed for folium (pure python libraries needed)
 
@@ -125,9 +130,11 @@ android.minapi = 33
 # android.sdk = 36
 
 # (str) Android NDK version to use
-android.ndk = 25c
+#android.ndk = 25c
+android.ndk = 28c
 
 android.ndk_api = 33
+#android.ndk_api = 21
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
 #android.private_storage = True
@@ -348,7 +355,9 @@ p4a.branch = develop
 #p4a.setup_py = false
 
 # (str) extra command line arguments to pass when invoking pythonforandroid.toolchain
-#p4a.extra_args =
+#p4a.extra_args = --python-version 3.11
+#p4a.extra_args = --ignore-setup-py
+p4a.python_version = 3.11
 
 
 #

@@ -5,14 +5,18 @@
 
 # Why did I write this?
 
+## What is it
+
 This code project was written with these objectives
 
 * Provide for a workable positioning tool when GPS is not available.
 * As an exercise for myself in python coding, and elementary maths
-(geometry, vector/linear algebra, numerical methods).
+(geometry, vector/linear algebra, numerical methods), resulting
+in software of high quality.
+* Also to explore basic astrometry and routines for celestial navigation.
 * As an attempt to give evidence of the **spherical** shape of the Earth.
 
-The latter objective might seem strange, but I have followed some
+<i>The latter objective might seem strange, but I have followed some
 conspirationist movements during the last year, in particular Flat Earth.
 It is very obvious that celestial navigation provides one of the most solid
 evidence of a spheric Earth you can ever get,
@@ -21,8 +25,14 @@ using low-tech equipment.
 No spaceflight is necessary, it can be performed in your backyard
 (using an artificial horizon) and this has been known for many centuries.
 By providing this sample I hope to give some more understanding of the concept.
+</i>
 
-# Learning more
+## The scope
+
+The software (and the app) will be provided open-source, and currently I
+am not aiming for a commercial approach.
+
+## Learning more
 
 An even better way to learn is of course to study the techniques in the
 old-school way, as it has been practitioned on ships for many centuries,

@@ -26,21 +26,27 @@ you travel towards its
 $\Theta ≈ 1.85 \times \sqrt{h}$ <br>
    (where $\Theta$ is dip in arcminutes, $h$ is elevation in meters) (Al-Biruni)
 
-The relations stated above describe falsifiable empirical patterns. We can clearly see in our data
-that measurements of altitudes and horizon dip seem to follow a predifined pattern. 
-This is not a **truth** in itself, but it is the result of systematically evaluating
-a posteriori observations. 
+The relations stated above describe falsifiable empirical patterns.
+We can clearly see in our data
+that measurements of altitudes and horizon dip seem to follow a
+predefined pattern.
+This is not a **truth** in itself, but it is the result of systematically
+evaluating a posteriori observations.
 
 From this you start reasoning
 [**a priori**](https://en.wikipedia.org/wiki/A_priori_and_a_posteriori#A_priori)
 (using mathematical deduction) to prove that the
 findings above **uniquely indicate a spherical Earth**.
 
-Let us denote the empirical (a posteriori) findings with $E$, 
-and the conclusion that the Earth is a sphere with $S$. 
-It is straightforward to show that $S\Rightarrow{E}$—that is, if the Earth is spherical,
-these observations follow necessarily. However, the crucial step is establishing the converse: 
-$E\Rightarrow{S}$, meaning these observations can *only* occur on a sphere, thereby ruling out any other possible shape. Together, these establish $E\Leftrightarrow{S}$—the observations are both necessary and sufficient for sphericity.
+Let us denote the empirical (a posteriori) findings with $E$,
+and the conclusion that the Earth is a sphere with $S$.
+It is straightforward to show that $S\Rightarrow{E}$—that is,
+if the Earth is spherical,these observations follow necessarily. However,
+the crucial step is establishing the converse:
+$E\Rightarrow{S}$, meaning these observations can *only* occur on a sphere,
+thereby ruling out any other possible shape. Together, these establish
+$E\Leftrightarrow{S}$—the observations are both necessary and sufficient
+for sphericity.
 
 *The method used is typical for basic science:*
 *First find observable facts in nature with predictable outcomes, then try to*
@@ -65,18 +71,20 @@ Confronting the proofs given above can be done in three possible ways:
 
 1. Falsifying (refuting) the observational findings (a posteriori),
 preferably through independently verified
-results giving other results from what we have found.<br/> ("there is no horizon dip",
+results giving other results from what we have found.<br/>
+("there is no horizon dip",
 "the altitude of celestial object do not follow the linear pattern").
 2. If you fail in step 1 above:
-Refuting the mathematical proofs (a priori) where we concluded the spherical shape. 
-Then you will have to confront mathematics and geometry all the way from
-antiquity ([Euclid](https://en.wikipedia.org/wiki/Euclid))
+Refuting the mathematical proofs (a priori) where we concluded the
+spherical shape. Then you will have to confront mathematics
+and geometry all the way from antiquity
+([Euclid](https://en.wikipedia.org/wiki/Euclid))
 to differential geometry of the 19th century
 ([Carl Friedrich Gauss](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss)).
 3. If steps 1 or 2 fail you may go to the [axioms](axioms.md) in order to
 use other fundamental epistemological views and maybe formulate new axioms.  
-Rejecting the presented axioms would require proposing an entirely different mathematical
-framework or epistemology.
+Rejecting the presented axioms would require proposing an entirely different
+mathematical framework or epistemology.
 
 I say Good Luck to anyone accepting the challenge to do such a confrontation!
 
@@ -86,8 +94,8 @@ I leave it here for anyone to use.
 
 The proofs given here were drafted quite recently (september 2025) and there
 may be both logical and mathematical errors.
-If you find anything then please feel free to add a PR (Pull Request) vs this
-document.
+If you find anything then please feel free to add a PR (Pull Request) vs these
+documents.
 
 If you find the proofs fundamentally **incorrect**,
 maybe indicating a proposed Flat Earth or similar then I advise you to

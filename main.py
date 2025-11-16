@@ -719,8 +719,7 @@ class ExecButton (AppButton):
             dump_dict(copy_to_clipboard=False)
             the_form.results.text = "Your location = " + sr
             CelesteApp.message_popup ("You have made a successful sight reduction!\n"
-                                      "Use the \"Show Map!\" button to see the result!\n"
-                                      "The settings have been copied to the clipboard.",\
+                                      "Use the \"Show Map!\" button to see the result!",\
                                       CelesteApp.MSG_ID_SIGHT_REDUCTION_SUCCESS)
         else:
             # Failed sight reduction
@@ -914,7 +913,8 @@ class MyTextInput (TextInput):
             kwargs['font_size'] = sp(14 * font_config.get_font_size_factor())
         super().__init__(
             size_hint = (1,1),
-            padding=['10dp', '7dp', '10dp', '7dp'],
+            #padding=['10dp', '7dp', '10dp', '7dp'],
+            padding=['10dp', '5dp', '10dp', '5dp'], #Trying a different setup
             **kwargs
         )
 
