@@ -42,8 +42,12 @@ version = 0.2.30
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = pandas,kivy,android,folium,branca,jinja2,markupsafe,xyzservices
-#requirements = pandas==1.5.3,kivy,android,folium,branca,jinja2,markupsafe,xyzservices
+#requirements = pandas,kivy,android,folium,branca,jinja2,markupsafe,xyzservices
+# Pinned all versions for reproducible builds
+requirements = pandas,kivy==2.3.1,android,folium==0.20.0,branca==0.8.2,jinja2==3.1.6,markupsafe==3.0.3,xyzservices==2025.10.0
+# NOTE these are underlying dependencies
+# numpy  == 2.3.4
+# pandas == 2.3.0
 # Note: The requirements "folium,branca,jinja2,markupsafe,xyzservices"
 # are all needed for folium (pure python libraries needed)
 
