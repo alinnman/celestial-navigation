@@ -101,7 +101,7 @@ See [this item](https://github.com/alinnman/celestial-navigation/discussions/29)
 
 ### Install plotter software
 
-A good and cheap (free) plotter application for the PC is OpenCPN. 
+A good and cheap (free)  plotter application for the PC is OpenCPN. 
 For more information see [here](https://opencpn.org/).
 Install the application on your PC and a selection of usable charts. 
 
