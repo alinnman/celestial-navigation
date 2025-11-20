@@ -95,37 +95,56 @@ Check
 [this&nbsp;folder](https://drive.google.com/drive/folders/1QFcncVEuCQMnls8lyNElDtpTYruMgI0D?usp=drive_link)
 for a list of compiled APK files.
 
-See [this item](https://github.com/alinnman/celestial-navigation/discussions/29) for a description of app testing and the test program for Google Play.
+See [this item](https://github.com/alinnman/celestial-navigation/discussions/29)
+for a description of app testing and the test program for Google Play.
 
 ## Test the NMEA-0183 interface
 
 ### Install plotter software
 
-A good and cheap (free) plotter application for the PC is OpenCPN. 
-For more information see [here](https://opencpn.org/).
-Install the application on your PC and a selection of usable charts. 
+A good and cheap (free) plotter application for the PC is OpenCPN.
+For more information [see here](https://opencpn.org/).
+Install the application on your PC and a selection of usable charts.
 
 ### Setup a test workbench with OpenCPN
 
 Now configure a debug session between the phone and the PC.
 Start the Celeste App on your phone.
 
-* Make sure you have the ADB utility installed on your PC (bundled with Android Studio).
-* Download the [SCRCPY utility](https://scrcpy.org/) on your PC. 
+* Make sure you have the ADB utility installed on your PC
+(bundled with Android Studio).
+* Download the [SCRCPY utility](https://scrcpy.org/) on your PC.
 * Configure the phone to use debugging over wi-fi (Developer settings).
 * Check the ip-adress of your phone in the Celeste app window.
-* Run the command "adb pair <ip>:<port> --stay-alive" on your PC. 
-* Check the passcode on your phone and enter it on your PC. 
+* Run the command <tt>adb pair \<ip\>:\<port\> --stay-alive</tt> on your PC.
+* Check the passcode on your phone and enter it on your PC.
 * The ADB connection is now live.
-* Now run the command "srcpy" on your PC. A terminal window for the phone will now appear
-  on the PC screen. 
+* Now run the command "srcpy" on your PC. A terminal window for the phone
+  will now appear on the PC screen.
 
 ### Other hardware
 
-You can now test various sight reductions and see how the position marker moves in 
-the OpenCpn plotter. In some cases the marker will not move until you do a small 
-zoom in or out of the plotter window. 
+You can now test various sight reductions and see how the position marker moves
+in the OpenCpn plotter. In some cases the marker will not move until you do a
+small zoom in or out of the plotter window.
 
-You may of course also test a setup with another marine plotter (Garmin, RayMarine etc).
-If you find errors or problems then don't hesitate to get in touch with this project
-(Pull Request or interaction with this [issue](https://github.com/alinnman/celestial-navigation/issues/37)).
+You may of course also test a setup with another marine plotter
+(Garmin, RayMarine etc).
+If you find errors or problems then don't hesitate to get in touch
+with this project
+(Pull Request or interaction with this
+[issue](https://github.com/alinnman/celestial-navigation/issues/37)).
+
+### Test scripts for plotter interface
+
+The mobile app has support for sending position data to a chart
+plotter using the [NMEA-0183](https://en.wikipedia.org/wiki/NMEA_0183)
+interface. In order to test this you may use these test scripts:
+
+* [plotclient_test.py](plotclient_test.py)
+
+    This emulates a chart plotter.
+
+* [plotserver.py](plotserver.py)
+
+    This emulates the position updates performed by the app.
