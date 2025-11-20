@@ -87,7 +87,7 @@ setup, which may require forking and working with
 detailed configuration.
 
 Also note that the current buildozer setup sofar has only been tested in
-a Python 3.11 environment. 
+a Python 3.11 environment.
 
 ## App testing
 
@@ -96,3 +96,17 @@ Check
 for a list of compiled APK files. These apps should run nicely
 but still have limited functionality and there may be bugs.
 At the moment I have not yet finalized publishing on Google Play.
+
+## Testing the NMEA-0183 interface (plotter)
+
+The mobile app has support for sending position data to a chart
+plotter using the [NMEA-0183](https://en.wikipedia.org/wiki/NMEA_0183)
+interface. In order to test this you may use these test scripts:
+
+* [plotclient_test.py](plotclient_test.py)
+
+    This emulates a chart plotter.
+
+* [plotserver.py](plotserver.py)
+
+    This emulates the position updates performed by the app.
