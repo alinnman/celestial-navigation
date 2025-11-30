@@ -7,7 +7,7 @@
 
 ## Choice of operating system
 
-Almost all development has sofar been been made on Linux (Ubuntu 22.04 LTS).
+Almost all development has sofar been been made on Linux (Ubuntu 24.04 LTS).
 You may try using MS Windows too, but be prepared for bugs.
 
 ## A virtual environment (venv)

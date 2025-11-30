@@ -73,6 +73,46 @@ Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 
 DEBUG_FONT_HANDLING = False
 
+import threading
+import gc
+
+class ResourceMonitor:
+    """Monitor system resources to identify leaks"""
+    
+    @staticmethod
+    def log_resources():
+        """Log current resource usage"""
+        # Thread count
+        thread_count = threading.active_count()
+        thread_names = [t.name for t in threading.enumerate()]
+        
+        # File descriptors (Android)
+        try:
+            import os
+            fd_count = len(os.listdir('/proc/self/fd'))
+        except:
+            fd_count = "N/A"
+        
+        # Object count
+        obj_count = len(gc.get_objects())
+        
+        # Clock callbacks (Kivy)
+        from kivy.clock import Clock
+        scheduled_count = len(Clock._events)
+        
+        debug_logger.info("=== RESOURCE SNAPSHOT ===")
+        debug_logger.info(f"Threads: {thread_count} - {thread_names}")
+        debug_logger.info(f"File descriptors: {fd_count}")
+        debug_logger.info(f"Python objects: {obj_count}")
+        debug_logger.info(f"Scheduled events: {scheduled_count}")
+        debug_logger.info("========================")
+        
+        # Alert if suspicious
+        if thread_count > 20:
+            debug_logger.error(f"⚠️ HIGH THREAD COUNT: {thread_count}")
+        if isinstance(fd_count, int) and fd_count > 100:
+            debug_logger.error(f"⚠️ HIGH FD COUNT: {fd_count}")
+
 class DebugLogger:
     ''' Simple debug utility to use when needed. Set enable_debug=True '''
 
@@ -1146,6 +1186,7 @@ class CelesteApp (App):
     def on_pause(self):
         """Called when app goes to background"""
         debug_logger.info("=== APP PAUSE EVENT ===")
+        ResourceMonitor.log_resources()
         try:
             # Save current state
             if hasattr(self, 'm_root') and self.m_root:
@@ -1171,6 +1212,7 @@ class CelesteApp (App):
         """Called when app returns from background"""
 
         debug_logger.info("=== APP RESTORE EVENT ===")
+        ResourceMonitor.log_resources()         
 
         # Check what Kivy thinks is the root
         debug_logger.info(f"App.root: {self.root}")
