@@ -213,6 +213,7 @@ class NMEAClient:
                 data = self.socket.recv(1024).decode('ascii', errors='ignore')
                 if not data:
                     print("❌ Connection closed by server")
+
                     break
 
                 self.buffer += data
@@ -237,8 +238,9 @@ class NMEAClient:
                 break
 #pylint: enable=W0718
 
-    def connect(self):
+    def connect(self) -> bool:
         """Connect to NMEA server"""
+        retval = True
         try:
             print(f"🔌 Connecting to NMEA server at {self.host}:{self.port}...")
 
@@ -263,26 +265,34 @@ class NMEAClient:
             try:
                 while self.running:
                     time.sleep(10)
+
                     uptime = datetime.now() - self.connection_time
                     print\
                     (f"\n📈 Status: {self.messages_received} messages received | Uptime: {uptime}")
                     if self.last_position:
                         pos_str = self.format_position(*self.last_position)
                         print(f"📍 Last position: {pos_str}")
+                    if not receive_thread.is_alive ():
+                        return False
 
             except KeyboardInterrupt:
                 print("\n🛑 Disconnecting...")
+                retval = False
 
         except socket.timeout:
             print(f"❌ Connection timeout - is the server running on {self.host}:{self.port}?")
+            retval = False
         except ConnectionRefusedError:
             print(f"❌ Connection refused - is the server running on {self.host}:{self.port}?")
+            retval = False
 #pylint: disable=W0718
         except Exception as e:
             print(f"❌ Connection error: {e}")
+            retval = False
 #pylint: enable=W0718
         finally:
             self.disconnect()
+        return retval
 
     def disconnect(self):
         """Disconnect from server"""
@@ -328,11 +338,16 @@ def main(host = None):
 
     print("🌊 NMEA 0183 Test Client")
     print(f"Target: {host}:{port}")
-    print("Usage: python nmea_client.py [host] [port]")
+    print("Usage: python plotclient_test.py [host] [port]")
     print("=" * 50)
 
     client = NMEAClient(host, port)
-    client.connect()
+    while True:
+        if not client.connect():
+            client.disconnect ()
+            time.sleep (2)
+        else:
+            pass
 
 
 if __name__ == "__main__":
