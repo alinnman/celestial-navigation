@@ -1193,6 +1193,7 @@ class CelesteApp (App):
                 if form:
                     form.extract_from_widgets()
                     dump_dict(copy_to_clipboard=False)
+                    form.cleanup ()
                 else:
                     debug_logger.error("InputForm not found while doing pause/save!")
 
@@ -1233,6 +1234,7 @@ class CelesteApp (App):
             form = self.get_input_form()
             if form:
                 form.populate_widgets()
+                form.reactivate_clocks()
             debug_logger.info("UI fully recreated and root assigned")
 # pylint: disable=W0718
         except Exception as e:
@@ -1387,6 +1389,15 @@ class InputForm(GridLayout):
 
     nr_of_sights = 3
 
+    @staticmethod
+    def _get_ip_code ():
+        ip_address = get_local_ip ()
+        if ip_address == "127.0.0.1":
+            ip_address = "No network connection"
+        else:
+            ip_address = "IP address = " + ip_address
+        return ip_address
+
     def __init__(self, **kwargs):
         super().__init__(cols=1, spacing=font_config.get_spacing(), **kwargs)
 
@@ -1531,26 +1542,33 @@ class InputForm(GridLayout):
 
         bl = FormRow()
 
-        def get_ip_code ():
-            ip_address = get_local_ip ()
-            if ip_address == "127.0.0.1":
-                ip_address = "No network connection"
-            else:
-                ip_address = "IP address = " + ip_address
-            return ip_address
-
-        def check_ip_address (_):
-            code = get_ip_code ()
-            self.ip_adress_status.text = code
-
-        self.ip_adress_status = MyLabel(text=get_ip_code(), markup=True, indent=False)
+        self.ip_adress_status = MyLabel(text=InputForm._get_ip_code(), markup=True, indent=False)
         # Check for ip address changes every second
-        Clock.schedule_interval(check_ip_address, 1.0)
+        #self._ip_check_event = Clock.schedule_interval(check_ip_address, 1.0)
+        self._ip_check_event = None
+        self.reactivate_clocks ()
         self.ip_adress_status.halign = "center"
         bl.add_widget(self.ip_adress_status)
         self.add_widget(bl)
 
         self.populate_widgets()
+
+    def cleanup(self):
+        """Call this before destroying the form"""
+        if hasattr(self, '_ip_check_event') and self._ip_check_event:
+            self._ip_check_event.cancel()
+            self._ip_check_event= None
+            debug_logger.info("Cancelled IP check clock event")
+
+    def reactivate_clocks (self):
+        ''' Reactivates the clock for checking the ip address '''
+
+        def _check_ip_address (_):
+            code = InputForm._get_ip_code ()
+            self.ip_adress_status.text = code
+
+        self._ip_check_event = Clock.schedule_interval(_check_ip_address, 1.0)
+        debug_logger.info("Re-instated IP check clock event")
 
     def add_font_scale_info(self):
         """Add font scale information if it's unusual"""
