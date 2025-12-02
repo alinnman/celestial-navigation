@@ -125,7 +125,7 @@ class ResourceMonitor:
 class DebugLogger:
     ''' Simple debug utility to use when needed. Set enable_debug=True '''
 
-    enable_debug = True
+    enable_debug = False
 
     ''' Simple debug facility '''
     def __init__(self):
