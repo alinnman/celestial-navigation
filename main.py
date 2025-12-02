@@ -93,11 +93,21 @@ class ResourceMonitor:
         # Object count
         obj_count = len(gc.get_objects())
 
-        # Clock callbacks (Kivy)
-        # from kivy.clock import Clock
-# pylint: disable=W0212
-        scheduled_count = len(Clock._events)
-# pylint: enable=W0212
+        # Clock callbacks (Kivy) - SAFE VERSION
+        try:
+            # Try different possible internal attributes
+            if hasattr(Clock, '_events'):
+#pylint: disable=W0212
+                scheduled_count = len(Clock._events)
+#pylint: enable=W0212
+            elif hasattr(Clock, 'events'):
+                scheduled_count = len(Clock.events)
+            else:
+                scheduled_count = "N/A"
+#pylint: disable=W0718
+        except Exception:
+#pylint: enable=W0718
+            scheduled_count = "N/A"
 
         debug_logger.info("=== RESOURCE SNAPSHOT ===")
         debug_logger.info(f"Threads: {thread_count} - {thread_names}")
@@ -115,7 +125,7 @@ class ResourceMonitor:
 class DebugLogger:
     ''' Simple debug utility to use when needed. Set enable_debug=True '''
 
-    enable_debug = False
+    enable_debug = True
 
     ''' Simple debug facility '''
     def __init__(self):
@@ -844,10 +854,15 @@ class PasteConfigButton (AppButton):
         assert isinstance (NUM_DICT, dict)
         format_ok = _initialize_from_string (config_string, NUM_DICT)
         if format_ok:
+            assert isinstance (instance.form, InputForm)
             CelesteApp.play_click_sound ()
             instance.form.populate_widgets ()
         else:
             CelesteApp.play_error_sound ()
+        if DebugLogger.enable_debug:
+            appx = App.get_running_app ()
+            assert isinstance (appx, CelesteApp)
+            appx.stress_test_lifecycle ()
 
 class CopyConfigButton (AppButton):
     """ This button copies the config to the clipboard """
@@ -998,6 +1013,17 @@ class CelesteApp (App):
 
     click_sound = None
     initialized = False
+
+    # Add a hidden debug button
+    def stress_test_lifecycle(self):
+        """Simulate rapid pause/resume"""
+        for i in range(20):
+            debug_logger.info(f"Stress test cycle {i}")
+            ResourceMonitor.log_resources()
+            self.on_pause()
+            time.sleep(0.5)
+            self.on_resume()
+            time.sleep(0.5)
 
     def _setup_widgets (self) -> Widget | NoneType:
         layout = InputForm(size_hint_y = None)
@@ -1210,40 +1236,32 @@ class CelesteApp (App):
 
     def on_resume(self):
         """Called when app returns from background"""
-
         debug_logger.info("=== APP RESTORE EVENT ===")
         ResourceMonitor.log_resources()
 
-        # Check what Kivy thinks is the root
-        debug_logger.info(f"App.root: {self.root}")
-        debug_logger.info(f"App.root type: {type(self.root) if self.root else 'None'}")
-#pylint: disable=C0301
-        debug_logger.info(f"self.m_root: {self.m_root if hasattr(self, 'm_root') else 'Not set'}")
-        debug_logger.info(f"Are they the same? {self.root is self.m_root if hasattr(self, 'm_root') else 'Cannot compare'}")
-#pylint: enable=C0301
-
         try:
-            # Force complete UI recreation
-            self._setup_widgets()
-
-            # CRITICAL: Make sure Kivy knows about the new root
-            debug_logger.info(f"Before setting root - App.root: {self.root}")
-            self.root = self.m_root  # This might be missing!
-            debug_logger.info(f"After setting root - App.root: {self.root}")
-
+            # DON'T recreate widgets - just repopulate existing form
             form = self.get_input_form()
             if form:
                 form.populate_widgets()
-                form.reactivate_clocks()
-            debug_logger.info("UI fully recreated and root assigned")
-# pylint: disable=W0718
+                form.reactivate_clocks()  # Reactivate on the EXISTING form
+            else:
+                # Only create new widgets if form doesn't exist
+                self._setup_widgets()
+                self.root = self.m_root
+                form = self.get_input_form()
+                if form:
+                    form.populate_widgets()
+
+            debug_logger.info("UI restored successfully")
+#pylint: disable=W0718
         except Exception as e:
-# pylint: enable=W0718
-            debug_logger.error(f"UI recreation failed: {str(e)}")
-# pylint: disable=C0415
+#pylint: enable=W0718
+            debug_logger.error(f"UI restoration failed: {str(e)}")
+#pylint: disable=C0415
             import traceback
-# pylint: enable=C0415
-            debug_logger.error(f"Full traceback: {traceback.format_exc()}")
+#pylint: enable=C0415
+            debug_logger.error(f"Traceback: {traceback.format_exc()}")
 
     def get_input_form(self):
         """Helper to get the InputForm from the widget tree"""
