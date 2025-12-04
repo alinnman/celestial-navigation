@@ -456,7 +456,8 @@ be considered as a **bad sight**.
 Note: I have chosen to use an algorithm based on 3D cartesian vectors.
 Standard literature on sight reduction typically uses 2D spherical coordinates,
 such as **Longhand haversine sight reduction** as
-[described&nbsp;here](https://en.wikipedia.org/wiki/Sight_reduction#Longhand_haversine_sight_reduction).
+[described&nbsp;here](https://en.wikipedia.org/wiki/Sight_reduction#Longhand_haversine_sight_reduction),
+[and here](https://en.wikipedia.org/wiki/Intercept_method).
 Such calculations in 2D are easier to carry out by hand but results in more
 complex computer software. The 3D/cartesian approach is more structurally
 simple and easier to convert to well-functioning software.
@@ -1022,8 +1023,9 @@ In addition we may have errors due to refraction
 (which is a physical / a posteriori phenomenon) being quite difficult to model
 precisely.
 
-The code uses the [Bennet formula](https://en.wikipedia.org/wiki/Atmospheric_refraction)
-for refraction handling. 
+The code uses the
+[Bennet formula](https://en.wikipedia.org/wiki/Atmospheric_refraction)
+for refraction handling.
 
 #### Sampling errors
 
@@ -1034,8 +1036,8 @@ values and using linear interpolation. This is a likely cause of
 #### Rounding errors
 
 The [algorithm itself](#algorithm-sight-reduction) most likely introduces small
-rounding errors. Some remediations have been made to remove particularly numerically
-unstable functions from the code. 
+rounding errors. Some remediations have been made to remove particularly
+numerically unstable functions from the code.
 
 #### Data source errors
 
