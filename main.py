@@ -17,10 +17,10 @@ from types import NoneType
 import importlib
 import socket
 import time
-from datetime import datetime
+# from datetime import datetime
 from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError, get_folium_load_error, show_or_display_file, \
-    is_windows, kill_http_server, parse_angle_string
+    is_windows, kill_http_server, parse_angle_string, DebugLogger, debug_logger
 import os
 import json
 import kivy
@@ -121,51 +121,6 @@ class ResourceMonitor:
             debug_logger.error(f"⚠️ HIGH THREAD COUNT: {thread_count}")
         if isinstance(fd_count, int) and fd_count > 100:
             debug_logger.error(f"⚠️ HIGH FD COUNT: {fd_count}")
-
-class DebugLogger:
-    ''' Simple debug utility to use when needed. Set enable_debug=True '''
-
-    enable_debug = False
-
-    ''' Simple debug facility '''
-    def __init__(self):
-        if not DebugLogger.enable_debug:
-            return
-        self.log_file = os.path.join(os.getcwd(), "celeste_debug.txt")
-        try:
-            with open(self.log_file, "a", encoding="utf-8") as f:
-                f.write(f"=== Celeste Debug Log Started at {datetime.now()} ===\n")
-        except:
-            pass
-
-    def _log(self, message, level="INFO"):
-        ''' Log a message'''
-
-        if not DebugLogger.enable_debug:
-            return
-
-        try:
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            with open(self.log_file, "a", encoding="utf-8") as f:
-                f.write(f"[{timestamp}] [{level}] {message}\n")
-                f.flush()
-        except:
-            pass  # Don't crash if logging fails
-
-    def error(self, message):
-        ''' Error log '''
-        self._log(message, "ERROR")
-
-    def info(self, message):
-        ''' Info log '''
-        self._log(message, "INFO")
-
-    def debug(self, message):
-        ''' Debug log '''
-        self._log(message, "DEBUG")
-
-# Create global logger
-debug_logger = DebugLogger()
 
 # Font scale configuration class
 class FontAwareConfig:
