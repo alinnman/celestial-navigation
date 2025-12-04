@@ -34,7 +34,7 @@ source.exclude_dirs = .venv, .venv-buildozer, vscode, colab, maths, nautical_alm
 source.exclude_patterns = calibration.py, download_tiles.py, starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py, plotclient_test.py, kivyapp.*.json, notebook.*.json, map.html
 
 # (str) Application versioning (method 1)
-version = 0.2.31
+version = 0.2.32
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -210,7 +210,7 @@ android.add_src = java/
 #android.add_assets =
 
 # (list) Gradle dependencies to add
-#android.gradle_dependencies =
+android.gradle_dependencies = 
 
 # (bool) Enable AndroidX support. Enable when 'android.gradle_dependencies'
 # contains an 'androidx' package, or any package from Kotlin source.
@@ -233,6 +233,15 @@ android.add_src = java/
 # please enclose in double quotes 
 # e.g. android.add_packaging_options = "exclude 'META-INF/common.kotlin_module'", "exclude 'META-INF/*.kotlin_module'"
 #android.add_packaging_options =
+#android.add_packaging_options = NOTICE, LICENSE, LICENSE.txt
+
+
+# android.add_src = 
+
+# This tells gradle how to handle duplicate files
+android.add_gradle_repositories = 
+
+android.add_packaging_options = pickFirst 'NOTICE', pickFirst 'LICENSE', pickFirst 'LICENSE.txt'
 
 # (list) Java classes to add as activities to the manifest.
 #android.add_activities = com.example.ExampleActivity
@@ -313,8 +322,8 @@ android.manifest_placeholders = [:]
 # android.no-compile-pyo = True
 
 # (str) The format used to package the app for release mode (aab or apk).
-# android.release_artifact = apk
-android.release_artifact = aab
+android.release_artifact = apk
+# android.release_artifact = aab
 
 #
 # Python for android (p4a) specific

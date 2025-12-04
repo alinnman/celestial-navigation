@@ -13,6 +13,7 @@ from collections.abc import Callable
 import pathlib
 import os
 import socket
+import time
 
 import http.server
 import socketserver
@@ -114,53 +115,93 @@ MASTER_HTTPD = None
 
 class MyHandler(http.server.SimpleHTTPRequestHandler):
     ''' A modified handler able to handle shutdown requests '''
+    
+    # Track the last time ANY activity happened
+    last_activity_time = None  # Change from time.time() to None
+    # last_activity_time = time.time()
 
     def do_GET(self):
+        # ANY request counts as activity
+        MyHandler.last_activity_time = time.time()
+        
+        if self.path.startswith('/kill_server_delayed'):
+            # Just acknowledge, don't actually schedule anything
+            # Real kill is based on sustained inactivity
+            print("Kill request noted (but relying on inactivity timeout)")
+            self.send_response(200)
+            self.end_headers()
+            return
+            
+        if self.path.startswith('/cancel_kill'):
+            # Reset activity timer
+            MyHandler.last_activity_time = time.time()
+            print("Activity detected")
+            self.send_response(200)
+            self.end_headers()
+            return
+            
         if self.path.startswith('/kill_server'):
-            print ("Server is going down, run it again manually!")
+            print("Server is going down, run it again manually!")
             def kill_me_please():
                 assert isinstance (MASTER_HTTPD, socketserver.TCPServer)
                 try:
                     MASTER_HTTPD.shutdown()
-#pylint: disable=W0718
                 except BaseException as _:
                     pass
-#pylint: enable=W0718
-            t = threading.Thread (target = kill_me_please)
+            t = threading.Thread(target=kill_me_please)
             t.start()
-            self.send_error(500)
+            self.send_response(200)
+            self.end_headers()
+            return
+
+        if self.path.startswith('/heartbeat'):
+            MyHandler.last_activity_time = time.time()
+            self.send_response(200)
+            self.end_headers()
+            return
 
         else:
             try:
                 # Only allowed requests are for these file formats
                 matched = False
                 for p in ["html", "css", "ico", "js", "png", "jpg", "jpeg", "json", "webp", "txt"]:
-                    if self.path.lower().endswith (p):
+                    if self.path.lower().endswith(p):
                         matched = True
                         break
                 if not matched:
-                    self.send_error (404, "Document not accessible")
+                    self.send_error(404, "Document not accessible")
 
                 super().do_GET()
-                print ("GET " + self.path + " - OK")
-#pylint: disable=W0718
+                print("GET " + self.path + " - OK")
             except BaseException as be:
-                print ("Http server failure : " + str(be))
-#pylint: enable=W0718
+                print("Http server failure : " + str(be))
 
-#pylint: disable=C0103
     def do_POST(self):
-        ''' Do not allow POST '''
-        self.send_error(405, "Method Not Allowed")
-
-    def do_PUT(self):
-        ''' Do not allow PUT '''
-        self.send_error(405, "Method Not Allowed")
-
-    def do_DELETE(self):
-        ''' Do not allow DELETE '''
-        self.send_error(405, "Method Not Allowed")
-#pylint: enable=C0103
+        ''' Allow POST only for kill_server endpoints '''
+        MyHandler.last_activity_time = time.time()
+        
+        if self.path.startswith('/kill_server_delayed'):
+            print("Kill request noted (POST)")
+            self.send_response(200)
+            self.end_headers()
+        elif self.path.startswith('/cancel_kill'):
+            print("Activity detected (POST)")
+            self.send_response(200)
+            self.end_headers()
+        elif self.path.startswith('/kill_server'):
+            print("Server is going down (POST), run it again manually!")
+            def kill_me_please():
+                assert isinstance(MASTER_HTTPD, socketserver.TCPServer)
+                try:
+                    MASTER_HTTPD.shutdown()
+                except BaseException as _:
+                    pass
+            t = threading.Thread(target=kill_me_please)
+            t.start()
+            self.send_response(200)
+            self.end_headers()
+        else:
+            self.send_error(405, "Method Not Allowed")
 
 #pylint: disable=C0103
 running_http_server = None
@@ -171,6 +212,28 @@ def __run_http_server ():
 
     Handler = MyHandler
 
+    def inactivity_watchdog():
+        """Kill server after sustained inactivity (no heartbeats)"""
+        # Initialize activity time when watchdog starts
+        MyHandler.last_activity_time = time.time()
+        print(f"Watchdog started, activity time initialized")
+        
+        while MASTER_HTTPD is not None:
+            if MyHandler.last_activity_time is not None:
+                time_since_activity = time.time() - MyHandler.last_activity_time
+                
+                # Kill after 15 seconds of no heartbeats from any page
+                if time_since_activity > 15.0:
+                    print("Executing kill after 15 seconds of inactivity")
+                    try:
+                        if MASTER_HTTPD is not None:
+                            MASTER_HTTPD.shutdown()
+                    except BaseException as e:
+                        print(f"Error during shutdown: {e}")
+                    return
+            
+            time.sleep(1)
+
     try:
         host_name = "127.0.0.1" # Explicitly bind to localhost
         with MyTCPServer((host_name, port), Handler) as httpd:
@@ -178,16 +241,28 @@ def __run_http_server ():
             global MASTER_HTTPD
 #pylint: enable=W0603
             MASTER_HTTPD = httpd
+            print("HTTP server started on port 8000")
+            
+            # Start the inactivity watchdog thread
+            watchdog = threading.Thread(target=inactivity_watchdog, daemon=True)
+            watchdog.start()
+            
             httpd.serve_forever()
+            print("serve_forever() exited")
     except OSError as ose:
         if ose.errno != 98:
             raise ose
+        print(f"OSError: {ose}")
+    except Exception as e:
+        print(f"Unexpected error in HTTP server: {e}")
     finally:
+        print("HTTP server cleanup starting")
         MASTER_HTTPD = None
 #pylint: disable=W0603
         global running_http_server
 #pylint: enable=W0603
         running_http_server = None
+        print("HTTP server thread terminated - running_http_server set to None")
 
 def is_windows ():
     ''' Simple check for running under MS Windows '''
@@ -203,7 +278,8 @@ def show_or_display_file (filename : str, protocol : str = "file") :
         absolute_path_string = cwd + "\\" + filename
         filename = pathlib.Path(absolute_path_string).as_uri()
     if protocol == "http":
-        start_http_server ()
+        start_http_server (kill_existing=False)
+        # start_http_server () TODO Review
         webbrowser.open ("http://localhost:8000/"+filename)
     elif protocol == "file":
         webbrowser.open (filename)
@@ -227,7 +303,7 @@ def __kill_http_server_if_running ():
             pass
         if running_http_server is not None:
             assert isinstance (running_http_server, Thread)
-            running_http_server.join ()
+            running_http_server.join (timeout=1)
             running_http_server = None
 
 def start_http_server (kill_existing : bool = False):
@@ -241,13 +317,29 @@ def start_http_server (kill_existing : bool = False):
         if kill_existing:
             if running_http_server is not None:
                 __kill_http_server_if_running ()
-        if running_http_server is None:
+        
+        # Debug output
+        if running_http_server is not None:
+            print(f"Existing thread state: alive={running_http_server.is_alive()}")
+        
+        # Check if server thread exists AND is still alive
+        if running_http_server is None or not running_http_server.is_alive():
+            if running_http_server is not None:
+                print("Old server thread dead, starting new one")
+                # Give the old thread a moment to fully clean up
+                time.sleep(0.5)
+            else:
+                print("No existing server thread, starting new one")
+            
             p = Thread (target=__run_http_server)
             p.start()
             running_http_server = p
+            print(f"New server thread started: {p}")
+        else:
+            print("Server thread already running and alive")
 #pylint: disable=W0702
-    except:
-        pass
+    except Exception as e:
+        print(f"Error in start_http_server: {e}")
 #pylint: enable=W0702
 
 # __start_http_server ()
@@ -497,7 +589,7 @@ def get_decimal_degrees_from_tuple (t : tuple) -> float:
 #def rotate_vector\
 #    (vec : list [float], rot_vec : list [float], angle_radians : float) -> list [float]:
 #    '''
-#    Rotate a vector around a rotation vector. Based on Rodrigues formula. 
+#    Rotate a vector around a rotation vector. Based on Rodrigues formula.
 #    https://en.wikipedia.org/wiki/Rodrigues%27_formula
 #    '''
 #    assert len(vec) == len(rot_vec) == 3
