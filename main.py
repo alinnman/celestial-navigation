@@ -529,7 +529,10 @@ def run_plotserver():
 #pylint: disable=E0601
             assert isinstance (COMM_QUEUE, Queue)
 #pylint: enable=E0601
-            check_string = COMM_QUEUE.get ()
+            try:
+                check_string = COMM_QUEUE.get (timeout=1.0)
+            except Empty:
+                continue
             assert isinstance (check_string, str)
             if check_string == "STOP":
                 # The plot server will now terminate
@@ -542,7 +545,9 @@ def run_plotserver():
     finally:
         server.stop()
         if server_thread is not None:
-            server_thread.join ()
+            server_thread.join (timeout=1.0)
+            if server_thread.is_alive ():
+                debug_logger.error ("Failed to stop plot server thread")
         COMM_QUEUE = None
 
 def run_killserver ():
@@ -1636,7 +1641,7 @@ class InputForm(GridLayout):
     def cleanup(self):
         """Call this before destroying the form"""
         if hasattr(self, '_ip_check_event') and self._ip_check_event:
-            self._ip_check_event.cancel()
+            self._ip_check_event.cancel ()
             self._ip_check_event= None
             debug_logger.info("Cancelled IP check clock event")
 
@@ -1647,6 +1652,7 @@ class InputForm(GridLayout):
             code = InputForm._get_ip_code ()
             self.ip_adress_status.text = code
 
+        self.cleanup ()
         self._ip_check_event = Clock.schedule_interval(_check_ip_address, 1.0)
         debug_logger.info("Re-instated IP check clock event")
 
@@ -1719,10 +1725,6 @@ if __name__ == '__main__':
     try:
         if is_windows():
             freeze_support ()
-        #if not is_windows ():
-        #    # Start http server
-        #    start_http_server ()
-        # Initialize all configuration data
         do_initialize()
 
         # Show intro message with font scale info if needed
@@ -1739,7 +1741,7 @@ if __name__ == '__main__':
         CelesteApp.message_popup(INTRO_MSG, CelesteApp.MSG_ID_INTRO)
 
         app = CelesteApp()
-        app.run()  # Instead of runTouchApp(app.get_root())
+        app.run()
 # pylint: disable=W0718
     except Exception as exc:
 # pylint: enable=W0718
@@ -1747,5 +1749,6 @@ if __name__ == '__main__':
     finally:
         # Kill NMEA 0138 server (if active)
         kill_plotserver ()
+        # Kill HTTP server (if active)
         if not is_windows():
             kill_http_server ()

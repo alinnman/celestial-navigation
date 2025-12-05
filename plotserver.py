@@ -181,7 +181,10 @@ class NMEAServer:
                 if self.server_socket:
                     self.server_socket.settimeout(1.0)
                     try:
-                        client_socket, address = self.server_socket.accept()
+                        try:
+                            client_socket, address = self.server_socket.accept()
+                        except socket.timeout:
+                            continue
 
                         # Create and track client thread
                         client_thread = threading.Thread(

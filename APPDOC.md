@@ -517,6 +517,13 @@ very narrow intersection angles.
 For more information see
 [the documentation](https://github.com/alinnman/celestial-navigation?tab=readme-ov-file#algorithm)
 
+### Intermittent freezing (gray screen) (Known bug)
+
+It has been observed (rarely) that the screen may freeze if you reactivate the
+app from hidden state. The exact cause for this bug isn't known, but is likely
+triggered by using many other apps simultaneously. Stop and restart the Celeste
+app if this happens.
+
 ## More Information<a name="more_information"></a>
 
 This app is part of an open-source software library for celestial navigation.

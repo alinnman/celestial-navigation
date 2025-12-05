@@ -5,12 +5,6 @@
 
 # celestial-navigation
 
-## Reaching out for beta testers
-
-Want to join the development of robust celestial navigation
-software packaged in an internet-independent Android app?<br>
-[Read more here!](https://github.com/alinnman/celestial-navigation/discussions/29)
-
 ## Online Demo
 
 Try out an
@@ -18,6 +12,12 @@ Try out an
 of this toolkit!<br/>
 *Opens in [Google Colab](https://colab.research.google.com).
 You need a Google/Gmail account to run the code in the notebook*.
+
+## Mobile app
+
+You can try an Android app for basic sight reductions, based on this library.
+Download it from
+[Google Play here](https://play.google.com/store/apps/details?id=linnman.net.celeste)
 
 ## Celestial Navigation for Dummies
 
