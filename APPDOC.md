@@ -47,6 +47,7 @@
     1. [Entering Parameters](#entering_parameters)
     1. [Display Problems](#display_problems)
     1. [Trouble getting accurate sight reductions](#trouble_reductions)
+    1. [Known bugs](#known_bugs)
 1. [More Information](#more_information)
 1. [Licenses](#license)
 
@@ -327,6 +328,16 @@ with paper charts.
 
 ## Plotting (NMEA-0183 interface) <a name="plotting"></a>
 
+### General information
+
+The [NMEA-0183 interface](https://en.wikipedia.org/wiki/NMEA_0183)
+is a standard protocol for integration with marine plotters.
+It was originally designed for wired setup, but the app uses a WiFi-based
+approach.
+
+The messages sent are GGA messages, containing the position received from
+the latest successful sight reduction.
+
 ### Using standard Wi-Fi connection <a name="standard-wifi"></a>
 
 If you have access to a marine chart plotter or similar device you
@@ -365,11 +376,8 @@ devices. Another option is using a second phone as a Mobile Hotspot server.
 
 ### Specific configurations for plot server <a name="app-configurations"></a>
 
-You are recommended to
-[turn off the battery saving functions](https://youtu.be/zCqOzQjQ97Q?si=loZCNxzxlBNL9CQP)
-in android for Celeste if you use the plotter server functionality.
-Otherwise the plotter device will lose connection after a while
-if you hide the app.
+The app broadcasts the position only for 20 seconds after the last
+performed sight reduction. This is for energy conservation.
 
 ## Working with configurations<a name="configs"></a>
 
@@ -517,12 +525,21 @@ very narrow intersection angles.
 For more information see
 [the documentation](https://github.com/alinnman/celestial-navigation?tab=readme-ov-file#algorithm)
 
-### Intermittent freezing (gray screen) (Known bug)
+### Known bugs<a name="known_bugs"></a>
+
+#### Intermittent freezing (gray screen) (Known bug)
 
 It has been observed (rarely) that the screen may freeze if you reactivate the
 app from hidden state. The exact cause for this bug isn't known, but is likely
 triggered by using many other apps simultaneously. Stop and restart the Celeste
 app if this happens.
+
+#### Freezing when showing a map (Known bug)
+
+In some rare occasions the app may freeze when you click the "Show map!" button.
+This happens if your network has degraded to very slow speed, but still with
+a (barely) live connection/ip-address. If you encounter this problem you are
+advised to disable wifi and mobile internet manually in Android settings.
 
 ## More Information<a name="more_information"></a>
 
