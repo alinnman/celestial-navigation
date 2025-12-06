@@ -279,6 +279,9 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             self.send_error(405, "Method Not Allowed")
 #pylint: enable=C0103
 
+#    def reset (self):
+#        self.last_activity_time = time.time()
+
 #pylint: disable=C0103
 running_http_server = None
 #pylint: enable=C0103
@@ -288,7 +291,9 @@ def __run_http_server ():
 
     Handler = MyHandler
 
+#pylint: disable=W0612
     def inactivity_watchdog():
+
         """Kill server after sustained inactivity (no heartbeats)"""
         # Initialize activity time when watchdog starts
         MyHandler.last_activity_time = time.time()
@@ -324,6 +329,7 @@ def __run_http_server ():
             time.sleep(1)
 
         debug_logger.info("Watchdog exiting - MASTER_HTTPD is None")
+#pylint: enable=W0612
 
     try:
         host_name = "127.0.0.1"
@@ -335,9 +341,9 @@ def __run_http_server ():
             debug_logger.info("HTTP server started on port 8000")
 
             # Start the inactivity watchdog thread
-            watchdog = threading.Thread(target=inactivity_watchdog, daemon=True)
-            watchdog.start()
-            debug_logger.info(f"Watchdog thread started: {watchdog}, daemon={watchdog.daemon}")
+            #watchdog = threading.Thread(target=inactivity_watchdog, daemon=True)
+            #watchdog.start()
+            #debug_logger.info(f"Watchdog thread started: {watchdog}, daemon={watchdog.daemon}")
 
             httpd.serve_forever()
             debug_logger.info("serve_forever() exited")
@@ -385,7 +391,6 @@ def __kill_http_server_if_running ():
     import requests
 #pylint: enable=C0415
 
-#pylint: enable=W0718
 #pylint: disable=W0603
     global running_http_server
 #pylint: enable=W0603
@@ -394,6 +399,7 @@ def __kill_http_server_if_running ():
             requests.get ("http://localhost:8000/kill_server", timeout=1)
 #pylint: disable=W0718
         except BaseException as _:
+#pylint: enable=W0718
             pass
         if running_http_server is not None:
             assert isinstance (running_http_server, Thread)

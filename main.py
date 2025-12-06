@@ -860,16 +860,16 @@ class ShowMapButton (AppButton):
                 #    ShowMapButton.shutdown_event = None
 
                 # Inject JavaScript to shut down server after 20 seconds
-                with open(file_name, 'r', encoding='utf-8') as f:
-                    html_content = f.read()
+                #with open(file_name, 'r', encoding='utf-8') as f:
+                #    html_content = f.read()
 
                 # Add shutdown script before </body>
-                shutdown_script = AppButton.get_browser_control_string ()
+                #shutdown_script = AppButton.get_browser_control_string ()
 
-                html_content = html_content.replace('</body>', shutdown_script)
+                #html_content = html_content.replace('</body>', shutdown_script)
 
-                with open(file_name, 'w', encoding='utf-8') as f:
-                    f.write(html_content)
+                #with open(file_name, 'w', encoding='utf-8') as f:
+                #    f.write(html_content)
 
                 show_or_display_file (file_name, protocol="http")
 
@@ -950,20 +950,20 @@ class OnlineHelpButton (AppButton):
         file_name = "./APPDOC.html"
 
         # Inject JavaScript to shut down server
-        with open(file_name, 'r', encoding='utf-8') as f:
-            html_content = f.read()
+        #with open(file_name, 'r', encoding='utf-8') as f:
+        #    html_content = f.read()
 
         # Add shutdown script before </body>
-        shutdown_script = AppButton.get_browser_control_string (timeout_ms=300000)
+        #shutdown_script = AppButton.get_browser_control_string (timeout_ms=300000)
 
-        html_content = html_content.replace('</body>', shutdown_script)
+        #html_content = html_content.replace('</body>', shutdown_script)
 
-        mod_file_name = "./APPDOC.mod.html"
+        #mod_file_name = "./APPDOC.mod.html"
 
-        with open(mod_file_name, 'w', encoding='utf-8') as f:
-            f.write(html_content)
+        #with open(mod_file_name, 'w', encoding='utf-8') as f:
+        #    f.write(html_content)
 
-        show_or_display_file (mod_file_name, protocol="http")
+        show_or_display_file (file_name, protocol="http")
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
