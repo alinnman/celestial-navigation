@@ -91,10 +91,6 @@ a Python 3.11 environment.
 
 ## App testing
 
-Check
-[this&nbsp;folder](https://drive.google.com/drive/folders/1QFcncVEuCQMnls8lyNElDtpTYruMgI0D?usp=drive_link)
-for a list of compiled APK files.
-
 See [this item](https://github.com/alinnman/celestial-navigation/discussions/29)
 for a description of app testing and the test program for Google Play.
 

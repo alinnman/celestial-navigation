@@ -410,12 +410,10 @@ routes, document waypoints etc.
 
 The application runs under Android versions 13-16.
 A 64-bit ARM processor is required.
-It is installed using APK files which you can
-[find&nbsp;here](https://drive.google.com/drive/folders/1QFcncVEuCQMnls8lyNElDtpTYruMgI0D?usp=sharing).
+
 There is also an ongoing test program on Google Play.
-Concact the [author](mailto:august@linnman.net) if
-you want to participate. This test program will lead to a release of the
-app on Google Play.
+See this
+[discussion](https://github.com/alinnman/celestial-navigation/discussions/29).
 
 See [this article](https://www.wikihow.com/Install-APK-Files-on-Android)
 for info on how to install APK files on Android.
