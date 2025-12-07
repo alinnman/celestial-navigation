@@ -98,7 +98,7 @@ class NMEAServer:
             self.latitude = latitude
             self.longitude = longitude
             self.last_update = datetime.now()
-        print(f"Position updated: {latitude:.6f}, {longitude:.6f}")
+        # print(f"Position updated: {latitude:.6f}, {longitude:.6f}") REMOVED
 
     def handle_client(self, client_socket: socket.socket, address: Tuple[str, int]):
         """Handle individual client connection"""
