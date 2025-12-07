@@ -14,6 +14,7 @@ from queue import Queue, Empty
 import threading
 import gc
 from types import NoneType
+from typing import Literal
 import importlib
 import socket
 import time
@@ -73,6 +74,8 @@ def str2bool(v):
 Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 
 DEBUG_FONT_HANDLING = False
+
+DO_PAUSE_HANDLING = False
 
 class ResourceMonitor:
     """Monitor system resources to identify leaks"""
@@ -1274,8 +1277,12 @@ class CelesteApp (App):
         ''' Return the root widget '''
         return self.m_root
 
-    def on_pause(self):
-        """Called when app goes to background"""
+    def on_pause(self) -> Literal[True]:
+        """Called when app goes to background"""        
+
+        if not DO_PAUSE_HANDLING:
+            return True
+
         debug_logger.info("=== APP PAUSE EVENT ===")
         ResourceMonitor.log_resources()
         try:
@@ -1302,6 +1309,10 @@ class CelesteApp (App):
 
     def on_resume(self):
         """Called when app returns from background"""
+
+        if not DO_PAUSE_HANDLING:
+            return
+
         debug_logger.info("=== APP RESTORE EVENT ===")
         ResourceMonitor.log_resources()
 

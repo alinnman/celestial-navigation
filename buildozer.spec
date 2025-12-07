@@ -34,7 +34,7 @@ source.exclude_dirs = .venv, .venv-buildozer, vscode, colab, maths, nautical_alm
 source.exclude_patterns = calibration.py, download_tiles.py, starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py, plotclient_test.py, kivyapp.*.json, notebook.*.json, map.html
 
 # (str) Application versioning (method 1)
-version = 0.2.37
+version = 0.2.38
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -63,6 +63,11 @@ icon.filename = pics/icon512x512.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
+# android.orientation = sensor
+# NOTE: There seems to be a bug (?) in buildozer where this setting is not handled correctly
+# Setting "android.orientation = sensor" does not work
+# Also note the confusion between the "orientation" and "android.orientation" settings.
+# The app is designed for portrait mode and I will let it stick to this for the time being. 
 
 # (list) List of service to declare
 #services = NAME:ENTRYPOINT_TO_PY,NAME2:ENTRYPOINT2_TO_PY
