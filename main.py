@@ -75,6 +75,7 @@ Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 
 DEBUG_FONT_HANDLING = False
 
+# TODO Review
 DO_PAUSE_HANDLING = False
 
 class ResourceMonitor:
@@ -497,7 +498,8 @@ def get_starfixes(drp_pos: LatLonGeodetic) -> SightCollection:
 
     return SightCollection(retval)
 
-def get_local_ip():
+# TODO Review
+def get_local_ip_old():
     """Get local IP without internet connectivity"""
     try:
         # Create socket but don't actually connect
@@ -509,6 +511,29 @@ def get_local_ip():
     except:
         return "127.0.0.1"
 # pylint: enable=W0702
+
+def get_local_ip():
+    """Get local IP without internet connectivity - won't hang"""
+    test_socket = None
+    try:
+        test_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        test_socket.settimeout(1.0)  # ← CRITICAL FIX!
+        test_socket.connect(('192.168.1.1', 80))
+        local_ip = test_socket.getsockname()[0]
+        test_socket.close()
+        return local_ip
+# pylint:disable=W0702
+    except:
+        return "127.0.0.1"
+# pylint:enable=W0702
+    finally:
+        if test_socket is not None:
+            try:
+                test_socket.close()
+# pylint:disable=W0702
+            except:
+                pass
+# pylint:enable=W0702
 
 COMM_QUEUE = None
 KILL_QUEUE = None
@@ -1317,18 +1342,27 @@ class CelesteApp (App):
         ResourceMonitor.log_resources()
 
         try:
-            # DON'T recreate widgets - just repopulate existing form
-            form = self.get_input_form()
-            if form:
-                form.populate_widgets()
-                form.reactivate_clocks()  # Reactivate on the EXISTING form
-            else:
-                # Only create new widgets if form doesn't exist
-                self._setup_widgets()
-                self.root = self.m_root
+
+            full_restore = False
+
+            if full_restore:
+
+                # DON'T recreate widgets - just repopulate existing form
                 form = self.get_input_form()
                 if form:
                     form.populate_widgets()
+                    form.reactivate_clocks()  # Reactivate on the EXISTING form
+                else:
+                    # Only create new widgets if form doesn't exist
+                    self._setup_widgets()
+                    self.root = self.m_root
+                    form = self.get_input_form()
+                    if form:
+                        form.populate_widgets()
+            else:
+                form = self.get_input_form()
+                if form:
+                    form.reactivate_clocks ()
 
             debug_logger.info("UI restored successfully")
 #pylint: disable=W0718
@@ -1664,7 +1698,7 @@ class InputForm(GridLayout):
             self.ip_adress_status.text = code
 
         self.cleanup ()
-        self._ip_check_event = Clock.schedule_interval(_check_ip_address, 1.0)
+        self._ip_check_event = Clock.schedule_interval(_check_ip_address, 10.0)
         debug_logger.info("Re-instated IP check clock event")
 
     def add_font_scale_info(self):

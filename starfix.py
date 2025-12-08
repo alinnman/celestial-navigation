@@ -517,6 +517,7 @@ def is_online_safe(timeout=2):
 # Basic generation of folium maps and tile handling
 ################################################
 
+# TODO Review, and possibly remove
 def get_folium_map (location : list | tuple,
                     zoom_start_offline : int = 2,
                     zoom_start_online : int = 11,
