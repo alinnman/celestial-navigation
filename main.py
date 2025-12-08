@@ -77,7 +77,7 @@ DEBUG_FONT_HANDLING = False
 
 # TODO Review.
 DO_PAUSE_HANDLING = True
-DO_FULL_PAUSE_HANDLING = False
+DO_FULL_PAUSE_HANDLING = True
 DISABLE_IP_CLOCKS = False
 
 class ResourceMonitor:
