@@ -75,8 +75,10 @@ Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 
 DEBUG_FONT_HANDLING = False
 
-# TODO Review
-DO_PAUSE_HANDLING = False
+# TODO Review.
+DO_PAUSE_HANDLING = True
+DO_FULL_PAUSE_HANDLING = False
+DISABLE_IP_CLOCKS = False
 
 class ResourceMonitor:
     """Monitor system resources to identify leaks"""
@@ -865,7 +867,7 @@ class ShowMapButton (AppButton):
                 assert the_map is not None
                 file_name = "./map.html"
                 the_map.save (file_name)
-                # TODO Review the commented code below, and possibly remove. 
+                # TODO Review the commented code below, and possibly remove.
                 # Keeping this message for possible future use
                 #CelesteApp.message_popup ("You have generated a map.\n"
                 #                          "It is visible in a web brower window.\n"
@@ -979,7 +981,7 @@ class OnlineHelpButton (AppButton):
         CelesteApp.play_click_sound ()
         file_name = "./APPDOC.html"
 
-        # TODO Review the commented code below, and possibly remove 
+        # TODO Review the commented code below, and possibly remove
         # Inject JavaScript to shut down server
         #with open(file_name, 'r', encoding='utf-8') as f:
         #    html_content = f.read()
@@ -1313,13 +1315,15 @@ class CelesteApp (App):
 
         debug_logger.info("=== APP PAUSE EVENT ===")
         ResourceMonitor.log_resources()
+
         try:
             # Save current state
             if hasattr(self, 'm_root') and self.m_root:
                 form = self.get_input_form()
                 if form:
-                    form.extract_from_widgets()
-                    dump_dict(copy_to_clipboard=False)
+                    if DO_FULL_PAUSE_HANDLING:
+                        form.extract_from_widgets()
+                        dump_dict(copy_to_clipboard=False)
                     form.cleanup ()
                 else:
                     debug_logger.error("InputForm not found while doing pause/save!")
@@ -1327,7 +1331,6 @@ class CelesteApp (App):
             # Clean up background processes
             # But we don't clean up anything here. Threads are needed.
             # The http thread is used for map display.
-
 # pylint: disable=W0718
         except Exception as e:
 # pylint: enable=W0718
@@ -1345,10 +1348,7 @@ class CelesteApp (App):
         ResourceMonitor.log_resources()
 
         try:
-
-            full_restore = False
-
-            if full_restore:
+            if DO_FULL_PAUSE_HANDLING:
 
                 # DON'T recreate widgets - just repopulate existing form
                 form = self.get_input_form()
@@ -1362,6 +1362,7 @@ class CelesteApp (App):
                     form = self.get_input_form()
                     if form:
                         form.populate_widgets()
+                        form.reactivate_clocks ()
             else:
                 form = self.get_input_form()
                 if form:
@@ -1686,22 +1687,34 @@ class InputForm(GridLayout):
 
         self.populate_widgets()
 
+    def start_ip_check(self, _):
+        """Start IP checking after app is fully loaded"""
+
+        def _check_ip_address (_):
+            code = InputForm._get_ip_code ()
+            self.ip_adress_status.text = code
+
+        if self._ip_check_event is None:
+            self._ip_check_event = Clock.schedule_interval(
+                _check_ip_address,
+                10.0
+            )
+
     def cleanup(self):
         """Call this before destroying the form"""
         if hasattr(self, '_ip_check_event') and self._ip_check_event:
-            self._ip_check_event.cancel ()
+            if not DISABLE_IP_CLOCKS:
+                self._ip_check_event.cancel ()
             self._ip_check_event= None
             debug_logger.info("Cancelled IP check clock event")
 
     def reactivate_clocks (self):
         ''' Reactivates the clock for checking the ip address '''
 
-        def _check_ip_address (_):
-            code = InputForm._get_ip_code ()
-            self.ip_adress_status.text = code
-
         self.cleanup ()
-        self._ip_check_event = Clock.schedule_interval(_check_ip_address, 10.0)
+        if not DISABLE_IP_CLOCKS:
+            Clock.schedule_once(self.start_ip_check, 3.0)  # ← 3 second delay
+            # self._ip_check_event = Clock.schedule_interval(_check_ip_address, 10.0)
         debug_logger.info("Re-instated IP check clock event")
 
     def add_font_scale_info(self):
