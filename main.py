@@ -78,7 +78,7 @@ DEBUG_FONT_HANDLING = False
 # TODO Review.
 DO_PAUSE_HANDLING = True
 DO_FULL_PAUSE_HANDLING = True
-DISABLE_IP_CLOCKS = False
+DISABLE_IP_CLOCKS = True
 
 class ResourceMonitor:
     """Monitor system resources to identify leaks"""
@@ -1705,7 +1705,7 @@ class InputForm(GridLayout):
         if hasattr(self, '_ip_check_event') and self._ip_check_event:
             if not DISABLE_IP_CLOCKS:
                 self._ip_check_event.cancel ()
-            self._ip_check_event= None
+                self._ip_check_event= None
             debug_logger.info("Cancelled IP check clock event")
 
     def reactivate_clocks (self):
