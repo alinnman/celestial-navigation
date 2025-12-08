@@ -9,6 +9,7 @@ from math import  pi, sin, cos, acos, sqrt, tan, atan2
 from random import gauss
 from datetime import datetime, date, timedelta, timezone
 from types import NoneType
+from typing import Optional
 from collections.abc import Callable
 import pathlib
 import os
@@ -470,6 +471,48 @@ def is_online(timeout=3):
     finally:
         socket.setdefaulttimeout(None)  # Reset to default
 
+
+def is_online_safe(timeout=2):
+    """
+    Check if internet is available
+    Uses dedicated socket to avoid global state mutation
+    Short timeout for reliability
+    """
+    test_socket = None
+    try:
+        test_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        test_socket.settimeout(timeout)
+        test_socket.connect(("8.8.8.8", 53))
+
+        # Shutdown before close (forces immediate cleanup)
+        try:
+            test_socket.shutdown(socket.SHUT_RDWR)  # ← Force immediate shutdown
+#pylint: disable=W0702
+        except:
+            pass  # Already closed or not connected
+#pylint: enable=W0702
+
+        test_socket.close()
+        return True
+
+    except (socket.timeout, socket.error, OSError):
+        return False
+    finally:
+        if test_socket is not None:
+            try:
+                # Shutdown first (non-blocking)
+                test_socket.shutdown(socket.SHUT_RDWR)
+#pylint: disable=W0702
+            except:
+                pass  # Socket not connected or already shut down
+#pylint: enable=W0702
+            try:
+                test_socket.close()
+#pylint: disable=W0702
+            except:
+                pass
+#pylint: enable=W0702
+
 ################################################
 # Basic generation of folium maps and tile handling
 ################################################
@@ -482,12 +525,13 @@ def get_folium_map (location : list | tuple,
         It will check for internet connectivity and either
         generate an online map object or a map based on the 
         internally available (coarse) tiles.
+        TODO Remove this function when no longer used
     '''
 # pylint: disable=C0415
     from folium import raster_layers, Map
 # pylint: enable=C0415
 
-    if is_online ():
+    if is_online_safe ():
         the_map = Map(location=location,
                       zoom_start=zoom_start_online,
                       max_zoom=max_zoom)
@@ -509,6 +553,63 @@ def get_folium_map (location : list | tuple,
             max_native_zoom=zoom_start_offline,
             max_zoom=max_zoom
         ).add_to(the_map)
+    return the_map
+
+
+def get_folium_map_safe (location : list | tuple,
+                    zoom_start_offline : int = 2,
+                    zoom_start_online : int = 11,
+                    max_zoom : int = 15) -> object:
+    ''' 
+    Generate a map object
+    Tries online first for detail, falls back to offline for reliability
+    '''
+# pylint: disable=C0415
+    from folium import raster_layers, Map
+# pylint: enable=C0415
+
+    # Try online first (with timeout on entire operation)
+    result: list[Optional[object]] = [None]   # Use list for mutability in closure
+
+    def try_online_map():
+        try:
+            if is_online_safe(timeout=1):
+                the_map = Map(location=location,
+                              zoom_start=zoom_start_online,
+                              max_zoom=max_zoom)
+                result[0] = the_map
+#pylint: disable=W0702
+        except:
+            pass
+#pylint: enable=W0702
+
+    # Run with timeout (prevent Folium from hanging)
+    online_thread = threading.Thread(target=try_online_map, daemon=True)
+    online_thread.start()
+    online_thread.join(timeout=3.0)  # Max 3 seconds for online map
+
+    if result[0] is not None:
+        return result[0]  # Online map succeeded!
+
+    # Offline map (reliable fallback)
+    base_url = "http://localhost:8000/tiles"
+    tiles_url = f"{base_url}/{{z}}/{{x}}/{{y}}.png"
+
+    the_map = Map(location=location,
+                  zoom_start=zoom_start_offline,
+                  tiles=None,
+                  max_zoom=max_zoom)
+
+    raster_layers.TileLayer(
+        tiles=tiles_url,
+        attr='Map data courtesy of U.S. Geological Survey | Offline tiles',
+        name='Offline Map',
+        overlay=False,
+        control=True,
+        max_native_zoom=zoom_start_offline,
+        max_zoom=max_zoom
+    ).add_to(the_map)
+
     return the_map
 
 ################################################
@@ -1047,7 +1148,7 @@ class CircleCollection:
                        steps_per_degree = 10) -> object :
         ''' Render this circle collection in Folium '''
         check_folium ()
-        the_map = get_folium_map (location=[center_pos.get_lat(), center_pos.get_lon()])
+        the_map = get_folium_map_safe (location=[center_pos.get_lat(), center_pos.get_lon()])
         l = len (self.c_list)
         for i in range (l):
             color = "#FF0000"
@@ -2442,7 +2543,7 @@ class Sight :
 
     def render_folium_new_map (self, draw_markers : bool = True, zoom_start = 2) -> object:
         ''' Render this Sight object on a newly created Folium Map object'''
-        m = get_folium_map ([self.get_gp().get_lat(),self.get_gp().get_lon()],
+        m = get_folium_map_safe ([self.get_gp().get_lat(),self.get_gp().get_lon()],
                             zoom_start_online=zoom_start,
                             zoom_start_offline=zoom_start)
         self.render_folium (m, draw_markers=draw_markers)
@@ -2841,7 +2942,7 @@ class SightCollection:
 
             map_center_lon = int_geodetic.get_lon()+lon_adjustment
 
-            the_map = get_folium_map (location=(int_geodetic.get_lat(),\
+            the_map = get_folium_map_safe (location=(int_geodetic.get_lat(),\
                                                 int_geodetic.get_lon()+lon_adjustment),
                                       zoom_start_online = 11,
                                       zoom_start_offline = 2)
@@ -2870,7 +2971,7 @@ class SightCollection:
                 ).add_to(the_map)
         else:
             map_center_lon = 0
-            the_map = get_folium_map (location = (0,0),
+            the_map = get_folium_map_safe (location = (0,0),
                                       zoom_start_offline=2,
                                       zoom_start_online=2)
             assert isinstance (the_map, Map)
@@ -3150,7 +3251,7 @@ class SightTrip:
         assert isinstance (self.__start_pos, LatLon)
         assert isinstance (self.__end_pos, LatLon)
         end_pos_d   = LatLonGeodetic (ll = self.__end_pos)
-        draw_map = get_folium_map (location = [end_pos_d.get_lat(),\
+        draw_map = get_folium_map_safe (location = [end_pos_d.get_lat(),\
                                     end_pos_d.get_lon()])
         assert isinstance (draw_map, Map)
         self.__sight_end.render_folium (draw_map)
