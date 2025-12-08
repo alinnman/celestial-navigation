@@ -725,6 +725,7 @@ class AppButton (Button):
         else:
             self.background_color = (0.9, 0.9, 0.9, 1)
 
+    # TODO Review, and possibly remove. JS-code in browser should not be necessary
     @staticmethod
     def get_browser_control_string (timeout_ms : int = 20000) -> str:
         ''' Generate the javascript string for browser control of http server '''
@@ -864,6 +865,7 @@ class ShowMapButton (AppButton):
                 assert the_map is not None
                 file_name = "./map.html"
                 the_map.save (file_name)
+                # TODO Review the commented code below, and possibly remove. 
                 # Keeping this message for possible future use
                 #CelesteApp.message_popup ("You have generated a map.\n"
                 #                          "It is visible in a web brower window.\n"
@@ -977,6 +979,7 @@ class OnlineHelpButton (AppButton):
         CelesteApp.play_click_sound ()
         file_name = "./APPDOC.html"
 
+        # TODO Review the commented code below, and possibly remove 
         # Inject JavaScript to shut down server
         #with open(file_name, 'r', encoding='utf-8') as f:
         #    html_content = f.read()

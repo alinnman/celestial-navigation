@@ -793,6 +793,7 @@ def get_decimal_degrees_from_tuple (t : tuple) -> float:
     return get_decimal_degrees (t[0], t[1], t[2])
 
 #def rotate_vector\
+#    TODO Review, and possibly remove
 #    (vec : list [float], rot_vec : list [float], angle_radians : float) -> list [float]:
 #    '''
 #    Rotate a vector around a rotation vector. Based on Rodrigues formula.
