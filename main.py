@@ -9,6 +9,9 @@
 '''
 # pylint: disable=C0413
 # pylint: disable=C0411
+
+import os
+os.environ['SDL_ANDROID_BLOCK_ON_PAUSE'] = '0'
 from multiprocessing import freeze_support
 from queue import Queue, Empty
 import threading
@@ -22,7 +25,6 @@ import time
 from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError, get_folium_load_error, show_or_display_file, \
     is_windows, kill_http_server, parse_angle_string, DebugLogger, debug_logger
-import os
 import json
 import kivy
 kivy.require('2.0.0')
@@ -77,7 +79,8 @@ DEBUG_FONT_HANDLING = False
 
 # TODO Review.
 DO_PAUSE_HANDLING = True
-DO_FULL_PAUSE_HANDLING = True
+DO_MINIMALIST_PAUSE_HANDLING = True
+DO_FULL_PAUSE_HANDLING = False
 DISABLE_IP_CLOCKS = True
 
 class ResourceMonitor:
@@ -1346,6 +1349,16 @@ class CelesteApp (App):
 
         debug_logger.info("=== APP RESTORE EVENT ===")
         ResourceMonitor.log_resources()
+
+        #TODO Review
+        if DO_MINIMALIST_PAUSE_HANDLING:
+            debug_logger.info("=== RESUME START ===")
+            if hasattr(self, 'input_form'):
+                form = self.get_input_form()
+                if form:
+                    form.populate_widgets()
+            debug_logger.info("=== RESUME END ===")
+            return
 
         try:
             if DO_FULL_PAUSE_HANDLING:
