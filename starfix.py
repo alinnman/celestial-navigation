@@ -400,9 +400,9 @@ def __kill_http_server_if_running ():
         try:
             requests.get ("http://localhost:8000/kill_server", timeout=1)
 #pylint: disable=W0718
-        except BaseException as _:
+        except BaseException as exc:
 #pylint: enable=W0718
-            pass
+            debug_logger.error (f"Failed to issue KILL request {str(exc)}")
         if running_http_server is not None:
             assert isinstance (running_http_server, Thread)
             running_http_server.join (timeout=5.0)
