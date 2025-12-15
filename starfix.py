@@ -371,7 +371,8 @@ def is_windows ():
         return True
     return False
 
-def show_or_display_file (filename : str, protocol : str = "file") :
+def show_or_display_file (filename : str, protocol : str = "file",
+                          kill_existing_server : bool = False) :
     ''' Used to display a file (typically a map) '''
     if is_windows ():
         protocol = "file"
@@ -379,7 +380,7 @@ def show_or_display_file (filename : str, protocol : str = "file") :
         absolute_path_string = cwd + "\\" + filename
         filename = pathlib.Path(absolute_path_string).as_uri()
     if protocol == "http":
-        start_http_server (kill_existing=False)
+        start_http_server (kill_existing=kill_existing_server)
         # start_http_server () TODO Review
         webbrowser.open ("http://localhost:8000/"+filename)
     elif protocol == "file":
