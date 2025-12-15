@@ -78,10 +78,12 @@ Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 DEBUG_FONT_HANDLING = False
 
 # TODO Review.
-DO_PAUSE_HANDLING = True
+# Some configuration settings, mainly used for various debugging purposes
+DO_PAUSE_HANDLING            = True
 DO_MINIMALIST_PAUSE_HANDLING = True
-DO_FULL_PAUSE_HANDLING = False
-DISABLE_IP_CLOCKS = False
+DO_FULL_PAUSE_HANDLING       = False
+DISABLE_IP_CLOCKS            = False
+ADD_EXIT_BUTTON              = True
 
 class ResourceMonitor:
     """Monitor system resources to identify leaks"""
@@ -1001,6 +1003,22 @@ class OnlineHelpButton (AppButton):
 
         show_or_display_file (file_name, protocol="http")
 
+class ExitButton (AppButton):
+    ''' Button for exiting the app '''
+    def __init__(self, **kwargs):
+        super().__init__(active = True, **kwargs)
+        self.text = "Exit"
+# pylint: disable=E1101
+        self.bind(on_press=self.callback)
+# pylint: enable=E1101
+
+    @staticmethod
+    def callback(_):
+        ''' Called when pressing the exit button '''
+        appx = App.get_running_app ()
+        assert isinstance (appx, CelesteApp)
+        appx.stop()
+
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
 
@@ -1686,8 +1704,13 @@ class InputForm(GridLayout):
         bl.add_widget(butt)
         self.add_widget(bl)
 
-        bl = FormRow()
+        if ADD_EXIT_BUTTON:
+            bl = FormRow()
+            butt = ExitButton()
+            bl.add_widget(butt)
+            self.add_widget(bl)
 
+        bl = FormRow()
         self.ip_adress_status = MyLabel(text=InputForm._get_ip_code(), markup=True, indent=False)
         # Check for ip address changes every second
         #self._ip_check_event = Clock.schedule_interval(check_ip_address, 1.0)
