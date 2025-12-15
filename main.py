@@ -81,7 +81,7 @@ DEBUG_FONT_HANDLING = False
 DO_PAUSE_HANDLING = True
 DO_MINIMALIST_PAUSE_HANDLING = True
 DO_FULL_PAUSE_HANDLING = False
-DISABLE_IP_CLOCKS = True
+DISABLE_IP_CLOCKS = False
 
 class ResourceMonitor:
     """Monitor system resources to identify leaks"""
