@@ -1017,6 +1017,13 @@ class ExitButton (AppButton):
         ''' Called when pressing the exit button '''
         appx = App.get_running_app ()
         assert isinstance (appx, CelesteApp)
+
+        # TODO Refactor this exit routine
+        # Kill NMEA 0138 server (if active)
+        kill_plotserver ()
+        # Kill HTTP server (if active)
+        if not is_windows():
+            kill_http_server ()
         appx.stop()
 
 class FormRow (BoxLayout):
@@ -1844,6 +1851,7 @@ if __name__ == '__main__':
 # pylint: enable=W0718
         debug_logger.error(f"Unhandled exception in main : {str(exc)}")
     finally:
+        # TODO Refactor this exit routine
         # Kill NMEA 0138 server (if active)
         kill_plotserver ()
         # Kill HTTP server (if active)
