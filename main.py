@@ -1015,6 +1015,7 @@ class ExitButton (AppButton):
     @staticmethod
     def callback(_):
         ''' Called when pressing the exit button '''
+        debug_logger.info ("Exit button pressed")        
         appx = App.get_running_app ()
         assert isinstance (appx, CelesteApp)
         debug_logger.info ("Exit button pressed, now preparing for exit")
