@@ -1017,6 +1017,7 @@ class ExitButton (AppButton):
         ''' Called when pressing the exit button '''
         appx = App.get_running_app ()
         assert isinstance (appx, CelesteApp)
+        debug_logger.info ("Exit button pressed, now preparing for exit")
 
         # TODO Refactor this exit routine
         # Kill NMEA 0138 server (if active)
@@ -1851,6 +1852,7 @@ if __name__ == '__main__':
 # pylint: enable=W0718
         debug_logger.error(f"Unhandled exception in main : {str(exc)}")
     finally:
+        debug_logger.info ("Cleaning up in finally block of main")
         # TODO Refactor this exit routine
         # Kill NMEA 0138 server (if active)
         kill_plotserver ()
