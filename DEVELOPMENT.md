@@ -14,7 +14,7 @@ You may try using MS Windows too, but be prepared for bugs.
 
 This code was developed with
 [VSCode](https://en.wikipedia.org/wiki/Visual_Studio_Code)
-on a Linux (Ubuntu 22.04 LTS) machine.
+on a Linux (Ubuntu 24.04 LTS) machine.
 
 The Python environment has been installed in a
 [virtual environment](https://docs.python.org/3.11/library/venv.html)
@@ -61,7 +61,7 @@ be run in VSCode testing module.
 
 ## App development and deployment<a name="apps"></a>
 
-The file [main.py](main.py) contains a very simple
+The file [main.py](main.py) contains a mobile
 app (Celeste) built on the Kivy framework. It can be used as a starter point
 for developing Android or iOS apps.
 
@@ -74,10 +74,10 @@ Be careful to keep your work in the virtual environment. See above.
 Building the app is done using these commands:
 
     source .venv-buildozer/bin/activate
-    ./build.sh
+    ./build.sh release
 
 This executes the buildozer script and some other preparation steps.
-The virtual environment .venv-buildozer need to be prepared beforehand.
+The virtual environment .venv-buildozer needs to be prepared beforehand.
 
 Note however that you probably need to fine-tune and adjust your enviroment
 carefully before being able to run the app build script successfully.
@@ -156,7 +156,7 @@ You start generation with this command and input:
 
       What do you want to create?:
 
-        1   Nautical Almanac      (for a day/month/year) <== SELECT THIS**
+        1   Nautical Almanac      (for a day/month/year) <== SELECT THIS
         2   Sun tables only       (for a day/month/year)
         3   Event Time tables     (for a day/month/year)
         4   Lunar Distance tables (for a day/month/year)
