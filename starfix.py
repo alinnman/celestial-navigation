@@ -406,8 +406,8 @@ def __kill_http_server_if_running ():
         if running_http_server is not None:
             assert isinstance (running_http_server, Thread)
             running_http_server.join (timeout=5.0)
-            if running_http_server.is_alive ():
-                debug_logger.error ("Http server is still alive")
+            #if running_http_server.is_alive ():
+            #    debug_logger.error ("Http server is still alive")
             running_http_server = None
 
 def start_http_server (kill_existing : bool = False):
