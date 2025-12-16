@@ -947,10 +947,10 @@ class PasteConfigButton (AppButton):
             instance.form.populate_widgets ()
         else:
             CelesteApp.play_error_sound ()
-        if DebugLogger.enable_debug:
-            appx = App.get_running_app ()
-            assert isinstance (appx, CelesteApp)
-            appx.stress_test_lifecycle ()
+        #if DebugLogger.enable_debug:
+        #    appx = App.get_running_app ()
+        #    assert isinstance (appx, CelesteApp)
+        #    appx.stress_test_lifecycle ()
 
 class CopyConfigButton (AppButton):
     """ This button copies the config to the clipboard """

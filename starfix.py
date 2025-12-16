@@ -219,10 +219,12 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         if self.path.startswith('/kill_server'):
             debug_logger.info("Server is going down, run it again manually!")
             def kill_me_please():
-                if isinstance (MASTER_HTTPD, socketserver.TCPServer):
+                global MASTER_HTTPD
+                if MASTER_HTTPD and isinstance (MASTER_HTTPD, socketserver.TCPServer):
                     #assert isinstance (MASTER_HTTPD, socketserver.TCPServer)
                     try:
                         MASTER_HTTPD.shutdown()
+                        MASTER_HTTPD = None
 #pylint: disable=W0718
                     except BaseException as _:
 #pylint: enable=W0718
@@ -412,7 +414,7 @@ def __kill_http_server_if_running ():
             #    debug_logger.error ("Http server is still alive")
             running_http_server = None
 
-def start_http_server (kill_existing : bool = False):
+def start_http_server (kill_existing : bool = False): #TODO Maybe abolish kill_existing parameter
     ''' Start an http server for showing maps '''
 #pylint: disable=W0603
     global running_http_server
@@ -420,11 +422,12 @@ def start_http_server (kill_existing : bool = False):
     if is_windows():
         return
     try:
+        # TODO Review. Maybe unnecessary
         if kill_existing:
             if running_http_server is not None:
                 __kill_http_server_if_running ()
 
-        # Debug output
+        # TODO Review
         if running_http_server is not None:
             assert isinstance (running_http_server, Thread)
             debug_logger.debug(f"running_http_server is a {str(type(debug_logger))}")
@@ -434,12 +437,12 @@ def start_http_server (kill_existing : bool = False):
         old_server_alive = running_http_server is not None # and running_http_server.is_alive()
         #if running_http_server is None or not running_http_server.is_alive():
         if not old_server_alive:
-            if running_http_server is not None:
-                debug_logger.info("Old server thread dead, starting new one")
+            #if running_http_server is not None:
+            #    debug_logger.info("Old server thread dead, starting new one")
                 # Give the old thread a moment to fully clean up
-                time.sleep(1)
-            else:
-                debug_logger.info("No existing server thread, starting new one")
+            #    time.sleep(1)
+            #else:
+            debug_logger.info("No existing server thread, starting new one")
 
             p = Thread (target=__run_http_server)
             p.start()
