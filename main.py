@@ -908,7 +908,7 @@ class ShowMapButton (AppButton):
                 #with open(file_name, 'w', encoding='utf-8') as f:
                 #    f.write(html_content)
 
-                show_or_display_file (file_name, protocol="http", kill_existing_server=True)
+                show_or_display_file (file_name, protocol="http", kill_existing_server=False)
 
                 #debug_logger.info("=== Scheduling HTTP server shutdown in 20s ===")
                 #ShowMapButton.shutdown_event = Clock.schedule_once(shutdown_http_server, 20)
