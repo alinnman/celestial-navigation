@@ -424,6 +424,7 @@ def start_http_server (kill_existing : bool = False):
 
         # Debug output
         if running_http_server is not None:
+            debug_logger.debug(f"running_http_server is a {str(type(debug_logger))}")
             debug_logger.info(f"Existing thread state: alive={running_http_server.is_alive()}")
 
         # Check if server thread exists AND is still alive
