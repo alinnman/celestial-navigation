@@ -219,13 +219,14 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         if self.path.startswith('/kill_server'):
             debug_logger.info("Server is going down, run it again manually!")
             def kill_me_please():
-                assert isinstance (MASTER_HTTPD, socketserver.TCPServer)
-                try:
-                    MASTER_HTTPD.shutdown()
+                if isinstance (MASTER_HTTPD, socketserver.TCPServer):
+                    #assert isinstance (MASTER_HTTPD, socketserver.TCPServer)
+                    try:
+                        MASTER_HTTPD.shutdown()
 #pylint: disable=W0718
-                except BaseException as _:
+                    except BaseException as _:
 #pylint: enable=W0718
-                    pass
+                        pass
             t = threading.Thread(target=kill_me_please)
             t.start()
             self.send_response(200)
@@ -265,13 +266,14 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         elif self.path.startswith('/kill_server'):
             debug_logger.info("Server is going down (POST), run it again manually!")
             def kill_me_please():
-                assert isinstance(MASTER_HTTPD, socketserver.TCPServer)
-                try:
-                    MASTER_HTTPD.shutdown()
+                if isinstance (MASTER_HTTPD, socketserver.TCPServer):
+                    #assert isinstance(MASTER_HTTPD, socketserver.TCPServer)
+                    try:
+                        MASTER_HTTPD.shutdown()
 #pylint: disable=W0718
-                except BaseException as _:
+                    except BaseException as _:
 #pylint: enable=W0718
-                    pass
+                        pass
             t = threading.Thread(target=kill_me_please)
             t.start()
             self.send_response(200)
@@ -405,7 +407,7 @@ def __kill_http_server_if_running ():
             debug_logger.error (f"Failed to issue KILL request {str(exc)}")
         if running_http_server is not None:
             assert isinstance (running_http_server, Thread)
-            running_http_server.join (timeout=5.0)
+            running_http_server.join (timeout=1.0)
             #if running_http_server.is_alive ():
             #    debug_logger.error ("Http server is still alive")
             running_http_server = None
