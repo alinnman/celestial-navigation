@@ -191,49 +191,51 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         old_time = MyHandler.last_activity_time
         MyHandler.last_activity_time = time.time()
 
-        if self.path.startswith('/heartbeat'):
-            if old_time is not None:
-                debug_logger.info(f"Heartbeat received (was {time.time() - old_time:.1f}s ago)")
-            else:
-                debug_logger.info("Heartbeat received (first)")
-            self.send_response(200)
-            self.end_headers()
-            return
+        #if self.path.startswith('/heartbeat'):
+        #    if old_time is not None:
+        #        debug_logger.info(f"Heartbeat received (was {time.time() - old_time:.1f}s ago)")
+        #    else:
+        #        debug_logger.info("Heartbeat received (first)")
+        #    self.send_response(200)
+        #    self.end_headers()
+        #    return
 
-        if self.path.startswith('/kill_server_delayed'):
-            # Just acknowledge, don't actually schedule anything
+        #if self.path.startswith('/kill_server_delayed'):
+        #    # Just acknowledge, don't actually schedule anything
             # Real kill is based on sustained inactivity
-            debug_logger.info("Kill request noted (but relying on inactivity timeout)")
-            self.send_response(200)
-            self.end_headers()
-            return
+        #    debug_logger.info("Kill request noted (but relying on inactivity timeout)")
+        #    self.send_response(200)
+        #    self.end_headers()
+        #    return
 
-        if self.path.startswith('/cancel_kill'):
+        #if self.path.startswith('/cancel_kill'):
             # Reset activity timer
-            MyHandler.last_activity_time = time.time()
-            debug_logger.info("Activity detected")
-            self.send_response(200)
-            self.end_headers()
-            return
+        #    MyHandler.last_activity_time = time.time()
+        #    debug_logger.info("Activity detected")
+        #    self.send_response(200)
+        #    self.end_headers()
+        #    return
 
-        if self.path.startswith('/kill_server'):
-            debug_logger.info("Server is going down, run it again manually!")
-            def kill_me_please():
-                global MASTER_HTTPD
-                if MASTER_HTTPD and isinstance (MASTER_HTTPD, socketserver.TCPServer):
-                    #assert isinstance (MASTER_HTTPD, socketserver.TCPServer)
-                    try:
-                        MASTER_HTTPD.shutdown()
-                        MASTER_HTTPD = None
+        #if self.path.startswith('/kill_server'):
+        #    debug_logger.info("Server is going down, run it again manually!")
+        #    def kill_me_please():
+#pylint: disable=W0603
+        #        global MASTER_HTTPD
+#pylint: enable=W0603
+        #        if MASTER_HTTPD and isinstance (MASTER_HTTPD, socketserver.TCPServer):
+        #            #assert isinstance (MASTER_HTTPD, socketserver.TCPServer)
+        #            try:
+        #                MASTER_HTTPD.shutdown()
+        #                MASTER_HTTPD = None
 #pylint: disable=W0718
-                    except BaseException as _:
+        #            except BaseException as _:
 #pylint: enable=W0718
-                        pass
-            t = threading.Thread(target=kill_me_please)
-            t.start()
-            self.send_response(200)
-            self.end_headers()
-            return
+        #                pass
+        #    t = threading.Thread(target=kill_me_please)
+        #    t.start()
+        #    self.send_response(200)
+        #    self.end_headers()
+        #    return
 
         try:
             # Only allowed requests are for these file formats
@@ -252,36 +254,36 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 #pylint: enable=W0718
             debug_logger.error("Http server failure : " + str(be))
 
-    def do_POST(self):
+    #def do_POST(self):
 
-        ''' Allow POST only for kill_server endpoints '''
-        MyHandler.last_activity_time = time.time()
+    #    ''' Allow POST only for kill_server endpoints '''
+    #    MyHandler.last_activity_time = time.time()
 
-        if self.path.startswith('/kill_server_delayed'):
-            debug_logger.info("Kill request noted (POST)")
-            self.send_response(200)
-            self.end_headers()
-        elif self.path.startswith('/cancel_kill'):
-            debug_logger.info("Activity detected (POST)")
-            self.send_response(200)
-            self.end_headers()
-        elif self.path.startswith('/kill_server'):
-            debug_logger.info("Server is going down (POST), run it again manually!")
-            def kill_me_please():
-                if isinstance (MASTER_HTTPD, socketserver.TCPServer):
-                    #assert isinstance(MASTER_HTTPD, socketserver.TCPServer)
-                    try:
-                        MASTER_HTTPD.shutdown()
+    #    if self.path.startswith('/kill_server_delayed'):
+    #        debug_logger.info("Kill request noted (POST)")
+    #        self.send_response(200)
+    #        self.end_headers()
+    #    elif self.path.startswith('/cancel_kill'):
+    #        debug_logger.info("Activity detected (POST)")
+    #        self.send_response(200)
+    #        self.end_headers()
+    #    elif self.path.startswith('/kill_server'):
+    #        debug_logger.info("Server is going down (POST), run it again manually!")
+    #        def kill_me_please():
+    #            if isinstance (MASTER_HTTPD, socketserver.TCPServer):
+    #                #assert isinstance(MASTER_HTTPD, socketserver.TCPServer)
+    #                try:
+    #                    MASTER_HTTPD.shutdown()
 #pylint: disable=W0718
-                    except BaseException as _:
+    #                except BaseException as _:
 #pylint: enable=W0718
-                        pass
-            t = threading.Thread(target=kill_me_please)
-            t.start()
-            self.send_response(200)
-            self.end_headers()
-        else:
-            self.send_error(405, "Method Not Allowed")
+    #                    pass
+    #        t = threading.Thread(target=kill_me_please)
+    #        t.start()
+    #        self.send_response(200)
+    #        self.end_headers()
+    #    else:
+    #        self.send_error(405, "Method Not Allowed")
 #pylint: enable=C0103
 
 #    def reset (self):
@@ -296,44 +298,101 @@ def __run_http_server ():
 
     Handler = MyHandler
 
-#pylint: disable=W0612
-    def inactivity_watchdog():
+    try:
+        host_name = "127.0.0.1"
+        with MyTCPServer((host_name, port), Handler) as httpd:
 
-        """Kill server after sustained inactivity (no heartbeats)"""
-        # Initialize activity time when watchdog starts
-        MyHandler.last_activity_time = time.time()
-        debug_logger.info(f"Watchdog started at {MyHandler.last_activity_time}")
+#pylint: disable=W0603
+            global MASTER_HTTPD
+#pylint: enable=W0603
+            MASTER_HTTPD = httpd
+            debug_logger.info("HTTP server started on port 8000")            
 
-        check_count = 0
-        while MASTER_HTTPD is not None:
-            check_count += 1
-            if MyHandler.last_activity_time is not None:
-                time_since_activity = time.time() - MyHandler.last_activity_time
+            import select
 
-                # Log every 5 seconds for debugging
-                if check_count % 5 == 0:
-                    debug_logger.info\
-                    (f"Watchdog check #{check_count}: {time_since_activity:.1f}s since activity")
+            # In __run_http_server():
+            # Set socket to non-blocking mode
+            httpd.socket.setblocking(False)
 
-                # Kill after 15 seconds of no heartbeats from any page
-                if time_since_activity > 15.0:
-                    debug_logger.info\
-                    (f"!!! WATCHDOG TRIGGERING KILL after {time_since_activity:.1f}s inactivity")
-                    try:
-                        if MASTER_HTTPD is not None:
-                            debug_logger.info("Calling MASTER_HTTPD.shutdown()")
-                            MASTER_HTTPD.shutdown()
-                            debug_logger.info("MASTER_HTTPD.shutdown() completed")
+            # Manual polling loop with select
+            while MASTER_HTTPD is not None:
+                try:
+                    # Use select to wait for incoming connection with timeout
+                    readable, _, _ = select.select([httpd.socket], [], [], 0.5)
+                    
+                    if readable:
+                        debug_logger.info("Before handling a request")
+                        httpd.handle_request()
+                        debug_logger.info("After having handled a request")
+                    else:
+                        # No request pending - loop continues and checks MASTER_HTTPD
+                        debug_logger.debug("Select timeout - checking shutdown flag")
+                        
+                except Exception as e:
+                    debug_logger.error(f"HTTP request error: {e}")
+
+            debug_logger.info("HTTP server loop exited")
+    except OSError as ose:
+        if ose.errno != 98:
+            raise ose
+        debug_logger.error(f"OSError: {ose}")
 #pylint: disable=W0718
-                    except BaseException as e:
+    except Exception as e:
 #pylint: enable=W0718
-                        debug_logger.error(f"Error during shutdown: {e}")
-                    debug_logger.info("Watchdog exiting")
-                    return
+        debug_logger.error(f"Unexpected error in HTTP server: {e}")
+    finally:
+        debug_logger.info("HTTP server cleanup starting")
+        MASTER_HTTPD = None
+#pylint: disable=W0603
+        global running_http_server
+#pylint: enable=W0603
+        running_http_server = None
+        debug_logger.info("HTTP server thread terminated - running_http_server set to None")
 
-            time.sleep(1)
+def __run_http_server_2 ():
+    port = 8000
 
-        debug_logger.info("Watchdog exiting - MASTER_HTTPD is None")
+    Handler = MyHandler
+
+#pylint: disable=W0612
+    # TODO Remove
+    #def inactivity_watchdog():
+
+    #    """Kill server after sustained inactivity (no heartbeats)"""
+    #    # Initialize activity time when watchdog starts
+    #    MyHandler.last_activity_time = time.time()
+    #    debug_logger.info(f"Watchdog started at {MyHandler.last_activity_time}")
+
+    #    check_count = 0
+    #    while MASTER_HTTPD is not None:
+    #        check_count += 1
+    #        if MyHandler.last_activity_time is not None:
+    #            time_since_activity = time.time() - MyHandler.last_activity_time
+
+    #            # Log every 5 seconds for debugging
+    #            if check_count % 5 == 0:
+    #                debug_logger.info\
+    #                (f"Watchdog check #{check_count}: {time_since_activity:.1f}s since activity")
+
+    #            # Kill after 15 seconds of no heartbeats from any page
+    #            if time_since_activity > 15.0:
+    #                debug_logger.info\
+    #                (f"!!! WATCHDOG TRIGGERING KILL after {time_since_activity:.1f}s inactivity")
+    #                try:
+    #                    if MASTER_HTTPD is not None:
+    #                        debug_logger.info("Calling MASTER_HTTPD.shutdown()")
+    #                        MASTER_HTTPD.shutdown()
+    #                        debug_logger.info("MASTER_HTTPD.shutdown() completed")
+#pylint: disable=W0718
+    #                except BaseException as e:
+#pylint: enable=W0718
+    #                    debug_logger.error(f"Error during shutdown: {e}")
+    #                debug_logger.info("Watchdog exiting")
+    #                return
+
+    #        time.sleep(1)
+
+    #    debug_logger.info("Watchdog exiting - MASTER_HTTPD is None")
 #pylint: enable=W0612
 
     try:
@@ -350,8 +409,27 @@ def __run_http_server ():
             #watchdog.start()
             #debug_logger.info(f"Watchdog thread started: {watchdog}, daemon={watchdog.daemon}")
 
-            httpd.serve_forever()
-            debug_logger.info("serve_forever() exited")
+            # httpd.serve_forever (poll_interval=0.5)
+
+            # Set socket timeout
+            httpd.socket.settimeout(0.5)
+
+            debug_logger.info("HTTP server started on port 8000")
+
+            # Manual polling loop instead of serve_forever
+            while MASTER_HTTPD is not None:
+                try:
+                    debug_logger.info ("Before handling a request")
+                    httpd.handle_request()
+                    debug_logger.info ("After having handled a request")
+                except socket.timeout:
+                    debug_logger.debug ("Socket timeout in polling loop")
+                    continue
+                except Exception as e:
+                    debug_logger.error(f"HTTP request error: {e}")
+
+            # debug_logger.info("serve_forever() exited")
+            debug_logger.info("HTTP server loop exited")
     except OSError as ose:
         if ose.errno != 98:
             raise ose
@@ -392,27 +470,66 @@ def show_or_display_file (filename : str, protocol : str = "file",
     else:
         raise ValueError ("Incorrect protocol <" + protocol + ">")
 
-def __kill_http_server_if_running ():
+def __kill_http_server_if_running():
+    global running_http_server, MASTER_HTTPD
+
+    if running_http_server is not None:
+        debug_logger.info("Stopping HTTP server")
+        MASTER_HTTPD = None
+
+        running_http_server.join(timeout=3.0)
+        if running_http_server.is_alive():
+            debug_logger.error("HTTP server thread still alive")
+
+        running_http_server = None
+
+# TODO Remove
+def __kill_http_server_if_running_2 ():
 #pylint: disable=C0415
     import requests
 #pylint: enable=C0415
 
 #pylint: disable=W0603
     global running_http_server
+    global MASTER_HTTPD
 #pylint: enable=W0603
-    if running_http_server is not None:
-        try:
-            requests.get ("http://localhost:8000/kill_server", timeout=1)
-#pylint: disable=W0718
-        except BaseException as exc:
-#pylint: enable=W0718
-            debug_logger.error (f"Failed to issue KILL request {str(exc)}")
+
+    def killer ():
+        if MASTER_HTTPD is not None:
+            MASTER_HTTPD.shutdown()
+
+    kill_thread = threading.Thread(target=killer, daemon=True)
+    kill_thread.start()
+    kill_thread.join (timeout = 1.0)
+
+    if False:
         if running_http_server is not None:
-            assert isinstance (running_http_server, Thread)
-            running_http_server.join (timeout=1.0)
-            #if running_http_server.is_alive ():
-            #    debug_logger.error ("Http server is still alive")
-            running_http_server = None
+            try:
+                requests.get ("http://localhost:8000/kill_server", timeout=1)
+    #pylint: disable=W0718
+            except BaseException as exc:
+    #pylint: enable=W0718
+                debug_logger.error (f"Failed to issue KILL request {str(exc)}")
+    #pylint: disable=W0603
+                # global MASTER_HTTPD
+    #pylint: enable=W0603
+                if MASTER_HTTPD is not None:
+                    try:
+                        debug_logger.info (f"Will perform hard shutdown of HTTP server {str(MASTER_HTTPD)}")
+                        MASTER_HTTPD.shutdown()
+                        debug_logger.info ("Performed hard shutdown of HTTP server")
+                        MASTER_HTTPD = None
+                        running_http_server = None
+    #pylint: disable=W0718
+                    except BaseException as exc2:
+    #pylint: enable=W0718
+                        debug_logger.error (f"Failed to do hard shutdown {str(exc2)}")
+            if running_http_server is not None:
+                assert isinstance (running_http_server, Thread)
+                running_http_server.join (timeout=1.0)
+                #if running_http_server.is_alive ():
+                #    debug_logger.error ("Http server is still alive")
+                running_http_server = None
 
 def start_http_server (kill_existing : bool = False): #TODO Maybe abolish kill_existing parameter
     ''' Start an http server for showing maps '''

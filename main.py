@@ -82,7 +82,7 @@ DEBUG_FONT_HANDLING = False
 DO_PAUSE_HANDLING            = True
 DO_MINIMALIST_PAUSE_HANDLING = True
 DO_FULL_PAUSE_HANDLING       = False
-DISABLE_IP_CLOCKS            = False
+DISABLE_IP_CLOCKS            = True
 ADD_EXIT_BUTTON              = True
 
 class ResourceMonitor:
@@ -1015,7 +1015,7 @@ class ExitButton (AppButton):
     @staticmethod
     def callback(_):
         ''' Called when pressing the exit button '''
-        debug_logger.info ("Exit button pressed")        
+        debug_logger.info ("Exit button pressed")
         appx = App.get_running_app ()
         assert isinstance (appx, CelesteApp)
         debug_logger.info ("Exit button pressed, now preparing for exit")
@@ -1026,7 +1026,10 @@ class ExitButton (AppButton):
         # Kill HTTP server (if active)
         if not is_windows():
             kill_http_server ()
-        appx.stop()
+        #appx.stop()
+        # Don't wait for daemon threads - just exit
+        debug_logger.info("Forcing exit")
+        os._exit(0)  # Nuclear option - kills everything immediately        
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
@@ -1860,3 +1863,4 @@ if __name__ == '__main__':
         # Kill HTTP server (if active)
         if not is_windows():
             kill_http_server ()
+        ResourceMonitor.log_resources()
