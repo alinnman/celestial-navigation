@@ -24,7 +24,7 @@ import time
 # from datetime import datetime
 from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError, get_folium_load_error, show_or_display_file, \
-    is_windows, kill_http_server, parse_angle_string, DebugLogger, debug_logger
+    is_windows, kill_http_server, parse_angle_string, debug_logger
 import json
 import kivy
 kivy.require('2.0.0')
@@ -82,8 +82,8 @@ DEBUG_FONT_HANDLING = False
 DO_PAUSE_HANDLING            = True
 DO_MINIMALIST_PAUSE_HANDLING = True
 DO_FULL_PAUSE_HANDLING       = False
-DISABLE_IP_CLOCKS            = True
-ADD_EXIT_BUTTON              = True
+DISABLE_IP_CLOCKS            = False
+ADD_EXIT_BUTTON              = False
 
 class ResourceMonitor:
     """Monitor system resources to identify leaks"""
@@ -1029,7 +1029,7 @@ class ExitButton (AppButton):
         #appx.stop()
         # Don't wait for daemon threads - just exit
         debug_logger.info("Forcing exit")
-        os._exit(0)  # Nuclear option - kills everything immediately        
+        os._exit(0)  # Nuclear option - kills everything immediately
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
