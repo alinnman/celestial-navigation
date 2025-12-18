@@ -1350,6 +1350,40 @@ class CelesteApp (App):
         ResourceMonitor.log_resources()
 
         try:
+
+            # AGGRESSIVE: Unschedule ALL Clock events first
+            # This is needed to handle the infamous gray screen Kivy bug.
+            if hasattr(self, 'm_root') and isinstance(self.m_root, ScrollView):
+                scroll = self.m_root
+
+                # Unschedule the main scroll update
+                Clock.unschedule(scroll.update_from_scroll)
+
+                # Also unschedule these internal ScrollView callbacks
+                if hasattr(scroll, '_update_effect_bounds'):
+#pylint: disable=W0212
+                    Clock.unschedule(scroll._update_effect_bounds)
+#pylint: enable=W0212
+                if hasattr(scroll, '_update_effect_widget'):
+#pylint: disable=W0212
+                    Clock.unschedule(scroll._update_effect_widget)
+#pylint: enable=W0212
+                # Force scroll to stop by setting velocity to 0
+                if hasattr(scroll, 'effect_y'):
+                    scroll.effect_y.velocity = 0
+                    if hasattr(scroll.effect_y, 'is_manual'):
+                        scroll.effect_y.is_manual = True
+
+                debug_logger.info(f"ScrollView FULLY stopped at {scroll.scroll_y}")
+
+            # Stop any active ScrollView kinetic scrolling
+            #if hasattr(self, 'm_root') and isinstance(self.m_root, ScrollView):
+                # This unschedules the clock callback that drives scrolling
+            #    Clock.unschedule(self.m_root.update_from_scroll)
+            #    debug_logger.info(f"ScrollView stopped at position {self.m_root.scroll_y}")
+                # CelesteApp.play_click_sound () # TODO Remove
+                # pass
+
             # Save current state
             if hasattr(self, 'm_root') and self.m_root:
                 form = self.get_input_form()
@@ -1357,7 +1391,7 @@ class CelesteApp (App):
                     if DO_FULL_PAUSE_HANDLING:
                         form.extract_from_widgets()
                         dump_dict(copy_to_clipboard=False)
-                    form.cleanup ()
+                    # form.cleanup ()
                 else:
                     debug_logger.error("InputForm not found while doing pause/save!")
 
@@ -1383,10 +1417,15 @@ class CelesteApp (App):
         #TODO Review
         if DO_MINIMALIST_PAUSE_HANDLING:
             debug_logger.info("=== RESUME START ===")
+
             if hasattr(self, 'input_form'):
                 form = self.get_input_form()
                 if form:
+                    # Ensure scroll is at top before populating
+                    if hasattr(self, 'm_root') and isinstance(self.m_root, ScrollView):
+                        self.m_root.scroll_y = 1.0
                     form.populate_widgets()
+
             debug_logger.info("=== RESUME END ===")
             return
 
@@ -1745,10 +1784,10 @@ class InputForm(GridLayout):
         if self._ip_check_event is None:
             self._ip_check_event = Clock.schedule_interval(
                 _check_ip_address,
-                10.0
+                5.0
             )
 
-    def cleanup(self):
+    def cleanup_clocks(self):
         """Call this before destroying the form"""
         if hasattr(self, '_ip_check_event') and self._ip_check_event:
             if not DISABLE_IP_CLOCKS:
@@ -1759,9 +1798,9 @@ class InputForm(GridLayout):
     def reactivate_clocks (self):
         ''' Reactivates the clock for checking the ip address '''
 
-        self.cleanup ()
+        self.cleanup_clocks ()
         if not DISABLE_IP_CLOCKS:
-            Clock.schedule_once(self.start_ip_check, 3.0)  # ← 3 second delay
+            Clock.schedule_once(self.start_ip_check, 2.0)  # ← 3 second delay
             # self._ip_check_event = Clock.schedule_interval(_check_ip_address, 10.0)
         debug_logger.info("Re-instated IP check clock event")
 
