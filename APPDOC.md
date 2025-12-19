@@ -98,6 +98,9 @@ The app is configured as a full screen app. If your phone has
 soft buttons (home, back, program list) they may become **hidden**
 but you can access them through swiping upwards from the bottom.
 
+You can exit the app using the <tt><b>Exit</b></tt> button at the bottom.
+(This can be useful if you need to restart the app)
+
 The map and help functions invoke the default web browser.
 Go back to the Celeste app with the back button.
 
