@@ -24,7 +24,7 @@ import time
 # from datetime import datetime
 from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError, get_folium_load_error, show_or_display_file, \
-    is_windows, kill_http_server, parse_angle_string, debug_logger
+    is_windows, kill_http_server, parse_angle_string, debug_logger, DebugLogger
 import json
 import kivy
 kivy.require('2.0.0')
@@ -78,12 +78,14 @@ Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 DEBUG_FONT_HANDLING = False
 
 # TODO Review.
-# Some configuration settings, mainly used for various debugging purposes
+# Flags using for selection different functionality.
 DO_PAUSE_HANDLING            = True
 DO_MINIMALIST_PAUSE_HANDLING = True
 DO_FULL_PAUSE_HANDLING       = False
 DISABLE_IP_CLOCKS            = False
-ADD_EXIT_BUTTON              = False
+ADD_EXIT_BUTTON              = True
+DO_HTTP_SERVER_RESTART       = True
+DebugLogger.enable (do_enable=True, to_stdout=True)
 
 class ResourceMonitor:
     """Monitor system resources to identify leaks"""
@@ -908,7 +910,8 @@ class ShowMapButton (AppButton):
                 #with open(file_name, 'w', encoding='utf-8') as f:
                 #    f.write(html_content)
 
-                show_or_display_file (file_name, protocol="http", kill_existing_server=False)
+                show_or_display_file (file_name, protocol="http", 
+                                      kill_existing_server=DO_HTTP_SERVER_RESTART)
 
                 #debug_logger.info("=== Scheduling HTTP server shutdown in 20s ===")
                 #ShowMapButton.shutdown_event = Clock.schedule_once(shutdown_http_server, 20)
@@ -1001,7 +1004,8 @@ class OnlineHelpButton (AppButton):
         #with open(mod_file_name, 'w', encoding='utf-8') as f:
         #    f.write(html_content)
 
-        show_or_display_file (file_name, protocol="http")
+        show_or_display_file (file_name, protocol="http", 
+                              kill_existing_server=DO_HTTP_SERVER_RESTART)
 
 class ExitButton (AppButton):
     ''' Button for exiting the app '''
@@ -1022,10 +1026,10 @@ class ExitButton (AppButton):
 
         # TODO Refactor this exit routine
         # Kill NMEA 0138 server (if active)
-        kill_plotserver ()
+        # kill_plotserver ()
         # Kill HTTP server (if active)
-        if not is_windows():
-            kill_http_server ()
+        #if not is_windows():
+        #    kill_http_server ()
         #appx.stop()
         # Don't wait for daemon threads - just exit
         debug_logger.info("Forcing exit")

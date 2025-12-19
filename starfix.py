@@ -70,6 +70,12 @@ class DebugLogger:
             pass
 #pylint: enable=W0702
 
+    @staticmethod
+    def enable (do_enable : bool, to_stdout : bool = False):
+        ''' Modify debuglogger status '''
+        DebugLogger.enable_debug = do_enable
+        DebugLogger.output_stdout = to_stdout
+
     def _log(self, message : str, level="INFO"):
         ''' Log a message'''
 
@@ -306,13 +312,14 @@ def __run_http_server ():
             global MASTER_HTTPD
 #pylint: enable=W0603
             MASTER_HTTPD = httpd
-            debug_logger.info("HTTP server started on port 8000")            
+            debug_logger.info("HTTP server started on port 8000")
 
             import select
 
             # In __run_http_server():
             # Set socket to non-blocking mode
             httpd.socket.setblocking(False)
+            # httpd.socket.settimeout (0.5) #TODO Review
 
             # Manual polling loop with select
             while MASTER_HTTPD is not None:
@@ -332,6 +339,7 @@ def __run_http_server ():
                     debug_logger.error(f"HTTP request error: {e}")
 
             debug_logger.info("HTTP server loop exited")
+            httpd.shutdown () # TODO Review
     except OSError as ose:
         if ose.errno != 98:
             raise ose
@@ -420,12 +428,19 @@ def __run_http_server_2 ():
             while MASTER_HTTPD is not None:
                 try:
                     debug_logger.info ("Before handling a request")
+                    # Set socket timeout, again. TODO Review
+                    httpd.socket.settimeout(0.5)                    
                     httpd.handle_request()
-                    debug_logger.info ("After having handled a request")
+                    if MASTER_HTTPD is None:
+                        debug_logger.info ("HTTP server got kill request")
+                    else:
+                        debug_logger.info ("After having handled a request")
                 except socket.timeout:
                     debug_logger.debug ("Socket timeout in polling loop")
                     continue
+#pylint: disable=W0718
                 except Exception as e:
+#pylint: enable=W0718
                     debug_logger.error(f"HTTP request error: {e}")
 
             # debug_logger.info("serve_forever() exited")
@@ -462,7 +477,9 @@ def show_or_display_file (filename : str, protocol : str = "file",
         absolute_path_string = cwd + "\\" + filename
         filename = pathlib.Path(absolute_path_string).as_uri()
     if protocol == "http":
+        debug_logger.debug ("Before start_http_server")
         start_http_server (kill_existing=kill_existing_server)
+        debug_logger.debug ("After start_http_server")        
         # start_http_server () TODO Review
         webbrowser.open ("http://localhost:8000/"+filename)
     elif protocol == "file":
@@ -471,17 +488,25 @@ def show_or_display_file (filename : str, protocol : str = "file",
         raise ValueError ("Incorrect protocol <" + protocol + ">")
 
 def __kill_http_server_if_running():
+#pylint: disable=W0603
     global running_http_server, MASTER_HTTPD
+#pylint: enable=W0603
 
     if running_http_server is not None:
+        if not running_http_server.is_alive ():
+            debug_logger.info ("HTTP server is already dead")
+            return
         debug_logger.info("Stopping HTTP server")
         MASTER_HTTPD = None
 
         running_http_server.join(timeout=3.0)
-        if running_http_server.is_alive():
-            debug_logger.error("HTTP server thread still alive")
+        if running_http_server is not None:
+            if running_http_server.is_alive():
+                debug_logger.error("HTTP server thread still alive")
 
         running_http_server = None
+    else:
+        debug_logger.info ("HTTP server is already closed")
 
 # TODO Remove
 def __kill_http_server_if_running_2 ():
