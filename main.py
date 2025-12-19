@@ -84,7 +84,7 @@ DO_MINIMALIST_PAUSE_HANDLING = True
 DO_FULL_PAUSE_HANDLING       = False
 DISABLE_IP_CLOCKS            = False
 ADD_EXIT_BUTTON              = True
-DO_HTTP_SERVER_RESTART       = True
+DO_HTTP_SERVER_RESTART       = False
 DebugLogger.enable (do_enable=True, to_stdout=True)
 
 class ResourceMonitor:
