@@ -106,10 +106,10 @@ Go back to the Celeste app with the back button.
 
 ### Astrometric Data<a name="astrometry"></a>
 
-The app is pre-packaged with astrometric data from 2024 to 2029.
+The app is pre-packaged with astrometric data from 2024 to 2030.
 Entering dates outside this range will result in an error.
 If you want to do sight reductions for historical or future
-(before 2024 or beyond 2029) observations you can use the
+(before 2024 or beyond 2030) observations you can use the
 [script&nbsp;solution](https://github.com/alinnman/celestial-navigation/blob/main/INSTALL.md).
 
 ### Feedback <a name="feedback"></a>
@@ -126,10 +126,10 @@ regulate the volume button accordingly.
 When you run the app for the first time you will see messages appear,
 explaining briefly the mechanisms and what to expect and do.
 You can press the checkbox <tt><b>"Don't show this message again"</b></tt>
-to get rid of a particular message.
+to get rid of a particular message.<br>
 *Note: In order to re-instate all messages you can perform a sight reduction*
 *with zero (0) active sights. Disable all three sights and click*
-*"Perform Sight Reduction"*.
+*"<tt>Perform Sight Reduction!</tt>"*.
 
 ### Units of measurement <a name="units"></a>
 
