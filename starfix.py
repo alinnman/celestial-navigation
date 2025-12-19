@@ -46,8 +46,8 @@ class Testing:
 class DebugLogger:
     ''' Simple debug utility to use when needed. Set enable_debug=True '''
 
-    enable_debug = True
-    output_stdout = True
+    enable_debug = False
+    output_stdout = False
 
     def _output (self, message : str, level : str="INFO"):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
