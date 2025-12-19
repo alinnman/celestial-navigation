@@ -31,7 +31,7 @@ source.exclude_dirs = .venv, .venv-buildozer, vscode, colab, maths, nautical_alm
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
-source.exclude_patterns = calibration.py, download_tiles.py, starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py, plotclient_test.py, kivyapp.*.json, notebook.*.json, map.html
+source.exclude_patterns = calibration.py, download_tiles.py, starfixdata_stat*.py, starfixdata_sea*.py, testing*.py, launch*.py, terrestrial.py, notebook*.py, plotclient_test.py, kivyapp.*.json, notebook.*.json, map.html, message_settings.json
 
 # (str) Application versioning (method 1)
 version = 0.2.43
