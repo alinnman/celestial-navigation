@@ -194,7 +194,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
         # ANY request counts as activity
-        old_time = MyHandler.last_activity_time
+        # old_time = MyHandler.last_activity_time
         MyHandler.last_activity_time = time.time()
 
         #if self.path.startswith('/heartbeat'):
@@ -313,8 +313,9 @@ def __run_http_server ():
 #pylint: enable=W0603
             MASTER_HTTPD = httpd
             debug_logger.info("HTTP server started on port 8000")
-
+#pylint: disable=C0415
             import select
+#pylint: enable=C0415
 
             # In __run_http_server():
             # Set socket to non-blocking mode
@@ -326,7 +327,7 @@ def __run_http_server ():
                 try:
                     # Use select to wait for incoming connection with timeout
                     readable, _, _ = select.select([httpd.socket], [], [], 0.5)
-                    
+
                     if readable:
                         debug_logger.info("Before handling a request")
                         httpd.handle_request()
@@ -334,8 +335,9 @@ def __run_http_server ():
                     else:
                         # No request pending - loop continues and checks MASTER_HTTPD
                         debug_logger.debug("Select timeout - checking shutdown flag")
-                        
+#pylint: disable=W0718
                 except Exception as e:
+#pylint: enable=W0718
                     debug_logger.error(f"HTTP request error: {e}")
 
             debug_logger.info("HTTP server loop exited")
@@ -429,7 +431,7 @@ def __run_http_server_2 ():
                 try:
                     debug_logger.info ("Before handling a request")
                     # Set socket timeout, again. TODO Review
-                    httpd.socket.settimeout(0.5)                    
+                    httpd.socket.settimeout(0.5)
                     httpd.handle_request()
                     if MASTER_HTTPD is None:
                         debug_logger.info ("HTTP server got kill request")
@@ -479,7 +481,7 @@ def show_or_display_file (filename : str, protocol : str = "file",
     if protocol == "http":
         debug_logger.debug ("Before start_http_server")
         start_http_server (kill_existing=kill_existing_server)
-        debug_logger.debug ("After start_http_server")        
+        debug_logger.debug ("After start_http_server")
         # start_http_server () TODO Review
         webbrowser.open ("http://localhost:8000/"+filename)
     elif protocol == "file":
@@ -511,12 +513,12 @@ def __kill_http_server_if_running():
 # TODO Remove
 def __kill_http_server_if_running_2 ():
 #pylint: disable=C0415
-    import requests
+#    import requests
 #pylint: enable=C0415
 
 #pylint: disable=W0603
-    global running_http_server
-    global MASTER_HTTPD
+    # global running_http_server
+    # global MASTER_HTTPD
 #pylint: enable=W0603
 
     def killer ():
@@ -527,34 +529,35 @@ def __kill_http_server_if_running_2 ():
     kill_thread.start()
     kill_thread.join (timeout = 1.0)
 
-    if False:
-        if running_http_server is not None:
-            try:
-                requests.get ("http://localhost:8000/kill_server", timeout=1)
+    #if False:
+    #    if running_http_server is not None:
+    #        try:
+    #            requests.get ("http://localhost:8000/kill_server", timeout=1)
     #pylint: disable=W0718
-            except BaseException as exc:
+    #        except BaseException as exc:
     #pylint: enable=W0718
-                debug_logger.error (f"Failed to issue KILL request {str(exc)}")
+    #            debug_logger.error (f"Failed to issue KILL request {str(exc)}")
     #pylint: disable=W0603
                 # global MASTER_HTTPD
     #pylint: enable=W0603
-                if MASTER_HTTPD is not None:
-                    try:
-                        debug_logger.info (f"Will perform hard shutdown of HTTP server {str(MASTER_HTTPD)}")
-                        MASTER_HTTPD.shutdown()
-                        debug_logger.info ("Performed hard shutdown of HTTP server")
-                        MASTER_HTTPD = None
-                        running_http_server = None
+    #            if MASTER_HTTPD is not None:
+    #                try:
+    #                    debug_logger.info\
+    #                        (f"Will perform hard shutdown of HTTP server {str(MASTER_HTTPD)}")
+    #                    MASTER_HTTPD.shutdown()
+    #                    debug_logger.info ("Performed hard shutdown of HTTP server")
+    #                    MASTER_HTTPD = None
+    #                    running_http_server = None
     #pylint: disable=W0718
-                    except BaseException as exc2:
+    #                except BaseException as exc2:
     #pylint: enable=W0718
-                        debug_logger.error (f"Failed to do hard shutdown {str(exc2)}")
-            if running_http_server is not None:
-                assert isinstance (running_http_server, Thread)
-                running_http_server.join (timeout=1.0)
-                #if running_http_server.is_alive ():
+    #                    debug_logger.error (f"Failed to do hard shutdown {str(exc2)}")
+    #        if running_http_server is not None:
+    #            assert isinstance (running_http_server, Thread)
+    #            running_http_server.join (timeout=1.0)
+    #            #if running_http_server.is_alive ():
                 #    debug_logger.error ("Http server is still alive")
-                running_http_server = None
+    #            running_http_server = None
 
 def start_http_server (kill_existing : bool = False): #TODO Maybe abolish kill_existing parameter
     ''' Start an http server for showing maps '''

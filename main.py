@@ -910,7 +910,7 @@ class ShowMapButton (AppButton):
                 #with open(file_name, 'w', encoding='utf-8') as f:
                 #    f.write(html_content)
 
-                show_or_display_file (file_name, protocol="http", 
+                show_or_display_file (file_name, protocol="http",
                                       kill_existing_server=DO_HTTP_SERVER_RESTART)
 
                 #debug_logger.info("=== Scheduling HTTP server shutdown in 20s ===")
@@ -932,7 +932,7 @@ class PasteConfigButton (AppButton):
     def __init__(self, form, **kwargs):
         super().__init__(active = True, **kwargs)
         self.form = form
-        self.text = "Paste Config"
+        self.text = "Paste Data"
 # pylint: disable=E1101
         self.bind(on_press=self.callback)
 # pylint: enable=E1101
@@ -961,7 +961,7 @@ class CopyConfigButton (AppButton):
     def __init__(self, form, **kwargs):
         super().__init__(active = True, **kwargs)
         self.form = form
-        self.text = "Copy Config"
+        self.text = "Copy Data"
 # pylint: disable=E1101
         self.bind(on_press=self.callback)
 # pylint: enable=E1101
@@ -1004,7 +1004,7 @@ class OnlineHelpButton (AppButton):
         #with open(mod_file_name, 'w', encoding='utf-8') as f:
         #    f.write(html_content)
 
-        show_or_display_file (file_name, protocol="http", 
+        show_or_display_file (file_name, protocol="http",
                               kill_existing_server=DO_HTTP_SERVER_RESTART)
 
 class ExitButton (AppButton):
@@ -1747,11 +1747,8 @@ class InputForm(GridLayout):
         bl = FormRow()
         butt = CopyConfigButton(self)
         bl.add_widget(butt)
-        self.add_widget(bl)
-
-        bl = FormRow()
-        butt = PasteConfigButton(self)
-        bl.add_widget(butt)
+        butt2 = PasteConfigButton(self)
+        bl.add_widget(butt2)
         self.add_widget(bl)
 
         bl = FormRow()

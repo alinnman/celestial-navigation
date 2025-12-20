@@ -106,7 +106,8 @@ Go back to the Celeste app with the back button.
 
 ### Astrometric Data<a name="astrometry"></a>
 
-The app is pre-packaged with astrometric data from 2024 to 2030.
+The app is pre-packaged with astrometric data (nautical almanac)
+from 2024 to 2030.
 Entering dates outside this range will result in an error.
 If you want to do sight reductions for historical or future
 (before 2024 or beyond 2030) observations you can use the
@@ -317,10 +318,10 @@ around the intersection point, since this can be a help for hybrid work
 with paper charts.
 
 | Browser | Works Online | Works Offline | Supports touch of minute gridlines |
-| :------ | :----------- | :------------ | :--------------------------|
-| MS Edge | YES          | YES           | YES                        |
-| Samsung Internet | YES | YES           | YES                        |
-| Chrome  | YES          | <span style="color: red;">NO</span>   | YES  |
+| :------ | :----------- | :------------ | :----------------------------------|
+| MS Edge | YES          | YES           | YES                                |
+| Samsung Internet | YES | YES           | YES                                |
+| Chrome  | YES          | <span style="color: red;">NO</span>   | YES        |
 | Firefox | YES          | YES           | <span style="color: red;">NO<span> |
 | Opera   | <span style="color: red;">NO</span> | <span style="color: red;">NO</span> | <span style="color: red;">NO</span>  |
 | DuckDuckGo | <span style="color: red;">NO</span> | <span style="color: red;">NO</span>  | <span style="color: red;">NO</span> |
@@ -384,13 +385,13 @@ performed sight reduction. This is for energy conservation.
 
 ## Working with configurations<a name="configs"></a>
 
-You can press the <tt><b>"Copy Config"</b></tt> button to copy the results of
+You can press the <tt><b>"Copy Data"</b></tt> button to copy the results of
 the last successful sight reduction to the clipboard.
 You can use this to save your work easily, using a document solution of
 your own choice. Just paste the contents into a suitable document
 in another app, and save.
 
-When you press the button <tt><b>"Paste Config"</b></tt> you can transfer
+When you press the button <tt><b>"Paste Data"</b></tt> you can transfer
 back a saved configuration from another app through the clipboard.
 If the clipboard does not contain a valid configuration
 you will hear an error sound, and the paste operation will be aborted.
