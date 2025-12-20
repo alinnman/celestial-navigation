@@ -40,6 +40,9 @@
     1. [Using standard Wi-Fi](#standard-wifi)
     1. [Using a Mobile Hotspot](#hotspot)
     1. [Specific app configuration](#app-configurations)
+1. [Saving and restoring data](#savingrestoring)
+    1. [Position data](#savepos)
+    1. [All data](#configs)
 1. [Working with configurations](#configs)
 1. [Installation and prerequisites](#installation)
 1. [Tips for Testing (without a sextant?)](#testing_tips)
@@ -383,7 +386,14 @@ devices. Another option is using a second phone as a Mobile Hotspot server.
 The app broadcasts the position only for 20 seconds after the last
 performed sight reduction. This is for energy conservation.
 
-## Working with configurations<a name="configs"></a>
+## Saving and restoring data<a name="savingrestoring"></a>
+
+### Position data<a name="savepos"></a>
+
+You can press the <tt><b>"Copy pos"</b></tt> button to save the currently
+computed position to the clipboard.
+
+### All data<a name="configs"></a>
 
 You can press the <tt><b>"Copy Data"</b></tt> button to copy the results of
 the last successful sight reduction to the clipboard.

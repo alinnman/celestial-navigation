@@ -85,7 +85,7 @@ DO_FULL_PAUSE_HANDLING       = False
 DISABLE_IP_CLOCKS            = False
 ADD_EXIT_BUTTON              = True
 DO_HTTP_SERVER_RESTART       = False
-DebugLogger.enable (do_enable=True, to_stdout=True)
+DebugLogger.enable (do_enable=False, to_stdout=False)
 
 class ResourceMonitor:
     """Monitor system resources to identify leaks"""
@@ -826,6 +826,7 @@ class ExecButton (AppButton):
             CelesteApp.message_popup ("You have made a successful sight reduction!\n"
                                       "Use the \"Show Map!\" button to see the result!",\
                                       CelesteApp.MSG_ID_SIGHT_REDUCTION_SUCCESS)
+            the_form.set_position (sr)
         else:
             # Failed sight reduction
             CelesteApp.play_error_sound ()
@@ -954,6 +955,28 @@ class PasteConfigButton (AppButton):
         #    appx = App.get_running_app ()
         #    assert isinstance (appx, CelesteApp)
         #    appx.stress_test_lifecycle ()
+
+class CopyPosButton (AppButton):
+    ''' This button copies the last position (latlon) to the clipboard'''
+
+    def __init__(self, form, **kwargs):
+        super().__init__(active = False, **kwargs)
+        self.form = form
+        self.text = "Copy Position"
+# pylint: disable=E1101
+        self.bind(on_press=self.callback)
+# pylint: enable=E1101
+
+    @staticmethod
+    def callback(instance):
+        ''' Responds to button click and copies position to clipboard '''
+        assert isinstance(instance, CopyPosButton)
+        the_form = instance.form
+        assert isinstance (the_form, InputForm)
+        p = the_form.get_position ()
+        if p is not None:
+            CelesteApp.play_click_sound ()
+            Clipboard.copy (p)
 
 class CopyConfigButton (AppButton):
     """ This button copies the config to the clipboard """
@@ -1337,8 +1360,8 @@ class CelesteApp (App):
         ''' Produce a warning/error message popup '''
         if not CelesteApp.initialized:
             Clock.schedule_once(partial(CelesteApp._error_popup_doer, msg), 0.1)
-            return
-        CelesteApp._error_popup_doer (msg)
+        else:
+            CelesteApp._error_popup_doer (msg)
 
     def get_root (self):
         ''' Return the root widget '''
@@ -1385,7 +1408,7 @@ class CelesteApp (App):
                 # This unschedules the clock callback that drives scrolling
             #    Clock.unschedule(self.m_root.update_from_scroll)
             #    debug_logger.info(f"ScrollView stopped at position {self.m_root.scroll_y}")
-                # CelesteApp.play_click_sound () # TODO Remove
+                # CelesteApp.play_click_sound ()
                 # pass
 
             # Save current state
@@ -1625,6 +1648,8 @@ class InputForm(GridLayout):
 
         self.data_widget_container = {}
 
+        self.__position = None
+
         # Add font scale info button
         if DEBUG_FONT_HANDLING:
             self.add_font_scale_info()
@@ -1745,6 +1770,12 @@ class InputForm(GridLayout):
         self.__show_map_button = butt
 
         bl = FormRow()
+        butt = CopyPosButton(self)
+        bl.add_widget(butt)
+        self.add_widget(bl)
+        self.__copy_pos_button = butt
+
+        bl = FormRow()
         butt = CopyConfigButton(self)
         bl.add_widget(butt)
         butt2 = PasteConfigButton(self)
@@ -1838,6 +1869,15 @@ class InputForm(GridLayout):
           tuple [tuple | LatLonGeodetic | NoneType, SightCollection | Sight | NoneType]:
         ''' Return the set of active cel nav intersections objects '''
         return self.__active_intersections, self.__active_collection
+
+    def set_position (self, new_pos : str):
+        ''' Set the calculated latlon position '''
+        self.__position = new_pos
+        self.__copy_pos_button.set_active (True)
+
+    def get_position (self) -> str | NoneType:
+        ''' Get the calculated latlon position '''
+        return self.__position
 
     def populate_widgets(self):
         ''' Read the data from json and populate all fields '''
