@@ -1030,6 +1030,81 @@ class OnlineHelpButton (AppButton):
         show_or_display_file (file_name, protocol="http",
                               kill_existing_server=DO_HTTP_SERVER_RESTART)
 
+class ConfirmExitPopup(Popup):
+    """Confirmation dialog for app exit"""
+
+    def __init__(self, **kwargs):
+        # Apply font scaling
+        if 'title_size' not in kwargs:
+            kwargs['title_size'] = sp(16 * font_config.get_font_size_factor())
+
+        super().__init__(
+            title='Confirm Exit',
+            size_hint=(0.8, 0.4),
+            auto_dismiss=False,
+            **kwargs
+        )
+
+        # Create layout
+        layout = BoxLayout(
+            orientation='vertical',
+            padding=font_config.get_padding(),
+            spacing=font_config.get_spacing()
+        )
+
+        # Message label
+        message = Label(
+            text='Are you sure you want to exit?',
+            size_hint_y=0.6,
+            font_size=sp(14 * font_config.get_font_size_factor())
+        )
+        layout.add_widget(message)
+
+        # Button container
+        button_box = BoxLayout(
+            orientation='horizontal',
+            size_hint_y=0.4,
+            spacing=font_config.get_spacing()
+        )
+
+        # Yes button
+        yes_btn = Button(
+            text='Yes',
+            font_size=sp(14 * font_config.get_font_size_factor()),
+            background_color=(1.0, 0.3, 0.3, 1)
+        )
+#pylint: disable=E1101
+        yes_btn.bind(on_press=self.confirm_exit)
+#pylint: enable=E1101
+
+        # No button
+        no_btn = Button(
+            text='No',
+            font_size=sp(14 * font_config.get_font_size_factor()),
+            background_color=(0.3, 1.0, 0.3, 1)
+        )
+#pylint: disable=E1101
+        no_btn.bind(on_press=self.dismiss)
+#pylint: enable=E1101
+
+        button_box.add_widget(yes_btn)
+        button_box.add_widget(no_btn)
+        layout.add_widget(button_box)
+
+        self.content = layout
+
+    def confirm_exit(self, _):
+        """Actually exit the app"""
+        debug_logger.info("Exit confirmed by user")
+        self.dismiss()
+
+        # Kill services
+        #debug_logger.info("Stopping HTTP server")
+        #kill_http_server()
+
+        debug_logger.info("Forcing exit")
+        os._exit(0)
+
 class ExitButton (AppButton):
     ''' Button for exiting the app '''
     def __init__(self, **kwargs):
@@ -1042,10 +1117,17 @@ class ExitButton (AppButton):
     @staticmethod
     def callback(_):
         ''' Called when pressing the exit button '''
-        debug_logger.info ("Exit button pressed")
-        appx = App.get_running_app ()
-        assert isinstance (appx, CelesteApp)
-        debug_logger.info ("Exit button pressed, now preparing for exit")
+
+        debug_logger.info("Exit button pressed - showing confirmation")
+        CelesteApp.play_click_sound()
+
+        popup = ConfirmExitPopup()
+        popup.open()
+
+        #debug_logger.info ("Exit button pressed")
+        #appx = App.get_running_app ()
+        #assert isinstance (appx, CelesteApp)
+        #debug_logger.info ("Exit button pressed, now preparing for exit")
 
         # TODO Refactor this exit routine
         # Kill NMEA 0138 server (if active)
@@ -1055,8 +1137,8 @@ class ExitButton (AppButton):
         #    kill_http_server ()
         #appx.stop()
         # Don't wait for daemon threads - just exit
-        debug_logger.info("Forcing exit")
-        os._exit(0)  # Nuclear option - kills everything immediately
+        #debug_logger.info("Forcing exit")
+        #os._exit(0)  # Nuclear option - kills everything immediately
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
