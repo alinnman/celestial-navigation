@@ -15,7 +15,7 @@ You need a Google/Gmail account to run the code in the notebook*.
 
 ## Mobile app
 
-You can try an Android app for basic sight reductions, based on this library.
+You can try an Android app for basic sight reductions, based on this toolkit.
 Download it from
 [Google Play here](https://play.google.com/store/apps/details?id=linnman.net.celeste)
 
