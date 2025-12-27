@@ -1630,12 +1630,12 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 #pylint: enable=R0915
 #pylint: enable=R0917
 
-def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
+def get_azimuth (to_pos : LatLonGeocentric, from_pos : LatLonGeocentric) -> float:
     ''' Return the azimuth of the to_pos sight from from_pos sight
         Returns the azimuth in degrees (0-360)
         Parameters:
             to_pos : LatLon of the observed position
-            from_pos : LatLon of the observing positio
+            from_pos : LatLon of the observing position
         Returns: 
             The aziumuth angle (degrees 0-360)
     '''
@@ -1653,16 +1653,84 @@ def get_azimuth (to_pos : LatLon, from_pos : LatLon) -> float:
         and (to_pos.get_lon() == from_pos.get_lon()):
         return 0
 
+    # For all other cases we make a projection of the angle
     a = to_rectangular (to_pos)
     b = to_rectangular (from_pos)
     north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
     east_tangent = normalize_vect(cross_product (north_pole, b))
     north_tangent = normalize_vect (cross_product (b, east_tangent))
+    # Now we have a compass rose for the tangents
     direction = normalize_vect(subtract_vecs (a,b))
     fac1 = dot_product (direction, north_tangent)
     fac2 = dot_product (direction, east_tangent)
     r = rad_to_deg (atan2 (fac2, fac1))
     return r % 360
+
+def get_azimuth_general(to_pos: LatLon, from_pos: LatLon) -> float:
+    '''
+    Return the geodetic azimuth of to_pos as seen from from_pos.
+    
+    Parameters:
+        to_pos: LatLon of the observed position (typically a celestial GP)
+        from_pos: LatLonGeodetic of the observer position
+        
+    Returns:
+        The azimuth angle in degrees (0-360), measured geodetically
+    '''
+
+    if isinstance (to_pos, LatLonGeocentric) and isinstance (from_pos, LatLonGeocentric):
+        return get_azimuth (to_pos, from_pos)
+
+    # Special cases at poles
+    if from_pos.get_lat() == 90:
+        return (-to_pos.get_lon()) % 360
+    if from_pos.get_lat() == -90:
+        return to_pos.get_lon() % 360
+
+    # Convert observer to geocentric for vector operations
+    if isinstance (from_pos, LatLonGeodetic):
+        from_pos_gc = from_pos.get_latlon()
+    else:
+        from_pos_gc = from_pos
+
+    # Check for antipodes and same position
+    if (to_pos.get_lat() == -from_pos_gc.get_lat()) and \
+       (((to_pos.get_lon() - from_pos_gc.get_lon()) % 180) == 0):
+        return 0
+    if (to_pos.get_lat() == from_pos_gc.get_lat()) and \
+       (to_pos.get_lon() == from_pos_gc.get_lon()):
+        return 0
+
+    # Get vectors
+    a = to_rectangular(to_pos)
+    b_gc = to_rectangular(from_pos_gc)
+
+    # Calculate geodetic north and east at observer position
+    # The key difference: use geodetic latitude for the tangent plane
+    phi_gd = deg_to_rad(from_pos.get_lat())  # Geodetic latitude
+    lam = deg_to_rad(from_pos.get_lon())
+
+    # Geodetic north tangent (in ECEF coordinates)
+    # This is tangent to the meridian at the geodetic latitude
+    north_tangent = normalize_vect([
+        -sin(phi_gd) * cos(lam),
+        -sin(phi_gd) * sin(lam),
+        cos(phi_gd)
+    ])
+
+    # East tangent (same in both systems - perpendicular to meridian plane)
+    north_pole = [0.0, 0.0, 1.0]
+    east_tangent = normalize_vect(cross_product(north_pole, b_gc))
+
+    # Project direction vector onto tangent plane
+    direction = normalize_vect(subtract_vecs(a, b_gc))
+
+    fac_north = dot_product(direction, north_tangent)
+    fac_east = dot_product(direction, east_tangent)
+
+    azimuth = rad_to_deg(atan2(fac_east, fac_north))
+    return azimuth % 360
+
 
 ################################################
 # Time management
@@ -2662,7 +2730,7 @@ class Sight :
         the_radius = self.get_circle(geodetic=geodetic).get_radius ()
         return p_distance - the_radius
 
-    def get_azimuth (self, from_pos : LatLon) -> float:
+    def get_azimuth (self, from_pos : LatLonGeocentric) -> float:
         ''' Return the azimuth of this sight (to the GP) from a particular point on Earth 
             Returns the azimuth in degrees (0-360)'''
         return get_azimuth (self.get_gp(), from_pos)
@@ -2678,6 +2746,8 @@ class Sight :
         c_latlon = c.get_latlon()
         c_latlon_d = LatLonGeodetic (ll = c_latlon)
         time_string = str(self.get_time())
+
+        # azimuth_string = str(self.get_azimuth())
 
 #pylint: disable=C0415
         from folium import Map, Marker, Icon
