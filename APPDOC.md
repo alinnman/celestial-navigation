@@ -553,6 +553,15 @@ This happens if your network has degraded to very slow speed, but still with
 a (barely) live connection/ip-address. If you encounter this problem you are
 advised to disable wifi and mobile internet manually in Android settings.
 
+#### Showing a coarse map
+
+In some cases the map display will show a
+coarse map despite you having an active
+internet connection. The cause is unknown 
+but likely caused by a temporary disturbance of your internet connection. 
+Re-try the map generation and check your
+internet connection. 
+
 ## More Information<a name="more_information"></a>
 
 This app is part of an open-source software library for celestial navigation.
