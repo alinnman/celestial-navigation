@@ -25,10 +25,9 @@ but the android cross-compiling kit
 
 ### A mobile app (Android)
 
-A mobile app has been developed but it is still in beta stage and not
-yet published on Google Play.<br>
-[See here](APPDOC.md) for instructions on how to **use** the app.<br>
-[Read more about the app and how to install it here](DEVELOPMENT.md#apps)
+A mobile app has been developed and it provides a practical way of accessing 
+sight reductions using 2 or 3 sights. 
+The app is available [here](https://play.google.com/store/apps/details?id=linnman.net.celeste)
 
 ### Python scripts and notebooks
 
