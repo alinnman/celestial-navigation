@@ -320,7 +320,7 @@ def __run_http_server ():
             # In __run_http_server():
             # Set socket to non-blocking mode
             httpd.socket.setblocking(False)
-            # httpd.socket.settimeout (0.5) #TODO Review
+            # httpd.socket.settimeout (0.5)
 
             # Manual polling loop with select
             while MASTER_HTTPD is not None:
@@ -363,47 +363,6 @@ def __run_http_server_2 ():
     port = 8000
 
     Handler = MyHandler
-
-#pylint: disable=W0612
-    # TODO Remove
-    #def inactivity_watchdog():
-
-    #    """Kill server after sustained inactivity (no heartbeats)"""
-    #    # Initialize activity time when watchdog starts
-    #    MyHandler.last_activity_time = time.time()
-    #    debug_logger.info(f"Watchdog started at {MyHandler.last_activity_time}")
-
-    #    check_count = 0
-    #    while MASTER_HTTPD is not None:
-    #        check_count += 1
-    #        if MyHandler.last_activity_time is not None:
-    #            time_since_activity = time.time() - MyHandler.last_activity_time
-
-    #            # Log every 5 seconds for debugging
-    #            if check_count % 5 == 0:
-    #                debug_logger.info\
-    #                (f"Watchdog check #{check_count}: {time_since_activity:.1f}s since activity")
-
-    #            # Kill after 15 seconds of no heartbeats from any page
-    #            if time_since_activity > 15.0:
-    #                debug_logger.info\
-    #                (f"!!! WATCHDOG TRIGGERING KILL after {time_since_activity:.1f}s inactivity")
-    #                try:
-    #                    if MASTER_HTTPD is not None:
-    #                        debug_logger.info("Calling MASTER_HTTPD.shutdown()")
-    #                        MASTER_HTTPD.shutdown()
-    #                        debug_logger.info("MASTER_HTTPD.shutdown() completed")
-#pylint: disable=W0718
-    #                except BaseException as e:
-#pylint: enable=W0718
-    #                    debug_logger.error(f"Error during shutdown: {e}")
-    #                debug_logger.info("Watchdog exiting")
-    #                return
-
-    #        time.sleep(1)
-
-    #    debug_logger.info("Watchdog exiting - MASTER_HTTPD is None")
-#pylint: enable=W0612
 
     try:
         host_name = "127.0.0.1"
@@ -1641,9 +1600,11 @@ def get_azimuth (to_pos : LatLonGeocentric, from_pos : LatLonGeocentric) -> floa
     '''
     # From the poles we need to calculate azimuths differently
     if from_pos.get_lat() == 90:
-        return (-to_pos.get_lon()) % 360
+        # return (-to_pos.get_lon()) % 360
+        return 180
     if from_pos.get_lat() == -90:
-        return to_pos.get_lon() % 360
+        # return to_pos.get_lon() % 360
+        return 0
     # Antipodes have to be handled
     if (to_pos.get_lat() == -from_pos.get_lat()) \
         and (((to_pos.get_lon() - from_pos.get_lon()) % 180) == 0):
@@ -1683,9 +1644,11 @@ def get_azimuth_general(to_pos: LatLon, from_pos: LatLon) -> float:
 
     # Special cases at poles
     if from_pos.get_lat() == 90:
-        return (-to_pos.get_lon()) % 360
+        # return (-to_pos.get_lon()) % 360
+        return 180
     if from_pos.get_lat() == -90:
-        return to_pos.get_lon() % 360
+        # return to_pos.get_lon() % 360
+        return 0
 
     # Convert observer to geocentric for vector operations
     if isinstance (from_pos, LatLonGeodetic):
@@ -3132,7 +3095,8 @@ class SightCollection:
     def render_folium\
           (self, intersections : tuple [LatLon, LatLon] | LatLon | NoneType = None,\
            accuracy : float = 1, label_text = "Intersection",
-           draw_grid = True, draw_markers = True, draw_azimuths = False) -> object:
+           draw_grid = True, draw_markers = True,
+           draw_azimuths = False, azimuths_in_marker = True) -> object:
         ''' Renders a folium object (Map) to be used for map plotting'''
 
         check_folium ()
@@ -3190,10 +3154,25 @@ class SightCollection:
                 tooltip="Radius : " + str(accuracy) + " nm."
             ).add_to(the_map)
             if draw_markers:
+                popup_text = label_text + "\n" + get_representation(intersections,1)
+                if azimuths_in_marker:
+                    popup_text += "\nAzimuths:\n"
+                    counter = 0
+                    for s in the_sf_list:
+                        counter += 1
+                        popup_text += "("
+                        popup_text += "[#" + str(counter) + "]"
+                        popup_text += str(s.get_object_name())
+                        popup_text += "=" +\
+                            str(round(get_azimuth_general (s.get_gp(), int_geodetic),1))
+                        popup_text += ")"
+                        popup_text += "\n"
+
+                        debug_logger.debug (message = popup_text)
                 Marker(
                     location=[int_geodetic.get_lat(), int_geodetic.get_lon()+lon_adjustment],
                     tooltip=label_text,
-                    popup= label_text + " " + get_representation(intersections,1),
+                    popup= popup_text,
                     icon=Icon(icon="user"),
                 ).add_to(the_map)
         else:
