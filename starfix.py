@@ -469,55 +469,6 @@ def __kill_http_server_if_running():
     else:
         debug_logger.info ("HTTP server is already closed")
 
-# TODO Remove
-def __kill_http_server_if_running_2 ():
-#pylint: disable=C0415
-#    import requests
-#pylint: enable=C0415
-
-#pylint: disable=W0603
-    # global running_http_server
-    # global MASTER_HTTPD
-#pylint: enable=W0603
-
-    def killer ():
-        if MASTER_HTTPD is not None:
-            MASTER_HTTPD.shutdown()
-
-    kill_thread = threading.Thread(target=killer, daemon=True)
-    kill_thread.start()
-    kill_thread.join (timeout = 1.0)
-
-    #if False:
-    #    if running_http_server is not None:
-    #        try:
-    #            requests.get ("http://localhost:8000/kill_server", timeout=1)
-    #pylint: disable=W0718
-    #        except BaseException as exc:
-    #pylint: enable=W0718
-    #            debug_logger.error (f"Failed to issue KILL request {str(exc)}")
-    #pylint: disable=W0603
-                # global MASTER_HTTPD
-    #pylint: enable=W0603
-    #            if MASTER_HTTPD is not None:
-    #                try:
-    #                    debug_logger.info\
-    #                        (f"Will perform hard shutdown of HTTP server {str(MASTER_HTTPD)}")
-    #                    MASTER_HTTPD.shutdown()
-    #                    debug_logger.info ("Performed hard shutdown of HTTP server")
-    #                    MASTER_HTTPD = None
-    #                    running_http_server = None
-    #pylint: disable=W0718
-    #                except BaseException as exc2:
-    #pylint: enable=W0718
-    #                    debug_logger.error (f"Failed to do hard shutdown {str(exc2)}")
-    #        if running_http_server is not None:
-    #            assert isinstance (running_http_server, Thread)
-    #            running_http_server.join (timeout=1.0)
-    #            #if running_http_server.is_alive ():
-                #    debug_logger.error ("Http server is still alive")
-    #            running_http_server = None
-
 def start_http_server (kill_existing : bool = False): #TODO Maybe abolish kill_existing parameter
     ''' Start an http server for showing maps '''
 #pylint: disable=W0603
@@ -905,21 +856,6 @@ def get_decimal_degrees (degrees : int | float, minutes : int | float, seconds :
 def get_decimal_degrees_from_tuple (t : tuple) -> float:
     ''' Return decimal value for an angle, represented as a tuple (degrees, minutes, seconds)'''
     return get_decimal_degrees (t[0], t[1], t[2])
-
-#def rotate_vector\
-#    TODO Review, and possibly remove
-#    (vec : list [float], rot_vec : list [float], angle_radians : float) -> list [float]:
-#    '''
-#    Rotate a vector around a rotation vector. Based on Rodrigues formula.
-#    https://en.wikipedia.org/wiki/Rodrigues%27_formula
-#    '''
-#    assert len(vec) == len(rot_vec) == 3
-
-#    v1 = mult_scalar_vect (cos(angle_radians), vec)
-#    v2 = mult_scalar_vect (sin(angle_radians), cross_product(rot_vec, vec))
-#    v3 = mult_scalar_vect (dot_product(rot_vec,vec)*(1.0-cos(angle_radians)), rot_vec)
-#    result = add_vecs (v1, add_vecs(v2, v3))
-#    return result
 
 def rotate_vector_2 (vec : list [float], rot_vec : list [float],
                      angle_radians : float, tolerance : float =1e-15):
@@ -1589,45 +1525,7 @@ https://math.stackexchange.com/questions/4510171/how-to-find-the-intersection-of
 #pylint: enable=R0915
 #pylint: enable=R0917
 
-def get_azimuth (to_pos : LatLonGeocentric, from_pos : LatLonGeocentric) -> float:
-    ''' Return the azimuth of the to_pos sight from from_pos sight
-        Returns the azimuth in degrees (0-360)
-        Parameters:
-            to_pos : LatLon of the observed position
-            from_pos : LatLon of the observing position
-        Returns: 
-            The aziumuth angle (degrees 0-360)
-    '''
-    # From the poles we need to calculate azimuths differently
-    if from_pos.get_lat() == 90:
-        # return (-to_pos.get_lon()) % 360
-        return 180
-    if from_pos.get_lat() == -90:
-        # return to_pos.get_lon() % 360
-        return 0
-    # Antipodes have to be handled
-    if (to_pos.get_lat() == -from_pos.get_lat()) \
-        and (((to_pos.get_lon() - from_pos.get_lon()) % 180) == 0):
-        return 0
-    # Same coordinate?
-    if (to_pos.get_lat() == from_pos.get_lat())\
-        and (to_pos.get_lon() == from_pos.get_lon()):
-        return 0
-
-    # For all other cases we make a projection of the angle
-    a = to_rectangular (to_pos)
-    b = to_rectangular (from_pos)
-    north_pole = [0.0, 0.0, 1.0] # to_rectangular (LatLon (90, 0))
-    east_tangent = normalize_vect(cross_product (north_pole, b))
-    north_tangent = normalize_vect (cross_product (b, east_tangent))
-    # Now we have a compass rose for the tangents
-    direction = normalize_vect(subtract_vecs (a,b))
-    fac1 = dot_product (direction, north_tangent)
-    fac2 = dot_product (direction, east_tangent)
-    r = rad_to_deg (atan2 (fac2, fac1))
-    return r % 360
-
-def get_azimuth_general(to_pos: LatLon, from_pos: LatLon) -> float:
+def get_azimuth (to_pos: LatLon, from_pos: LatLon) -> float:
     '''
     Return the geodetic azimuth of to_pos as seen from from_pos.
     
@@ -1638,9 +1536,6 @@ def get_azimuth_general(to_pos: LatLon, from_pos: LatLon) -> float:
     Returns:
         The azimuth angle in degrees (0-360), measured geodetically
     '''
-
-    if isinstance (to_pos, LatLonGeocentric) and isinstance (from_pos, LatLonGeocentric):
-        return get_azimuth (to_pos, from_pos)
 
     # Special cases at poles
     if from_pos.get_lat() == 90:
@@ -3164,7 +3059,7 @@ class SightCollection:
                         popup_text += "[#" + str(counter) + "]"
                         popup_text += str(s.get_object_name())
                         popup_text += "=" +\
-                            str(round(get_azimuth_general (s.get_gp(), int_geodetic),1))
+                            str(round(get_azimuth (s.get_gp(), int_geodetic),1))
                         popup_text += ")"
                         popup_text += "\n"
 
