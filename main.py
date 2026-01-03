@@ -78,7 +78,7 @@ Window.clearcolor = (0.4, 0.4, 0.4, 1.0)
 DEBUG_FONT_HANDLING = False
 
 # TODO Review.
-# Flags using for selection different functionality.
+# Flags using for selection of different functionality.
 DO_PAUSE_HANDLING            = True
 DO_MINIMALIST_PAUSE_HANDLING = True
 DO_FULL_PAUSE_HANDLING       = False
@@ -507,20 +507,6 @@ def get_starfixes(drp_pos: LatLonGeodetic) -> SightCollection:
 
     return SightCollection(retval)
 
-# TODO Review
-def get_local_ip_old():
-    """Get local IP without internet connectivity"""
-    try:
-        # Create socket but don't actually connect
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-            # Use a non-routable address - doesn't need to be reachable
-            s.connect(('192.168.1.1', 80))  # Local network address
-            return s.getsockname()[0]
-# pylint: disable=W0702
-    except:
-        return "127.0.0.1"
-# pylint: enable=W0702
-
 def get_local_ip():
     """Get local IP without internet connectivity - won't hang"""
     test_socket = None
@@ -734,63 +720,6 @@ class AppButton (Button):
         else:
             self.background_color = (0.9, 0.9, 0.9, 1)
 
-    # TODO Review, and possibly remove. JS-code in browser should not be necessary
-    @staticmethod
-    def get_browser_control_string (timeout_ms : int = 20000) -> str:
-        ''' Generate the javascript string for browser control of http server '''
-        return f'''
-    <script>
-    // Kill server after {{timeout_ms}}ms of inactivity
-    var inactivityTimeout = setTimeout(function() {{
-        fetch('http://localhost:8000/kill_server').catch(function() {{}});
-    }}, {timeout_ms});
-
-    // Reset inactivity timer on any user interaction
-    ['click', 'scroll', 'keypress'].forEach(function(event) {{
-        document.addEventListener(event, function() {{
-            clearTimeout(inactivityTimeout);
-            inactivityTimeout = setTimeout(function() {{
-                fetch('http://localhost:8000/kill_server').catch(function() {{}});
-            }}, {timeout_ms});
-        }});
-    }});
-
-    // Track when page becomes hidden
-    var hiddenTime = null;
-    var killedServer = false;
-
-    document.addEventListener('visibilitychange', function() {{
-        if (document.visibilityState === 'hidden') {{
-            hiddenTime = Date.now();
-            
-            // Don't send kill signal yet - wait to see if page actually closes
-            // or if it's just hidden because another tab got focus
-        }} else if (document.visibilityState === 'visible' && hiddenTime) {{
-            // Page became visible again - was just backgrounded, not closed
-            hiddenTime = null;
-        }}
-    }});
-
-    // Send periodic heartbeat while page is visible
-    setInterval(function() {{
-        if (document.visibilityState === 'visible') {{
-            // Page is visible and active - send heartbeat
-            fetch('http://localhost:8000/heartbeat').catch(function() {{}});
-        }}
-    }}, 3000);
-
-    // Check periodically if page has been hidden too long
-    setInterval(function() {{
-        if (hiddenTime && (Date.now() - hiddenTime > 10000) && !killedServer) {{
-            // Page hidden for 10+ seconds = likely closed (not just backgrounded)
-            navigator.sendBeacon('http://localhost:8000/kill_server_delayed');
-            killedServer = true;
-            hiddenTime = null;
-        }}
-    }}, 1000);
-    </script>
-    </body>'''
-
 class ExecButton (AppButton):
     ''' This is the button starting the sight reduction '''
 
@@ -875,48 +804,9 @@ class ShowMapButton (AppButton):
                 assert the_map is not None
                 file_name = "./map.html"
                 the_map.save (file_name)
-                # TODO Review the commented code below, and possibly remove.
-                # Keeping this message for possible future use
-                #CelesteApp.message_popup ("You have generated a map.\n"
-                #                          "It is visible in a web brower window.\n"
-                #                          "It shows the last sight reduction\n"
-                #                          "(successful or not)",
-                #                          CelesteApp.MSG_ID_SHOW_MAP)
-
-                # Keeping this for future reference
-                #if ShowMapButton.shutdown_event:
-                #    ShowMapButton.shutdown_event.cancel()
-                #    ShowMapButton.shutdown_event = None
-
-                #def shutdown_http_server(_):
-                #    debug_logger.info("=== SHUTDOWN CALLBACK FIRED ===")
-                #    try:
-                #        kill_http_server()
-                #        debug_logger.info("=== HTTP server killed successfully ===")
-#pylint: disable=W0718
-                #    except Exception as e:
-#pylint: enable=W0718
-                #        debug_logger.error(f"=== Failed to kill server: {e} ===")
-                #    ShowMapButton.shutdown_event = None
-
-                # Inject JavaScript to shut down server after 20 seconds
-                #with open(file_name, 'r', encoding='utf-8') as f:
-                #    html_content = f.read()
-
-                # Add shutdown script before </body>
-                #shutdown_script = AppButton.get_browser_control_string ()
-
-                #html_content = html_content.replace('</body>', shutdown_script)
-
-                #with open(file_name, 'w', encoding='utf-8') as f:
-                #    f.write(html_content)
 
                 show_or_display_file (file_name, protocol="http",
                                       kill_existing_server=DO_HTTP_SERVER_RESTART)
-
-                #debug_logger.info("=== Scheduling HTTP server shutdown in 20s ===")
-                #ShowMapButton.shutdown_event = Clock.schedule_once(shutdown_http_server, 20)
-                #debug_logger.info(f"=== Scheduled event: {ShowMapButton.shutdown_event} ===")
 
 # pylint: disable=W0702
             except:
@@ -1011,21 +901,6 @@ class OnlineHelpButton (AppButton):
         ''' This is a function for showing online help '''
         CelesteApp.play_click_sound ()
         file_name = "./APPDOC.html"
-
-        # TODO Review the commented code below, and possibly remove
-        # Inject JavaScript to shut down server
-        #with open(file_name, 'r', encoding='utf-8') as f:
-        #    html_content = f.read()
-
-        # Add shutdown script before </body>
-        #shutdown_script = AppButton.get_browser_control_string (timeout_ms=300000)
-
-        #html_content = html_content.replace('</body>', shutdown_script)
-
-        #mod_file_name = "./APPDOC.mod.html"
-
-        #with open(mod_file_name, 'w', encoding='utf-8') as f:
-        #    f.write(html_content)
 
         show_or_display_file (file_name, protocol="http",
                               kill_existing_server=DO_HTTP_SERVER_RESTART)
@@ -1123,22 +998,6 @@ class ExitButton (AppButton):
 
         popup = ConfirmExitPopup()
         popup.open()
-
-        #debug_logger.info ("Exit button pressed")
-        #appx = App.get_running_app ()
-        #assert isinstance (appx, CelesteApp)
-        #debug_logger.info ("Exit button pressed, now preparing for exit")
-
-        # TODO Refactor this exit routine
-        # Kill NMEA 0138 server (if active)
-        # kill_plotserver ()
-        # Kill HTTP server (if active)
-        #if not is_windows():
-        #    kill_http_server ()
-        #appx.stop()
-        # Don't wait for daemon threads - just exit
-        #debug_logger.info("Forcing exit")
-        #os._exit(0)  # Nuclear option - kills everything immediately
 
 class FormRow (BoxLayout):
     ''' This is used for row data in the form '''
@@ -2019,7 +1878,6 @@ if __name__ == '__main__':
         debug_logger.error(f"Unhandled exception in main : {str(exc)}")
     finally:
         debug_logger.info ("Cleaning up in finally block of main")
-        # TODO Refactor this exit routine
         # Kill NMEA 0138 server (if active)
         kill_plotserver ()
         # Kill HTTP server (if active)
