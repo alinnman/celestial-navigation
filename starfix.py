@@ -2431,7 +2431,9 @@ class Sight :
         if artificial_horizon:
             self.__correct_for_artficial_horizon ()
         if self.__measured_alt < 0 or self.__measured_alt >= 90:
-            raise ValueError ("Altitude value must be within (0,90]")
+        # if self.__measured_alt < 0 or self.__measured_alt > 90:
+            # raise ValueError ("Altitude value must be within (0,90]")
+            raise ValueError ("Altitude value must be within (0,90)")
 
         if not ho_obs:
             self.__correct_for_refraction ()
