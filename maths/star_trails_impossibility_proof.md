@@ -725,6 +725,7 @@ The parallel component is unchanged by rotation. The perpendicular component rot
 $$\mathbf{v}_{\perp}^{\text{rot}} = \mathbf{v}_{\perp}\cos(\theta) + (\mathbf{k} \times \mathbf{v}_{\perp})\sin(\theta)$$
 
 Combining:
+$$\mathbf{v}^{\text{rot}} = \mathbf{v}_{\|} + \mathbf{v}_{\bot}^{\text{rot}}$$
 $$\mathbf{v}' = \mathbf{v}_{\parallel} + \mathbf{v}_{\perp}'$$
 $$\mathbf{v}^{rot} = \mathbf{v}_{\parallel} + \mathbf{v}_{\perp}^{rot}$$
 $$\mathbf{v}^{\mathrm{rot}} = \mathbf{v}_{\parallel} + \mathbf{v}_{\perp}^{\mathrm{rot}}$$
