@@ -8,7 +8,7 @@
 
 ## Initial remark
 
-This proof is still a sketch and work in in progress.
+This proof is still a sketch and work is in progress.
 
 ## Abstract
 
