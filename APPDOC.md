@@ -78,7 +78,7 @@ your sextant and clock readings into your position. This can
 also be done with analog methods (printed papers, plotting tools)
 and you are advised to at least
 [get&nbsp;acquainted](https://youtube.com/playlist?list=PLWcAZhCRTMByW_XEQ0y0OlGmxO3jp0LyE&si=Vzb2agqKltBIXQlA)
-with classical methods for celestial navigation.
+with classical (analog) methods for celestial navigation.
 
 The sight reduction can be viewed in three different ways:
 
@@ -300,6 +300,12 @@ successful sight reduction. Even for failed sight reductions (and single sights)
 you can display a map. This map can assist you in troubleshooting your
 sextant readings.
 
+The map display contains the following: 
+* Circles of equal altitude for the referenced celestal objects. 
+* Markers for the **intersection** of the circles of equal altitude and the **GP-s of the referenced celestial objects**
+* Popup fields with information such as coordinates and azimuths. 
+* A grid net (arc-minute wide) to be used for precise navigation or correlating to printed charts. (For failed sight reduction the grid is degree-wide and covers the entire Earth.)
+
 The map interface requires a **browser** and
 an **active internet connection** to present
 full map displays with full detail.
@@ -499,6 +505,9 @@ Watch the map carefully to pinpoint any incorrect input.
 Note: the map function is available also after a
 failed sight reduction.
 
+More information about testing can be
+[found here](https://github.com/alinnman/celestial-navigation/discussions/29).
+
 ## Troubleshooting<a name="troubleshooting"></a>
 
 ### Entering of parameters<a name="entering_parameters"></a>
@@ -539,14 +548,13 @@ For more information see
 
 ### Known bugs<a name="known_bugs"></a>
 
-#### Intermittent freezing (gray screen) (Known bug)
+#### Intermittent freezing (gray screen)
 
 It has been observed (rarely) that the screen may freeze if you reactivate the
-app from hidden state. The exact cause for this bug isn't known, but is likely
-triggered by using many other apps simultaneously. Stop and restart the Celeste
+app from hidden state. Stop and restart the Celeste
 app if this happens.
 
-#### Freezing when showing a map (Known bug)
+#### Freezing when showing a map
 
 In some rare occasions the app may freeze when you click the "Show map!" button.
 This happens if your network has degraded to very slow speed, but still with
@@ -555,11 +563,11 @@ advised to disable wifi and mobile internet manually in Android settings.
 
 #### Showing a coarse map
 
-In some cases the map display will show a
+In some rare cases the map display will show a
 coarse map despite you having an active
 internet connection. The cause is unknown 
 but likely caused by a temporary disturbance of your internet connection. 
-Re-try the map generation and check your
+Retry the map generation and check your
 internet connection. 
 
 ## More Information<a name="more_information"></a>

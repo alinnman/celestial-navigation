@@ -582,46 +582,6 @@ def is_online_safe(timeout=2):
 # Basic generation of folium maps and tile handling
 ################################################
 
-# TODO Review, and possibly remove
-def get_folium_map (location : list | tuple,
-                    zoom_start_offline : int = 2,
-                    zoom_start_online : int = 11,
-                    max_zoom : int = 15) -> object:
-    ''' This is a general function for generating a map object
-        It will check for internet connectivity and either
-        generate an online map object or a map based on the 
-        internally available (coarse) tiles.
-        TODO Remove this function when no longer used
-    '''
-# pylint: disable=C0415
-    from folium import raster_layers, Map
-# pylint: enable=C0415
-
-    if is_online_safe ():
-        the_map = Map(location=location,
-                      zoom_start=zoom_start_online,
-                      max_zoom=max_zoom)
-    else:
-        base_url = "http://localhost:8000/tiles"
-        tiles_url = f"{base_url}/{{z}}/{{x}}/{{y}}.png"
-
-        the_map = Map(location=location,
-                      zoom_start=zoom_start_offline,
-                      tiles=None,
-                      max_zoom=max_zoom)
-
-        raster_layers.TileLayer(
-            tiles=tiles_url,
-            attr='Map data courtesy of U.S. Geological Survey | Offline tiles',  # This is required!
-            name='Offline Map',
-            overlay=False,
-            control=True,
-            max_native_zoom=zoom_start_offline,
-            max_zoom=max_zoom
-        ).add_to(the_map)
-    return the_map
-
-
 def get_folium_map_safe (location : list | tuple,
                     zoom_start_offline : int = 2,
                     zoom_start_online : int = 11,

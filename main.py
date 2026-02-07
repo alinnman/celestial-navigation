@@ -21,7 +21,6 @@ from typing import Literal
 import importlib
 import socket
 import time
-# from datetime import datetime
 from starfix import LatLonGeodetic, SightCollection, Sight, \
     get_representation, IntersectError, get_folium_load_error, show_or_display_file, \
     is_windows, kill_http_server, parse_angle_string, debug_logger, DebugLogger
@@ -85,6 +84,7 @@ DO_FULL_PAUSE_HANDLING       = False
 DISABLE_IP_CLOCKS            = False
 ADD_EXIT_BUTTON              = True
 DO_HTTP_SERVER_RESTART       = False
+DRAW_AZIMUTHS_ON_MAP         = False
 DebugLogger.enable (do_enable=False, to_stdout=False)
 
 class ResourceMonitor:
@@ -148,8 +148,6 @@ class FontAwareConfig:
         return cls._instance
 
     def __init__(self):
-        #if self._initialized:
-        #    return
         self.font_scale = self.detect_font_scale()
         self.config = self.load_adaptive_config()
         self._initialized = True
@@ -797,7 +795,7 @@ class ShowMapButton (AppButton):
             the_map = None
             try:
                 if isinstance (c, SightCollection):
-                    the_map = c.render_folium (i)
+                    the_map = c.render_folium (i, draw_azimuths=DRAW_AZIMUTHS_ON_MAP)
                 elif isinstance (c, Sight):
                     the_map = c.render_folium_new_map ()
                 CelesteApp.play_click_sound()
