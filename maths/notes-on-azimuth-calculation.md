@@ -20,14 +20,15 @@ The solution will be $x_m$
 
 Define the NR as a function
 
-${NR}_1 (F,x_{start},x_{min}, x_{max}, \delta, I)$ 
+$${NR}_1 (F,x_{start},x_{min}, x_{max}, \delta, I)$$
+
 where $F$ is a function (callable)<br>
 The function $F$ is called over a range $\left[ x_{min}, x_{max}\right]$ and is started in the point $x_{start}$<br>
 (This is since we anticipate $F$ to be executed over a circle $\left[0,2\pi\right]$)
 
 We can simply introduce
 
-$NR (F,x_{start}, \delta, I) = {NR}_1 (F,x_{start},0, 2\pi, \delta, I)$
+$$NR (F,x_{start}, \delta, I) = {NR}_1 (F,x_{start},0, 2\pi, \delta, I)$$
 
 ## The calculation 
 
