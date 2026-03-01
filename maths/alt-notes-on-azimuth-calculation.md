@@ -1,5 +1,7 @@
 # Analytical Solution: Deducing Lat/Lon from Solar Position
 
+**NOTE: This is just a draft. It hasn't been verified**
+
 This document provides the mathematical framework to determine an observer's **Latitude ($\phi$)** and **Longitude ($\lambda$)** using the Sun's **Azimuth ($A$)**, **Altitude ($\alpha$)**, and a **Timestamp** (to determine the Sun's Geographical Position).
 
 ## 1. Known Variables
