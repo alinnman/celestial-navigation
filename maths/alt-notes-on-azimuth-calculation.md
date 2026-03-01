@@ -34,7 +34,7 @@ $$\phi = \arcsin\left(\frac{c}{R}\right) - \theta$$
 *Note: Mathematically, a second root exists at $\phi_2 = (\pi - \arcsin(c/R)) - \theta$. However, on a physical sphere, only one root will typically fall within the valid range of $[-90^\circ, 90^\circ]$ and remain consistent with the observed azimuth.*
 
 ### Step B: Finding Longitude ($\lambda$)
-Once $\phi$ is known, we find the **Local Hour Angle ($H$)**, which is the angular distance between the observer's meridian and the sun's meridian. We use the four-quadrant inverse tangent $\operatorname{atan2}(y, x)$ to ensure the correct East/West orientation:
+Once $\phi$ is known, we find the **Local Hour Angle ($H$)**, which is the angular distance between the observer's meridian and the sun's meridian. We use the four-quadrant inverse tangent $\mathrm{atan2}(y, x)$ to ensure the correct East/West orientation:
 
 1.  **$y$ (East-West component):** $-\sin A \cos \alpha$
 2.  **$x$ (North-South component):** $\sin \alpha \cos \phi - \cos \alpha \sin \phi \cos A$
