@@ -25,14 +25,14 @@ To solve for $\phi$ analytically, we treat this as a linear combination of sine 
 3.  Let $c = \sin \delta$
 
 The solution is:
-$$\phi = \operatorname{atan2}(a, b) \pm \arccos\left(\frac{c}{\sqrt{a^2 + b^2}}\right)$$
+$$\phi = \mathrm{atan2}(a, b) \pm \arccos\left(\frac{c}{\sqrt{a^2 + b^2}}\right)$$
 
 ### Step B: Finding Longitude ($\lambda$)
 Once $\phi$ is known, we find the **Local Hour Angle ($H$)**. We use the relationship between the horizontal and equatorial systems:
 $$\sin H = \frac{-\sin A \cos \alpha}{\cos \delta}$$
 $$\cos H = \frac{\sin \alpha - \sin \phi \sin \delta}{\cos \phi \cos \delta}$$
 
-Using $\operatorname{atan2}(\sin H, \cos H)$ provides the full-circle value of $H$. Finally:
+Using $\mathrm{atan2}(\sin H, \cos H)$ provides the full-circle value of $H$. Finally:
 $$\lambda = H - GHA$$
 
 ---
