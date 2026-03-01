@@ -62,3 +62,4 @@ While algebraic formulas involving squares and inverse sines often suggest multi
 *   **Sign Conventions:** Azimuth must be $0^\circ$ to $360^\circ$ (North-Clockwise).
 *   **Angular Units:** Ensure all trigonometric functions in code (like `sin`, `cos`, `atan2`) receive inputs in **radians**.
 *   **Coordinate Range:** Latitude $(\phi)$ results in $[-90^\circ, 90^\circ]$ and Longitude $(\lambda)$ results in $[-180^\circ, 180^\circ]$.
+*   **Accuracy:** The algorithm does **not** take **refraction** and **geodesy/oblateness** into consideration. For more accuracy you need some more maths, and you will land in non-analytical maths (at least for the geodesy part).
