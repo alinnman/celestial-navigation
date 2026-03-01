@@ -34,6 +34,11 @@ $$NR (F,x_{start}, \delta, I) = {NR}_1 (F,x_{start},0, 2\pi, \delta, I)$$
 
 ## The calculation 
 
+### Deducing the GP
+
+You need to deduce the Ground Position (GP) of the Sun. 
+This is done through interpolation of ephimeris / nautical almanac data. 
+
 ### Iterating over the small circle
 
 We iterate over all angles from the GP, and calculate great circles corresponding to all angles $\in [0, 2\pi]$
