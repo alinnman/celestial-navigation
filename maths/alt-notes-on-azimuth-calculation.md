@@ -31,7 +31,7 @@ $$\theta = \mathrm{atan2}(b, a)$$
 The latitude is found by:
 $$\phi = \arcsin\left(\frac{c}{R}\right) - \theta$$
 
-*Note: Mathematically, a second root exists at $\phi_2 = (\pi - \arcsin(c/R)) - \theta$. However, on a physical sphere, only one root will typically fall within the valid range of $[-90^\circ, 90^\circ]$ and remain consistent with the observed azimuth.*
+Note: Mathematically, a second root exists at $\phi_2 = (\pi - \arcsin(c/R)) - \theta$. However, on a physical sphere, only one root will typically fall within the valid range of $[-90^\circ, 90^\circ]$ and remain consistent with the observed azimuth.
 
 ### Step B: Finding Longitude ($\lambda$)
 Once $\phi$ is known, we find the **Local Hour Angle ($H$)**, which is the angular distance between the observer's meridian and the sun's meridian. We use the four-quadrant inverse tangent $\mathrm{atan2}(y, x)$ to ensure the correct East/West orientation:
@@ -45,7 +45,7 @@ $$H = \mathrm{atan2}(y, x)$$
 Finally, calculate the Longitude by referencing the Sun's position relative to Greenwich:
 $$\lambda = H - GHA$$
 
-*If $\lambda$ falls outside the range $[-180^\circ, 180^\circ]$, normalize by adding or subtracting $360^\circ$.*
+If $\lambda$ falls outside the range $[-180^\circ, 180^\circ]$, normalize by adding or subtracting $360^\circ$.
 
 ---
 
