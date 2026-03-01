@@ -1,44 +1,58 @@
-# Analytical Solution: Deducing Lat/Lon from Solar Position
+# Analytical Solution: Deducing a Unique Lat/Lon from Solar Position
 
-**NOTE: This is just a draft. It hasn't been verified**
-
-This document provides the mathematical framework to determine an observer's **Latitude ($\phi$)** and **Longitude ($\lambda$)** using the Sun's **Azimuth ($A$)**, **Altitude ($\alpha$)**, and a **Timestamp** (to determine the Sun's Geographical Position).
+This document defines the mathematical procedure to determine an observer's **Latitude ($\phi$)** and **Longitude ($\lambda$)**. Given a unique timestamp and the sun's position in the sky, there is only one physical location on Earth where these variables coincide.
 
 ## 1. Known Variables
-From your observation and the nautical almanac (at a specific UTC timestamp), we have:
-*   **$A$**: Solar Azimuth (Degrees from North).
+The calculation requires four inputs:
+*   **$A$**: Solar Azimuth (Degrees clockwise from North).
 *   **$\alpha$**: Solar Altitude (Degrees above the horizon).
-*   **$\delta$**: Solar Declination (Sun's latitude).
-*   **$GHA$**: Greenwich Hour Angle (Sun's longitude relative to Greenwich).
+*   **$\delta$**: Solar Declination (Sun's latitude at timestamp).
+*   **$GHA$**: Greenwich Hour Angle (Sun's longitude at timestamp).
 
 ---
 
-## 2. Mathematical Derivation
+## 2. The Analytical Derivation
 
 ### Step A: Finding Latitude ($\phi$)
-Using the Spherical Law of Cosines for the zenith distance, we relate the coordinates:
+We begin with the fundamental equation of the celestial triangle:
 $$\sin \delta = \sin \alpha \sin \phi + \cos \alpha \cos \phi \cos A$$
 
-To solve for $\phi$ analytically, we treat this as a linear combination of sine and cosine ($a \sin \phi + b \cos \phi = c$):
+To solve for $\phi$, we transform this into a linear combination of sine and cosine:
 1.  Let $a = \sin \alpha$
 2.  Let $b = \cos \alpha \cos A$
 3.  Let $c = \sin \delta$
 
-The solution is:
-$$\phi = \mathrm{atan2}(a, b) \pm \arccos\left(\frac{c}{\sqrt{a^2 + b^2}}\right)$$
+The equation becomes $a \sin \phi + b \cos \phi = c$. We solve this using the $R\sin(\phi + \theta)$ identity:
+$$R = \sqrt{a^2 + b^2}$$
+$$\theta = \mathrm{atan2}(b, a)$$
+$$\phi = \arcsin\left(\frac{c}{R}\right) - \theta$$
+
+**Note on Uniqueness:** While the inverse sine and the square root in the derivation of $R$ can mathematically suggest two roots, only one latitude will satisfy the simultaneous requirement of the observed azimuth and the sun's declination within the bounds of a sphere.
 
 ### Step B: Finding Longitude ($\lambda$)
-Once $\phi$ is known, we find the **Local Hour Angle ($H$)**. We use the relationship between the horizontal and equatorial systems:
-$$\sin H = \frac{-\sin A \cos \alpha}{\cos \delta}$$
-$$\cos H = \frac{\sin \alpha - \sin \phi \sin \delta}{\cos \phi \cos \delta}$$
+Once $\phi$ is determined, we find the **Local Hour Angle ($H$)**. This is the angular distance between the observer's meridian and the sun's meridian.
 
-Using $\mathrm{atan2}(\sin H, \cos H)$ provides the full-circle value of $H$. Finally:
+Using the components of the horizontal system:
+1.  **$y$ (East-West component):** $-\sin A \cos \alpha$
+2.  **$x$ (North-South component):** $\cos \alpha \sin \phi \cos A - \cos \phi \sin \alpha$
+
+We use the four-quadrant inverse tangent to find $H$:
+$$H = \mathrm{atan2}(-\sin A \cos \alpha, \cos \alpha \sin \phi \cos A - \cos \phi \sin \alpha)$$
+
+Finally, translate the Local Hour Angle into Longitude:
 $$\lambda = H - GHA$$
+
+*If $\lambda$ falls outside the range $[-180^\circ, 180^\circ]$, normalize by adding or subtracting $360^\circ$.*
 
 ---
 
-## 3. Notes on Ambiguity
-There are mathematically two points on Earth where the sun appears at the exact same altitude and azimuth at any given moment. 
-*   **Hemisphere Check:** One solution is usually in the "wrong" hemisphere. If you know your approximate location, you can discard the incorrect result.
-*   **Convergence:** If the sun is near the local meridian (Solar Noon), the two potential solutions converge into a single point.
-*   **Normalization:** The resulting longitude should be normalized to the range $[-180^\circ, 180^\circ]$ to follow standard GPS conventions.
+## 3. Geometric Clarification of Uniqueness
+
+It is a common misconception in navigation algebra that two positions exist for one observation. This is debunked by the intersection of geometric loci:
+
+1.  **The Circle of Equal Altitude:** An altitude $\alpha$ places you on a "Small Circle" centered at the Sun's Geographical Position (GP).
+2.  **The Azimuth Curve:** An azimuth $A$ defines a specific path originating from the Sun's GP. 
+
+On a sphere, a radial line (the azimuth) extending from a point (the GP) can only intersect a circle centered at that same point at **one unique location**. Any "second solution" appearing in the algebra is a mathematical artifact (a "ghost" point) where the sun would technically be on the opposite side of the Earth or the azimuth would be $180^\circ$ reversed.
+
+---
