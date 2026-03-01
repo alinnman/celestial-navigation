@@ -3,6 +3,8 @@
 This is written as a response to [this discussion entry](https://github.com/alinnman/celestial-navigation/discussions/43)
 The question is interesting, and the solution might be useful for the software repository in the future. 
 
+**IMPORTANT: This note is just a sketch. Not completely worked-out, and it might even be a non-optimal algorithm for the problem at hand.**
+
 # A sketch for an algorithm
 
 ## Numerical approach
@@ -160,3 +162,8 @@ budget, but worth being aware of if pushing toward higher accuracy.
 At ~1° sensor accuracy the spherical approximation is good enough, but
 understanding these layers will help anticipate where the next accuracy wall
 is as the hardware improves.
+
+## Final note
+
+I haven't ruled out there is an analytical solution to this problem. 
+
