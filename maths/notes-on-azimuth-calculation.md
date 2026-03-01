@@ -3,7 +3,7 @@
 This is written as a response to [this discussion entry](https://github.com/alinnman/celestial-navigation/discussions/43)
 The question is interesting, and the solution might be useful for the software repository in the future. 
 
-**IMPORTANT: This note is just a sketch. Not completely worked-out, and it might even be a non-optimal algorithm for the problem at hand.**
+**IMPORTANT: This implementation is most likely subject to be thrashed. A better analytical solution is available**
 
 # A sketch for an algorithm
 

@@ -1,58 +1,64 @@
-# Analytical Solution: Deducing a Unique Lat/Lon from Solar Position
+# Analytical Solution: Deducing Latitude and Longitude from a Single Solar Observation
 
-This document defines the mathematical procedure to determine an observer's **Latitude ($\phi$)** and **Longitude ($\lambda$)**. Given a unique timestamp and the sun's position in the sky, there is only one physical location on Earth where these variables coincide.
+This document provides the verified mathematical framework to determine an observer's **Latitude ($\phi$)** and **Longitude ($\lambda$)** using a single timestamped observation of the Sun's **Azimuth ($A$)** and **Altitude ($\alpha$)**.
 
-## 1. Known Variables
-The calculation requires four inputs:
-*   **$A$**: Solar Azimuth (Degrees clockwise from North).
+This is based on [this question](https://github.com/alinnman/celestial-navigation/discussions/43) in the discussion forum
+
+## 1. Input Variables
+To obtain a unique coordinate, the following four values are required:
+*   **$A$**: Solar Azimuth (Degrees clockwise from North, $0^\circ$ to $360^\circ$).
 *   **$\alpha$**: Solar Altitude (Degrees above the horizon).
-*   **$\delta$**: Solar Declination (Sun's latitude at timestamp).
-*   **$GHA$**: Greenwich Hour Angle (Sun's longitude at timestamp).
+*   **$\delta$**: Solar Declination (Sun's latitude at the UTC timestamp).
+*   **$GHA$**: Greenwich Hour Angle (Sun's longitude relative to Greenwich at the UTC timestamp).
 
 ---
 
-## 2. The Analytical Derivation
+## 2. Mathematical Derivation
 
 ### Step A: Finding Latitude ($\phi$)
-We begin with the fundamental equation of the celestial triangle:
+The relationship between the celestial equatorial system and the horizontal system is governed by the **Spherical Law of Cosines**:
 $$\sin \delta = \sin \alpha \sin \phi + \cos \alpha \cos \phi \cos A$$
 
-To solve for $\phi$, we transform this into a linear combination of sine and cosine:
-1.  Let $a = \sin \alpha$
-2.  Let $b = \cos \alpha \cos A$
-3.  Let $c = \sin \delta$
+To solve for $\phi$ analytically, we treat this as a linear combination of sine and cosine ($a \sin \phi + b \cos \phi = c$):
+1.  **$a = \sin \alpha$**
+2.  **$b = \cos \alpha \cos A$**
+3.  **$c = \sin \delta$**
 
-The equation becomes $a \sin \phi + b \cos \phi = c$. We solve this using the $R\sin(\phi + \theta)$ identity:
+Using the auxiliary angle identity:
 $$R = \sqrt{a^2 + b^2}$$
 $$\theta = \mathrm{atan2}(b, a)$$
+
+The latitude is found by:
 $$\phi = \arcsin\left(\frac{c}{R}\right) - \theta$$
 
-**Note on Uniqueness:** While the inverse sine and the square root in the derivation of $R$ can mathematically suggest two roots, only one latitude will satisfy the simultaneous requirement of the observed azimuth and the sun's declination within the bounds of a sphere.
+*Note: Mathematically, a second root exists at $\phi_2 = (\pi - \arcsin(c/R)) - \theta$. However, on a physical sphere, only one root will typically fall within the valid range of $[-90^\circ, 90^\circ]$ and remain consistent with the observed azimuth.*
 
 ### Step B: Finding Longitude ($\lambda$)
-Once $\phi$ is determined, we find the **Local Hour Angle ($H$)**. This is the angular distance between the observer's meridian and the sun's meridian.
+Once $\phi$ is known, we find the **Local Hour Angle ($H$)**, which is the angular distance between the observer's meridian and the sun's meridian. We use the four-quadrant inverse tangent $\operatorname{atan2}(y, x)$ to ensure the correct East/West orientation:
 
-Using the components of the horizontal system:
 1.  **$y$ (East-West component):** $-\sin A \cos \alpha$
-2.  **$x$ (North-South component):** $\cos \alpha \sin \phi \cos A - \cos \phi \sin \alpha$
+2.  **$x$ (North-South component):** $\sin \alpha \cos \phi - \cos \alpha \sin \phi \cos A$
 
-We use the four-quadrant inverse tangent to find $H$:
-$$H = \mathrm{atan2}(-\sin A \cos \alpha, \cos \alpha \sin \phi \cos A - \cos \phi \sin \alpha)$$
+The Local Hour Angle is:
+$$H = \mathrm{atan2}(y, x)$$
 
-Finally, translate the Local Hour Angle into Longitude:
+Finally, calculate the Longitude by referencing the Sun's position relative to Greenwich:
 $$\lambda = H - GHA$$
 
 *If $\lambda$ falls outside the range $[-180^\circ, 180^\circ]$, normalize by adding or subtracting $360^\circ$.*
 
 ---
 
-## 3. Geometric Clarification of Uniqueness
+## 3. Geometric Uniqueness
+While algebraic formulas involving squares and inverse sines often suggest multiple solutions, the geometry of a sphere ensures a **unique** location for a specific $(A, \alpha, t)$ triplet:
 
-It is a common misconception in navigation algebra that two positions exist for one observation. This is debunked by the intersection of geometric loci:
-
-1.  **The Circle of Equal Altitude:** An altitude $\alpha$ places you on a "Small Circle" centered at the Sun's Geographical Position (GP).
-2.  **The Azimuth Curve:** An azimuth $A$ defines a specific path originating from the Sun's GP. 
-
-On a sphere, a radial line (the azimuth) extending from a point (the GP) can only intersect a circle centered at that same point at **one unique location**. Any "second solution" appearing in the algebra is a mathematical artifact (a "ghost" point) where the sun would technically be on the opposite side of the Earth or the azimuth would be $180^\circ$ reversed.
+*   **Altitude ($\alpha$)** defines a **Circle of Equal Altitude** centered at the Sun's Geographical Position (GP).
+*   **Azimuth ($A$)** defines a **unique radial curve** originating from the Sun's GP toward the observer.
+*   The intersection of a radial line and a circle centered at the origin occurs at exactly **one point**. Any secondary "mathematical" roots are artifacts where the Sun would be below the horizon or the azimuth would be reversed by $180^\circ$.
 
 ---
+
+## 4. Implementation Notes
+*   **Sign Conventions:** Azimuth must be $0^\circ$ to $360^\circ$ (North-Clockwise).
+*   **Angular Units:** Ensure all trigonometric functions in code (like `sin`, `cos`, `atan2`) receive inputs in **radians**.
+*   **Coordinate Range:** Latitude $(\phi)$ results in $[-90^\circ, 90^\circ]$ and Longitude $(\lambda)$ results in $[-180^\circ, 180^\circ]$.
