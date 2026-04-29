@@ -40,13 +40,18 @@ analyze observations
 ### **Axiom 3: Measurement Validity**
 
 - **Instruments Work**: Properly calibrated sextants, theodolites, and clocks
-provide meaningful data about physical reality
+provide meaningful data about physical reality. The world has a determinate physical structure that exists independently of our descriptions of it. Measurements made with calibrated instruments, under repeatable conditions, with independently verified auxiliary assumptions, provide reliable epistemic access to that structure. When such measurements consistently support one hypothesis over another across diverse methods and observers, that hypothesis is rationally preferred, while remaining open to revision under sufficient countervailing evidence
 - **Reproducibility**: Independent observers using proper methods get
 consistent results
 - **Translation**: Measurements (altitudes, clock readings etc) by
-different people at different times are valid data
+different people at different times are valid data from unbiased observations. 
 
-### **Axiom 4: Logical Reasoning**
+### **Axiom 4: Science is falsifiable**
+
+- **Claims must withstand examination**: A hypothesis that makes no risky predictions, or whose predictions cannot fail, is not a scientific hypothesis
+- **Translation**: Marks a clear watershed between science and pseudo-science
+
+### **Axiom 5: Logical Reasoning**
 
 - **Law of Non-Contradiction**: A statement cannot be both true and
 false simultaneously
@@ -136,6 +141,8 @@ existing independently of knowing subjects, while
 *The Logic of Scientific Discovery* (Routledge, 2002) establishes
 falsifiability as the criterion for genuine scientific claims about objective
 reality.
+
+About physical reality: Mind-independent physical structure → scientific realism, canonically Putnam (Mathematics, Matter and Method, 1975) and more recently Stathis Psillos (Scientific Realism: How Science Tracks Truth, 1999)
 
 Physical consistency principles receive direct support from
 **Einstein's invariance principles**, documented across physics literature
@@ -287,7 +294,7 @@ The axioms given here apply to macro phenomena, in particular on the scale
 of celestial objects. Microphysics and
 [quantum mechanics](https://en.wikipedia.org/wiki/Quantum_mechanics)
 exhibit other properties and the axioms given here might not be
-fully applicable (in particular axiom 4).
+fully applicable (in particular axiom 5).
 We ignore this in the context used here.
 
 ## Acknowledgments
