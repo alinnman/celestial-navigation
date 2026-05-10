@@ -509,15 +509,15 @@ combinations through contradiction with observational constraints. ∎
 ### Mathematical and Geometric Foundations
 
 **Differential Geometry**:
-- do Carmo, Manfredo P. *Differential Geometry of Curves and Surfaces*.
-Dover Publications, 2016.
-- Lee, John M. *Introduction to Riemannian Manifolds*. Springer, 2018.
+- [do Carmo, Manfredo P. *Differential Geometry of Curves and Surfaces*.
+Dover Publications, 2016.](https://store.doverpublications.com/products/9780486806990)
+- [Lee, John M. *Introduction to Riemannian Manifolds*. Springer, 2018.](https://link.springer.com/book/10.1007/978-3-319-91755-9)
 
 **Spherical Trigonometry**:
-- Van Brummelen, Glen.
+- [Van Brummelen, Glen.
 *Heavenly Mathematics: The Forgotten Art of Spherical Trigonometry*.
-Princeton University Press, 2013.
-- Todhunter, Isaac. *Spherical Trigonometry*. Cambridge University Press, 1886.
+Princeton University Press, 2013.](https://press.princeton.edu/books/hardcover/9780691148922/heavenly-mathematics?srsltid=AfmBOoriwPLPdP2T1qgxYzauZW0hSoKPDjiiWnOe3wcxBVwBtJtSfl10)
+- [Todhunter, Isaac. *Spherical Trigonometry*. Cambridge University Press, 1886.](https://babel.hathitrust.org/cgi/pt?id=coo.31924059551238&seq=1)
 
 ### Stellar Distance Measurements
 
