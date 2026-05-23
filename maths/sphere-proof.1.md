@@ -278,19 +278,65 @@ measurement direction
 
 **Universal Test - The Gaussian Curvature Constraint**:
 
-**Theorem 2.1**: For the ratio $\frac{d}{|\Delta\alpha|}$ to be constant
-globally, the Gaussian curvature must satisfy $K(P) = K_0$ (constant) for all
-points $P$.
+**Theorem 2.1 (Characterization of spherical geometry).**
+Let $S \subset \mathbb{R}^3$ be a connected, smooth, regular surface.
+Suppose that for parallel incident light rays from a distant object, the
+altitude angle $\alpha$ satisfies
 
-*Proof*: The differential relationship between arc length and altitude angle
-on a curved surface is:
-$\frac{d\alpha}{ds} = \sqrt{K(P)} + \text{higher order terms}$
+$$\frac{d\alpha}{ds} = -\frac{1}{R}$$
 
-For $\frac{d}{|\Delta\alpha|}$ to be constant, we need $\frac{d\alpha}{ds}$ to
-be constant, which requires $K(P) = K_0$ everywhere. ∎
+along every geodesic $\gamma$ on $S$ and at every point $p \in S$, for
+some fixed constant $R > 0$, where $s$ is arc length along $\gamma$.
+Then $S$ has constant Gaussian curvature $K = 1/R^2$, and $S$ is
+locally isometric to a sphere of radius $R$.
 
-**Corollary**: Only surfaces of constant Gaussian curvature can produce the
-observed universal constant ratio.
+**Proof (sketch).**
+The local deviation between nearby geodesics on a surface is governed by
+the Jacobi equation of geodesic deviation:
+
+$$\frac{d^2 J}{ds^2} + K(s) \cdot J = 0$$
+
+where $J(s)$ is the perpendicular deviation along the geodesic and
+$K(s)$ is the Gaussian curvature along $\gamma$.
+
+For parallel incident rays, the rate of change of the altitude angle
+along a geodesic is directly tied to the rotation of the surface normal
+$N$ along $\gamma$, which in turn is governed by $K$. The condition
+that $d\alpha/ds$ is a *fixed constant* — independent of point and
+geodesic direction — requires $K(p)$ to be constant throughout $S$.
+The identification $K = 1/R^2$ follows from explicit computation on the
+sphere (see Case 4, Section 2.5).
+
+That $S$ is then locally isometric to a sphere of radius $R$ follows
+from **Minding's Theorem**: any two surfaces with the same constant
+Gaussian curvature are locally isometric. $\blacksquare$
+
+**Remark 1 (The role of Theorema Egregium).**
+The conclusion is robust under the choice of isometric embedding of $S$
+into $\mathbb{R}^3$. This is guaranteed by **Gauss's Theorema Egregium**:
+the Gaussian curvature $K$ is an intrinsic quantity, fully determined by
+the surface's first fundamental form, and is therefore preserved under
+isometries. Two isometric surfaces — even when they appear different as
+embedded objects — have the same $K$ at corresponding points. The
+characterization above thus does not depend on how the surface happens
+to be situated in space, but on the surface's own inherent geometry.
+
+**Remark 2 (Classification of surfaces of constant $K$).**
+Surfaces of constant Gaussian curvature fall into three classes:
+
+- $K = 0$: locally isometric to the plane (Euclidean geometry)
+- $K < 0$: locally isometric to the hyperbolic plane
+- $K > 0$: locally isometric to a sphere of radius $1/\sqrt{K}$
+
+Only the third class yields the observed linear relationship between
+distance and altitude angle with a universal positive constant. The
+other two have already been eliminated in earlier cases (Cases 1–2 for
+$K = 0$; an exponential rather than linear relationship for $K < 0$).
+
+**Corollary 2.2.**
+The observed universal constant of $111.1$ km/degree implies
+$R = 111.1 \cdot \frac{180}{\pi} \approx 6371$ km, and the Earth's
+surface is locally isometric to a sphere of this radius.
 
 **Classification of Constant Curvature Surfaces**:
 
