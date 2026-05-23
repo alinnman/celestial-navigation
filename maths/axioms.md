@@ -1,6 +1,6 @@
 # The Axioms we use for the proofs about Earth shape
 
-## Foundational Axioms
+## Part I: Foundational Axioms
 
 Everyone discussing (or trying to disprove) the [proofs](sphere-proof.md)
 presented here must agree to a set of basic rules. These are the
@@ -328,6 +328,126 @@ hypotheses. The breadth of authoritative support, spanning foundational
 classics through contemporary scholarship, provides robust academic
 grounding for empirical geometric investigations while remaining
 accessible to educated readers engaged in scientific discourse.
+
+## Part II: Mathematical Foundations
+
+### Why this section exists
+
+The five axioms above establish the **epistemological** prerequisites for
+scientific reasoning about Earth's shape: that physical reality exists,
+that measurements are valid, that logic applies, and so on. Without them,
+no empirical investigation is possible.
+
+The proofs presented in this repository — in particular
+[Proof 1](https://github.com/alinnman/celestial-navigation/blob/main/maths/sphere-proof.1.md)
+— additionally invoke several theorems from
+**differential geometry**, most notably Gauss's **Theorema Egregium**
+and **Minding's Theorem**. These are not axioms; they are *derived
+results*, resting on a long chain of mathematical theory.
+
+This section describes that chain, layer by layer, down to the
+foundational axioms of mathematics itself. The purpose is twofold:
+
+1. To make explicit what mathematical infrastructure the geometric
+   argument relies on.
+2. To clarify the burden faced by anyone who wishes to reject the
+   conclusion on mathematical (rather than empirical) grounds.
+
+A reader prepared to accept the standard foundations of mathematics —
+as essentially every working mathematician, physicist, and engineer
+does — may skip this section. It is included for completeness and for
+those who wish to follow the argument to its logical roots.
+
+### The chain of dependencies
+
+Theorema Egregium does not stand alone. It rests on a stack of prior
+results, each of which rests on results below it, terminating in
+foundational axioms. The table below summarises the chain.
+
+| Layer | Content | Standard reference |
+| --- | --- | --- |
+| 1. Differential geometry of surfaces | Theorema Egregium, Minding's Theorem, Jacobi equation of geodesic deviation, Gauss–Codazzi–Mainardi equations | do Carmo, *Differential Geometry of Curves and Surfaces* (2016) |
+| 2. Multivariable calculus | Schwarz's theorem on equality of mixed partials, inverse and implicit function theorems, chain rule | Rudin, *Principles of Mathematical Analysis* (1976) |
+| 3. Single-variable analysis | Mean value theorem, extreme value theorem, Bolzano–Weierstrass theorem | Rudin (1976) |
+| 4. Real analysis foundations | Completeness of $\mathbb{R}$ (least upper bound property), $\varepsilon$–$\delta$ definition of limits | Rudin (1976); Tao, *Analysis I* (2016) |
+| 5. Construction of $\mathbb{R}$ | Dedekind cuts or Cauchy sequences over $\mathbb{Q}$; construction of $\mathbb{Q}$ from $\mathbb{Z}$, and $\mathbb{Z}$ from $\mathbb{N}$ | Landau, *Foundations of Analysis* (1930); Tao (2016) |
+| 6. Arithmetic of $\mathbb{N}$ | Peano axioms, principle of mathematical induction | Peano (1889); Enderton, *Elements of Set Theory* (1977) |
+| 7. Set theory | Zermelo–Fraenkel axioms with Choice (ZFC) | Enderton (1977); Jech, *Set Theory* (2003) |
+| 8. Logic | First-order predicate logic with equality | Mendelson, *Introduction to Mathematical Logic* (2015) |
+
+Reading the table top-down: every result in Layer 1 is ultimately a
+theorem of the system specified in Layer 8, derived through the
+intermediate layers. The mechanism that drives Theorema Egregium —
+the equality of mixed partial derivatives (Schwarz's theorem) — already
+sits in Layer 2, which is itself a consequence of the completeness of
+the real numbers (Layer 4), which depends on the construction of
+$\mathbb{R}$ (Layer 5), and so on down.
+
+### Robustness: alternative foundations
+
+A natural objection is that the foundations themselves might be
+arbitrary. This objection has less force than it appears.
+
+The chain above is **not unique**. At several layers, alternative
+choices are possible:
+
+- $\mathbb{R}$ can be constructed via **Dedekind cuts** or via
+  **Cauchy sequences**. The resulting structures are isomorphic.
+- Set theory can be replaced by **type theory** (e.g. Martin-Löf type
+  theory, or the calculus of constructions used in modern proof
+  assistants).
+- Classical logic can be replaced by **constructive** (intuitionistic)
+  logic for large portions of analysis.
+- Full ZFC is not required; the relevant portions of analysis can be
+  formalised in much weaker systems, as established in the field of
+  **reverse mathematics** (see Simpson, *Subsystems of Second Order
+  Arithmetic*, 2009).
+
+Theorema Egregium and Minding's theorem are **provable in all of
+these foundations**. This is a strong robustness property: the
+conclusion does not depend on a particular philosophical commitment
+about what mathematics "really is."
+
+### The asymmetric burden
+
+The structure above clarifies what is required of anyone who wishes
+to reject the mathematical argument in Proof 1.
+
+Rejection has two possible forms:
+
+1. **Reject a specific result** in Layers 1–4 (e.g. claim Theorema
+   Egregium is false, or that Schwarz's theorem fails). This requires
+   exhibiting a counterexample within the standard foundations, which
+   no such counterexample exists.
+2. **Reject the foundations themselves** (Layers 5–8). This requires
+   proposing an alternative axiomatic system that is internally
+   consistent, reproduces the observational successes of modern
+   science, and yields a different conclusion about Earth's geometry.
+   No such system has ever been produced.
+
+There is historical precedent for serious foundational challenge:
+when **Lobachevsky** and **Bolyai** independently questioned
+Euclid's parallel postulate in the early 19th century, they did so by
+*constructing* an alternative consistent geometry — hyperbolic
+geometry — which was later shown to be physically realised in general
+relativity. This is the standard for foundational critique: not
+rhetorical rejection, but the construction of a working alternative.
+
+The absence of any such alternative from flat-Earth literature is, in
+itself, a substantive epistemic fact.
+
+### A note on the limits of this section
+
+A complete formal treatment of the foundations would itself be a
+multi-volume project. The references cited above provide entry points
+into each layer; readers interested in the precise logical strength
+required for differential geometry should consult Simpson (2009) and
+the broader reverse mathematics literature.
+
+The point of this section is not to formalise the chain, but to
+exhibit it — to show that the argument in Proof 1 is anchored, layer
+by layer, in foundations that are explicit, well-studied, and
+robust under alternative choices.
 
 ## A note on microphysics (quantum mechanics)
 
