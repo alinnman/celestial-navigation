@@ -81,6 +81,8 @@ and geometry all the way from antiquity
 ([Euclid](https://en.wikipedia.org/wiki/Euclid))
 to differential geometry of the 19th century
 ([Carl Friedrich Gauss](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss)).
+*See the chain of [mathematical dependencies](axioms.md#chain)*
+*for what this would actually require*
 3. If steps 1 or 2 fail you may go to the [axioms](axioms.md) in order to
 use other fundamental epistemological views and maybe formulate new axioms.  
 Rejecting the presented axioms would require proposing an entirely different

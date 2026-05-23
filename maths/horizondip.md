@@ -5,10 +5,12 @@
 
 # Some notes on horizon dip (Al-Biruni)
 
-See [this document](sphere-proof.2.md) where we construct reasoning and proof used here. 
+See [this document](sphere-proof.2.md) where we construct
+reasoning and proof used here.
 
 From this we can easily get the radius of the Earth ($R$) given the
-coefficient ($k$) just like [Al-Biruni did in 1017 AD](https://en.wikipedia.org/wiki/Al-Biruni#Geography_and_geodesy)
+coefficient ($k$) just like
+[Al-Biruni did in 1017 AD](https://en.wikipedia.org/wiki/Al-Biruni#Geography_and_geodesy)
 
 Note that Al-Biruni's calculation was made without knowledge of refraction
 and also with measurements with partially unkown units of measurement
@@ -27,7 +29,8 @@ $R \approx \frac {2.364 \times 10^7}{1.93^2} = 6.35 \times 10^6$
 (close to the real value)
 
 In the picture below we see a series of actual dip measurements.
-For details see [this video](https://youtu.be/6viR_GJ8998?si=JCDL66ikg9gqIYtu). You can clearly see the square root relation here.
+For details see [this video](https://youtu.be/6viR_GJ8998?si=JCDL66ikg9gqIYtu).
+You can clearly see the square root relation here.
 
 ![Theodolite measurments](../pics/theodilite-measurements.png)
 

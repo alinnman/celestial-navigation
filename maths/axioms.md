@@ -172,7 +172,7 @@ as essentially every working mathematician, physicist, and engineer
 does — may skip this section. It is included for completeness and for
 those who wish to follow the argument to its logical roots.
 
-### The chain of dependencies
+### The chain of dependencies<a id="chain"></a>
 
 Theorema Egregium does not stand alone. It rests on a stack of prior
 results, each of which rests on results below it, terminating in
