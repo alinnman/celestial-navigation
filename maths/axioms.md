@@ -414,6 +414,168 @@ A theory which is not refutable by any conceivable event is non-scientific;
 genuine scientific theories make "risky predictions" that could in
 principle fail.
 
+### Mathematical foundations: the chain of dependencies (Part II)
+
+The references below are organised by the eight layers identified in
+[Part II](#part-ii-mathematical-foundations). For each layer, a standard
+modern reference is given together with one or more classical or
+alternative sources where useful. These are not exhaustive — each layer
+has a substantial textbook literature — but they are the works most
+commonly cited in graduate-level treatments and the most reliable entry
+points for verification.
+
+#### Layer 1: Differential geometry of surfaces
+
+<a id="s23"></a>**[23]** do Carmo, Manfredo P. *Differential Geometry of
+Curves and Surfaces*. 2nd revised and updated ed., Dover, 2016. The
+standard introductory text. Contains the full classical treatment of
+Theorema Egregium (§4.3), Minding's theorem (§4.4), and the
+Gauss–Codazzi–Mainardi equations.
+
+<a id="s24"></a>**[24]** Lee, John M. *Introduction to Riemannian
+Manifolds*. 2nd ed., Graduate Texts in Mathematics 176, Springer, 2018.
+Modern treatment in the language of smooth manifolds. The Jacobi
+equation of geodesic deviation, which underlies the characterisation
+theorem in Proof 1, is developed in Chapter 10.
+
+<a id="s25"></a>**[25]** Spivak, Michael. *A Comprehensive Introduction
+to Differential Geometry*. 3rd ed., 5 vols., Publish or Perish, 1999.
+Encyclopaedic reference covering both the classical (do Carmo-style)
+and modern (Lee-style) approaches in parallel.
+
+#### Layer 2: Multivariable calculus
+
+<a id="s26"></a>**[26]** Rudin, Walter. *Principles of Mathematical
+Analysis*. 3rd ed., McGraw-Hill, 1976. Chapters 9–10 cover
+differentiation in several variables, Schwarz's theorem on equality of
+mixed partials, the inverse function theorem, and the implicit function
+theorem — the analytical machinery underlying the Gauss–Codazzi
+equations.
+
+<a id="s27"></a>**[27]** Spivak, Michael. *Calculus on Manifolds*.
+Westview Press, 1965. Compact rigorous treatment of multivariable
+differentiation and the relevant integration theory.
+
+#### Layer 3: Single-variable analysis
+
+<a id="s28"></a>**[28]** Rudin, Walter. *Principles of Mathematical
+Analysis*. 3rd ed., McGraw-Hill, 1976. Chapters 1–8 develop the
+mean value theorem, extreme value theorem, and Bolzano–Weierstrass
+theorem — the building blocks on which multivariable calculus rests.
+
+<a id="s29"></a>**[29]** Abbott, Stephen. *Understanding Analysis*. 2nd
+ed., Springer, 2015. A pedagogically clearer alternative for readers
+wishing to verify the chain at this layer.
+
+#### Layer 4: Real analysis foundations
+
+<a id="s30"></a>**[30]** Rudin, Walter. *Principles of Mathematical
+Analysis*. 3rd ed., McGraw-Hill, 1976. Chapter 1 axiomatises the real
+numbers via the least upper bound property and establishes the
+$\varepsilon$–$\delta$ definition of limits.
+
+<a id="s31"></a>**[31]** Tao, Terence. *Analysis I*. 4th ed., Hindustan
+Book Agency / Springer, 2022. Treats the real number system with
+unusual care, including explicit construction. Available as a draft
+PDF from the author's webpage, making it especially useful for
+independent verification.
+
+#### Layer 5: Construction of $\mathbb{R}$
+
+<a id="s32"></a>**[32]** Landau, Edmund. *Foundations of Analysis: The
+Arithmetic of Whole, Rational, Irrational and Complex Numbers*.
+Translated by F. Steinhardt, Chelsea Publishing, 1951 (originally
+German, 1930). The classic spartan construction of $\mathbb{N}$,
+$\mathbb{Z}$, $\mathbb{Q}$, $\mathbb{R}$, and $\mathbb{C}$ from the
+ground up — entirely free of motivation, suitable as a verification
+reference.
+
+<a id="s33"></a>**[33]** Dedekind, Richard. *Essays on the Theory of
+Numbers*. Translated by Wooster Woodruff Beman, Open Court, 1901
+(originally German, 1872). Original source for the construction of
+$\mathbb{R}$ via Dedekind cuts.
+
+<a id="s34"></a>**[34]** Tao, Terence. *Analysis I*. 4th ed., 2022.
+Constructs $\mathbb{R}$ via Cauchy sequences (Chapter 5), the
+alternative to Dedekind cuts — the two constructions yield isomorphic
+structures, a fact relevant to the robustness argument in Part II.
+
+#### Layer 6: Arithmetic of $\mathbb{N}$
+
+<a id="s35"></a>**[35]** Peano, Giuseppe. *Arithmetices Principia, Nova
+Methodo Exposita* (*The Principles of Arithmetic, Presented by a New
+Method*). Bocca, 1889. The original Peano axioms for the natural
+numbers.
+
+<a id="s36"></a>**[36]** Enderton, Herbert B. *Elements of Set Theory*.
+Academic Press, 1977. Modern treatment of the Peano axioms and the
+construction of $\mathbb{N}$ within set theory (the von Neumann
+ordinals).
+
+#### Layer 7: Set theory
+
+<a id="s37"></a>**[37]** Enderton, Herbert B. *Elements of Set Theory*.
+Academic Press, 1977. Accessible introduction to the ZFC axioms.
+
+<a id="s38"></a>**[38]** Jech, Thomas. *Set Theory*. 3rd millennium ed.,
+Springer Monographs in Mathematics, Springer, 2003. The standard
+graduate-level reference.
+
+<a id="s39"></a>**[39]** Kunen, Kenneth. *Set Theory: An Introduction
+to Independence Proofs*. North-Holland, 1980. Definitive treatment of
+the metamathematics of ZFC.
+
+#### Layer 8: Logic
+
+<a id="s40"></a>**[40]** Mendelson, Elliott. *Introduction to
+Mathematical Logic*. 6th ed., Chapman and Hall/CRC, 2015. Standard
+treatment of first-order predicate logic with equality.
+
+<a id="s41"></a>**[41]** Enderton, Herbert B. *A Mathematical
+Introduction to Logic*. 2nd ed., Academic Press, 2001. Alternative
+introduction with clearer pedagogy at the cost of less encyclopaedic
+coverage.
+
+#### Robustness and alternative foundations
+
+<a id="s42"></a>**[42]** Simpson, Stephen G. *Subsystems of Second Order
+Arithmetic*. 2nd ed., Perspectives in Logic, Cambridge University Press,
+2009. The standard reference for reverse mathematics. Establishes that
+the bulk of classical analysis — including the results needed for
+Theorema Egregium — can be formalised in subsystems far weaker than
+full ZFC, providing concrete support for the robustness argument in
+Part II.
+
+<a id="s43"></a>**[43]** Martin-Löf, Per. *Intuitionistic Type Theory*.
+Notes by Giovanni Sambin, Bibliopolis, 1984. Foundational text for
+type-theoretic alternatives to set theory.
+
+<a id="s44"></a>**[44]** Univalent Foundations Program.
+*Homotopy Type Theory: Univalent Foundations of Mathematics*. Institute
+for Advanced Study, 2013. <https://homotopytypetheory.org/book/>
+Modern type-theoretic foundation, freely available online. Demonstrates
+that the chain of dependencies for differential geometry can be carried
+out in foundations radically different from ZFC.
+
+#### Historical foundational challenge (Lobachevsky and Bolyai)
+
+<a id="s45"></a>**[45]** Bolyai, János. "Appendix Scientiam Spatii
+Absolute Veram Exhibens" ("Appendix Exhibiting the Absolutely True
+Science of Space"). Appendix to Farkas Bolyai's *Tentamen*, 1832.
+English translation in Bonola (1955), [\[47\]](#s47).
+
+<a id="s46"></a>**[46]** Lobachevsky, Nikolai. *Geometrical Researches
+on the Theory of Parallels*. Translated by George Bruce Halsted, Open
+Court, 1914 (originally Russian, 1840). Independent construction of
+hyperbolic geometry.
+
+<a id="s47"></a>**[47]** Bonola, Roberto. *Non-Euclidean Geometry: A
+Critical and Historical Study of Its Development*. Dover, 1955.
+Standard historical and mathematical account of how the parallel
+postulate was challenged, and how that challenge took the form of
+constructing a consistent alternative geometry rather than rhetorical
+rejection.
+
 ### Cross-cutting academic support
 
 Several themes strengthen support across all axioms.
