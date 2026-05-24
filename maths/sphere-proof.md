@@ -73,7 +73,7 @@ Confronting the proofs given above can be done in three possible ways:
 preferably through independently verified
 results giving other results from what we have found.<br/>
 ("there is no horizon dip",
-"the altitude of celestial object do not follow the linear pattern").
+"the altitude of celestial objects does not follow the linear pattern").
 2. If you fail in step 1 above:
 Refuting the mathematical proofs (a priori) where we concluded the
 spherical shape. Then you will have to confront mathematics
