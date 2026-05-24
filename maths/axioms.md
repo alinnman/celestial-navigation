@@ -185,7 +185,7 @@ foundational axioms. The table below summarises the chain.
 | 1. Differential geometry of surfaces | Theorema Egregium, Minding's Theorem, Jacobi equation of geodesic deviation, Gauss–Codazzi–Mainardi equations | do Carmo, *Differential Geometry of Curves and Surfaces* (2016) |
 | 2. Multivariable calculus | Schwarz's theorem on equality of mixed partials, inverse and implicit function theorems, chain rule | Rudin, *Principles of Mathematical Analysis* (1976) |
 | 3. Single-variable analysis | Mean value theorem, extreme value theorem, Bolzano–Weierstrass theorem | Rudin (1976) |
-| 4. Real analysis foundations | Completeness of $\mathbb{R}$ (least upper bound property), $\varepsilon$–$\delta$ definition of limits | Rudin (1976); Tao, *Analysis I* (2016) |
+| 4. Real analysis foundations | Completeness of $\mathbb{R}$ (least upper bound property), $\varepsilon–\delta$ definition of limits | Rudin (1976); Tao, *Analysis I* (2016) |
 | 5. Construction of $\mathbb{R}$ | Dedekind cuts or Cauchy sequences over $\mathbb{Q}$; construction of $\mathbb{Q}$ from $\mathbb{Z}$, and $\mathbb{Z}$ from $\mathbb{N}$ | Landau, *Foundations of Analysis* (1930); Tao (2016) |
 | 6. Arithmetic of $\mathbb{N}$ | Peano axioms, principle of mathematical induction | Peano (1889); Enderton, *Elements of Set Theory* (1977) |
 | 7. Set theory | Zermelo–Fraenkel axioms with Choice (ZFC) | Enderton (1977); Jech, *Set Theory* (2003) |
