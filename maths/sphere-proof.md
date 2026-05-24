@@ -69,6 +69,8 @@ Flat Earth.
 
 Confronting the proofs given above can be done in three possible ways:
 
+<a id="chain"></a>
+
 1. Falsifying (refuting) the observational findings (a posteriori),
 preferably through independently verified
 results giving other results from what we have found.<br/>
