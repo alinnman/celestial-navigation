@@ -27,6 +27,11 @@ No spaceflight is necessary, it can be performed in your backyard
 By providing this sample I hope to give some more understanding of the concept.
 </i>
 
+<i>GPS not being available is a serious reality, and part of current modern
+electronical warfare.
+This <a href="https://youtu.be/tz23G_UXCGA?si=H4HB-el7P2O-khvr">video</a> explains this. 
+</i>
+
 ## The scope
 
 The software (and the app) will be provided open-source, and currently I
