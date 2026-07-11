@@ -46,7 +46,7 @@ whole proof.
 To recover the familiar foreshortening, tilt the circle's plane by an angle
 $\theta$ about an axis lying in the image plane. Then $u$ stays in the image
 plane, so $\pi(u) = (1,0)$, and $v$ tips out of it, so $\pi(v) = (0,\cos\theta)$.
-Here $M = \operatorname{diag}(1, \cos\theta)$ and
+Here $M = \mathrm{diag}(1, \cos\theta)$ and
 
 $$\frac{X^2}{r^2} + \frac{Y^2}{(r\cos\theta)^2} = 1$$
 
