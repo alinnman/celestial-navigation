@@ -16,16 +16,16 @@ an opponent tries to nitpick.
 Write the circle of radius $r$ centred at $c$, lying in a plane spanned by
 orthonormal vectors $u$ and $v$:
 
-$$C = \lbrace\, c + r\cos t\,u + r\sin t\,v \;:\; t \in [0,2\pi) \,\rbrace$$
+$$C = \lbrace c + r\cos(t)u + r\sin(t)v \mid t \in [0, 2\pi) \rbrace$$
 
 Orthographic projection $\pi : \mathbb{R}^3 \to \mathbb{R}^2$ (drop the component
 along the viewing direction) is linear, so it distributes over the
 parametrisation. Set $\mathbf{a} = \pi(u)$, $\mathbf{b} = \pi(v)$,
 $\mathbf{c}_0 = \pi(c)$:
 
-$$\pi(C) = \lbrace\, \mathbf{c}_0 + r\cos t\,\mathbf{a} + r\sin t\,\mathbf{b} \,\rbrace$$
+$$\pi(C) = \lbrace \mathbf{c}_0 + r\cos(t)\mathbf{a} + r\sin(t)\mathbf{b} \rbrace$$
 
-Let $M = [\,\mathbf{a}\ \ \mathbf{b}\,]$ be the matrix with those columns. A point
+Let $M$ be the matrix whose columns are $\mathbf{a}$ and $\mathbf{b}$. A point
 of the image is $\mathbf{x} = \mathbf{c}_0 + M\mathbf{w}$ with
 $\mathbf{w} = r(\cos t, \sin t)^\top$, so $\lvert \mathbf{w}\rvert = r$.
 
@@ -33,8 +33,9 @@ If $\mathbf{a}$ and $\mathbf{b}$ are linearly independent, $M$ is invertible.
 Then $\mathbf{w} = M^{-1}(\mathbf{x} - \mathbf{c}_0)$, and the constraint
 $\lvert \mathbf{w}\rvert^2 = r^2$ becomes
 
-$$(\mathbf{x} - \mathbf{c}_0)^\top\, Q\, (\mathbf{x} - \mathbf{c}_0) = r^2,
-\qquad Q = (M^{-1})^\top M^{-1} = (M M^\top)^{-1}$$
+$$(\mathbf{x} - \mathbf{c}_0)^\top Q (\mathbf{x} - \mathbf{c}_0) = r^2$$
+
+where $Q = (M^{-1})^\top M^{-1} = (M M^\top)^{-1}$.
 
 $Q$ is symmetric positive-definite whenever $M$ is invertible. A level set of an
 SPD quadratic form is by definition an ellipse, with principal axes the
@@ -61,13 +62,13 @@ perpendicular diameter foreshortens to $2r\cos\theta$.
 
 Put the eye at the origin $O$. The circle $C$ lies in some plane not passing
 through $O$. Each point of $C$ is seen along a ray
-$\lbrace s\,p : s > 0,\ p \in C\rbrace$, and the union of these rays is a
+$\lbrace sp \mid s > 0, p \in C\rbrace$, and the union of these rays is a
 **cone** $K$ with apex $O$. The image on the sensor is $K \cap \Pi$, where
 $\Pi$ is the image plane (not through $O$).
 
 The cone $K$ is a quadric surface. The circle satisfies a plane equation
 $n \cdot x = c$ and a sphere equation $\lvert x - m\rvert^2 = \rho^2$. Along a
-ray write $x = s\,p$. The plane fixes $s = c / (n \cdot p)$. Substituting into
+ray write $x = sp$. The plane fixes $s = c / (n \cdot p)$. Substituting into
 the sphere equation and clearing the denominator gives a homogeneous
 degree-two equation in $p$, which is exactly the equation of a quadric cone.
 
