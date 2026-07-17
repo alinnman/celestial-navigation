@@ -1,4 +1,4 @@
-# Proof 1: Eratosthenes finding: Mathematical Proof of Earth's Sphericity
+# Proof 1: Eratosthenes' finding: Mathematical Proof of Earth's Sphericity
 
 ## Abstract
 
@@ -8,12 +8,12 @@ and (2) celestial objects must be extremely distant.
 Starting from raw observational data without assumptions about either
 Earth's geometry or stellar distances, we demonstrate that the
 observed relationship between geographic separation and celestial altitude
-differences uniquely determines both parameters.
+differences uniquely determine both parameters.
 We show that only the specific combination of spherical Earth geometry with
 distant celestial objects can account for the universal observational constant
 of 111.1 km/degree.
 
-Before going through this text you may look up a [description of the
+Before going through this text, you may look up a [description of the
 fundamental axioms](axioms.md) you need to observe and agree on.
 
 ## Part I: The Two-Parameter Problem
@@ -26,8 +26,8 @@ but these patterns depend on two unknown parameters:
 - **Parameter A**: Earth's geometric structure (flat vs. curved)
 - **Parameter B**: Distance to celestial objects (local vs. distant)
 
-**Traditional approaches** typically assume one parameter to prove the other.
-We will instead demonstrate that observational data uniquely determines both
+**Traditional approaches** typically assume that on parameter proves the other.
+We will instead demonstrate that observational data uniquely determine both
 parameters simultaneously.
 
 ### 1.2 Primary Observational Data
@@ -68,7 +68,7 @@ holds for all celestial objects
 - **Independence**: Works regardless of observer, geographic region, or
 celestial object chosen
 
-**Experimental Fact**: For any observer at distance $d$ from a celestial
+**Experimental Fact**: For any observer at a distance $d$ from a celestial
 object's Geographic Position (GP):
 
 $\alpha = 90° - \frac{d}{111.1 \text{ km/degree}}$
@@ -104,7 +104,7 @@ $(A_2, B_2)$, $(A_3, B_1)$, $(A_3, B_2)$
 **Geometric Setup**:
 Flat plane with celestial objects at height $h$ above the surface.
 
-**Mathematical Prediction**: For observer at distance $d$ from the point
+**Mathematical Prediction**: For an observer at a distance $d$ from the point
 directly below the celestial object:
 $\alpha = \arctan\left(\frac{h}{d}\right)$
 
@@ -125,7 +125,7 @@ would give different ratios
 
 ### 2.3 Case 2: Flat Earth + Distant Stars $(A_1, B_2)$
 
-**Geometric Setup**: Flat plane with parallel light rays from infinite distance.
+**Geometric Setup**: Flat plane with parallel light rays from an infinite distance.
 
 **Mathematical Prediction**: All surface normal vectors are parallel:
 $\mathbf{n}(P) = \mathbf{n}(Q)$ for all points $P, Q$.
@@ -140,7 +140,7 @@ $\alpha_A = \alpha_B$ for all locations
 **Test Against Observations**:
 
 - **Predicted**: Zero altitude difference between locations
-- **Observed**: Systematic altitude differences following linear law
+- **Observed**: Systematic altitude differences following a linear law
 - **Conclusion**: **CASE 2 ELIMINATED** -
 Contradicts observed altitude variations
 
@@ -204,7 +204,7 @@ determined by its Gaussian curvature $K(P)$ at each point $P$.
 **Surface Categories**:
 
 - **Ellipsoids**: $K > 0$ but varies with location
-- **Cylinders**: $K = 0$ in one direction, varies in the perpendicular direction
+- **Cylinders**: $K = 0$ in one direction, varies in the perpendicular direction.
 - **Saddle shapes**: $K < 0$
 - **Irregular surfaces**: $K(P)$ varies arbitrarily
 
@@ -220,7 +220,7 @@ vs. perpendicular to the axis
 - **Object-dependent ratios**: Local objects at different distances compound
 the geometric variations
 - **No universal constant possible**: The combination of variable curvature
-and variable distances prevents any universal ratio
+and variable distances prevent any universal ratio
 
 **Test Against Observations**:
 
@@ -253,14 +253,14 @@ its gradient.
 - **Variable curvature**: $K$ varies with latitude
 - **Predicted ratio**: $\frac{d}{|\Delta\alpha|}$ would vary systematically
 with latitude
-- **Example**: At equator vs. poles of an ellipsoid,
+- **Example**: At the equator vs. the poles of an ellipsoid,
 different local radii of curvature
 
 **Cylindrical Surfaces**:
 
-- **Zero curvature along axis**:
+- **Zero curvature along the axis**:
 No altitude change when moving parallel to the axis
-- **Constant curvature perpendicular to axis**:
+- **Constant curvature perpendicular to the axis**:
 Altitude changes only in the perpendicular direction
 - **Predicted behavior**: Highly directional - ratio depends drastically on
 measurement direction
@@ -281,7 +281,7 @@ measurement direction
 **Theorem 2.1 (Characterization of spherical geometry).**
 Let $S \subset \mathbb{R}^3$ be a connected, smooth, regular surface.
 Suppose that for parallel incident light rays from a distant object, the
-altitude angle $\alpha$ satisfies
+altitude angle $\alpha$ satisfies.
 
 $$\frac{d\alpha}{ds} = -\frac{1}{R}$$
 
@@ -389,12 +389,12 @@ positive curvature surfaces can produce the observed constant ratio. ∎
 
 **Flat Earth Models**: Eliminated regardless of assumed stellar distance
 
-- With local stars: Predicts non-linear relationship (contradicts observations)
+- With local stars: Predicts a non-linear relationship (contradicts observations)
 - With distant stars: Predicts no altitude variation (contradicts observations)
 
 **Local Star Models**: Eliminated regardless of assumed Earth geometry
 
-- With flat Earth: Predicts non-linear relationship (contradicts observations)
+- With flat Earth: Predicts a non-linear relationship (contradicts observations)
 - With spherical Earth: Predicts object-dependent ratios
 (contradicts universality)
 - With other curved surfaces: Predicts location and direction-dependent
@@ -430,7 +430,7 @@ $$\frac{2R}{D} < 0.1° \times \frac{\pi}{180°}$$
 $$D > \frac{2R \times 180°}{0.1° \times \pi}
 \approx 7.3 \times 10^6 \text{ km}$$
 
-This requires stellar distances much greater than Earth-Sun distance,
+This requires stellar distances much greater than the Earth-Sun distance,
 confirming the distant star conclusion. ∎
 
 ### 4.2 Earth Radius Precision
@@ -503,7 +503,7 @@ about either parameter. The universal linear relationship
 $\alpha = 90° - \frac{d}{111.1}$ can arise only from the
 specific combination of:
 
-1. **Spherical Earth** with radius approximately 6371 km
+1. **Spherical Earth** with a radius of approximately 6371 km
 2. **Distant celestial objects** producing effectively parallel light rays
 
 This dual determination is more robust than traditional approaches that
@@ -574,7 +574,7 @@ Princeton University Press, 2013.](https://press.princeton.edu/books/hardcover/9
 
 **Modern Astrometry**:
 - "Gaia Data Release Documentation." European Space Agency.
-- "Hipparcos and Tycho Catalogues." European Space Agency, 1997.
+- "Hipparcos and Tycho Catalogs." European Space Agency, 1997.
 
 ### Navigation and Geodesy
 
