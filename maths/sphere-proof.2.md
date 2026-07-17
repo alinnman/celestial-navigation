@@ -2,52 +2,54 @@
 
 ## Abstract
 
-We present the mathematical proof for connecting the known horizon dip
-with a mathematical reasoning leading to proving a spherical shape as the
-only possible one behind the actual observations.
+We present a mathematical proof connecting the known horizon dip to reasoning that 
+leads to the conclusion that a spherical shape is the only possible 
+explanation for the actual observations.
 
-Before going through this text you may look up a [description of the
+Before going through this material, you may look up a [description of the
 fundamental axioms](axioms.md) you need to observe and agree on.
 
 ## Initial remark: Horizon distance
 
-It is easy to see that horizon dip for a sphere (in arcminutes) always is
-the same as the **distance to the horizon in nautical miles**.
-So the proof presented here can **also be used** for measurements based on
-observations of the distance to the horizon/terminator.
+It is easy to see that the horizon dip for a sphere (in arcminutes) is
+the same as the **distance to the horizon in nautical miles**.<br>
+*Here, horizon dip means the angle between the horizontal and the line of sight to the horizon,*
+*and distance to the horizon means the distance measured along the surface.*<br>
+Thus, the proof presented here **also applies** to measurements based on observations
+of the distance to the horizon/terminator.
 
 ## Given Information
 
 - Observed horizon dip formula: **$d \approx k\sqrt{h}$**
 (where $d$ is in arcminutes, $h$ is elevation in meters, $1.85 < k < 1.93$)
-- For actual observations (with refraction) we can establish $k \approx 1.85$.
-- This corresponds to a sphere of radius $R \approx 6300$ km
-- We need to prove this relationship uniquely determines spherical geometry
+- For actual observations, with refraction, we can establish $k \approx 1.85$.
+- This corresponds to a sphere of radius $R \approx 6300$ km.
+- We need to prove that this relationship uniquely determines spherical geometry.
 
 ## Mathematical Setup
 
-For any smooth surface, let's consider an observer at height $h$ above
+For any smooth surface, consider an observer at height $h$ above
 the surface. The horizon dip angle $d$ is determined by the tangent line
 from the observer's position to the surface.
 
 ## Radius Determination from Coefficient (geometric case on a sphere)
 
 The dip of the horizon on a **sphere** can be calculated with the
-exact geometric formula
+exact geometric formula.
 
 $d(h) = \arccos \left( \frac{R}{R+h}\right)$
 
-where $R$ is the radius. For the Earth it is ${6.378}\times{10^6}$ m.<br>
+where $R$ is the radius. For the Earth, it is ${6.378}\times{10^6}$ m.<br>
 $h$ is observer elevation.
 
-This expression can also (using simple trigonometrics and application
+This expression can also (using simple trigonometry and application
 of Pythagoras' formula) be written as:
 
 $d(h) = \arctan \sqrt{\frac{h^2 + 2h}{R}}$
 
 A common observation for lower elevations over Earth's surface is seeing the dip
 well approximated by this formula, when measuring with a level,
-theodolite or similar:<br>
+theodolite, or similar:<br>
 
 $d_{\text{amR}}(h) \approx 1.85 \times \sqrt{h}$
 
@@ -70,11 +72,11 @@ From which we get
 
 $\arctan(h) \approx h$ (when $h$ is small)
 
-From this we can deduce the approximation:
+From this, we can deduce the approximation:
 
 $d(h) \approx \sqrt{\frac{2}{R}} \times \sqrt{h}$
 
-From this we get the dip in arcminutes:
+From this, we get the dip in arcminutes:
 
 $d_{\text{am}}(h) \approx \sqrt{\frac{2}{R}} \times \frac{180}{\pi}
 \times 60 \times \sqrt{h}$
@@ -89,7 +91,7 @@ with coefficients $1.93$ vs $1.85$ respectively.
 This can easily be explained through a larger "perceived radius" of
 the Earth
 [when&nbsp;refraction&nbsp;is&nbsp;active](https://en.wikipedia.org/wiki/Atmospheric_refraction#Terrestrial_refraction),
-and this leads to a lower coeffient in
+and this leads to a lower coefficient in
 the formula applicable for refraction above.
 
 This gives us: $d(h) \propto \sqrt{h}$
@@ -138,8 +140,8 @@ Where $R_{\text{eff}}$ represents either:
 - The geometric radius $R$ (no refraction case)
 - An apparent radius $R/(1-k)$ where $k$ accounts for atmospheric refraction
 
-**Crucially**: Both cases preserve the fundamental geometric requirement of
-constant curvature radius.
+**Crucially**, both cases preserve the fundamental geometric requirement of
+a constant curvature radius.
 
 ### Step 2: Gaussian Curvature Analysis
 
@@ -173,13 +175,13 @@ surfaces of constant Gaussian curvature are classified as:
 - The trigonometric relationship
 $\cos(d) = \frac{R_{\text{eff}}}{R_{\text{eff}}+h}$ becomes undefined
 (infinite radius)
-- No tangent line from elevated observer to flat surface produces dip
+- No tangent line from an elevated observer to a flat surface produces a dip.
 - **Contradiction** with observed formula (regardless of refraction effects)
 
 **Case $K < 0$ (Hyperbolic):**
 
 - Hyperbolic surfaces curve away from the observer (saddle shape)
-- The "horizon" would appear above eye level, producing negative dip ($d < 0$)
+- The "horizon" would appear above eye level, producing a negative dip ($d < 0$)
 - The trigonometric relationships reverse: observer sees "horizon rise" not
 "horizon dip"
 - **Contradiction** with observed downward dip
@@ -187,18 +189,18 @@ $\cos(d) = \frac{R_{\text{eff}}}{R_{\text{eff}}+h}$ becomes undefined
 
 **Case $K > 0$ but variable:**
 
-- If curvature varies with position, then the local radius $R(x,y)$ changes
+- If curvature varies with position, then the local radius $R(x,y)$ changes.
 - The coefficient in $d \propto \sqrt{h}$ becomes location-dependent:
 $d \approx \sqrt{\frac{2h}{R(x,y)}}$
-- Different locations would show different proportionality constants
+- Different locations would show different proportionality constants.
 - **Contradiction** with both observed universal constants
-($1.93$ geometric, $1.85$ with refraction)
+($1.93$ geometric, $1.85$ with refraction).
 
 **Case: Non-constant curvature surfaces:**
 
 - The tangent condition $\cos(d) = \frac{R_{\text{eff}}}{R_{\text{eff}}+h}$
 requires a well-defined radius $R_{\text{eff}}$
-- Surfaces with varying curvature have no single radius parameter
+- Surfaces with varying curvature have no single radius parameter.
 - The trigonometric derivation fails without constant $R$
 - **Contradiction** with both observed relationships
 (atmospheric refraction cannot create apparent constant curvature from
@@ -212,11 +214,11 @@ This actually **strengthens** the spherical geometry proof:
 
 - **Refraction effects are predictable**:
 The coefficient change matches theoretical predictions for light bending in
-Earth's atmosphere
+Earth's atmosphere.
 - **Functional form preservation**: Only spherical geometry can maintain
-$\sqrt{h}$ relationship under varying atmospheric conditions
+$\sqrt{h}$ relationship under varying atmospheric conditions.
 - **Physical consistency**: The refraction-corrected coefficient $1.85$ still
-yields a reasonable apparent radius, confirming the underlying spherical model
+yields a reasonable apparent radius, confirming the underlying spherical model.
 
 ### Step 6: Spherical Surfaces
 
@@ -256,16 +258,16 @@ This mathematical result confirms that:
 
 - **Earth's surface geometry is fundamentally spherical**:
 The trigonometric relationship $d(h) = \arccos\left(\frac{R}{R+h}\right)$
-uniquely determines spherical geometry
+uniquely determines spherical geometry.
 - **Atmospheric refraction provides additional confirmation**:
-The predictable change in coefficient from $1.93$ to $1.85$ confirms both the
-spherical model and our understanding of atmospheric optics
+The predictable change in the coefficient from $1.93$ to $1.85$ confirms both the
+spherical model and our understanding of atmospheric optics.
 - **Any deviation from spherical geometry would produce measurably different**
 **horizon dip behavior**:
 The $\sqrt{h}$ relationship is a geometric signature of spherical surfaces
-that persists despite atmospheric effects
+that persists despite atmospheric effects.
 - **The universality of both coefficients confirms uniform curvature**:
-Constants $1.93$ and $1.85$ applying globally confirm Earth's spherical geometry
+Constants $1.93$ and $1.85$, applying globally, confirm Earth's spherical geometry.
 
 ### Historical Context and Refraction
 
@@ -276,8 +278,8 @@ but the fundamental $\sqrt{h}$ relationship still allowed him to calculate
 Earth's radius with reasonable accuracy.
 
 The modern understanding of refraction doesn't invalidate
-Al-Biruni's method - it refines it. Both coefficients lead to
-reasonable radius estimates and both confirm spherical geometry.
+Al-Biruni's method - it refines it. Both coefficients yield
+reasonable radius estimates, and confirm spherical geometry.
 
 ## Conclusion
 
@@ -288,7 +290,7 @@ The trigonometric foundation shows why the $\sqrt{h}$ relationship emerges
 naturally from spherical surfaces and cannot arise from any other
 geometric configuration.
 
-**Crucially**: Atmospheric refraction strengthens rather than weakens this
+**Crucially**, atmospheric refraction strengthens rather than weakens this
 conclusion. The fact that refraction predictably modifies the coefficient
 while preserving the functional form $d \propto \sqrt{h}$ provides additional
 evidence for the underlying spherical geometry.
@@ -328,11 +330,11 @@ classified by their constant curvature metrics
 #### Historical Foundations
 
 The horizon dip phenomenon and its geometric relationship to Earth's spherical
-shape has been known since Al-Biruni in the 11th century:
+shape have been known since Al-Biruni in the 11th century:
 
 > "The 11th century Persian scholar Abū Rayḥān Muḥammad ibn Aḥmad Al-Bīrūnī
 (usually known in English as Al-Biruni) recognised all of this,
-and what's more he realised that by measuring the dip angle of the horizon...
+and what's more, he realized that by measuring the dip angle of the horizon...
 Al-Biruni could calculate the circumference of the Earth."
 
 *Source*:
@@ -342,7 +344,7 @@ Al-Biruni could calculate the circumference of the Earth."
 
 The mathematical relationship between observer height and horizon dip for
 spherical surfaces is well-established. This also includes reasoning based on
-refraction where the radius of the Earth $R$ can be replaced by a
+refraction, where the radius of the Earth $R$ can be replaced by a
 corrected value:
 
 > "If we can regard the ray $OH$ as an arc of a circle, with a curvature $k$
@@ -369,8 +371,8 @@ constant positive Gaussian curvature are spheres."
 The specific topological proof that the horizon dip formula
 $\theta \propto \sqrt{h}$ **uniquely** determines spherical geometry is a
 novel conclusion, combining these established results in a new way.
-This cannot be established explicitly by known sources, but can be concluded
-from combining supporting documents and sources.
+This cannot be established explicitly by known sources, but can inferred
+from a combination of supporting documents and sources.
 
 ### Final Conclusion
 
