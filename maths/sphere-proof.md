@@ -35,7 +35,7 @@ evaluating a posteriori observations.
 
 The amount of evidence for both findings mentioned above is **overwhelming**.
 Search online for articles, e.g. using [Google Scholar](https://scholar.google.com). 
-You can also check this [literature list](literature.pdf)
+You can also check this [literature list](literature.pdf).
 
 From this, you start reasoning
 [**a priori**](https://en.wikipedia.org/wiki/A_priori_and_a_posteriori#A_priori)
@@ -45,8 +45,8 @@ findings above **uniquely indicate a spherical Earth**.
 Let us denote the empirical (a posteriori) findings with $E$,
 and the conclusion that the Earth is a sphere with $S$.
 It is straightforward to show that $S\Rightarrow{E}$ — that is,
-if the Earth is spherical, these observations follow necessarily. However,
-the crucial step is establishing the converse:
+if the Earth is spherical, the findings above follow necessarily. However,
+the crucial step is establishing the **converse**:
 $E\Rightarrow{S}$, meaning these observations can *only* occur on a sphere,
 thereby ruling out any other possible shape. Together, these establish
 $E\Leftrightarrow{S}$ — the observations are both necessary and sufficient
@@ -80,6 +80,7 @@ preferably through independently verified
 results, giving results other than what we have found.<br/>
 ("there is no horizon dip",
 "the altitude of celestial objects does not follow the linear pattern").
+Check the [literature references](literature.pdf), and try to falsify the information given. 
 2. If you fail in step 1 above:
 Refuting the mathematical proofs (a priori), where we concluded the
 spherical shape. Then you will have to confront mathematics
@@ -92,7 +93,7 @@ to the differential geometry of the 19th century
 3. If steps 1 or 2 fail, you may go to the [axioms](axioms.md) in order to
 use **other** fundamental epistemological views and maybe formulate new axioms.
 Rejecting the presented axioms would require proposing an entirely different
-mathematical framework and/or epistemology.
+mathematical framework and/or [epistemology](https://en.wikipedia.org/wiki/Epistemology).
 
 I say Good Luck to anyone who accepts the challenge of such a confrontation!
 
@@ -102,8 +103,9 @@ I leave it here for anyone to use.
 
 The proofs given here were drafted quite recently (September 2025), and there
 may be both logical and mathematical errors.
-If you find anything, then please feel free to add a PR (Pull Request) vs these
-documents.
+If you find anything, then please feel free to add a GitHub
+[PR (Pull Request)](https://en.wikipedia.org/wiki/Distributed_version_control#Pull_requests)
+vs these documents.
 
 If you find the proofs fundamentally **incorrect**,
 such as proposing a Flat Earth or similar, then I advise you to
