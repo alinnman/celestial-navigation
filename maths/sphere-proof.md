@@ -2,6 +2,8 @@
 
 ## Two proofs
 
+### Gathering un-biased evidence
+
 1000 years ago, we knew much less about science, but we already had quite a
 good grasp of the shape of the Earth.
 The spherical shape of the Earth was first established in antiquity by
@@ -39,6 +41,8 @@ The amount of evidence for both findings mentioned above is **overwhelming**.
 Search online for articles, e.g. using [Google Scholar](https://scholar.google.com). 
 You can also check this [literature list](literature.pdf).
 
+### Fitting the evidence to proposed models
+
 From this, you start reasoning
 [**a priori**](https://en.wikipedia.org/wiki/A_priori_and_a_posteriori#A_priori)
 (using mathematical deduction) to prove that the
@@ -72,6 +76,8 @@ you need to consider before engaging with the proofs.
 Today, this is very basic science,
 but presented here as counterarguments against pseudoscience that advocates a
 Flat Earth.
+
+### Roadmap for falsification
 
 Confronting the proofs given above can be done in three possible ways:
 
