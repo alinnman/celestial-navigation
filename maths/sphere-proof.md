@@ -72,10 +72,10 @@ Before going through this, you may also read about the
 [fundamental axioms](axioms.md)
 you need to consider before engaging with the proofs.
 
-1000 years ago, this could have earned a "PhD" or similar in the academic world.
-Today, this is very basic science,
-but presented here as counterarguments against pseudoscience that advocates a
-Flat Earth.
+*1000 years ago, this could have earned a "PhD" or similar in the academic world.*
+*Today, this is very basic science,*
+*but presented here as counterarguments against pseudoscience that advocates a*
+*non-spherical Earth.*
 
 ### Roadmap for falsification
 
@@ -117,7 +117,7 @@ If you find anything, then please feel free to add a GitHub
 vs these documents.
 
 If you find the proofs fundamentally **incorrect**,
-such as proposing a Flat Earth or similar, then I advise you to
+such as proposing a non-spherical Earth or similar, then I advise you to
 contact the
 [IAU&nbsp;(International&nbsp;Astronomical&nbsp;Union)](https://iau.org/Iau/About/Secretariat.aspx)
 or your local university.
