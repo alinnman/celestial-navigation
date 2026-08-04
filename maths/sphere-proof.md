@@ -33,6 +33,10 @@ predefined pattern.
 This is not a **truth** in itself, but it is the result of systematically
 evaluating a posteriori observations.
 
+The amount of evidence for both findings mentioned above is **overwhelming**.
+Search online for articles, e.g. using [Google Scholar](https://scholar.google.com). 
+You can also check this [literature list](literature.pdf)
+
 From this, you start reasoning
 [**a priori**](https://en.wikipedia.org/wiki/A_priori_and_a_posteriori#A_priori)
 (using mathematical deduction) to prove that the
@@ -40,12 +44,12 @@ findings above **uniquely indicate a spherical Earth**.
 
 Let us denote the empirical (a posteriori) findings with $E$,
 and the conclusion that the Earth is a sphere with $S$.
-It is straightforward to show that $S\Rightarrow{E}$—that is,
-if the Earth is spherical,these observations follow necessarily. However,
+It is straightforward to show that $S\Rightarrow{E}$ — that is,
+if the Earth is spherical, these observations follow necessarily. However,
 the crucial step is establishing the converse:
 $E\Rightarrow{S}$, meaning these observations can *only* occur on a sphere,
 thereby ruling out any other possible shape. Together, these establish
-$E\Leftrightarrow{S}$—the observations are both necessary and sufficient
+$E\Leftrightarrow{S}$ — the observations are both necessary and sufficient
 for sphericity.
 
 *The method used is typical for basic science:*
@@ -104,5 +108,6 @@ documents.
 If you find the proofs fundamentally **incorrect**,
 such as proposing a Flat Earth or similar, then I advise you to
 contact the
-[IAU&nbsp;(International&nbsp;Astronomical&nbsp;Union)](https://iau.org/Iau/About/Secretariat.aspx).
+[IAU&nbsp;(International&nbsp;Astronomical&nbsp;Union)](https://iau.org/Iau/About/Secretariat.aspx)
+or your local university.
 
