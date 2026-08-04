@@ -88,7 +88,8 @@ preferably through independently verified
 results, giving results other than what we have found.<br/>
 ("there is no horizon dip",
 "the altitude of celestial objects does not follow the linear pattern").
-Check the [literature references](literature.pdf), and try to falsify the information given. 
+Check the [literature references](literature.pdf), and try to falsify the information given.
+This is **practical** work. You will need to go outdoors and do observations!
 2. If you fail in step 1 above:
 Refuting the mathematical proofs (a priori), where we concluded the
 spherical shape. Then you will have to confront mathematics
