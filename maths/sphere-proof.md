@@ -31,7 +31,9 @@ Our data clearly show
 that altitude and horizon dip measurements seem to follow a
 predefined pattern.
 This is not a **truth** in itself, but it is the result of systematically
-evaluating a posteriori observations.
+evaluating a posteriori observations. Also note that the findings are
+**un-biased**, i.e. not tied to any interpretation or model fitting. It is just
+observations made using simple instruments. 
 
 The amount of evidence for both findings mentioned above is **overwhelming**.
 Search online for articles, e.g. using [Google Scholar](https://scholar.google.com). 
