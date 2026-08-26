@@ -5,7 +5,7 @@
 
 from os import name as os_name
 from sys import version_info
-from math import  pi, sin, cos, acos, sqrt, tan, atan2
+from math import  pi, sin, cos, acos, sqrt, tan, atan2, exp
 from random import gauss
 from datetime import datetime, date, timedelta, timezone
 from types import NoneType
@@ -961,31 +961,62 @@ class Chronometer: # pylint: disable=R0903
 # Horizon
 ################################################
 
-def get_adjusted_earth_radius (temperature : float = 10,
-                               dt_dh : float = -0.01, pressure : float = 101) -> float:
-    ''' Calculate the modified earth radius as a result of refraction 
-        Returns : The adjusted radius in km
+# References for refraction handling
+## Young, Dip of the Horizon — aty.sdsu.edu/explain/atmos_refr/dip.html
+## Young, Distance to the Horizon — aty.sdsu.edu/explain/atmos_refr/horizon.html
+## Bislins, Deriving Equations for Atmospheric Refraction — walter.bislins.ch (the 503 derivation)  
+
+# --- Refraction / dip constants ---------------------------------------
+_KELVIN_AT_0C      = 273.15   # °C -> K  (was 273; costs you ~0.05% in T²)
+_HPA_PER_KPA       = 10.0
+_REFRACTION_CONST  = 503.0    # = R_earth · K1  (K1 ≈ 78.95, refractivity coeff.)
+_HYDROSTATIC_LAPSE = 0.0343   # K/m, = g / R_specific  (dry-air autoconvective term)
+
+def _pressure_at_height (sea_level_hpa : float, height_m : float,
+                         temperature_k : float) -> float:
+    ''' Barometric pressure at a height above sea level (isothermal model).
+        Consistent with the g/R_specific term used in the refraction coeff. '''
+    scale_height_m = temperature_k / _HYDROSTATIC_LAPSE
+    return sea_level_hpa * exp (-height_m / scale_height_m)
+
+def get_adjusted_earth_radius (temperature : float = 10, dt_dh : float = -0.01,
+                               pressure : float = 101, height_m : float = 0) -> float:
+    ''' Effective earth radius under atmospheric refraction.
+        Parameters:
+            temperature : air temperature at the observer, °C
+            dt_dh       : vertical temperature gradient, K/m
+            pressure    : mean-sea-level pressure, kPa
+            height_m    : observer height above sea level, m
+                          (lowers the pressure, hence weakens refraction)
+        Returns : effective radius in km
     '''
     if Testing.disable_refraction_handling:
         return EARTH_RADIUS
 
-    k_factor = 503*(pressure*10)*(1/((temperature+273)**2))*(0.0343 + dt_dh)
-    r = EARTH_RADIUS
-    return r / (1 - k_factor)
+    temperature_k = temperature + _KELVIN_AT_0C
+    pressure_hpa  = _pressure_at_height (pressure * _HPA_PER_KPA,
+                                         height_m, temperature_k)
 
-def get_dip_of_horizon (hm : int | float, temperature : float = 10,
-                        dt_dh : float = -0.01, pressure : float = 101)\
-      -> float:
-    ''' Calculate dip of horizon in arc minutes 
-    Parameters:
-        hm : height in meters
-        temperature : temperature in degrees Celsius
-        dt_th : temperature gradient in degrees Celsius / meter
+    k_factor = (_REFRACTION_CONST * pressure_hpa
+                / temperature_k ** 2
+                * (_HYDROSTATIC_LAPSE + dt_dh))
+
+    return EARTH_RADIUS / (1 - k_factor)
+
+def get_dip_of_horizon (hm : float, temperature : float = 10,
+                        dt_dh : float = -0.01, pressure : float = 101) -> float:
+    ''' Dip of the sea horizon, in arc minutes.
+        Parameters:
+            hm          : height of eye above sea level, m
+            temperature : air temperature, °C
+            dt_dh       : vertical temperature gradient, K/m
+            pressure    : mean-sea-level pressure, kPa
     '''
-    rr = get_adjusted_earth_radius (temperature, dt_dh, pressure)
-    h = hm / 1000
-    the_dip = (acos (rr/(rr+h)))*(180/pi)*60
-    return the_dip
+    # The grazing ray spans sea level -> eye, so the *mean* height (hm/2) is
+    # the representative altitude for the path-average pressure.
+    rr = get_adjusted_earth_radius (temperature, dt_dh, pressure, height_m=hm / 2)
+    h  = hm / 1000                       # m -> km
+    return acos (rr / (rr + h)) * (180 / pi) * 60
 
 def get_line_of_sight (h1 : float, h2 : float, temperature : float = 10,
                        dt_dh : float = -0.01, pressure : float = 101) -> float:

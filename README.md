@@ -236,6 +236,9 @@ and the *observer_height* parameter should be zero.
 For more information about the formula above please refer to
 [this article](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2010JD014067)
 
+Also note that the actual implementation in the code is slightly more complex, and includes handling
+of variable pressure for higher elevations. 
+
 ### 2.iii. Ignored Corrections<a name="ignored-corrections"></a>
 
 * Refraction correction is simple (see above), but probably good enough for
