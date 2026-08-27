@@ -113,26 +113,38 @@ debug_logger = DebugLogger()
 # Metadata and file access
 ################################################
 
+#pylint: disable=C0103
 PANDAS_INITIALIZED = False
+#pylint: enable=C0103
 try:
 #pylint: disable=W0611
     import pandas
 #pylint: enable=W0611
+#pylint: disable=C0103
     PANDAS_INITIALIZED = True
+#pylint: disable=C0103
 except ModuleNotFoundError:
     pass
 
+#pylint: disable=C0103
 FOLIUM_INITIALIZED = False
 FOLIUM_LOAD_ERROR = ""
+#pylint: enable=C0103
 try:
 #pylint: disable=W0611
     import folium
 #pylint: enable=W0611
+#pylint: disable=C0103
     FOLIUM_INITIALIZED = True
+#pylint: enable=C0103
 except ModuleNotFoundError as mnfe:
+#pylint: disable=C0103
     FOLIUM_LOAD_ERROR = str(mnfe)
+#pylint: enable=C0103
 except ImportError as ie:
+#pylint: disable=C0103
     FOLIUM_LOAD_ERROR = str(ie)
+#pylint: enable=C0103
 
 def get_folium_load_error ():
     ''' Check for possible errors loading folium (mainly for the Android setup) '''
@@ -964,10 +976,10 @@ class Chronometer: # pylint: disable=R0903
 # References for refraction handling
 ## Young, Dip of the Horizon — aty.sdsu.edu/explain/atmos_refr/dip.html
 ## Young, Distance to the Horizon — aty.sdsu.edu/explain/atmos_refr/horizon.html
-## Bislins, Deriving Equations for Atmospheric Refraction — walter.bislins.ch (the 503 derivation)  
+## Bislins, Deriving Equations for Atmospheric Refraction — walter.bislins.ch (the 503 derivation)
 
 # --- Refraction / dip constants ---------------------------------------
-_KELVIN_AT_0C      = 273.15   # °C -> K  (was 273; costs you ~0.05% in T²)
+_KELVIN_AT_0C      = 273.15   # °C -> K
 _HPA_PER_KPA       = 10.0
 _REFRACTION_CONST  = 503.0    # = R_earth · K1  (K1 ≈ 78.95, refractivity coeff.)
 _HYDROSTATIC_LAPSE = 0.0343   # K/m, = g / R_specific  (dry-air autoconvective term)

@@ -21,7 +21,9 @@ def get_starfixes (drp_pos : LatLonGeodetic,
     Sight.set_alt_diff           (alt_sigma)
     Sight.set_time_diff          (time_sigma)
 
+#pylint: disable=C0103
     OBSERVER_HEIGHT = 0
+#pylint: enable=C0103
 
     a = Sight ( object_name          = "Sun",
                 set_time             = "2024-05-05 15:55:18+00:00",
