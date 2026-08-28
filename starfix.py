@@ -596,7 +596,7 @@ def is_online_safe(timeout=2):
 
 ## These are our standard tiles, to be used locally and in the android app
 TILE_USED = "OpenStreetMap"
-ATTR_USED = None # "Map data: © OpenStreetMap contributors"
+ATTR_USED = None
 ## For Colab-deployed notebooks we need a different tile setup
 FREE_TILE_USED = "https://a.tile.opentopomap.org/{z}/{x}/{y}.png"
 FREE_ATTR_USED = "Map data: © OpenStreetMap contributors, SRTM | Style: © OpenTopoMap (CC-BY-SA)"
@@ -605,7 +605,7 @@ def get_folium_map_safe (location : list | tuple,
                     zoom_start_offline : int = 2,
                     zoom_start_online : int = 11,
                     max_zoom : int = 15,
-                    use_free_tiles = True) -> object:
+                    use_free_tiles : bool = True) -> object:
     ''' 
     Generate a map object
     Tries online first for detail, falls back to offline for reliability
@@ -1220,7 +1220,8 @@ class CircleCollection:
                        use_free_tiles : bool = False) -> object :
         ''' Render this circle collection in Folium '''
         check_folium ()
-        the_map = get_folium_map_safe (location=[center_pos.get_lat(), center_pos.get_lon()], use_free_tiles = use_free_tiles)
+        the_map = get_folium_map_safe (location=[center_pos.get_lat(), center_pos.get_lon()],\
+                                       use_free_tiles = use_free_tiles)
         l = len (self.c_list)
         for i in range (l):
             color = "#FF0000"
@@ -2648,7 +2649,8 @@ class Sight :
         label_string = num_string + the_object_name
         c.render_folium (the_map, lon_adjustment = lon_adjustment, popup = label_string)
 
-    def render_folium_new_map (self, draw_markers : bool = True, zoom_start = 2, use_free_tiles : bool = False) -> object:
+    def render_folium_new_map (self, draw_markers : bool = True, zoom_start = 2,\
+                               use_free_tiles : bool = False) -> object:
         ''' Render this Sight object on a newly created Folium Map object'''
         m = get_folium_map_safe ([self.get_gp().get_lat(),self.get_gp().get_lon()],
                             zoom_start_online=zoom_start,
@@ -3342,7 +3344,8 @@ class SightTrip:
 
 #pylint: disable=R0914
     def render_folium (self, intersections : tuple [LatLon, LatLon] | LatLon,\
-                       accuracy : float = 1, draw_grid = True, draw_markers = True, use_free_tiles : bool = False):
+                       accuracy : float = 1, draw_grid = True, draw_markers = True,\
+                       use_free_tiles : bool = False):
         ''' Renders this object as a Folium Map object '''
 
         check_folium ()
