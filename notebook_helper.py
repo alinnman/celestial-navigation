@@ -226,7 +226,7 @@ def sight_reduction () -> Folium_Map | NoneType:
         intersections = None
 
     if collection is not None:
-        the_map = collection.render_folium (intersections)
+        the_map = collection.render_folium (intersections, use_free_tiles=True)
         assert isinstance (the_map, Folium_Map)
         return the_map
     else:
